@@ -19,3 +19,5 @@ const app = new Application({
 });
 
 app.initialize();
+
+module.exports = app;
