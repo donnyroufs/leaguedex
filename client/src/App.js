@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router";
 import Layout from "./components/layout/Layout";
-import routes from "./routes";
+import routes, { NotFound } from "./routes";
 
 const App = () => {
   return (
@@ -15,6 +15,7 @@ const App = () => {
             key={route.path}
           />
         ))}
+        <Route path="*" component={NotFound} />
       </Switch>
     </Layout>
   );
