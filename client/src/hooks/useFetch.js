@@ -22,4 +22,5 @@ const useFetch = (endpoint, initialState = []) => {
 
   return { data, error, loading };
 };
+
 export default useFetch;
