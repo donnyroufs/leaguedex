@@ -1,3 +1,4 @@
 import Home from "./home/Home";
+import NotFound from "./notFound/NotFound";
 
-export { Home };
+export { Home, NotFound };
