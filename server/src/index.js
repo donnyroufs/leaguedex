@@ -16,9 +16,12 @@ const app = new Application({
   routes: {
     api: apiRoutes,
   },
-  handleError,
-  validateConnection,
+  helpers: {
+    handleError,
+    validateConnection,
+  },
 });
+
 (async () => {
   await app.initialize((app) => {
     Riot.syncChampions();
