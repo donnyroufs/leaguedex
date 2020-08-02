@@ -12,14 +12,18 @@ class Controller {
   }
 
   async all(req, res) {
-    const data = await this.model.find();
+    const data = await this.model.findMany();
     res.status(200).json(data);
   }
 
   async findOneById(req, res, next) {
     try {
       const { id } = req.params;
-      const item = await this.model.findById(id);
+      const item = await this.model.findOne({
+        where: {
+          id: Number(id),
+        },
+      });
       if (!item) {
         throw new ErrorHandler(404, `No entries found with the id: ${id}`);
       }
@@ -31,8 +35,11 @@ class Controller {
 
   async createOne(req, res, next) {
     try {
-      const newItem = new this.model(req.body);
-      await newItem.save();
+      const newItem = await this.model.create({
+        data: {
+          ...req.body,
+        },
+      });
       res.status(201).json(newItem);
     } catch (err) {
       next(err);
@@ -42,7 +49,14 @@ class Controller {
   async updateOne(req, res, next) {
     try {
       const { id } = req.params;
-      const item = await this.model.findByIdAndUpdate(id, req.body);
+      const item = await this.model.update({
+        where: {
+          id: Number(id),
+        },
+        data: {
+          ...req.body,
+        },
+      });
       res.status(204).json(item);
     } catch (err) {
       next(err);
@@ -52,7 +66,11 @@ class Controller {
   async deleteOne(req, res, next) {
     const { id } = req.params;
     try {
-      await this.model.findByIdAndRemove(id);
+      await this.model.delete({
+        where: {
+          id: Number(id),
+        },
+      });
       res.status(204).json({});
     } catch (err) {
       next(err);

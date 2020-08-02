@@ -1,12 +1,13 @@
 require("dotenv/config");
 
 const express = require("express");
-const db = require("./config/database");
+const { db, validateConnection } = require("./config/database");
 const apiRoutes = require("./api/routes/index");
 const morgan = require("morgan");
 const { handleError } = require("./helpers/error");
 
 const Application = require("./Application");
+const Riot = require("./lib/Riot");
 
 const app = new Application({
   server: express,
@@ -15,9 +16,16 @@ const app = new Application({
   routes: {
     api: apiRoutes,
   },
-  handleError,
+  helpers: {
+    handleError,
+    validateConnection,
+  },
 });
 
-app.initialize();
+(async () => {
+  await app.initialize((app) => {
+    Riot.syncChampions();
+  });
+})();
 
 module.exports = app;
