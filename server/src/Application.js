@@ -8,7 +8,7 @@ class Application {
     this.handleError = handleError;
   }
 
-  initialize() {
+  initialize(callback) {
     this._setMiddleware();
 
     this.database.on("error", console.error.bind(console, "connection error:"));
@@ -17,6 +17,7 @@ class Application {
     this.app.listen(process.env.PORT, () =>
       console.log(`Server is listening on http://localhost:${process.env.PORT}`)
     );
+    callback(this.app);
   }
 
   _setMiddleware() {
