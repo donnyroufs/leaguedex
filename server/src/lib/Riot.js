@@ -1,5 +1,5 @@
 const axios = require("axios");
-const Champion = require("../api/models/champion.model");
+const { db } = require("../config/database");
 
 class Riot {
   static endpoints = {
@@ -12,19 +12,25 @@ class Riot {
       const { data } = await axios.get(this.endpoints.champions);
       const { version, data: championsObj } = data;
 
-      const cached = await Champion.findOne();
+      const cached = await db.champion.findMany();
 
-      if (!cached || cached.version !== version) {
+      if (!cached || cached[0].version !== version) {
         const champions = Object.values(championsObj).map((champ) => ({
-          championId: champ.key,
+          id: Number(champ.key),
           name: champ.name,
           image: champ.image.full,
-          tags: champ.tags,
+          tags: champ.tags.join(", "),
           lore: champ.blurb,
-          version: version,
+          version,
         }));
 
-        Champion.insertMany(champions);
+        for await (const champion of champions) {
+          await db.champion.create({
+            data: {
+              ...champion,
+            },
+          });
+        }
       }
     } catch (err) {
       throw err;
