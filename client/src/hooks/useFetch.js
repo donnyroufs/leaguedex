@@ -18,7 +18,7 @@ const useFetch = (endpoint, initialState = []) => {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [endpoint]);
 
   return { data, error, loading };
 };
