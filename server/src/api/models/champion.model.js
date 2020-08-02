@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-// should cache  `version: "10.15.1"` somewhere, so that you know when to update
-
 const championSchema = new mongoose.Schema({
   championId: {
     type: Number,
