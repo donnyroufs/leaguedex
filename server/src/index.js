@@ -5,6 +5,7 @@ const db = require("./config/database");
 const apiRoutes = require("./api/routes/index");
 const morgan = require("morgan");
 const { handleError } = require("./helpers/error");
+const Riot = require("./lib/Riot");
 
 const Application = require("./Application");
 
@@ -18,6 +19,8 @@ const app = new Application({
   handleError,
 });
 
-app.initialize();
+app.initialize((app) => {
+  Riot.syncChampions();
+});
 
 module.exports = app;
