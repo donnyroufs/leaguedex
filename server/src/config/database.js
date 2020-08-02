@@ -1,9 +1,17 @@
-const mongoose = require("mongoose");
+const { PrismaClient } = require("@prisma/client");
 
-mongoose.connect(process.env.DATABASE_URI, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-});
+const db = new PrismaClient();
 
-module.exports = mongoose.connection;
+const validateConnection = async () => {
+  try {
+    await db.user.findMany();
+    console.log("Database connected..");
+  } catch (err) {
+    throw err;
+  }
+};
+
+module.exports = {
+  db,
+  validateConnection,
+};
