@@ -1,18 +1,25 @@
 class Application {
-  constructor({ server, database, morgan, routes, handleError }) {
+  constructor({
+    server,
+    database,
+    morgan,
+    routes,
+    handleError,
+    validateConnection,
+  }) {
     this.express = server;
     this.app = this.express();
     this.database = database;
     this.morgan = morgan;
     this.routes = routes;
     this.handleError = handleError;
+    this.validateConnection = validateConnection;
   }
 
-  initialize(callback) {
+  async initialize(callback) {
     this._setMiddleware();
 
-    this.database.on("error", console.error.bind(console, "connection error:"));
-    this.database.once("open", () => console.log("connected to database..."));
+    await this.validateConnection();
 
     this.app.listen(process.env.PORT, () =>
       console.log(`Server is listening on http://localhost:${process.env.PORT}`)
