@@ -9,13 +9,19 @@ Merge development into master:
 
 ```
 git fetch origin master
-
 git merge master
-
 git push origin development:master
+```
+Migrate Prisma:
+
+```
+npx prisma migrate save --experimental
+npx prisma migrate uo --experimental
+npx prisma generate
+
 ```
 
 ### Links
 
-[https://leaguedex.com](Home Page, currently not live.)
-[https://www.figma.com/file/LKOTO3yHEvZXIYbJFiIdQk/Untitled?node-id=0%3A1](design)
+[Home Page, currently not live.](https://leaguedex.com]
+[Figma Link](https://www.figma.com/file/LKOTO3yHEvZXIYbJFiIdQk/Untitled?node-id=0%3A1)
