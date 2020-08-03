@@ -4,6 +4,7 @@ const express = require("express");
 const { db, validateConnection } = require("./config/database");
 const apiRoutes = require("./api/routes/index");
 const morgan = require("morgan");
+const cors = require("cors");
 const { handleError } = require("./helpers/error");
 
 const Application = require("./Application");
@@ -13,6 +14,7 @@ const app = new Application({
   server: express,
   database: db,
   morgan,
+  cors,
   routes: {
     api: apiRoutes,
   },
