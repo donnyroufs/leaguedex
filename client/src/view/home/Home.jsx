@@ -1,4 +1,7 @@
 import React from "react";
+import { SEARCH_WIDGET, INFO_WIDGET } from "../../constants";
+import Widget from "../../components/widget/WidgetContainer";
+import Card from "../../components/card/CardContainer";
 import { Container } from "./Home.styles";
 
 const Home = ({ status, data }) => {
@@ -8,9 +11,16 @@ const Home = ({ status, data }) => {
 
   return (
     <Container>
-      <h3>Home</h3>
-      {status === "success" &&
-        data.map(({ id, name }) => <p key={id}>{name}</p>)}
+      <Container.Widgets>
+        <Widget type={INFO_WIDGET} />
+        <Widget type={SEARCH_WIDGET} />
+      </Container.Widgets>
+      <Container secondary>
+        {status === "success" &&
+          data.map((champion) => (
+            <Card key={champion.id} champion={champion} />
+          ))}
+      </Container>
     </Container>
   );
 };
