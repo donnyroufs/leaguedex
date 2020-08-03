@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -58,8 +58,7 @@ model Champion {
 }
 
 model Authentication {
-  id        Int      @id @default(autoincrement())
-  token     String
-  username  String   @unique
-  createdAt DateTime @default(now())
+  id       Int    @id @default(autoincrement())
+  token    String
+  username String
 }
