@@ -5,6 +5,7 @@ const { db, validateConnection } = require("./config/database");
 const apiRoutes = require("./api/routes/index");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const { handleError } = require("./helpers/error");
 
 const Application = require("./Application");
@@ -16,6 +17,7 @@ const app = new Application({
   middleware: {
     morgan,
     cookieParser,
+    cors
   },
   routes: {
     api: apiRoutes,

@@ -4,6 +4,7 @@ class Application {
     this.app = this.express();
     this.database = database;
     this.morgan = middleware.morgan;
+    this.cors = middleware.cors;
     this.cookieParser = middleware.cookieParser;
     this.routes = routes;
     this.helpers = helpers;
@@ -24,6 +25,7 @@ class Application {
     this.app.use(this.cookieParser());
     this.app.use(this.express.json());
     this.app.use(this.morgan("tiny"));
+    this.app.use(this.cors());
     this.app.use("/api", this.routes.api);
     this.app.use((err, req, res, next) => {
       this.helpers.handleError(err, res);
