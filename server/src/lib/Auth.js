@@ -97,9 +97,7 @@ class Auth {
 
   static async setRefreshCookie(res, refreshToken) {
     const SEVEN_DAYS = 10080;
-    const expiration = this.setExpirationDate(
-      this.setExpirationDate(SEVEN_DAYS)
-    );
+    const expiration = this.setExpirationDate(SEVEN_DAYS);
     const options = {
       httpOnly: true,
       expires: expiration,
