@@ -6,7 +6,7 @@ export const Container = styled.header`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 80px;
+  height: 100px;
   background: ${(props) => props.theme.header};
   border-bottom: 1px solid ${(props) => props.theme.border};
   padding: 0 2rem;
@@ -17,3 +17,12 @@ Container.Brand = styled(Link)`
 `;
 
 Container.Brand.Image = styled.img``;
+
+Container.Buttons = styled.div`
+  display: none;
+  @media screen and (min-width: 968px) {
+    display: flex;
+    width: 185px;
+    justify-content: space-between;
+  }
+`;
