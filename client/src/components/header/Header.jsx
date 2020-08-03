@@ -4,7 +4,9 @@ import { Container } from "./Header.styles";
 const Header = () => {
   return (
     <Container>
-      <Container.Brand>Leaguedex</Container.Brand>
+      <Container.Brand to="/">
+        <Container.Brand.Image src="logo.svg" alt="leaguedex logo" />
+      </Container.Brand>
     </Container>
   );
 };

@@ -1,16 +1,19 @@
-import Styled from "styled-components";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-export const Container = Styled.header`
+export const Container = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 80px;
-  background: #fff;
-  border-bottom: 2px solid #eee;
+  background: ${(props) => props.theme.header};
+  border-bottom: 1px solid ${(props) => props.theme.border};
   padding: 0 2rem;
 `;
 
-Container.Brand = Styled.h3`
+Container.Brand = styled(Link)`
   margin: 0;
 `;
+
+Container.Brand.Image = styled.img``;
