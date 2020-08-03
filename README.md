@@ -23,5 +23,5 @@ npx prisma generate
 
 ### Links
 
-[Home Page, currently not live.](https://leaguedex.com)
-[Figma Link](https://www.figma.com/file/LKOTO3yHEvZXIYbJFiIdQk/Untitled?node-id=0%3A1)
+* [Home Page, currently not live.](https://leaguedex.com)    
+* [Figma Link](https://www.figma.com/file/LKOTO3yHEvZXIYbJFiIdQk/Untitled?node-id=0%3A1)
