@@ -5,6 +5,8 @@ class Riot {
   static endpoints = {
     champions:
       "http://ddragon.leagueoflegends.com/cdn/10.15.1/data/en_US/champion.json",
+    icon: "http://ddragon.leagueoflegends.com/cdn/10.15.1/img/champion",
+    splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash",
   };
 
   static async syncChampions() {
@@ -14,11 +16,11 @@ class Riot {
 
       const cached = await db.champion.findMany();
 
-      if (!cached || cached[0].version !== version) {
+      if (cached.length < 1 || cached[0].version !== version) {
         const champions = Object.values(championsObj).map((champ) => ({
           id: Number(champ.key),
           name: champ.name,
-          image: champ.image.full,
+          image: `${this.endpoints.splash}/${champ.id}_0.jpg`,
           tags: champ.tags.join(", "),
           lore: champ.blurb,
           version,
