@@ -1,9 +1,10 @@
 class Application {
-  constructor({ server, database, morgan, routes, helpers = {} } = {}) {
+  constructor({ server, database, morgan, cors, routes, helpers = {} } = {}) {
     this.express = server;
     this.app = this.express();
     this.database = database;
     this.morgan = morgan;
+    this.cors = cors;
     this.routes = routes;
     this.helpers = helpers;
   }
@@ -22,6 +23,7 @@ class Application {
   _setMiddleware() {
     this.app.use(this.express.json());
     this.app.use(this.morgan("tiny"));
+    this.app.use(this.cors());
     this.app.use("/api", this.routes.api);
     this.app.use((err, req, res, next) => {
       this.helpers.handleError(err, res);
