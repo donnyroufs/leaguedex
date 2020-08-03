@@ -17,4 +17,9 @@ export default createGlobalStyle`
     *::after {
         box-sizing: border-box;
     }
+
+    body {
+      background-color: ${(props) => props.theme.background};
+      color: ${(props) => props.theme.third};
+    }
 `;
