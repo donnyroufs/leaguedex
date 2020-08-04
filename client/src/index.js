@@ -7,6 +7,7 @@ import theme from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ReactQueryDevtools } from "react-query-devtools";
 import { AuthProvider } from "./hooks/useAuth";
+import { ModalProvider } from "./hooks/useModal";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,7 +16,9 @@ ReactDOM.render(
       <GlobalStyle />
       <Router>
         <AuthProvider>
-          <App />
+          <ModalProvider>
+            <App />
+          </ModalProvider>
         </AuthProvider>
       </Router>
     </ThemeProvider>
