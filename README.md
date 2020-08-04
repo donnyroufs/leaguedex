@@ -16,7 +16,7 @@ Migrate Prisma:
 
 ```
 npx prisma migrate save --experimental
-npx prisma migrate uo --experimental
+npx prisma migrate up --experimental
 npx prisma generate
 
 ```
