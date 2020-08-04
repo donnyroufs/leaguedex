@@ -14,8 +14,23 @@ export const useAuth = () => {
 const useAuthProvider = () => {
   const [user, setUser] = useState(null);
 
-  const login = ({ username, password }) => {
+  const login = async (formData) => {
     // Send request to /user/login
+    try {
+      const response = await fetch("/user/login", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await response.json();
+      setUser(data.username ? data : null);
+    } catch (err) {
+      setUser(null);
+    }
   };
 
   const register = async ({
@@ -28,7 +43,12 @@ const useAuthProvider = () => {
   };
 
   const logout = async () => {
-    return fetch("/user/logout", { method: "DELETE" });
+    try {
+      await fetch("/user/logout", { method: "DELETE" });
+      setUser(null);
+    } catch (err) {
+      setUser(null);
+    }
   };
 
   const refresh = async () => {
@@ -41,5 +61,6 @@ const useAuthProvider = () => {
     logout,
     refresh,
     user,
+    isAuthenticated: Boolean(user),
   };
 };
