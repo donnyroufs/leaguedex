@@ -40,7 +40,7 @@ const LoginModal = () => {
 
   return (
     <Modal setModal={setModal} isOpen={isOpen("login")} title="login">
-      <Form>
+      <Form onSubmit={handleLogin} autoComplete="off">
         <Group>
           <Label>username</Label>
           <Input
