@@ -26,8 +26,10 @@ const Menu = () => {
         )}
         {isAuthenticated && (
           <>
-            <Link menu>You are not in a match</Link>
-            <Button menu onClick={handleLogout}>
+            <Link to="/match" menu="true">
+              You are not in a match
+            </Link>
+            <Button menu="true" onClick={handleLogout}>
               Log out
             </Button>
           </>

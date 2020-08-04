@@ -29,7 +29,7 @@ const Header = () => {
         )}
         {isAuthenticated && (
           <>
-            <Link>You are not in a match</Link>
+            <Link to="/match">You are not in a match</Link>
             <Button onClick={handleLogout}>Log out</Button>
           </>
         )}

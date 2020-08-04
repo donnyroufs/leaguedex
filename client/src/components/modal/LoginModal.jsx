@@ -62,7 +62,7 @@ const LoginModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Button form onClick={handleLogin}>
+        <Button form="true" onClick={handleLogin}>
           Login
         </Button>
         <Footer>
