@@ -28,17 +28,18 @@ const useAuthProvider = () => {
   };
 
   const logout = async () => {
-    return fetch("/user/logout", { method: "POST" });
+    return fetch("/user/logout", { method: "DELETE" });
   };
 
   const refresh = async () => {
-    // Send request to /refresh
+    // Send request to /user/refresh
   };
 
   return {
     register,
     login,
     logout,
+    refresh,
     user,
   };
 };
