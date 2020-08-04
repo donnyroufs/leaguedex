@@ -51,15 +51,21 @@ const useAuthProvider = () => {
     }
   };
 
-  const refresh = async () => {
-    // Send request to /user/refresh
+  const refreshToken = async () => {
+    try {
+      const response = await fetch("/user/refresh");
+      const data = await response.json();
+      setUser(data.username ? data : null);
+    } catch (err) {
+      setUser(null);
+    }
   };
 
   return {
     register,
     login,
     logout,
-    refresh,
+    refreshToken,
     user,
     isAuthenticated: Boolean(user),
   };

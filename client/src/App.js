@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch } from "react-router";
 import Layout from "./components/layout/Layout";
 import LoginModal from "./components/modal/LoginModal";
 import routes from "./routes";
+import { useAuth } from "./hooks/useAuth";
 
 const App = () => {
+  const { refreshToken } = useAuth();
+
+  useEffect(() => {
+    refreshToken();
+  }, []);
+
   return (
     <Layout>
       <LoginModal />
