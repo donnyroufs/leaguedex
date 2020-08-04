@@ -11,7 +11,7 @@ export const useAuth = () => {
   return useContext(authContext);
 };
 
-const useAuthProvider = async () => {
+const useAuthProvider = () => {
   const [user, setUser] = useState(null);
 
   const login = ({ username, password }) => {
@@ -32,7 +32,7 @@ const useAuthProvider = async () => {
   };
 
   const refresh = async () => {
-    // SEnd request to /refresh
+    // Send request to /refresh
   };
 
   return {
