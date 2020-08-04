@@ -6,6 +6,7 @@ import { ThemeProvider } from "styled-components";
 import theme from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ReactQueryDevtools } from "react-query-devtools";
+import { AuthProvider } from "./hooks/useAuth";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -13,7 +14,9 @@ ReactDOM.render(
       <ReactQueryDevtools initialIsOpen={false} />
       <GlobalStyle />
       <Router>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </Router>
     </ThemeProvider>
   </React.StrictMode>,
