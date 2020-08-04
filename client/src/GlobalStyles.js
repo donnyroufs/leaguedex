@@ -32,6 +32,13 @@ const GenericButton = css`
   &:hover {
     opacity: 0.8;
   }
+
+  ${(props) =>
+    props.form &&
+    css`
+      margin-top: 2rem;
+      width: 100%;
+    `}
 `;
 
 export const utils = {
