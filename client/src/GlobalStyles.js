@@ -1,16 +1,10 @@
 import styled, { createGlobalStyle, css } from "styled-components";
 import { normalize } from "styled-normalize";
-import { Link } from "react-router-dom";
+import { Link as ReactLink } from "react-router-dom";
 
-export const utils = {
-  flexCenter: css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `,
-};
-
-export const Button = styled(Link)`
+const GenericButton = css`
+  outline: none;
+  border: none;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,6 +15,7 @@ export const Button = styled(Link)`
   text-decoration: none;
   transition: all 0.2s ease-in-out;
   font-size: 0.9rem;
+  cursor: pointer;
 
   ${(props) =>
     props.secondary &&
@@ -31,12 +26,28 @@ export const Button = styled(Link)`
   ${(props) =>
     props.menu &&
     css`
-      width: 47.5%;
+      width: 48.5%;
     `}
 
   &:hover {
     opacity: 0.8;
   }
+`;
+
+export const utils = {
+  flexCenter: css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `,
+};
+
+export const Link = styled(ReactLink)`
+  ${GenericButton}
+`;
+
+export const Button = styled.button`
+  ${GenericButton}
 `;
 
 export default createGlobalStyle`

@@ -1,17 +1,28 @@
 import React from "react";
 import { Container } from "./Menu.styles";
-import { Button } from "../../GlobalStyles";
+import { Button, Link } from "../../GlobalStyles";
+import { useAuth } from "../../hooks/useAuth";
 
 const Menu = () => {
+  const auth = useAuth();
+
   return (
     <Container>
       <Container.Buttons>
-        <Button to="register" menu>
-          Register
-        </Button>
-        <Button to="/login" secondary menu>
-          Login
-        </Button>
+        {!auth.user && (
+          <>
+            <Button menu>Register</Button>
+            <Button secondary menu>
+              Login
+            </Button>
+          </>
+        )}
+        {auth.user && (
+          <>
+            <Link menu>You are not in a match</Link>
+            <Button menu>Log out</Button>
+          </>
+        )}
       </Container.Buttons>
     </Container>
   );
