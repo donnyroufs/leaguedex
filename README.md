@@ -5,6 +5,15 @@ and see your winrate, most common build items, and additional notes.
 
 ## Developer Notes
 
+Run both the server and client
+
+```
+yarn global add concurrently
+
+> leaguedex
+yarn run:dev
+```
+
 Merge development into master:
 
 ```
