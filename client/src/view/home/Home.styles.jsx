@@ -11,13 +11,18 @@ export const Container = styled.section`
   ${(props) =>
     props.secondary &&
     css`
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
       width: 100%;
       margin-top: 3rem;
 
       @media screen and (min-width: 968px) {
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: space-between;
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      @media screen and (min-width: 1200px) {
+        grid-template-columns: repeat(6, 1fr);
       }
     `}
 `;
