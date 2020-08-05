@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 import { Route, Switch } from "react-router";
 import Layout from "./components/layout/Layout";
 import LoginModal from "./components/modal/LoginModal";
+import RegisterModal from "./components/modal/RegisterModal";
 import routes from "./routes";
 import { useAuth } from "./hooks/useAuth";
 
@@ -15,7 +17,19 @@ const App = () => {
 
   return (
     <Layout>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <LoginModal />
+      <RegisterModal />
       <Switch>
         {routes.map((route) => (
           <Route
