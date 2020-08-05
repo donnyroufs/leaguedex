@@ -15,7 +15,6 @@ const useAuthProvider = () => {
   const [user, setUser] = useState(null);
 
   const login = async (formData) => {
-    // Send request to /user/login
     try {
       const response = await fetch("/user/login", {
         method: "POST",
@@ -27,7 +26,10 @@ const useAuthProvider = () => {
         credentials: "include",
       });
       const data = await response.json();
-      setUser(data.username ? data : null);
+      setUser(data.username ? { username: data.username } : null);
+      if (data.expirationDate) {
+        await autoRefreshAccessToken(data.expirationDate);
+      }
     } catch (err) {
       setUser(null);
     }
@@ -38,9 +40,7 @@ const useAuthProvider = () => {
     email,
     password,
     password_confirmation,
-  }) => {
-    // Send request to /user/register
-  };
+  }) => {};
 
   const logout = async () => {
     try {
@@ -55,10 +55,28 @@ const useAuthProvider = () => {
     try {
       const response = await fetch("/user/refresh");
       const data = await response.json();
-      setUser(data.username ? data : null);
+      setUser(data.username ? { username: data.username } : null);
+      if (data.expirationDate) {
+        autoRefreshAccessToken(data.expirationDate);
+      }
     } catch (err) {
       setUser(null);
     }
+  };
+
+  const autoRefreshAccessToken = async (expirationDate) => {
+    const INTERVAL = 5000;
+    const BUFFER = 20;
+
+    const timeId = setTimeout(async () => {
+      const currentTime = new Date().getTime() / 1000;
+      if (expirationDate < currentTime + BUFFER) {
+        await refreshToken();
+        clearTimeout(timeId);
+      } else {
+        await autoRefreshAccessToken(expirationDate);
+      }
+    }, INTERVAL);
   };
 
   return {
