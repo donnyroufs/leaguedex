@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import Modal from "./Modal";
-import { Form, Input, Label, Group, Footer } from "../styles/Form";
+import validateForm from "../../helpers/validateForm";
+import {
+  Form,
+  Input,
+  Label,
+  Group,
+  Footer,
+  FlashMessage,
+} from "../styles/Form";
 import { Button } from "../../GlobalStyles";
+import { LOGIN_FORM } from "../../constants";
 
 import { useModal } from "../../hooks/useModal";
 import { useAuth } from "../../hooks/useAuth";
@@ -13,8 +22,9 @@ const initialValues = {
 
 const LoginModal = () => {
   const [values, setValues] = useState(initialValues);
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  const auth = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const { setModal, isOpen } = useModal();
   const innerRef = useRef();
 
@@ -26,21 +36,31 @@ const LoginModal = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    auth.login(values);
+    const { errors, valid } = validateForm(values, LOGIN_FORM);
+    if (valid) {
+      login(values);
+    } else {
+      const firstError = Object.values(errors)[0];
+      setErrorMessage(firstError);
+    }
   };
 
   useEffect(() => {
-    if (auth.isAuthenticated) {
+    if (isAuthenticated) {
+      setErrorMessage(null);
       setValues(initialValues);
       setModal(null);
     }
-    auth.isAuthenticated && setModal(null);
-  }, [auth.isAuthenticated, setModal]);
+  }, [isAuthenticated, setModal]);
+
   useEffect(() => innerRef.current && innerRef.current.focus(), [isOpen]);
 
   return (
     <Modal setModal={setModal} isOpen={isOpen("login")} title="login">
       <Form onSubmit={handleLogin} autoComplete="off">
+        <FlashMessage>
+          <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
+        </FlashMessage>
         <Group>
           <Label>username</Label>
           <Input
