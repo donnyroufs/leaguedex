@@ -41,11 +41,14 @@ const LoginModal = () => {
       [e.target.name]: e.target.value,
     });
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const { errors, valid } = validateForm(values, LOGIN_FORM);
     if (valid) {
-      login(values);
+      const successLogin = await login(values);
+      if (!successLogin) {
+        setErrorMessage("Username or password are not correct.");
+      }
     } else {
       const firstError = Object.values(errors)[0];
       setErrorMessage(firstError);

@@ -34,6 +34,8 @@ const useAuthProvider = () => {
       if (data.expirationDate) {
         await autoRefreshAccessToken(data.expirationDate);
       }
+
+      return data.hasOwnProperty("username");
     } catch (err) {
       setUser(null);
     }
