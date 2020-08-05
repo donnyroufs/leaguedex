@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { scaleAnimation, fadeAnimation } from "../../GlobalStyles";
 
 export const Container = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
@@ -10,6 +11,7 @@ export const Container = styled.div`
   background: rgba(27, 39, 53, 0.75);
   justify-content: center;
   align-items: center;
+  animation: ${fadeAnimation} 0.35s forwards cubic-bezier(0.65, 0, 0.32, 1.55);
 `;
 
 Container.Inner = styled.div`
@@ -20,9 +22,10 @@ Container.Inner = styled.div`
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
+  animation: ${scaleAnimation} 0.75s forwards cubic-bezier(0.65, 0, 0.32, 1.55);
 
   @media screen and (min-width: 968px) {
-    height: 550px;
+    height: ${(props) => (props.register ? "650px" : "550px")};
     width: 800px;
   }
 `;

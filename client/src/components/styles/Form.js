@@ -66,6 +66,12 @@ export const Footer = styled.footer`
   align-items: flex-end;
   flex-flow: column nowrap;
   font-size: 0.9rem;
+  max-width: 500px;
+  width: 80%;
+
+  @media screen and (min-width: 968px) {
+    width: 100%;
+  }
 `;
 
 Footer.Button = styled.button`
