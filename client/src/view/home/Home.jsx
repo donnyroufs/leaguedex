@@ -1,6 +1,6 @@
 import React from "react";
-import { SEARCH_WIDGET, INFO_WIDGET } from "../../constants";
-import Widget from "../../components/widget/WidgetContainer";
+import InfoWidget from "../../components/widget/InfoWidget";
+import SearchWidget from "../../components/widget/SearchWidget";
 import Card from "../../components/card/CardContainer";
 import { Container } from "./Home.styles";
 
@@ -12,8 +12,8 @@ const Home = ({ status, data }) => {
   return (
     <Container>
       <Container.Widgets>
-        <Widget type={INFO_WIDGET} />
-        <Widget type={SEARCH_WIDGET} />
+        <InfoWidget />
+        <SearchWidget />
       </Container.Widgets>
       <Container secondary>
         {status === "success" &&
