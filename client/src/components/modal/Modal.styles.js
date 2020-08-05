@@ -11,6 +11,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 Container.Inner = styled.div`
   display: ${(props) => (props.isOpen ? "flex" : "none")};
   background: ${(props) => props.theme.modal};
@@ -27,7 +28,7 @@ Container.Inner = styled.div`
 `;
 
 Container.Header = styled.header`
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
 `;
 
 export const Title = styled.h1`
