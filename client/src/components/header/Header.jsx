@@ -1,18 +1,38 @@
 import React from "react";
 import { Container } from "./Header.styles";
-import { Button } from "../../GlobalStyles";
+import { Button, Link } from "../../GlobalStyles";
+import { useAuth } from "../../hooks/useAuth";
+import { useModal } from "../../hooks/useModal";
 
 const Header = () => {
+  const { logout, isAuthenticated } = useAuth();
+  const modal = useModal();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    logout();
+  };
+
   return (
     <Container>
       <Container.Brand to="/">
         <Container.Brand.Image src="/logo.svg" alt="leaguedex logo" />
       </Container.Brand>
-      <Container.Buttons>
-        <Button to="register">Register</Button>
-        <Button to="/login" secondary>
-          Login
-        </Button>
+      <Container.Buttons authenticated={isAuthenticated}>
+        {!isAuthenticated && (
+          <>
+            <Button onClick={() => modal.setModal("register")}>Register</Button>
+            <Button secondary onClick={() => modal.setModal("login")}>
+              Login
+            </Button>
+          </>
+        )}
+        {isAuthenticated && (
+          <>
+            <Link to="/match">You are not in a match</Link>
+            <Button onClick={handleLogout}>Log out</Button>
+          </>
+        )}
       </Container.Buttons>
     </Container>
   );

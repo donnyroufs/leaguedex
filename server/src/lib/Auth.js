@@ -7,7 +7,7 @@ const { db } = require("../config/database");
 class Auth {
   static options = {
     [ACCESS_TOKEN]: {
-      expiresIn: "15s",
+      expiresIn: "1m",
     },
     [REFRESH_TOKEN]: {
       expiresIn: "7d",
@@ -69,11 +69,13 @@ class Auth {
   }
 
   static async createToken(payload, type = ACCESS_TOKEN) {
-    return jwt.sign(payload, process.env[`${type}_SECRET`], this.options[type]);
-  }
-
-  static async verifyToken(accessToken, refreshToken, next) {
-    return !!jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const token = jwt.sign(
+      payload,
+      process.env[`${type}_SECRET`],
+      this.options[type]
+    );
+    const { exp: expirationDate } = jwt.decode(token);
+    return { token, expirationDate };
   }
 
   static async createOrUpdateRefreshToken(username, refreshToken) {

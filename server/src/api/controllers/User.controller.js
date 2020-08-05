@@ -71,8 +71,14 @@ class UserController extends Controller {
         },
       };
 
-      const accessToken = await this.Auth.createToken(payload);
-      const refreshToken = await this.Auth.createToken(payload, REFRESH_TOKEN);
+      const {
+        token: accessToken,
+        expirationDate,
+      } = await this.Auth.createToken(payload);
+      const { token: refreshToken } = await this.Auth.createToken(
+        payload,
+        REFRESH_TOKEN
+      );
 
       // store refreshtoken in database
       await this.Auth.createOrUpdateRefreshToken(user.username, refreshToken);
@@ -85,6 +91,7 @@ class UserController extends Controller {
 
       res.status(200).json({
         username: user.username,
+        expirationDate,
       });
     } catch (err) {
       next(err);
@@ -109,11 +116,15 @@ class UserController extends Controller {
         },
       };
 
-      const accessToken = await this.Auth.createToken(payload);
+      const {
+        token: accessToken,
+        expirationDate,
+      } = await this.Auth.createToken(payload);
       this.Auth.setBearer(res, accessToken);
 
       res.status(200).json({
         username: req.user.username,
+        expirationDate,
       });
     } catch (err) {
       next(err);

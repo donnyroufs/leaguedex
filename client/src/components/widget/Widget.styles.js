@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { utils } from "../../GlobalStyles";
 
 export const Container = styled.div`
@@ -11,7 +11,13 @@ export const Container = styled.div`
   margin-top: 3rem;
 
   @media screen and (min-width: 968px) {
-    width: 48%;
+    width: 34%;
+
+    ${(props) =>
+      props.matchup &&
+      css`
+        width: 62%;
+      `}
   }
 `;
 

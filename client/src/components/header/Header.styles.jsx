@@ -22,7 +22,13 @@ Container.Buttons = styled.div`
   display: none;
   @media screen and (min-width: 968px) {
     display: flex;
-    width: 185px;
+    width: 190px;
     justify-content: space-between;
+
+    ${(props) =>
+      props.authenticated &&
+      `
+      width: 310px; 
+    `}
   }
 `;
