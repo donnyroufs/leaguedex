@@ -18,7 +18,9 @@ const Menu = () => {
       <Container.Buttons>
         {!isAuthenticated && (
           <>
-            <Button menu>Register</Button>
+            <Button menu onClick={() => setModal("register")}>
+              Register
+            </Button>
             <Button secondary menu onClick={() => setModal("login")}>
               Login
             </Button>
