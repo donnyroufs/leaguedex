@@ -112,6 +112,9 @@ const LoginModal = () => {
           Don't have an account?
         </Footer.Button>
         {/* <Footer.Button>Forgot password?</Footer.Button> */}
+        <Footer.Close onClick={() => setModal(null)}>
+          close &times;
+        </Footer.Close>
       </Footer>
     </Modal>
   );

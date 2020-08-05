@@ -136,6 +136,9 @@ const RegisterModal = () => {
         <Footer.Button first onClick={switchModal}>
           Already have an account?
         </Footer.Button>
+        <Footer.Close onClick={() => setModal(null)}>
+          close &times;
+        </Footer.Close>
       </Footer>
     </Modal>
   );

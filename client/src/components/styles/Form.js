@@ -94,3 +94,28 @@ Footer.Button = styled.button`
       margin-top: 1rem;
     `}
 `;
+
+Footer.Close = styled.button`
+  outline: none;
+  border: none;
+  display: block;
+  background: transparent;
+  margin-top: 0.25rem;
+  color: ${(props) => props.theme.third};
+  transition: 0.1s ease-in-out all;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  ${(props) =>
+    props.first &&
+    css`
+      margin-top: 1rem;
+    `}
+
+  @media screen and (min-width: 968px) {
+    display: none;
+  }
+`;
