@@ -25,7 +25,7 @@ Container.Inner = styled.div`
   animation: ${scaleAnimation} 0.75s forwards cubic-bezier(0.65, 0, 0.32, 1.55);
 
   @media screen and (min-width: 968px) {
-    height: ${(props) => (props.register ? "650px" : "550px")};
+    height: ${(props) => (props.register ? "700px" : "550px")};
     width: 800px;
   }
 `;
