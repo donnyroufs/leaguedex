@@ -28,7 +28,9 @@ const useAuthProvider = () => {
       });
       const data = await response.json();
       setUser(data.username ? { username: data.username } : null);
-      toast.info("You have successfully logged in.");
+      if (data.username) {
+        toast.info("You have successfully logged in.");
+      }
       if (data.expirationDate) {
         await autoRefreshAccessToken(data.expirationDate);
       }
