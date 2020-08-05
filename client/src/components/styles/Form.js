@@ -1,5 +1,16 @@
 import styled, { css } from "styled-components";
 
+export const FlashMessage = styled.div`
+  height: 32px;
+  width: 100%;
+`;
+
+FlashMessage.Inner = styled.span`
+  display: flex;
+  justify-content: flex-end;
+  color: ${(props) => props.theme.danger};
+`;
+
 export const Form = styled.form`
   width: 80%;
   max-width: 500px;
@@ -54,6 +65,7 @@ export const Footer = styled.footer`
   width: 100%;
   align-items: flex-end;
   flex-flow: column nowrap;
+  font-size: 0.9rem;
 `;
 
 Footer.Button = styled.button`
