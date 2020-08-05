@@ -34,13 +34,14 @@ const validateForm = (values, type) => {
       errors.password = "Password must be atleast 6 characters long.";
     }
 
+    console.log(values);
     if (
-      values.confirmation_password &&
       values.password &&
-      values.confirmation_password !== values.password
+      values.password_confirmation &&
+      values.password_confirmation !== values.password
     ) {
       errors.password = "Password did not match";
-      errors.confirmation_password = "Password did not match";
+      errors.password_confirmation = "Password did not match";
     }
   }
 

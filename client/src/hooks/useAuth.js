@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import { toast } from "react-toastify";
 
 const authContext = createContext();
 
@@ -27,6 +28,7 @@ const useAuthProvider = () => {
       });
       const data = await response.json();
       setUser(data.username ? { username: data.username } : null);
+      toast.info("You have successfully logged in.");
       if (data.expirationDate) {
         await autoRefreshAccessToken(data.expirationDate);
       }
@@ -35,17 +37,33 @@ const useAuthProvider = () => {
     }
   };
 
-  const register = async ({
-    username,
-    email,
-    password,
-    password_confirmation,
-  }) => {};
+  const register = async (formData) => {
+    try {
+      const response = await fetch("/user/register", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (data.username) {
+        login({ username: formData.username, password: formData.password });
+        toast.info("Account successfully created and logged in.");
+      }
+      return data.hasOwnProperty("username");
+    } catch (err) {
+      setUser(null);
+    }
+  };
 
   const logout = async () => {
     try {
       await fetch("/user/logout", { method: "DELETE" });
       setUser(null);
+      toast.info("Successfully logged out.");
     } catch (err) {
       setUser(null);
     }
