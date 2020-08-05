@@ -21,7 +21,7 @@ const Header = () => {
       <Container.Buttons authenticated={isAuthenticated}>
         {!isAuthenticated && (
           <>
-            <Button>Register</Button>
+            <Button onClick={() => modal.setModal("register")}>Register</Button>
             <Button secondary onClick={() => modal.setModal("login")}>
               Login
             </Button>
