@@ -1,15 +1,14 @@
 import React from "react";
-import useOnclickOutside from "react-cool-onclickoutside";
 import { Container, Title } from "./Modal.styles";
 
-const Modal = ({ title, children, setModal, isOpen }) => {
-  const ref = useOnclickOutside(() => {
-    setModal(null);
-  });
-
+const Modal = ({ title, children, isOpen, clickedOutside }) => {
   return (
     <Container isOpen={isOpen}>
-      <Container.Inner isOpen={isOpen} ref={ref}>
+      <Container.Inner
+        isOpen={isOpen}
+        ref={clickedOutside}
+        register={title === "register"}
+      >
         <Container.Header>
           <Title>{title}</Title>
         </Container.Header>

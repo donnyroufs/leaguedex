@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Modal from "./Modal";
+import useOnclickOutside from "react-cool-onclickoutside";
 import validateForm from "../../helpers/validateForm";
 import {
   Form,
@@ -25,8 +26,14 @@ const LoginModal = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const { login, isAuthenticated } = useAuth();
-  const { setModal, isOpen } = useModal();
+  const { setModal, isOpen, modal } = useModal();
   const innerRef = useRef();
+
+  const ref = useOnclickOutside(() => {
+    if (isOpen("login")) {
+      setModal(null);
+    }
+  });
 
   const handleOnChange = (e) =>
     setValues({
@@ -45,6 +52,11 @@ const LoginModal = () => {
     }
   };
 
+  const switchModal = (e) => {
+    e.preventDefault();
+    setModal("register");
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       setErrorMessage(null);
@@ -53,11 +65,20 @@ const LoginModal = () => {
     }
   }, [isAuthenticated, setModal]);
 
+  useEffect(() => {
+    setErrorMessage(null);
+    setValues(initialValues);
+  }, [modal]);
+
   useEffect(() => innerRef.current && innerRef.current.focus(), [isOpen]);
 
   return (
-    <Modal setModal={setModal} isOpen={isOpen("login")} title="login">
-      <Form onSubmit={handleLogin} autoComplete="off">
+    <Modal isOpen={isOpen("login")} title="login" clickedOutside={ref}>
+      <Form
+        onSubmit={handleLogin}
+        autoComplete="off"
+        onKeyDown={(e) => e.keyCode === 13 && handleLogin(e)}
+      >
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
@@ -82,14 +103,16 @@ const LoginModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Button form="true" onClick={handleLogin}>
+        <Button type="submit" form="true" onClick={handleLogin}>
           Login
         </Button>
-        <Footer>
-          <Footer.Button first>Don't have an account?</Footer.Button>
-          <Footer.Button>Forgot password?</Footer.Button>
-        </Footer>
       </Form>
+      <Footer>
+        <Footer.Button first onClick={switchModal}>
+          Don't have an account?
+        </Footer.Button>
+        {/* <Footer.Button>Forgot password?</Footer.Button> */}
+      </Footer>
     </Modal>
   );
 };
