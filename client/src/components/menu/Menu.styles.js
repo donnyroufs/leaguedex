@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+  display: ${(props) => (props.isOpen ? "none" : "flex")};
   position: fixed;
   bottom: 0;
   width: 100%;
   height: 100px;
-  display: flex;
   justify-content: spac-between;
   align-items: center;
   background: ${(props) => props.theme.header};

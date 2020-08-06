@@ -6,7 +6,7 @@ import { useModal } from "../../hooks/useModal";
 
 const Menu = () => {
   const { logout, isAuthenticated, user } = useAuth();
-  const { setModal } = useModal();
+  const { setModal, isOpen } = useModal();
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -14,7 +14,9 @@ const Menu = () => {
   };
 
   return (
-    <Container>
+    <Container
+      isOpen={isOpen("register") || isOpen("login") || isOpen("summoner")}
+    >
       <Container.Buttons>
         {!isAuthenticated && (
           <>
