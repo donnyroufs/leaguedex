@@ -3,9 +3,9 @@ import { useAuth } from "../../hooks/useAuth";
 import { Container, Lock, Overlay } from "./Card.styles";
 
 const Card = ({ image, name }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !user.summoner) {
     return (
       <Container to="/" locked="true">
         <Overlay>
