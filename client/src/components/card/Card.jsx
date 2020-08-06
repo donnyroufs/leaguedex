@@ -7,7 +7,7 @@ const Card = ({ image, name }) => {
 
   if (!isAuthenticated) {
     return (
-      <Container to="/">
+      <Container to="/" locked="true">
         <Overlay>
           <Lock />
         </Overlay>

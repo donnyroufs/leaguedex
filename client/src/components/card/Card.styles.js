@@ -29,7 +29,7 @@ export const Container = styled(Link)`
   width: 100%;
   height: 225px;
   transition: all 0.3s ease-in-out;
-  cursor: pointer;
+  cursor: ${(props) => (props.locked ? "not-allowed" : "pointer")};
 
   &:hover {
     transform: scale(1.1);
