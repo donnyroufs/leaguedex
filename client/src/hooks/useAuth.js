@@ -14,6 +14,7 @@ export const useAuth = () => {
 
 const useAuthProvider = () => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const login = async (formData) => {
     try {
@@ -78,10 +79,14 @@ const useAuthProvider = () => {
       const response = await fetch("/user/refresh");
       const data = await response.json();
       setUser(data.username ? data : null);
+      if (loading) {
+        setLoading(false);
+      }
       if (data.expirationDate) {
         autoRefreshAccessToken(data.expirationDate);
       }
     } catch (err) {
+      setLoading(false);
       setUser(null);
     }
   };
@@ -106,6 +111,7 @@ const useAuthProvider = () => {
     login,
     logout,
     refreshToken,
+    loading,
     user,
     isAuthenticated: Boolean(user),
   };
