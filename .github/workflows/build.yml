@@ -25,8 +25,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn
-      - run: yarn run build
+      - run: npm i
+      - run: npm run build --if-present
   build_server:
     runs-on: ubuntu-latest
     defaults:
@@ -43,4 +43,5 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn
+      - run: npm i
+      - run: npm run build --if-present
