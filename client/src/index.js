@@ -6,14 +6,20 @@ import { ThemeProvider } from "styled-components";
 import theme from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ReactQueryDevtools } from "react-query-devtools";
-
+import { AuthProvider } from "./hooks/useAuth";
+import { ModalProvider } from "./hooks/useModal";
+import "react-toastify/dist/ReactToastify.css";
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <ReactQueryDevtools initialIsOpen={false} />
       <GlobalStyle />
       <Router>
-        <App />
+        <AuthProvider>
+          <ModalProvider>
+            <App />
+          </ModalProvider>
+        </AuthProvider>
       </Router>
     </ThemeProvider>
   </React.StrictMode>,

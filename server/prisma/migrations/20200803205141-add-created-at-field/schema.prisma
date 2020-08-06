@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -49,8 +49,8 @@ model Matchup {
 }
 
 model Champion {
-  id      Int       @id
-  name    String    @unique
+  id      Int    @id
+  name    String
   image   String
   lore    String
   tags    String

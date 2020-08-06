@@ -7,4 +7,8 @@ export default {
   background: "#23303F",
   header: "#33465B",
   placeholderText: "#697E97",
+  dark: "#27303A",
+  placeholderFormText: "#4A5765",
+  modal: "#323F4E",
+  danger: "#ff528a",
 };

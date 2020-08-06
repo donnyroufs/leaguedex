@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -13,7 +13,7 @@ generator client {
 model User {
   id       Int       @id @default(autoincrement())
   email    String    @unique
-  username String    @unique
+  username String
   password String
   notes    Note[]
   summoner Summoner?
@@ -49,8 +49,8 @@ model Matchup {
 }
 
 model Champion {
-  id      Int       @id
-  name    String    @unique
+  id      Int    @id
+  name    String
   image   String
   lore    String
   tags    String
@@ -58,8 +58,7 @@ model Champion {
 }
 
 model Authentication {
-  id        Int      @id @default(autoincrement())
-  token     String
-  username  String   @unique
-  createdAt DateTime @default(now())
+  id       Int    @id @default(autoincrement())
+  token    String
+  username String
 }

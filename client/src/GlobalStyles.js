@@ -1,16 +1,41 @@
-import styled, { createGlobalStyle, css } from "styled-components";
+import styled, { createGlobalStyle, css, keyframes } from "styled-components";
 import { normalize } from "styled-normalize";
-import { Link } from "react-router-dom";
+import { Link as ReactLink } from "react-router-dom";
 
-export const utils = {
-  flexCenter: css`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `,
-};
+export const fadeAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
-export const Button = styled(Link)`
+export const scaleAnimation = keyframes`
+  from {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
+export const reversedScaleAnimation = keyframes`
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+`;
+
+const GenericButton = css`
+  outline: none;
+  border: none;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,6 +46,7 @@ export const Button = styled(Link)`
   text-decoration: none;
   transition: all 0.2s ease-in-out;
   font-size: 0.9rem;
+  cursor: pointer;
 
   ${(props) =>
     props.secondary &&
@@ -31,12 +57,35 @@ export const Button = styled(Link)`
   ${(props) =>
     props.menu &&
     css`
-      width: 47.5%;
+      width: 48.5%;
     `}
 
   &:hover {
     opacity: 0.8;
   }
+
+  ${(props) =>
+    props.form &&
+    css`
+      margin-top: 2rem;
+      width: 100%;
+    `}
+`;
+
+export const utils = {
+  flexCenter: css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `,
+};
+
+export const Link = styled(ReactLink)`
+  ${GenericButton}
+`;
+
+export const Button = styled.button`
+  ${GenericButton}
 `;
 
 export default createGlobalStyle`

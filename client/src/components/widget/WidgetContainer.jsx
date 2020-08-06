@@ -15,7 +15,7 @@ const WidgetContainer = ({ type }) => {
   }
   if (type === SEARCH_WIDGET) {
     return (
-      <Widget title="Find matchup">
+      <Widget title="Find Matchup">
         <InputWrapper>
           <Input type="text" placeholder="Champion name..." />
           <FaSearch className="searchbar-icon" />
