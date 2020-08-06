@@ -4,16 +4,26 @@ import { Route, Switch } from "react-router";
 import Layout from "./components/layout/Layout";
 import LoginModal from "./components/modal/LoginModal";
 import RegisterModal from "./components/modal/RegisterModal";
+import SummonerModal from "./components/modal/SummonerModal";
 import routes from "./routes";
 import { useAuth } from "./hooks/useAuth";
+import { useModal } from "./hooks/useModal";
 
 const App = () => {
-  const { refreshToken } = useAuth();
+  const { refreshToken, user } = useAuth();
+  const { setModal } = useModal();
 
   useEffect(() => {
     refreshToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (user && !user.summoner) {
+      setModal("summoner");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <Layout>
@@ -30,6 +40,7 @@ const App = () => {
       />
       <LoginModal />
       <RegisterModal />
+      <SummonerModal />
       <Switch>
         {routes.map((route) => (
           <Route
