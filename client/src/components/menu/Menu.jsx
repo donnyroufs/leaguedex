@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../hooks/useModal";
 
 const Menu = () => {
-  const { logout, isAuthenticated } = useAuth();
+  const { logout, isAuthenticated, user } = useAuth();
   const { setModal } = useModal();
 
   const handleLogout = (e) => {
@@ -28,12 +28,16 @@ const Menu = () => {
         )}
         {isAuthenticated && (
           <>
-            {/* <Link to="/match" menu="true">
-              You are not in a match
-            </Link> */}
-            <Button menu="true" onClick={() => setModal("summoner")}>
-              Add Account
-            </Button>
+            {!user.summoner && (
+              <Button menu="true" onClick={() => setModal("summoner")}>
+                Add Account
+              </Button>
+            )}
+            {user.summoner && (
+              <Link to="/match" menu="true">
+                You are not in a match
+              </Link>
+            )}
             <Button menu="true" onClick={handleLogout}>
               Log out
             </Button>
