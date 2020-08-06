@@ -25,12 +25,16 @@ const LoginModal = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const { isAuthenticated } = useAuth();
-  const { setModal, isOpen, modal } = useModal();
+  const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const innerRef = useRef();
 
   const ref = useOnclickOutside(() => {
     if (isOpen("summoner")) {
-      setModal(null);
+      setReverse(true);
+      setTimeout(() => {
+        setReverse(false);
+        setModal(null);
+      }, 300);
     }
   });
 
@@ -42,9 +46,6 @@ const LoginModal = () => {
 
   const handleSummoner = async (e) => {
     e.preventDefault();
-    const { errors, valid } = validateForm(values, SUMMONER_FORM);
-    const firstError = Object.values(errors)[0];
-    setErrorMessage(firstError);
   };
 
   useEffect(() => {
@@ -63,7 +64,12 @@ const LoginModal = () => {
   useEffect(() => innerRef.current && innerRef.current.focus(), [isOpen]);
 
   return (
-    <Modal isOpen={isOpen("summoner")} title="add account" clickedOutside={ref}>
+    <Modal
+      isOpen={isOpen("summoner")}
+      title="add account"
+      clickedOutside={ref}
+      reverse={reverse}
+    >
       <Form onSubmit={handleSummoner} autoComplete="off">
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
