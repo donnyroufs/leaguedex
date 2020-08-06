@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn
-      - run: yarn build --if-present
+      - run: yarn run build
   build_server:
     runs-on: ubuntu-latest
     defaults:
@@ -44,4 +44,3 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn
-      - run: yarn build --if-present
