@@ -6,6 +6,13 @@ export const Container = styled(Link)`
   display: block;
   width: 100%;
   height: 200px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+    filter: saturate(125%);
+  }
 `;
 
 Container.Image = styled.img`
