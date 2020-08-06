@@ -1,2 +1,3 @@
 export const LOGIN_FORM = "LOGING_FORM";
 export const REGISTER_FORM = "REGISTER_FORM";
+export const SUMMONER_FORM = "SUMMONER_FORM";
