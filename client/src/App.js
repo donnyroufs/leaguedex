@@ -8,9 +8,11 @@ import SummonerModal from "./components/modal/SummonerModal";
 import routes from "./routes";
 import { useAuth } from "./hooks/useAuth";
 import { useModal } from "./hooks/useModal";
+import * as Loader from "./components/styles/Loader";
+import { MoonLoader } from "react-spinners";
 
 const App = () => {
-  const { refreshToken, user } = useAuth();
+  const { refreshToken, user, loading } = useAuth();
   const { setModal } = useModal();
 
   useEffect(() => {
@@ -27,6 +29,9 @@ const App = () => {
 
   return (
     <Layout>
+      <Loader.Container hide={!loading && "true"}>
+        <MoonLoader color="#B8D0EC" />
+      </Loader.Container>
       <ToastContainer
         position="top-center"
         autoClose={3000}
