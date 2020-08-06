@@ -102,6 +102,7 @@ export default createGlobalStyle`
       background-color: ${(props) => props.theme.background};
       color: ${(props) => props.theme.third};
       font-family: 'Poppins', sans-serif;
+      padding-bottom: calc(100px + 3rem);
     }
 
     .searchbar-icon {
