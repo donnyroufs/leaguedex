@@ -28,7 +28,9 @@ const useAuthProvider = () => {
         credentials: "include",
       });
       const data = await response.json();
-      setUser(data.username ? data : null);
+      setTimeout(() => {
+        setUser(data.username ? data : null);
+      }, 600);
       if (data.username) {
         toast.info("You have successfully logged in.");
       }
@@ -56,7 +58,7 @@ const useAuthProvider = () => {
       const data = await response.json();
       if (data.username) {
         login({ username: formData.username, password: formData.password });
-        toast.info("Account successfully created and logged in.");
+        toast.info("Account successfully created.");
       }
       return data.hasOwnProperty("username");
     } catch (err) {

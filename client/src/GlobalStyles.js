@@ -22,6 +22,17 @@ export const scaleAnimation = keyframes`
   }
 `;
 
+export const scaleAnimationOut = keyframes`
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+`;
+
 const GenericButton = css`
   outline: none;
   border: none;

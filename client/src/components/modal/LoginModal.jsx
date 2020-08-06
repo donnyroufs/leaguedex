@@ -26,12 +26,16 @@ const LoginModal = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const { login, isAuthenticated } = useAuth();
-  const { setModal, isOpen, modal } = useModal();
+  const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const innerRef = useRef();
 
   const ref = useOnclickOutside(() => {
     if (isOpen("login")) {
-      setModal(null);
+      setReverse(true);
+      setTimeout(() => {
+        setReverse(false);
+        setModal(null);
+      }, 300);
     }
   });
 
@@ -48,6 +52,11 @@ const LoginModal = () => {
       const successLogin = await login(values);
       if (!successLogin) {
         setErrorMessage("Username or password are not correct.");
+      } else {
+        setReverse(true);
+        setTimeout(() => {
+          setReverse(false);
+        }, 600);
       }
     } else {
       const firstError = Object.values(errors)[0];
@@ -56,7 +65,6 @@ const LoginModal = () => {
   };
 
   const switchModal = (e) => {
-    e.preventDefault();
     setModal("register");
   };
 
@@ -64,9 +72,8 @@ const LoginModal = () => {
     if (isAuthenticated) {
       setErrorMessage(null);
       setValues(initialValues);
-      setModal(null);
     }
-  }, [isAuthenticated, setModal]);
+  }, [isAuthenticated, setModal, setReverse]);
 
   useEffect(() => {
     setErrorMessage(null);
@@ -76,7 +83,12 @@ const LoginModal = () => {
   useEffect(() => innerRef.current && innerRef.current.focus(), [isOpen]);
 
   return (
-    <Modal isOpen={isOpen("login")} title="login" clickedOutside={ref}>
+    <Modal
+      isOpen={isOpen("login")}
+      reverse={reverse && "true"}
+      title="login"
+      clickedOutside={ref}
+    >
       <Form
         onSubmit={handleLogin}
         autoComplete="off"

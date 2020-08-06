@@ -28,12 +28,16 @@ const RegisterModal = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const { register, isAuthenticated } = useAuth();
-  const { setModal, isOpen, modal } = useModal();
+  const { setModal, isOpen, modal, reverse, setReverse } = useModal();
   const innerRef = useRef();
 
   const ref = useOnclickOutside(() => {
     if (isOpen("register")) {
-      setModal(null);
+      setReverse(true);
+      setTimeout(() => {
+        setModal(null);
+        setReverse(false);
+      }, 300);
     }
   });
 
@@ -58,7 +62,6 @@ const RegisterModal = () => {
   };
 
   const switchModal = (e) => {
-    e.preventDefault();
     setModal("login");
   };
 
@@ -78,7 +81,12 @@ const RegisterModal = () => {
   useEffect(() => innerRef.current && innerRef.current.focus(), [isOpen]);
 
   return (
-    <Modal isOpen={isOpen("register")} title="register" clickedOutside={ref}>
+    <Modal
+      isOpen={isOpen("register")}
+      title="register"
+      clickedOutside={ref}
+      reverse={reverse}
+    >
       <Form
         onSubmit={handleRegister}
         autoComplete="off"
