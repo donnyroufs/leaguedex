@@ -28,9 +28,12 @@ const Menu = () => {
         )}
         {isAuthenticated && (
           <>
-            <Link to="/match" menu="true">
+            {/* <Link to="/match" menu="true">
               You are not in a match
-            </Link>
+            </Link> */}
+            <Button menu="true" onClick={() => setModal("summoner")}>
+              Add Account
+            </Button>
             <Button menu="true" onClick={handleLogout}>
               Log out
             </Button>

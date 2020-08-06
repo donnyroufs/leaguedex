@@ -29,7 +29,10 @@ const Header = () => {
         )}
         {isAuthenticated && (
           <>
-            <Link to="/match">You are not in a match</Link>
+            {/* <Link to="/match">You are not in a match</Link> */}
+            <Button onClick={() => modal.setModal("summoner")}>
+              Add Summoner Account
+            </Button>
             <Button onClick={handleLogout}>Log out</Button>
           </>
         )}
