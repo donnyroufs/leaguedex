@@ -4,11 +4,11 @@ import { Text } from "./Widget.styles";
 import { useAuth } from "../../hooks/useAuth";
 
 const InfoWidget = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <Widget title="Info card">
-      {isAuthenticated && (
+      {isAuthenticated && user.summoner && (
         <>
           <Text>matchups recorded: 0</Text>
           <Text>champions played: 0</Text>
@@ -16,6 +16,9 @@ const InfoWidget = () => {
       )}
 
       {!isAuthenticated && <Text>You need to be logged in.</Text>}
+      {isAuthenticated && !user.summoner && (
+        <Text>You need to add your league account.</Text>
+      )}
     </Widget>
   );
 };
