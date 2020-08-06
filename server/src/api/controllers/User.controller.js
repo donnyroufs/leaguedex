@@ -48,6 +48,7 @@ class UserController extends Controller {
         select: {
           username: true,
           password: true,
+          summoner: true,
         },
       });
 
@@ -68,6 +69,7 @@ class UserController extends Controller {
       const payload = {
         data: {
           username: user.username,
+          summoner: user.summoner,
         },
       };
 
@@ -91,6 +93,7 @@ class UserController extends Controller {
 
       res.status(200).json({
         username: user.username,
+        summoner: user.summoner,
         expirationDate,
       });
     } catch (err) {
@@ -108,11 +111,13 @@ class UserController extends Controller {
       next(err);
     }
   }
+
   async refresh(req, res, next) {
     try {
       const payload = {
         data: {
           username: req.user.username,
+          summoner: req.user.summoner,
         },
       };
 
@@ -124,6 +129,7 @@ class UserController extends Controller {
 
       res.status(200).json({
         username: req.user.username,
+        summoner: req.user.summoner,
         expirationDate,
       });
     } catch (err) {
