@@ -5,18 +5,19 @@ const Champion = ({ isLoading, status, data }) => {
     if (isLoading) {
       return <p>Loading...</p>;
     }
-    console.log(status);
-    console.log(data);
+
+    if (status !== "success") {
+        return <p>Something went wrong</p>
+    }
+
     return (
         <Container>
-            
-            {status === "success" && 
-                <Container>
-                    <p>{data.name}</p>
-                    <p>{data.lore + data.tags.split(',')[0]}</p>
-                    <p>{data.lore + data.tags.split(',')[0]}</p>
-                </Container>
-            }
+            <Container.Image src={data.image} alt={data.name}></Container.Image>
+            <Container secondary>
+                <p>{data.name}</p>
+                <p>{data.lore}</p>
+                <p>{data.tags}</p>
+            </Container>
             
         </Container>
     );
