@@ -46,6 +46,7 @@ class UserController extends Controller {
           username,
         },
         select: {
+          id: true,
           username: true,
           password: true,
           summoner: true,
@@ -68,6 +69,7 @@ class UserController extends Controller {
       // grant refresh and access token.
       const payload = {
         data: {
+          id: user.id,
           username: user.username,
           summoner: user.summoner,
         },
@@ -116,6 +118,7 @@ class UserController extends Controller {
     try {
       const payload = {
         data: {
+          id: req.user.id,
           username: req.user.username,
           summoner: req.user.summoner,
         },
