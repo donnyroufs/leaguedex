@@ -27,7 +27,7 @@ const useAuthProvider = () => {
         credentials: "include",
       });
       const data = await response.json();
-      setUser(data.username ? { username: data.username } : null);
+      setUser(data.username ? data : null);
       if (data.username) {
         toast.info("You have successfully logged in.");
       }
@@ -77,7 +77,7 @@ const useAuthProvider = () => {
     try {
       const response = await fetch("/user/refresh");
       const data = await response.json();
-      setUser(data.username ? { username: data.username } : null);
+      setUser(data.username ? data : null);
       if (data.expirationDate) {
         autoRefreshAccessToken(data.expirationDate);
       }
