@@ -53,6 +53,7 @@ class UserController extends Controller {
           username: true,
           password: true,
           summoner: true,
+          permissions: true,
         },
       });
 
@@ -75,6 +76,7 @@ class UserController extends Controller {
           id: user.id,
           username: user.username,
           summoner: user.summoner,
+          isAdmin: user.permissions > 1,
         },
       };
 
@@ -99,6 +101,7 @@ class UserController extends Controller {
       res.status(200).json({
         username: user.username,
         summoner: user.summoner,
+        isAdmin: payload.data.isAdmin,
         token: accessToken,
         expirationDate,
       });
@@ -125,6 +128,7 @@ class UserController extends Controller {
           id: req.user.id,
           username: req.user.username,
           summoner: req.user.summoner,
+          isAdmin: req.user.isAdmin,
         },
       };
 
@@ -150,6 +154,7 @@ class UserController extends Controller {
       res.status(200).json({
         username: payload.data.username,
         summoner: payload.data.summoner,
+        isAdmin: payload.data.isAdmin,
         token: accessToken,
         expirationDate,
       });
