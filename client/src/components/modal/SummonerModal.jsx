@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import validateForm from "../../helpers/validateForm";
 import Modal from "./Modal";
 import useOnclickOutside from "react-cool-onclickoutside";
 import {
