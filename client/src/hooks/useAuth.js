@@ -15,6 +15,7 @@ export const useAuth = () => {
 const useAuthProvider = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const login = async (formData) => {
     try {
@@ -28,10 +29,12 @@ const useAuthProvider = () => {
         credentials: "include",
       });
       const data = await response.json();
-      setTimeout(() => {
-        setUser(data.username ? data : null);
-      }, 600);
       if (data.username) {
+        setTimeout(() => {
+          const { token, ...rest } = data;
+          setToken(token);
+          setUser(rest);
+        }, 600);
         toast.info("You have successfully logged in.");
       }
       if (data.expirationDate) {
@@ -80,7 +83,11 @@ const useAuthProvider = () => {
     try {
       const response = await fetch("/user/refresh");
       const data = await response.json();
-      setUser(data.username ? data : null);
+      if (data.username) {
+        const { token, ...rest } = data;
+        setToken(token);
+        setUser(rest);
+      }
       if (loading) {
         setLoading(false);
       }
@@ -108,6 +115,15 @@ const useAuthProvider = () => {
     }, INTERVAL);
   };
 
+  const setToken = (token) => {
+    localStorage.setItem("x-access-token", token);
+  };
+
+  const getToken = () => {
+    const token = localStorage.getItem("x-access-token");
+    return `Bearer ${token}`;
+  };
+
   return {
     register,
     login,
@@ -115,6 +131,10 @@ const useAuthProvider = () => {
     refreshToken,
     loading,
     user,
+    setUser,
     isAuthenticated: Boolean(user),
+    getToken,
+    initialLoad,
+    setInitialLoad,
   };
 };
