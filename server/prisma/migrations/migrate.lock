@@ -7,3 +7,5 @@
 20200803195527-set-unique-username-field
 20200803205141-add-created-at-field
 20200804115706-champion-name-unique
+20200807131857-add-region-to-summoner
+20200807134914-add-summoner-id-and-increment-default-id

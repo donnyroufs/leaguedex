@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -29,14 +29,13 @@ model Note {
 }
 
 model Summoner {
-  id        Int       @id @default(autoincrement())
-  accountId String
-  name      String
-  level     Int
-  Matchups  Matchup[]
-  user      User      @relation(fields: [user_id], references: [id])
-  user_id   Int
-  region    String    @default("euw")
+  id       Int       @id
+  name     String
+  level    Int
+  Matchups Matchup[]
+  user     User      @relation(fields: [user_id], references: [id])
+  user_id  Int
+  region   String    @default("euw")
 }
 
 model Matchup {
@@ -51,8 +50,8 @@ model Matchup {
 }
 
 model Champion {
-  id      Int       @id
-  name    String    @unique
+  id      Int    @id
+  name    String
   image   String
   lore    String
   tags    String

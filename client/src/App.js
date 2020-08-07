@@ -12,7 +12,13 @@ import * as Loader from "./components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 
 const App = () => {
-  const { refreshToken, user, loading } = useAuth();
+  const {
+    refreshToken,
+    user,
+    loading,
+    initialLoad,
+    setInitialLoad,
+  } = useAuth();
   const { setModal } = useModal();
 
   useEffect(() => {
@@ -21,8 +27,9 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (user && !user.summoner) {
+    if (user && !user.summoner && initialLoad) {
       setModal("summoner");
+      setInitialLoad(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
