@@ -1,6 +1,8 @@
 const Controller = require("./Controller");
 const { ErrorHandler } = require("../../helpers/error");
 const { REFRESH_TOKEN } = require("../../helpers/constants");
+const Riot = require("../../lib/Riot");
+const { db } = require("../../config/database");
 
 class UserController extends Controller {
   constructor({ model, auth }) {
@@ -11,6 +13,7 @@ class UserController extends Controller {
     this.login = this.login.bind(this);
     this.destroy = this.destroy.bind(this);
     this.refresh = this.refresh.bind(this);
+    this.addSummmonerAccount = this.addSummmonerAccount.bind(this);
   }
 
   async create(req, res, next) {
@@ -96,6 +99,7 @@ class UserController extends Controller {
       res.status(200).json({
         username: user.username,
         summoner: user.summoner,
+        token: accessToken,
         expirationDate,
       });
     } catch (err) {
@@ -124,6 +128,19 @@ class UserController extends Controller {
         },
       };
 
+      // Quick dirty fix.
+      if (!req.user.summoner) {
+        const _data = await this.model.findOne({
+          where: {
+            id: req.user.id,
+          },
+          select: {
+            summoner: true,
+          },
+        });
+        payload.data.summoner = _data.summoner;
+      }
+
       const {
         token: accessToken,
         expirationDate,
@@ -131,11 +148,39 @@ class UserController extends Controller {
       this.Auth.setBearer(res, accessToken);
 
       res.status(200).json({
-        username: req.user.username,
-        summoner: req.user.summoner,
+        username: payload.data.username,
+        summoner: payload.data.summoner,
+        token: accessToken,
         expirationDate,
       });
     } catch (err) {
+      next(err);
+    }
+  }
+
+  async addSummmonerAccount(req, res, next) {
+    const { summonerName } = req.body;
+    try {
+      const data = await Riot.getSummoner(summonerName);
+
+      const addedSummoner = await db.summoner.create({
+        data: {
+          accountId: data.accountId,
+          name: data.name,
+          level: data.summonerLevel,
+          user: {
+            connect: {
+              id: Number(req.user.id),
+            },
+          },
+        },
+      });
+
+      // Should update token here
+
+      res.status(201).json(addedSummoner);
+    } catch (err) {
+      console.log(err);
       next(err);
     }
   }

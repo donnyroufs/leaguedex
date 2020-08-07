@@ -15,4 +15,10 @@ router.post("/login", controller.login);
 router.delete("/logout", Auth.validateRefreshToken, controller.destroy);
 router.get("/refresh", Auth.validateRefreshToken, controller.refresh);
 
+router.post(
+  "/summoner",
+  Auth.authenticateToken,
+  controller.addSummmonerAccount
+);
+
 module.exports = router;
