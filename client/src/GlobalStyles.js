@@ -11,6 +11,15 @@ export const fadeAnimation = keyframes`
   }
 `;
 
+export const fadeAnimationOut = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`;
+
 export const scaleAnimation = keyframes`
   from {
     transform: scale(0.3);
