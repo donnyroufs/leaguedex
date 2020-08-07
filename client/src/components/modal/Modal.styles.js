@@ -1,8 +1,12 @@
-import styled from "styled-components";
-import { scaleAnimation, fadeAnimation } from "../../GlobalStyles";
+import styled, { css } from "styled-components";
+import { scaleAnimation, scaleAnimationOut } from "../../GlobalStyles";
 
 export const Container = styled.div`
-  display: ${(props) => (props.isOpen ? "flex" : "none")};
+  display: flex;
+  transition: all 0.3s ease-in-out;
+  opacity: ${(props) => (props.isOpen ? 1 : 0)};
+  pointer-events: ${(props) => (!props.isOpen ? "none" : "auto")};
+  z-index: ${(props) => (props.isOpen ? 50 : -1)};
   position: fixed;
   top: 0;
   height: 100vh;
@@ -11,7 +15,6 @@ export const Container = styled.div`
   background: rgba(27, 39, 53, 0.75);
   justify-content: center;
   align-items: center;
-  animation: ${fadeAnimation} 0.35s forwards cubic-bezier(0.65, 0, 0.32, 1.55);
 `;
 
 Container.Inner = styled.div`
@@ -22,10 +25,19 @@ Container.Inner = styled.div`
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
-  animation: ${scaleAnimation} 0.75s forwards cubic-bezier(0.65, 0, 0.32, 1.55);
+  ${(props) =>
+    props.reverse
+      ? css`
+          animation: ${scaleAnimationOut} 0.75s forwards
+            cubic-bezier(0.075, 0.82, 0.165, 1);
+        `
+      : css`
+          animation: ${scaleAnimation} 0.75s forwards
+            cubic-bezier(0.65, 0, 0.32, 1.55);
+        `}
 
   @media screen and (min-width: 968px) {
-    height: ${(props) => (props.register ? "650px" : "550px")};
+    height: ${(props) => (props.register ? "700px" : "550px")};
     width: 800px;
   }
 `;

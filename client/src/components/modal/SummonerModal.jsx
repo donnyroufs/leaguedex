@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
+import validateForm from "../../helpers/validateForm";
 import Modal from "./Modal";
 import useOnclickOutside from "react-cool-onclickoutside";
-import validateForm from "../../helpers/validateForm";
 import {
   Form,
   Input,
@@ -11,26 +11,25 @@ import {
   FlashMessage,
 } from "../styles/Form";
 import { Button } from "../../GlobalStyles";
-import { LOGIN_FORM } from "../../constants";
+import { SUMMONER_FORM } from "../../constants";
 
 import { useModal } from "../../hooks/useModal";
 import { useAuth } from "../../hooks/useAuth";
 
 const initialValues = {
-  username: "",
-  password: "",
+  summonerName: "",
 };
 
 const LoginModal = () => {
   const [values, setValues] = useState(initialValues);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { login, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const innerRef = useRef();
 
   const ref = useOnclickOutside(() => {
-    if (isOpen("login")) {
+    if (isOpen("summoner")) {
       setReverse(true);
       setTimeout(() => {
         setReverse(false);
@@ -45,35 +44,17 @@ const LoginModal = () => {
       [e.target.name]: e.target.value,
     });
 
-  const handleLogin = async (e) => {
+  const handleSummoner = async (e) => {
     e.preventDefault();
-    const { errors, valid } = validateForm(values, LOGIN_FORM);
-    if (valid) {
-      const successLogin = await login(values);
-      if (!successLogin) {
-        setErrorMessage("Username or password are not correct.");
-      } else {
-        setReverse(true);
-        setTimeout(() => {
-          setReverse(false);
-        }, 600);
-      }
-    } else {
-      const firstError = Object.values(errors)[0];
-      setErrorMessage(firstError);
-    }
-  };
-
-  const switchModal = (e) => {
-    setModal("register");
   };
 
   useEffect(() => {
     if (isAuthenticated) {
       setErrorMessage(null);
       setValues(initialValues);
+      setModal(null);
     }
-  }, [isAuthenticated, setModal, setReverse]);
+  }, [isAuthenticated, setModal]);
 
   useEffect(() => {
     setErrorMessage(null);
@@ -84,49 +65,31 @@ const LoginModal = () => {
 
   return (
     <Modal
-      isOpen={isOpen("login")}
-      reverse={reverse && "true"}
-      title="login"
+      isOpen={isOpen("summoner")}
+      title="add account"
       clickedOutside={ref}
+      reverse={reverse}
     >
-      <Form
-        onSubmit={handleLogin}
-        autoComplete="off"
-        onKeyDown={(e) => e.keyCode === 13 && handleLogin(e)}
-      >
+      <Form onSubmit={handleSummoner} autoComplete="off">
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
         <Group>
-          <Label>username</Label>
+          <Label>summoner name</Label>
           <Input
             type="text"
-            name="username"
-            value={values.username}
-            placeholder="enter username"
+            name="summonerName"
+            value={values.summonerName}
+            placeholder="enter summoner name"
             ref={innerRef}
             onChange={handleOnChange}
           />
         </Group>
-        <Group>
-          <Label>password</Label>
-          <Input
-            type="password"
-            name="password"
-            value={values.password}
-            placeholder="enter password"
-            onChange={handleOnChange}
-          />
-        </Group>
-        <Button type="submit" form="true" onClick={handleLogin}>
-          Login
+        <Button type="submit" form="true" onClick={handleSummoner}>
+          add account
         </Button>
       </Form>
       <Footer>
-        <Footer.Button first onClick={switchModal}>
-          Don't have an account?
-        </Footer.Button>
-        {/* <Footer.Button>Forgot password?</Footer.Button> */}
         <Footer.Close onClick={() => setModal(null)}>
           close &times;
         </Footer.Close>

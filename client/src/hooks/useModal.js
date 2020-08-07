@@ -15,6 +15,7 @@ export const useModal = () => {
 
 const useModalProvider = () => {
   const [modal, setModal] = useState(null);
+  const [reverse, setReverse] = useState(false);
 
   const isOpen = (modalName) => modal === modalName;
 
@@ -22,5 +23,7 @@ const useModalProvider = () => {
     modal,
     setModal,
     isOpen,
+    reverse,
+    setReverse,
   };
 };

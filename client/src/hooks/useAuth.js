@@ -14,6 +14,7 @@ export const useAuth = () => {
 
 const useAuthProvider = () => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const login = async (formData) => {
     try {
@@ -27,7 +28,9 @@ const useAuthProvider = () => {
         credentials: "include",
       });
       const data = await response.json();
-      setUser(data.username ? { username: data.username } : null);
+      setTimeout(() => {
+        setUser(data.username ? data : null);
+      }, 600);
       if (data.username) {
         toast.info("You have successfully logged in.");
       }
@@ -55,7 +58,7 @@ const useAuthProvider = () => {
       const data = await response.json();
       if (data.username) {
         login({ username: formData.username, password: formData.password });
-        toast.info("Account successfully created and logged in.");
+        toast.info("Account successfully created.");
       }
       return data.hasOwnProperty("username");
     } catch (err) {
@@ -77,11 +80,15 @@ const useAuthProvider = () => {
     try {
       const response = await fetch("/user/refresh");
       const data = await response.json();
-      setUser(data.username ? { username: data.username } : null);
+      setUser(data.username ? data : null);
+      if (loading) {
+        setLoading(false);
+      }
       if (data.expirationDate) {
         autoRefreshAccessToken(data.expirationDate);
       }
     } catch (err) {
+      setLoading(false);
       setUser(null);
     }
   };
@@ -106,6 +113,7 @@ const useAuthProvider = () => {
     login,
     logout,
     refreshToken,
+    loading,
     user,
     isAuthenticated: Boolean(user),
   };
