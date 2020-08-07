@@ -5,8 +5,8 @@ import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../hooks/useModal";
 
 const Menu = () => {
-  const { logout, isAuthenticated } = useAuth();
-  const { setModal } = useModal();
+  const { logout, isAuthenticated, user } = useAuth();
+  const { setModal, isOpen } = useModal();
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -14,7 +14,9 @@ const Menu = () => {
   };
 
   return (
-    <Container>
+    <Container
+      isOpen={isOpen("register") || isOpen("login") || isOpen("summoner")}
+    >
       <Container.Buttons>
         {!isAuthenticated && (
           <>
@@ -28,9 +30,16 @@ const Menu = () => {
         )}
         {isAuthenticated && (
           <>
-            <Link to="/match" menu="true">
-              You are not in a match
-            </Link>
+            {!user.summoner && (
+              <Button menu="true" onClick={() => setModal("summoner")}>
+                Add Account
+              </Button>
+            )}
+            {user.summoner && (
+              <Link to="/match" menu="true">
+                You are not in a match
+              </Link>
+            )}
             <Button menu="true" onClick={handleLogout}>
               Log out
             </Button>

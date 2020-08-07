@@ -11,6 +11,15 @@ export const fadeAnimation = keyframes`
   }
 `;
 
+export const fadeAnimationOut = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`;
+
 export const scaleAnimation = keyframes`
   from {
     transform: scale(0.3);
@@ -22,7 +31,7 @@ export const scaleAnimation = keyframes`
   }
 `;
 
-export const reversedScaleAnimation = keyframes`
+export const scaleAnimationOut = keyframes`
   from {
     transform: scale(1);
     opacity: 1;
@@ -102,6 +111,7 @@ export default createGlobalStyle`
       background-color: ${(props) => props.theme.background};
       color: ${(props) => props.theme.third};
       font-family: 'Poppins', sans-serif;
+      padding-bottom: calc(100px + 3rem);
     }
 
     .searchbar-icon {

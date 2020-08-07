@@ -1,4 +1,4 @@
-import { LOGIN_FORM, REGISTER_FORM } from "../constants";
+import { LOGIN_FORM, REGISTER_FORM, SUMMONER_FORM } from "../constants";
 
 const validateForm = (values, type) => {
   const errors = {};
@@ -34,7 +34,6 @@ const validateForm = (values, type) => {
       errors.password = "Password must be atleast 6 characters long.";
     }
 
-    console.log(values);
     if (
       values.password &&
       values.password_confirmation &&
@@ -43,6 +42,9 @@ const validateForm = (values, type) => {
       errors.password = "Password did not match";
       errors.password_confirmation = "Password did not match";
     }
+  }
+
+  if (type === SUMMONER_FORM) {
   }
 
   return {
