@@ -11,10 +11,10 @@ import {
   FlashMessage,
 } from "../styles/Form";
 import { Button } from "../../GlobalStyles";
-import { SUMMONER_FORM } from "../../constants";
 
 import { useModal } from "../../hooks/useModal";
 import { useAuth } from "../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 const initialValues = {
   summonerName: "",
@@ -24,7 +24,7 @@ const LoginModal = () => {
   const [values, setValues] = useState(initialValues);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, getToken, user, setUser } = useAuth();
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const innerRef = useRef();
 
@@ -46,6 +46,30 @@ const LoginModal = () => {
 
   const handleSummoner = async (e) => {
     e.preventDefault();
+    try {
+      const res = await fetch("/user/summoner", {
+        method: "POST",
+        body: JSON.stringify({ summonerName: values.summonerName }),
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          authorization: getToken(),
+        },
+      });
+
+      const data = await res.json();
+      setUser({
+        ...user,
+        summoner: data,
+      });
+
+      setModal(null);
+      toast.success("Added account successfully.");
+    } catch (err) {
+      toast.error("Something went wrong on our end. Please try again later.");
+      throw err;
+    }
   };
 
   useEffect(() => {
