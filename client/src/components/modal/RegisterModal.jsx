@@ -12,9 +12,11 @@ import {
 } from "../styles/Form";
 import { Button } from "../../GlobalStyles";
 import { REGISTER_FORM } from "../../constants";
+import theme from "../../theme";
 
 import { useModal } from "../../hooks/useModal";
 import { useAuth } from "../../hooks/useAuth";
+import { BeatLoader } from "react-spinners";
 
 const initialValues = {
   username: "",
@@ -24,6 +26,7 @@ const initialValues = {
 };
 
 const RegisterModal = () => {
+  const [loading, setLoading] = useState(false);
   const [values, setValues] = useState(initialValues);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -49,6 +52,7 @@ const RegisterModal = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { errors, valid } = validateForm(values, REGISTER_FORM);
     if (valid) {
       const accountCreated = await register(values);
@@ -59,6 +63,7 @@ const RegisterModal = () => {
       const firstError = Object.values(errors)[0];
       setErrorMessage(firstError);
     }
+    setLoading(false);
   };
 
   const switchModal = (e) => {
@@ -136,8 +141,9 @@ const RegisterModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Button form="true" onClick={handleRegister}>
-          Register
+        <Button form="true" onClick={handleRegister} disabled={loading}>
+          {loading && <BeatLoader color={theme.secondary} height="100%" />}
+          {!loading && "Register"}
         </Button>
       </Form>
       <Footer>

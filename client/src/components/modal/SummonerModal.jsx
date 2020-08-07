@@ -10,7 +10,8 @@ import {
   FlashMessage,
 } from "../styles/Form";
 import { Button } from "../../GlobalStyles";
-
+import { BeatLoader } from "react-spinners";
+import theme from "../../theme";
 import { useModal } from "../../hooks/useModal";
 import { useAuth } from "../../hooks/useAuth";
 import { toast } from "react-toastify";
@@ -20,6 +21,7 @@ const initialValues = {
 };
 
 const LoginModal = () => {
+  const [loading, setLoading] = useState(false);
   const [values, setValues] = useState(initialValues);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -46,6 +48,7 @@ const LoginModal = () => {
   const handleSummoner = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const res = await fetch("/user/summoner", {
         method: "POST",
         body: JSON.stringify({ summonerName: values.summonerName }),
@@ -71,8 +74,8 @@ const LoginModal = () => {
       }
     } catch (err) {
       toast.error("Something went wrong on our end. Please try again later.");
-      throw err;
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -112,8 +115,14 @@ const LoginModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Button type="submit" form="true" onClick={handleSummoner}>
-          add account
+        <Button
+          type="submit"
+          form="true"
+          onClick={handleSummoner}
+          disabled={loading}
+        >
+          {loading && <BeatLoader color={theme.secondary} height="100%" />}
+          {!loading && "Add Account"}
         </Button>
       </Form>
       <Footer>
