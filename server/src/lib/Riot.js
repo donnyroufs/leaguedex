@@ -3,20 +3,23 @@ const { db } = require("../config/database");
 
 class Riot {
   static endpoints = {
-    champions:
-      "http://ddragon.leagueoflegends.com/cdn/10.15.1/data/en_US/champion.json",
-    icon: "http://ddragon.leagueoflegends.com/cdn/10.15.1/img/champion",
+    version: "https://ddragon.leagueoflegends.com/api/versions.json",
     splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash",
   };
 
   static async syncChampions() {
     try {
-      const { data } = await axios.get(this.endpoints.champions);
-      const { version, data: championsObj } = data;
+      const {
+        data: [latest],
+      } = await axios.get(this.endpoints.version);
 
       const cached = await db.champion.findMany();
 
-      if (cached.length < 1 || cached[0].version !== version) {
+      if (cached.length < 1 || cached[0].version !== latest) {
+        const { data } = await axios.get(
+          `http://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/champion.json`
+        );
+        const { version, data: championsObj } = data;
         const champions = Object.values(championsObj).map((champ) => ({
           id: Number(champ.key),
           name: champ.name,
@@ -27,9 +30,15 @@ class Riot {
         }));
 
         for await (const champion of champions) {
-          await db.champion.create({
-            data: {
+          await db.champion.upsert({
+            create: {
               ...champion,
+            },
+            update: {
+              ...champion,
+            },
+            where: {
+              id: champion.id,
             },
           });
         }
