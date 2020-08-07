@@ -163,6 +163,8 @@ class UserController extends Controller {
     try {
       const data = await Riot.getSummoner(summonerName);
 
+      if (!data) throw ErrorHandler(500, "Couldn't make the request.");
+
       const addedSummoner = await db.summoner.create({
         data: {
           accountId: data.accountId,
@@ -180,7 +182,6 @@ class UserController extends Controller {
 
       res.status(201).json(addedSummoner);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

@@ -58,13 +58,17 @@ const LoginModal = () => {
       });
 
       const data = await res.json();
-      setUser({
-        ...user,
-        summoner: data,
-      });
 
       setModal(null);
-      toast.success("Added account successfully.");
+      if (data && data.status === "error") {
+        toast.error("Something went wrong on our end. Please try again later.");
+      } else {
+        setUser({
+          ...user,
+          summoner: data,
+        });
+        toast.success("Added account successfully.");
+      }
     } catch (err) {
       toast.error("Something went wrong on our end. Please try again later.");
       throw err;
