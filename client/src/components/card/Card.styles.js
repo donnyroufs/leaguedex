@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { FaLock } from "react-icons/fa";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export const Overlay = styled.div`
   background: rgba(74, 83, 95, 0.75);
@@ -36,7 +37,7 @@ export const Container = styled(Link)`
   }
 `;
 
-Container.Image = styled.img`
+Container.Image = styled(LazyLoadImage)`
   display: block;
   object-fit: cover;
   object-position: center right;
