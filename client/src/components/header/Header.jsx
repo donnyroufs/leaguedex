@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router";
 import { Container } from "./Header.styles";
 import { Button, Link } from "../../GlobalStyles";
 import { useAuth } from "../../hooks/useAuth";
@@ -6,11 +7,13 @@ import { useModal } from "../../hooks/useModal";
 
 const Header = () => {
   const { logout, isAuthenticated, user } = useAuth();
+  const history = useHistory();
   const modal = useModal();
 
   const handleLogout = (e) => {
     e.preventDefault();
     logout();
+    history.push("/");
   };
 
   return (
@@ -18,6 +21,11 @@ const Header = () => {
       <Container.Brand to="/">
         <Container.Brand.Image src="/logo.svg" alt="leaguedex logo" />
       </Container.Brand>
+      {user && (
+        <Container.Account>
+          <Container.Name>{user.username}</Container.Name>
+        </Container.Account>
+      )}
       <Container.Buttons authenticated={isAuthenticated}>
         {!isAuthenticated && (
           <>
