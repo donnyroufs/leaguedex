@@ -10,3 +10,4 @@
 20200807134914-add-summoner-id-and-increment-default-id
 20200808003202-created-at-updated-at-fields
 20200808005107-add-permissions-to-user
+20200808125233-make-champion-name-unique
