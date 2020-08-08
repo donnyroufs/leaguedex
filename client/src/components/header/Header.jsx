@@ -23,7 +23,14 @@ const Header = () => {
       </Container.Brand>
       {user && (
         <Container.Account>
-          <Container.Name>{user.username}</Container.Name>
+          {!user.isAdmin && (
+            <Container.Name to="/">{user.username}</Container.Name>
+          )}
+          {user.isAdmin && (
+            <Container.Name to="/admin/dashboard">
+              {user.username}
+            </Container.Name>
+          )}
         </Container.Account>
       )}
       <Container.Buttons authenticated={isAuthenticated}>

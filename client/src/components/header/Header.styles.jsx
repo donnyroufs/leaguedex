@@ -37,7 +37,10 @@ Container.Account = styled.div`
   border-bottom: 2px solid ${(props) => props.theme.primary};
 `;
 
-Container.Name = styled.p`
+Container.Name = styled(Link)`
+  display: block;
+  color: ${(props) => props.theme.secondary};
+  text-decoration: none;
   margin: 0;
   padding: 0 0 0.25rem 0;
 `;
