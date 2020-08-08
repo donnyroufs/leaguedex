@@ -16,6 +16,31 @@ class UserController extends Controller {
     this.addSummmonerAccount = this.addSummmonerAccount.bind(this);
   }
 
+  async all(req, res) {
+    const data = await this.model.findMany({
+      select: {
+        username: true,
+        summoner: {
+          select: {
+            name: true,
+            level: true,
+          },
+        },
+        email: true,
+        createdAt: true,
+      },
+    });
+
+    const formattedData = data.map((user) => ({
+      username: user.username,
+      summonerName: user.summoner ? user.summoner.name : "None",
+      email: user.email,
+      createdAt: user.createdAt,
+    }));
+
+    res.status(200).json(formattedData);
+  }
+
   async create(req, res, next) {
     const { username, password, password_confirmation, email } = req.body;
     // validate fields (username, email, password, password_confirmation)
