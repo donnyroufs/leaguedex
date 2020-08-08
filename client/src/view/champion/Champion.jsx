@@ -1,31 +1,29 @@
 import React from "react";
-import { Container, ChampionInfo, Matchups } from "./Champion.styles.js";
+import { Container, Title, Text, Tag } from "./Champion.styles.js";
 
 const Champion = ({ isLoading, status, data }) => {
-    if (isLoading) {
-      return <p>Loading...</p>;
-    }
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
-    if (status !== "success") {
-        return <p>Something went wrong</p>
-    }
+  if (status !== "success") {
+    return <p>Something went wrong</p>;
+  }
 
-    return (
-        <Container>
-            <ChampionInfo>
-                <img src={data.image} alt={data.name}></img>
-                <div class="description">
-                    <p>{data.name}</p>
-                    <p>{data.lore}</p>
-                    <p>{data.tags}</p>
-                </div>
-            </ChampionInfo>
-            <Matchups>
-                <div class="row"></div>
-                <div class="row"></div>
-            </Matchups>
-        </Container>
-    );
+  return (
+    <Container>
+      <Container.Image src={data.image} alt={data.name} />
+      <Container.Info>
+        <Title>{data.name}</Title>
+        <Text>{data.lore}</Text>
+        <Container.Tags>
+          {data.tags.split(",").map((tag) => (
+            <Tag key={tag}>{tag}</Tag>
+          ))}
+        </Container.Tags>
+      </Container.Info>
+    </Container>
+  );
 };
 
 export default Champion;
