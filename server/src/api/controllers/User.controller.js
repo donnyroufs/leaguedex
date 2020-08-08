@@ -220,7 +220,22 @@ class UserController extends Controller {
         },
       });
 
-      res.status(201).json(addedSummoner);
+      const updateAccountPermissions = await this.model.update({
+        where: {
+          id: Number(req.user.id),
+        },
+        data: {
+          permissions: 2,
+        },
+      });
+
+      if (!updateAccountPermissions)
+        throw ErrorHandler(500, "Could not update permissions.");
+
+      res.status(201).json({
+        ...addedSummoner,
+        permissions: 2,
+      });
     } catch (err) {
       next(err);
     }

@@ -11,4 +11,6 @@ export default {
   placeholderFormText: "#4A5765",
   modal: "#323F4E",
   danger: "#ff528a",
+  tag: "#4E6075",
+  lineHeight: "2",
 };
