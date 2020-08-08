@@ -6,8 +6,8 @@ const validateForm = (values, type) => {
   if (type === LOGIN_FORM) {
     if (!values.username) {
       errors.username = "Username is required.";
-    } else if (values.username.length < 6) {
-      errors.username = "Username must be atleast 6 characters long.";
+    } else if (values.username.length < 4) {
+      errors.username = "Username must be atleast 4 characters long.";
     }
 
     if (!values.password) {
@@ -18,8 +18,8 @@ const validateForm = (values, type) => {
   if (type === REGISTER_FORM) {
     if (!values.username) {
       errors.username = "Username is required.";
-    } else if (values.username.length < 6) {
-      errors.username = "Username must be atleast 6 characters long.";
+    } else if (values.username.length < 4) {
+      errors.username = "Username must be atleast 4 characters long.";
     }
 
     if (!values.email) {
