@@ -97,9 +97,8 @@ class Auth {
     res.header("Authorization", "Bearer " + accessToken);
   }
 
-  static async setRefreshCookie(res, refreshToken) {
-    const SEVEN_DAYS = 10080;
-    const expiration = this.setExpirationDate(SEVEN_DAYS);
+  static async setRefreshCookie(res, refreshToken, exp = 10080) {
+    const expiration = this.setExpirationDate(exp);
     const options = {
       httpOnly: true,
       expires: expiration,
