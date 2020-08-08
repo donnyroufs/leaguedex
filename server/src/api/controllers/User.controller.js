@@ -45,9 +45,12 @@ class UserController extends Controller {
 
   async create(req, res, next) {
     const { username, password, password_confirmation, email } = req.body;
-    // validate fields (username, email, password, password_confirmation)
 
     try {
+      if (password !== password_confirmation) {
+        throw new ErrorHandler(400, "Passwords do not match.");
+      }
+
       const hashedPassword = await this.Auth.hashPassword(password);
       const newUser = await this.model.create({
         data: {
@@ -68,8 +71,7 @@ class UserController extends Controller {
 
   async login(req, res, next) {
     const { username, password } = req.body;
-    // validate fields (username, password)
-    // Check if username exists
+
     try {
       const user = await this.model.findOne({
         where: {
@@ -84,10 +86,8 @@ class UserController extends Controller {
         },
       });
 
-      // Should change error message
-      if (!user) throw new ErrorHandler(404, "User does not exist");
+      if (!user) throw new ErrorHandler(403, "User or password is not valid.");
 
-      // Check if password valid
       const validPassword = await this.Auth.isValidPassword(
         password,
         user.password
@@ -97,7 +97,6 @@ class UserController extends Controller {
         throw new ErrorHandler(403, "Username or password is not valid.");
       }
 
-      // grant refresh and access token.
       const payload = {
         data: {
           id: user.id,
@@ -111,24 +110,20 @@ class UserController extends Controller {
         token: accessToken,
         expirationDate,
       } = await this.Auth.createToken(payload);
+
       const { token: refreshToken } = await this.Auth.createToken(
         payload,
         REFRESH_TOKEN
       );
 
-      // store refreshtoken in database
       await this.Auth.createOrUpdateRefreshToken(user.username, refreshToken);
 
-      // set authorization bearer for access token
       this.Auth.setBearer(res, accessToken);
 
-      // set cookie for refresh token
       this.Auth.setRefreshCookie(res, refreshToken);
 
       res.status(200).json({
-        username: user.username,
-        summoner: user.summoner,
-        permissions: payload.data.permissions,
+        ...payload.data,
         token: accessToken,
         expirationDate,
       });
@@ -142,6 +137,7 @@ class UserController extends Controller {
 
     try {
       this.Auth.removeRefreshToken(username);
+      this.Auth.setRefreshCookie(res, null, 0);
       res.sendStatus(200);
     } catch (err) {
       next(err);
@@ -151,37 +147,30 @@ class UserController extends Controller {
   async refresh(req, res, next) {
     try {
       const payload = {
-        data: {
-          id: req.user.id,
-          username: req.user.username,
-          summoner: req.user.summoner,
-          permissions: req.user.permissions,
-        },
+        data: req.user,
       };
 
-      // Quick dirty fix.
-      if (!req.user.summoner) {
-        const _data = await this.model.findOne({
-          where: {
-            id: req.user.id,
-          },
-          select: {
-            summoner: true,
-          },
-        });
-        payload.data.summoner = _data.summoner;
-      }
+      const { token: refreshToken } = await this.Auth.createToken(
+        payload,
+        REFRESH_TOKEN
+      );
+
+      await this.Auth.createOrUpdateRefreshToken(
+        req.user.username,
+        refreshToken
+      );
+
+      this.Auth.setRefreshCookie(res, refreshToken);
 
       const {
         token: accessToken,
         expirationDate,
       } = await this.Auth.createToken(payload);
+
       this.Auth.setBearer(res, accessToken);
 
       res.status(200).json({
-        username: payload.data.username,
-        summoner: payload.data.summoner,
-        permissions: payload.data.permissions,
+        ...payload,
         token: accessToken,
         expirationDate,
       });
@@ -192,6 +181,7 @@ class UserController extends Controller {
 
   async addSummmonerAccount(req, res, next) {
     const { summonerName } = req.body;
+
     try {
       const data = await Riot.getSummoner(summonerName);
 

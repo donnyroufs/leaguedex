@@ -1,11 +1,14 @@
 class Application {
+  static userApi = {
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+  };
+
   constructor({ server, database, middleware, routes, helpers = {} } = {}) {
     this.express = server;
     this.app = this.express();
     this.database = database;
-    this.morgan = middleware.morgan;
-    this.cors = middleware.cors;
-    this.cookieParser = middleware.cookieParser;
+    this.middleware = middleware;
     this.routes = routes;
     this.helpers = helpers;
   }
@@ -22,10 +25,12 @@ class Application {
   }
 
   _setMiddleware() {
-    this.app.use(this.cookieParser());
+    this.app.use("/api/user/login", this.middleware.rateLimit(this.userApi));
+    this.app.use("/api/user/register", this.middleware.rateLimit(this.userApi));
+    this.app.use(this.middleware.cookieParser());
     this.app.use(this.express.json());
-    this.app.use(this.morgan("tiny"));
-    this.app.use(this.cors());
+    this.app.use(this.middleware.morgan("tiny"));
+    this.app.use(this.middleware.cors());
     this.app.use("/api", this.routes.api);
     this.app.use((err, req, res, next) => {
       this.helpers.handleError(err, res);

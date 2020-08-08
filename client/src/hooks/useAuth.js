@@ -73,6 +73,7 @@ const useAuthProvider = () => {
     try {
       await fetch("/user/logout", { method: "DELETE" });
       setUser(null);
+      localStorage.removeItem("x-access-token");
       toast.info("Successfully logged out.");
     } catch (err) {
       setUser(null);

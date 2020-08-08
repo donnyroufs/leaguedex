@@ -1,8 +1,8 @@
 import React from "react";
 import { Container, Title, Text, Tag } from "./Champion.styles.js";
 
-const Champion = ({ isLoading, status, data }) => {
-  if (isLoading) {
+const Champion = ({ status, data }) => {
+  if (status === "loading") {
     return <p>Loading...</p>;
   }
 

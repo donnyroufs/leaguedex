@@ -68,6 +68,7 @@ const LoginModal = () => {
       } else {
         setUser({
           ...user,
+          permissions: data.permissions,
           summoner: data,
         });
         toast.success("Added account successfully.");

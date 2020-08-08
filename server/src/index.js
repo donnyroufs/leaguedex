@@ -1,6 +1,7 @@
 require("dotenv/config");
 
 const express = require("express");
+const rateLimit = require("express-rate-limit");
 const { db, validateConnection } = require("./config/database");
 const apiRoutes = require("./api/routes/index");
 const morgan = require("morgan");
@@ -17,7 +18,8 @@ const app = new Application({
   middleware: {
     morgan,
     cookieParser,
-    cors
+    cors,
+    rateLimit,
   },
   routes: {
     api: apiRoutes,
