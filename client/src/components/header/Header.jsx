@@ -6,7 +6,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../hooks/useModal";
 
 const Header = () => {
-  const { logout, isAuthenticated, user } = useAuth();
+  const { logout, isAuthenticated, user, isAllowed } = useAuth();
   const history = useHistory();
   const modal = useModal();
 
@@ -26,7 +26,7 @@ const Header = () => {
           {user.permissions < 10 && (
             <Container.Name to="/">{user.username}</Container.Name>
           )}
-          {user.permissions >= 10 && (
+          {isAllowed(10) && (
             <Container.Name to="/admin/dashboard">
               {user.username}
             </Container.Name>

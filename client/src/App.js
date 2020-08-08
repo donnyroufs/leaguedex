@@ -19,6 +19,7 @@ const App = () => {
     loading,
     initialLoad,
     setInitialLoad,
+    isAllowed,
   } = useAuth();
   const { setModal } = useModal();
 
@@ -70,7 +71,7 @@ const App = () => {
                 path={route.path}
                 component={route.component}
                 key={route.path}
-                isAllowed={user && user.permissions >= route.permissions}
+                isAllowed={isAllowed(route.permissions)}
               />
             )
           )}
