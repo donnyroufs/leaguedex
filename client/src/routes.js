@@ -6,21 +6,21 @@ const routes = [
     path: "/",
     name: "home",
     component: view.Home,
-    protected: false,
+    permissions: 1,
   },
   {
     exact: true,
     path: "/admin/dashboard",
     name: "dashboard",
     component: view.Dashboard,
-    protected: true,
+    permissions: 2,
   },
   {
     exact: false,
     path: "*",
     name: "",
     component: view.NotFound,
-    protected: false,
+    permissions: 1,
   },
 ];
 

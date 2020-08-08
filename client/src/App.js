@@ -57,7 +57,7 @@ const App = () => {
       {!loading && (
         <Switch>
           {routes.map((route) =>
-            !route.protected ? (
+            !route.permissions || route.permissions === 1 ? (
               <Route
                 exact={route.exact}
                 path={route.path}
@@ -70,7 +70,7 @@ const App = () => {
                 path={route.path}
                 component={route.component}
                 key={route.path}
-                isAdmin={user && user.isAdmin}
+                isAllowed={user && user.permissions >= route.permissions}
               />
             )
           )}

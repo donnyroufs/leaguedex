@@ -1,12 +1,12 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-const ProtectedRoute = ({ component: Component, isAdmin, ...rest }) => {
+const ProtectedRoute = ({ component: Component, isAllowed, ...rest }) => {
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (isAdmin) {
+        if (isAllowed) {
           return <Component {...rest} {...props} />;
         } else {
           return (

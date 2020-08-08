@@ -23,10 +23,10 @@ const Header = () => {
       </Container.Brand>
       {user && (
         <Container.Account>
-          {!user.isAdmin && (
+          {user.permissions < 10 && (
             <Container.Name to="/">{user.username}</Container.Name>
           )}
-          {user.isAdmin && (
+          {user.permissions >= 10 && (
             <Container.Name to="/admin/dashboard">
               {user.username}
             </Container.Name>
