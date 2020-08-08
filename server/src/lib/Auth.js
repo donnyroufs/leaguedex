@@ -16,37 +16,53 @@ class Auth {
 
   static HASH_ROUNDS = 10;
 
-  static authenticateToken(req, res, next) {
+  static authenticateToken(req, _, next) {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
-    if (token == null) throw new ErrorHandler(401, "Missing token.");
+    if (token == null) throw new ErrorHandler(401, "Not allowed.");
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
-      if (err) throw new ErrorHandler(403, "invalid token.");
-      req.user = data.data;
-      next();
-    });
+    const valid = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    if (!valid) throw ErrorHandler(403, "Not allowed.");
+
+    const { data: decoded } = jwt.decode(token);
+
+    req.user = decoded;
+    next();
   }
 
-  static async validateRefreshToken(req, res, next) {
+  static async validateRefreshToken(req, _, next) {
     const refreshToken = req.cookies["x-refresh-token"];
-    const decoded = jwt.decode(refreshToken);
 
     try {
+      const valid = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+      if (!valid) return new ErrorHandler(403, "Not allowed.");
+
+      const { data: decoded } = jwt.decode(refreshToken);
       const data = await db.authentication.findOne({
         where: {
-          username: decoded.data.username,
+          username: decoded.username,
+        },
+      });
+
+      const user = await db.user.findOne({
+        where: {
+          id: decoded.id,
+        },
+        select: {
+          id: true,
+          username: true,
+          summoner: true,
+          permissions: true,
         },
       });
 
       if (!data) throw new ErrorHandler(404, "Could not find token.");
 
-      jwt.verify(data.token, process.env.REFRESH_TOKEN_SECRET, (err, data) => {
-        if (err) throw new ErrorHandler(403, "invalid token.");
-        req.user = data.data;
-        next();
-      });
+      req.user = user;
+      next();
     } catch (err) {
       next(err);
     }
