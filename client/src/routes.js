@@ -13,7 +13,7 @@ const routes = [
     path: "/admin/dashboard",
     name: "dashboard",
     component: view.Dashboard,
-    permissions: 2,
+    permissions: 10,
   },
   {
     exact: false,
