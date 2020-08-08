@@ -17,6 +17,10 @@ const Dashboard = ({ status, data, isLoading }) => {
         accessor: "summonerName",
       },
       {
+        Header: "region",
+        accessor: "region",
+      },
+      {
         Header: "createdAt",
         accessor: "createdAt",
       },

@@ -24,6 +24,7 @@ class UserController extends Controller {
           select: {
             name: true,
             level: true,
+            region: true,
           },
         },
         email: true,
@@ -33,9 +34,10 @@ class UserController extends Controller {
 
     const formattedData = data.map((user) => ({
       username: user.username,
-      summonerName: user.summoner ? user.summoner.name : "None",
+      summonerName: user.summoner ? user.summoner.name : "-",
       email: user.email,
-      createdAt: user.createdAt,
+      region: user.summoner ? user.summoner.region : "-",
+      createdAt: new Date(user.createdAt).toISOString().substr(0, 10),
     }));
 
     res.status(200).json(formattedData);
