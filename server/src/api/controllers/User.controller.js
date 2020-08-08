@@ -123,9 +123,7 @@ class UserController extends Controller {
       this.Auth.setRefreshCookie(res, refreshToken);
 
       res.status(200).json({
-        username: user.username,
-        summoner: user.summoner,
-        permissions: payload.data.permissions,
+        ...payload.data,
         token: accessToken,
         expirationDate,
       });
@@ -149,12 +147,7 @@ class UserController extends Controller {
   async refresh(req, res, next) {
     try {
       const payload = {
-        data: {
-          id: req.user.id,
-          username: req.user.username,
-          summoner: req.user.summoner,
-          permissions: req.user.permissions,
-        },
+        data: req.user,
       };
 
       const { token: refreshToken } = await this.Auth.createToken(
@@ -177,9 +170,7 @@ class UserController extends Controller {
       this.Auth.setBearer(res, accessToken);
 
       res.status(200).json({
-        username: payload.data.username,
-        summoner: payload.data.summoner,
-        permissions: payload.data.permissions,
+        ...payload,
         token: accessToken,
         expirationDate,
       });
