@@ -63,7 +63,7 @@ class UserController extends Controller {
         },
       });
 
-      res.status(201).json(newUser);
+      res.sendStatus(201);
     } catch (err) {
       next(err);
     }
