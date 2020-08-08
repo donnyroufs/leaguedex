@@ -63,7 +63,7 @@ class UserController extends Controller {
         },
       });
 
-      res.sendStatus(201);
+      res.status(201).json(newUser);
     } catch (err) {
       next(err);
     }
@@ -110,6 +110,7 @@ class UserController extends Controller {
         token: accessToken,
         expirationDate,
       } = await this.Auth.createToken(payload);
+
       const { token: refreshToken } = await this.Auth.createToken(
         payload,
         REFRESH_TOKEN
@@ -156,19 +157,6 @@ class UserController extends Controller {
         },
       };
 
-      // Quick dirty fix.
-      if (!req.user.summoner) {
-        const _data = await this.model.findOne({
-          where: {
-            id: req.user.id,
-          },
-          select: {
-            summoner: true,
-          },
-        });
-        payload.data.summoner = _data.summoner;
-      }
-
       const { token: refreshToken } = await this.Auth.createToken(
         payload,
         REFRESH_TOKEN
@@ -202,6 +190,7 @@ class UserController extends Controller {
 
   async addSummmonerAccount(req, res, next) {
     const { summonerName } = req.body;
+    console.log(req.body);
     try {
       const data = await Riot.getSummoner(summonerName);
 
