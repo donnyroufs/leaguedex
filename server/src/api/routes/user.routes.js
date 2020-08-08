@@ -9,6 +9,8 @@ const controller = new Controller({
   auth: Auth,
 });
 
+router.get("/", Auth.authenticateToken, controller.all);
+
 router.post("/register", controller.create);
 router.post("/login", controller.login);
 

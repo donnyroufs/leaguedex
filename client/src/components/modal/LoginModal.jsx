@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import theme from "../../theme";
 import Modal from "./Modal";
 import useOnclickOutside from "react-cool-onclickoutside";
 import validateForm from "../../helpers/validateForm";
@@ -15,6 +16,7 @@ import { LOGIN_FORM } from "../../constants";
 
 import { useModal } from "../../hooks/useModal";
 import { useAuth } from "../../hooks/useAuth";
+import { BeatLoader } from "react-spinners";
 
 const initialValues = {
   username: "",
@@ -22,6 +24,7 @@ const initialValues = {
 };
 
 const LoginModal = () => {
+  const [loading, setLoading] = useState(false);
   const [values, setValues] = useState(initialValues);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -47,6 +50,7 @@ const LoginModal = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { errors, valid } = validateForm(values, LOGIN_FORM);
     if (valid) {
       const successLogin = await login(values);
@@ -62,6 +66,7 @@ const LoginModal = () => {
       const firstError = Object.values(errors)[0];
       setErrorMessage(firstError);
     }
+    setLoading(false);
   };
 
   const switchModal = (e) => {
@@ -118,8 +123,14 @@ const LoginModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Button type="submit" form="true" onClick={handleLogin}>
-          Login
+        <Button
+          type="submit"
+          form="true"
+          onClick={handleLogin}
+          disabled={loading}
+        >
+          {loading && <BeatLoader color={theme.secondary} height="100%" />}
+          {!loading && "login"}
         </Button>
       </Form>
       <Footer>

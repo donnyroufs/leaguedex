@@ -124,6 +124,9 @@ const useAuthProvider = () => {
     return `Bearer ${token}`;
   };
 
+  const isAllowed = (requiredPermissions) =>
+    user && user.permissions >= requiredPermissions;
+
   return {
     register,
     login,
@@ -136,5 +139,6 @@ const useAuthProvider = () => {
     getToken,
     initialLoad,
     setInitialLoad,
+    isAllowed,
   };
 };

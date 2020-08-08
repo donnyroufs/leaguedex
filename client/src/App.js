@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import ProtectedRoute from "./ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import { Route, Switch } from "react-router";
 import Layout from "./components/layout/Layout";
@@ -18,6 +19,7 @@ const App = () => {
     loading,
     initialLoad,
     setInitialLoad,
+    isAllowed,
   } = useAuth();
   const { setModal } = useModal();
 
@@ -53,16 +55,28 @@ const App = () => {
       <LoginModal />
       <RegisterModal />
       <SummonerModal />
-      <Switch>
-        {routes.map((route) => (
-          <Route
-            exact={route.exact}
-            path={route.path}
-            component={route.component}
-            key={route.path}
-          />
-        ))}
-      </Switch>
+      {!loading && (
+        <Switch>
+          {routes.map((route) =>
+            !route.permissions || route.permissions === 1 ? (
+              <Route
+                exact={route.exact}
+                path={route.path}
+                component={route.component}
+                key={route.path}
+              />
+            ) : (
+              <ProtectedRoute
+                exact={route.exact}
+                path={route.path}
+                component={route.component}
+                key={route.path}
+                isAllowed={isAllowed(route.permissions)}
+              />
+            )
+          )}
+        </Switch>
+      )}
     </Layout>
   );
 };
