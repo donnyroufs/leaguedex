@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "./Champion.styles";
+import { Container, ChampionInfo, Matchups } from "./Champion.styles.js";
 
 const Champion = ({ isLoading, status, data }) => {
     if (isLoading) {
@@ -12,13 +12,18 @@ const Champion = ({ isLoading, status, data }) => {
 
     return (
         <Container>
-            <Container.Image src={data.image} alt={data.name}></Container.Image>
-            <Container secondary>
-                <p>{data.name}</p>
-                <p>{data.lore}</p>
-                <p>{data.tags}</p>
-            </Container>
-            
+            <ChampionInfo>
+                <img src={data.image} alt={data.name}></img>
+                <div class="description">
+                    <p>{data.name}</p>
+                    <p>{data.lore}</p>
+                    <p>{data.tags}</p>
+                </div>
+            </ChampionInfo>
+            <Matchups>
+                <div class="row"></div>
+                <div class="row"></div>
+            </Matchups>
         </Container>
     );
 };
