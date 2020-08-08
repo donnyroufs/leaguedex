@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useAuth } from "./hooks/useAuth";
 
 const ProtectedRoute = ({ component: Component, isAdmin, ...rest }) => {
   return (
