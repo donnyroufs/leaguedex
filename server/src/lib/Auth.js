@@ -47,21 +47,9 @@ class Auth {
         },
       });
 
-      const user = await db.user.findOne({
-        where: {
-          id: decoded.id,
-        },
-        select: {
-          id: true,
-          username: true,
-          summoner: true,
-          permissions: true,
-        },
-      });
-
       if (!data) throw new ErrorHandler(404, "Could not find token.");
 
-      req.user = user;
+      req.user = decoded;
       next();
     } catch (err) {
       next(err);

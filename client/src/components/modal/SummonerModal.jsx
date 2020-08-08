@@ -15,6 +15,7 @@ import theme from "../../theme";
 import { useModal } from "../../hooks/useModal";
 import { useAuth } from "../../hooks/useAuth";
 import { toast } from "react-toastify";
+import decode from "jwt-decode";
 
 const initialValues = {
   summonerName: "",
@@ -49,7 +50,7 @@ const LoginModal = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch("/user/summoner", {
+      const response = await fetch("/user/summoner", {
         method: "POST",
         body: JSON.stringify({ summonerName: values.summonerName }),
         credentials: "include",
@@ -59,20 +60,15 @@ const LoginModal = () => {
           authorization: getToken(),
         },
       });
+      const { accessToken } = await response.json();
+      const { data } = decode(accessToken);
 
-      const data = await res.json();
-
+      setUser({
+        ...user,
+        ...data,
+      });
+      toast.success("Added account successfully.");
       setModal(null);
-      if (data && data.status === "error") {
-        toast.error("Something went wrong on our end. Please try again later.");
-      } else {
-        setUser({
-          ...user,
-          permissions: data.permissions,
-          summoner: data,
-        });
-        toast.success("Added account successfully.");
-      }
     } catch (err) {
       toast.error("Something went wrong on our end. Please try again later.");
     }
