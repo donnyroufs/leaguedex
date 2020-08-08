@@ -67,7 +67,7 @@ const LoginModal = () => {
         ...user,
         ...data,
       });
-      toast.success("Added account successfully.");
+      toast.info("Added account successfully.");
       setModal(null);
     } catch (err) {
       toast.error("Something went wrong on our end. Please try again later.");
