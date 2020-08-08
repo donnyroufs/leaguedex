@@ -8,12 +8,12 @@ const routes = [
     component: view.Home,
     permissions: 1,
   },
-  { 
-    exact: true, 
-    path: "/champion/:name", 
-    name: "champion", 
+  {
+    exact: true,
+    path: "/champion/:name",
+    name: "champion",
     component: view.Champion,
-    permissions: 1,
+    permissions: 2,
   },
   {
     exact: true,
