@@ -25,7 +25,8 @@ class Application {
   }
 
   _setMiddleware() {
-    this.app.use("/api/user", this.middleware.rateLimit(this.userApi));
+    this.app.use("/api/user/login", this.middleware.rateLimit(this.userApi));
+    this.app.use("/api/user/register", this.middleware.rateLimit(this.userApi));
     this.app.use(this.middleware.cookieParser());
     this.app.use(this.express.json());
     this.app.use(this.middleware.morgan("tiny"));
