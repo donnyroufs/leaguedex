@@ -56,6 +56,7 @@ const RegisterModal = () => {
     const { errors, valid } = validateForm(values, REGISTER_FORM);
     if (valid) {
       const accountCreated = await register(values);
+      console.log(accountCreated);
       if (!accountCreated) {
         setErrorMessage("Account or email already exists.");
       }

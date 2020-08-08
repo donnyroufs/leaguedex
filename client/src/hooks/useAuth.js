@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { toast } from "react-toastify";
+import decode from "jwt-decode";
 
 const authContext = createContext();
 
@@ -17,7 +18,7 @@ const useAuthProvider = () => {
   const [loading, setLoading] = useState(true);
   const [initialLoad, setInitialLoad] = useState(true);
 
-  const login = async (formData) => {
+  const login = async (formData, register = false) => {
     try {
       const response = await fetch("/user/login", {
         method: "POST",
@@ -28,20 +29,19 @@ const useAuthProvider = () => {
         },
         credentials: "include",
       });
-      const data = await response.json();
-      if (data.username) {
-        setTimeout(() => {
-          const { token, ...rest } = data;
-          setToken(token);
-          setUser(rest);
-        }, 600);
-        toast.info("You have successfully logged in.");
+      const { accessToken } = await response.json();
+      const { data, exp } = decode(accessToken);
+      setTimeout(() => {
+        setToken(accessToken);
+        setUser(data);
+      }, 600);
+      if (register)
+        toast.info("Successfully created an account and logged in.");
+      else toast.info("You have successfully logged in.");
+      if (exp) {
+        await autoRefreshAccessToken(exp);
       }
-      if (data.expirationDate) {
-        await autoRefreshAccessToken(data.expirationDate);
-      }
-
-      return data.hasOwnProperty("username");
+      return true;
     } catch (err) {
       setUser(null);
     }
@@ -58,12 +58,13 @@ const useAuthProvider = () => {
         },
         credentials: "include",
       });
-      const data = await response.json();
-      if (data.username) {
-        login({ username: formData.username, password: formData.password });
-        toast.info("Account successfully created.");
+      if (response.status === 201) {
+        login(
+          { username: formData.username, password: formData.password },
+          true
+        );
+        return true;
       }
-      return data.hasOwnProperty("username");
     } catch (err) {
       setUser(null);
     }
@@ -83,17 +84,16 @@ const useAuthProvider = () => {
   const refreshToken = async () => {
     try {
       const response = await fetch("/user/refresh");
-      const data = await response.json();
-      if (data.username) {
-        const { token, ...rest } = data;
-        setToken(token);
-        setUser(rest);
-      }
+      const { accessToken } = await response.json();
+      const { data, exp } = decode(accessToken);
+
+      setToken(accessToken);
+      setUser(data);
       if (loading) {
         setLoading(false);
       }
-      if (data.expirationDate) {
-        autoRefreshAccessToken(data.expirationDate);
+      if (exp) {
+        autoRefreshAccessToken(exp);
       }
     } catch (err) {
       setLoading(false);

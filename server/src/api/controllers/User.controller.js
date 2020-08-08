@@ -52,18 +52,15 @@ class UserController extends Controller {
       }
 
       const hashedPassword = await this.Auth.hashPassword(password);
-      const newUser = await this.model.create({
+      await this.model.create({
         data: {
           username,
           password: hashedPassword,
           email,
         },
-        select: {
-          username: true,
-        },
       });
 
-      res.status(201).json(newUser);
+      res.sendStatus(201);
     } catch (err) {
       next(err);
     }
@@ -106,10 +103,7 @@ class UserController extends Controller {
         },
       };
 
-      const {
-        token: accessToken,
-        expirationDate,
-      } = await this.Auth.createToken(payload);
+      const { token: accessToken } = await this.Auth.createToken(payload);
 
       const { token: refreshToken } = await this.Auth.createToken(
         payload,
@@ -118,14 +112,10 @@ class UserController extends Controller {
 
       await this.Auth.createOrUpdateRefreshToken(user.username, refreshToken);
 
-      this.Auth.setBearer(res, accessToken);
-
       this.Auth.setRefreshCookie(res, refreshToken);
 
       res.status(200).json({
-        ...payload.data,
-        token: accessToken,
-        expirationDate,
+        accessToken,
       });
     } catch (err) {
       next(err);
@@ -162,18 +152,9 @@ class UserController extends Controller {
 
       this.Auth.setRefreshCookie(res, refreshToken);
 
-      const {
-        token: accessToken,
-        expirationDate,
-      } = await this.Auth.createToken(payload);
+      const { token: accessToken } = await this.Auth.createToken(payload);
 
-      this.Auth.setBearer(res, accessToken);
-
-      res.status(200).json({
-        ...payload,
-        token: accessToken,
-        expirationDate,
-      });
+      res.status(200).json({ accessToken });
     } catch (err) {
       next(err);
     }
