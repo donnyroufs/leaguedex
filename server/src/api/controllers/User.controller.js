@@ -45,9 +45,12 @@ class UserController extends Controller {
 
   async create(req, res, next) {
     const { username, password, password_confirmation, email } = req.body;
-    // validate fields (username, email, password, password_confirmation)
 
     try {
+      if (password !== password_confirmation) {
+        throw new ErrorHandler(400, "Passwords do not match.");
+      }
+
       const hashedPassword = await this.Auth.hashPassword(password);
       const newUser = await this.model.create({
         data: {
@@ -68,8 +71,7 @@ class UserController extends Controller {
 
   async login(req, res, next) {
     const { username, password } = req.body;
-    // validate fields (username, password)
-    // Check if username exists
+
     try {
       const user = await this.model.findOne({
         where: {
@@ -84,10 +86,8 @@ class UserController extends Controller {
         },
       });
 
-      // Should change error message
-      if (!user) throw new ErrorHandler(404, "User does not exist");
+      if (!user) throw new ErrorHandler(403, "User or password is not valid.");
 
-      // Check if password valid
       const validPassword = await this.Auth.isValidPassword(
         password,
         user.password
@@ -97,7 +97,6 @@ class UserController extends Controller {
         throw new ErrorHandler(403, "Username or password is not valid.");
       }
 
-      // grant refresh and access token.
       const payload = {
         data: {
           id: user.id,
@@ -116,13 +115,10 @@ class UserController extends Controller {
         REFRESH_TOKEN
       );
 
-      // store refreshtoken in database
       await this.Auth.createOrUpdateRefreshToken(user.username, refreshToken);
 
-      // set authorization bearer for access token
       this.Auth.setBearer(res, accessToken);
 
-      // set cookie for refresh token
       this.Auth.setRefreshCookie(res, refreshToken);
 
       res.status(200).json({
@@ -223,8 +219,6 @@ class UserController extends Controller {
           },
         },
       });
-
-      // Should update token here
 
       res.status(201).json(addedSummoner);
     } catch (err) {
