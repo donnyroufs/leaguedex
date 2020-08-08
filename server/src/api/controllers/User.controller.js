@@ -16,6 +16,33 @@ class UserController extends Controller {
     this.addSummmonerAccount = this.addSummmonerAccount.bind(this);
   }
 
+  async all(req, res) {
+    const data = await this.model.findMany({
+      select: {
+        username: true,
+        summoner: {
+          select: {
+            name: true,
+            level: true,
+            region: true,
+          },
+        },
+        email: true,
+        createdAt: true,
+      },
+    });
+
+    const formattedData = data.map((user) => ({
+      username: user.username,
+      summonerName: user.summoner ? user.summoner.name : "-",
+      email: user.email,
+      region: user.summoner ? user.summoner.region : "-",
+      createdAt: new Date(user.createdAt).toISOString().substr(0, 10),
+    }));
+
+    res.status(200).json(formattedData);
+  }
+
   async create(req, res, next) {
     const { username, password, password_confirmation, email } = req.body;
     // validate fields (username, email, password, password_confirmation)
@@ -53,6 +80,7 @@ class UserController extends Controller {
           username: true,
           password: true,
           summoner: true,
+          permissions: true,
         },
       });
 
@@ -75,6 +103,7 @@ class UserController extends Controller {
           id: user.id,
           username: user.username,
           summoner: user.summoner,
+          isAdmin: user.permissions > 1,
         },
       };
 
@@ -99,6 +128,7 @@ class UserController extends Controller {
       res.status(200).json({
         username: user.username,
         summoner: user.summoner,
+        isAdmin: payload.data.isAdmin,
         token: accessToken,
         expirationDate,
       });
@@ -125,6 +155,7 @@ class UserController extends Controller {
           id: req.user.id,
           username: req.user.username,
           summoner: req.user.summoner,
+          isAdmin: req.user.isAdmin,
         },
       };
 
@@ -150,6 +181,7 @@ class UserController extends Controller {
       res.status(200).json({
         username: payload.data.username,
         summoner: payload.data.summoner,
+        isAdmin: payload.data.isAdmin,
         token: accessToken,
         expirationDate,
       });
