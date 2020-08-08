@@ -190,7 +190,7 @@ class UserController extends Controller {
 
   async addSummmonerAccount(req, res, next) {
     const { summonerName } = req.body;
-    console.log(req.body);
+
     try {
       const data = await Riot.getSummoner(summonerName);
 
