@@ -21,7 +21,7 @@ const Dashboard = ({ status, data, isLoading }) => {
         accessor: "region",
       },
       {
-        Header: "createdAt",
+        Header: "member since",
         accessor: "createdAt",
       },
     ],
