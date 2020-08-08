@@ -142,6 +142,7 @@ class UserController extends Controller {
 
     try {
       this.Auth.removeRefreshToken(username);
+      this.Auth.setRefreshCookie(res, null, 0);
       res.sendStatus(200);
     } catch (err) {
       next(err);
@@ -172,10 +173,23 @@ class UserController extends Controller {
         payload.data.summoner = _data.summoner;
       }
 
+      const { token: refreshToken } = await this.Auth.createToken(
+        payload,
+        REFRESH_TOKEN
+      );
+
+      await this.Auth.createOrUpdateRefreshToken(
+        req.user.username,
+        refreshToken
+      );
+
+      this.Auth.setRefreshCookie(res, refreshToken);
+
       const {
         token: accessToken,
         expirationDate,
       } = await this.Auth.createToken(payload);
+
       this.Auth.setBearer(res, accessToken);
 
       res.status(200).json({
