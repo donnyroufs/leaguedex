@@ -6,6 +6,7 @@ class Controller {
 
     this.all = this.all.bind(this);
     this.findOneById = this.findOneById.bind(this);
+    this.findOneByName = this.findOneByName.bind(this);
     this.createOne = this.createOne.bind(this);
     this.updateOne = this.updateOne.bind(this);
     this.deleteOne = this.deleteOne.bind(this);
@@ -26,6 +27,23 @@ class Controller {
       });
       if (!item) {
         throw new ErrorHandler(404, `No entries found with the id: ${id}`);
+      }
+      res.status(200).json(item);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async findOneByName(req, res, next) {
+    try {
+      const { name } = req.params;
+      const item = await this.model.findOne({
+        where: {
+          name: String(name),
+        },
+      });
+      if (!item) {
+        throw new ErrorHandler(404, `No entries found with the name: ${name}`);
       }
       res.status(200).json(item);
     } catch (err) {

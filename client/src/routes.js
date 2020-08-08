@@ -10,6 +10,13 @@ const routes = [
   },
   {
     exact: true,
+    path: "/champion/:name",
+    name: "champion",
+    component: view.Champion,
+    permissions: 2,
+  },
+  {
+    exact: true,
     path: "/admin/dashboard",
     name: "dashboard",
     component: view.Dashboard,
