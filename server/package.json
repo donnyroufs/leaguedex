@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "nodemon ./src/index.js",
     "build": "babel -d ./build ./src -s --copy-files",
-    "restart:staging": "pm2 restart staging_leaguedex"
+    "restart:staging": "pm2 restart staging_leaguedex",
+    "migrate:staging": "prisma migrate up --experimental && prisma generate"
   },
   "main": "index.js",
   "license": "MIT",
