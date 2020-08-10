@@ -5,26 +5,26 @@ on:
     branches: [development]
 
 jobs:
-  build_client:
-    runs-on: self-hosted
-    defaults:
-      run:
-        working-directory: ./client
+  # build_client:
+  #   runs-on: self-hosted
+  #   defaults:
+  #     run:
+  #       working-directory: ./client
 
-    strategy:
-      matrix:
-        node-version: [12.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [12.x]
 
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: yarn install --force
-      - run: yarn run build
-      - run: rm -r /var/www/html/staging-leaguedex/*
-      - run: mv ./build/* /var/www/html/staging-leaguedex
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Use Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: yarn install --force
+  #     - run: yarn run build
+  #     - run: rm -r /var/www/html/staging-leaguedex/*
+  #     - run: mv ./build/* /var/www/html/staging-leaguedex
   build_server:
     runs-on: self-hosted
     defaults:
@@ -43,8 +43,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: cd ../../staging_leaguedex/
       - run: rm -r ../../staging_leaguedex/*
-      - run: cp ../../server.env ../../staging_leaguedex/.env
-      - run: cp ../../prisma.env ../../staging_leaguedex/prisma/.env
+      - run: cp ../server.env ..env
+      - run: cp ../prisma.env ./prisma/.env
       - run: yarn install --force
       - run: yarn build
       - run: yarn migrate:staging
