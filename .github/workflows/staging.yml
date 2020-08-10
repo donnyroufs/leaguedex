@@ -46,6 +46,7 @@ jobs:
       - run: yarn install --force
       - run: yarn build
       - run: mv ./build/* ../../staging_leaguedex
+      - run: mv ./package.json ../../staging_leaguedex
       - run: cd ../../staging_leaguedex/
       - run: prisma migrate up --experimental
       - run: prisma generate
