@@ -45,7 +45,7 @@ jobs:
       - run: cp ../../prisma.env ./prisma/.env
       - run: yarn install --force
       - run: yarn build
-      - run: rm -r /home/leaguedex/actions-runner/staging/leaguedex/staging_leaguedex
+      - run: rm -r /home/leaguedex/actions-runner/staging/leaguedex/staging_leaguedex/*
       - run: mv ./build/* ../../staging_leaguedex
       - run: cd ../../staging_leaguedex/
       - run: prisma migrate up --experimental
