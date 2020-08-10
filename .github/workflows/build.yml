@@ -42,7 +42,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install --force
-      - run: cp ../../server.env ./.env
+      - run: cp ../../server.env ./src/.env
       - run: cp ../../prisma.env ./prisma/.env
       - run: prisma migrate up --experimental
       - run: prisma generate
