@@ -47,3 +47,4 @@ jobs:
       - run: cp ../../prisma.env ./prisma/.env
       - run: prisma migrate up --experimental
       - run: prisma generate
+      - run: yarn restart:staging
