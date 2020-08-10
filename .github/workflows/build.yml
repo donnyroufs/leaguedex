@@ -23,6 +23,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn install --force
       - run: yarn run build
+      - run: mv ./build ../../build-test
   build_server:
     runs-on: self-hosted
     defaults:
