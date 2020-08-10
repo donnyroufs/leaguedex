@@ -42,8 +42,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: mv ./* ../../staging_leaguedex
-      - run: mv ../../server.env ../../staging_leaguedex/.env
-      - run: mv ../../prisma.env ../../staging_leaguedex/prisma/.env
+      - run: cp ../../server.env ../../staging_leaguedex/.env
+      - run: cp ../../prisma.env ../../staging_leaguedex/prisma/.env
       - run: cd ../../staging_leaguedex && yarn install --force
       - run: cd ../../staging_leaguedex && yarn build
       - run: cd ../../staging_leaguedex && yarn migrate:staging
