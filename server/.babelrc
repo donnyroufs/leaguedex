@@ -1,6 +1,12 @@
 {
   "presets": ["@babel/preset-env"],
   "plugins": [
+    [
+      "inline-dotenv",
+      {
+        "path": "./.env"
+      }
+    ],
     "@babel/plugin-transform-runtime",
     "@babel/plugin-proposal-class-properties"
   ]
