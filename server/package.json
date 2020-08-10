@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "nodemon ./src/index.js",
-    "restart:staging": "pm2 restart Staging_leaguedex"
+    "restart:staging": "pm2 restart Staging_leaguedex --update-env"
   },
   "main": "index.js",
   "license": "MIT",
