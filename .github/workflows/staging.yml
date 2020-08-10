@@ -1,8 +1,8 @@
-name: CLIENT
+name: STAGING
 
 on:
   push:
-    branches: [master, development]
+    branches: [development]
 
 jobs:
   build_client:
