@@ -21,8 +21,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run build
+      - run: yarn install --force
+      - run: yarn run build
       - run: rm -r /var/www/html/staging-leaguedex/*
       - run: mv ./build/* /var/www/html/staging-leaguedex
   build_server:
@@ -41,9 +41,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
+      - run: yarn install --force
       - run: cp ../../server.env ./src/.env
       - run: cp ../../prisma.env ./prisma/.env
       - run: prisma migrate up --experimental
       - run: prisma generate
-      - run: npm run restart:staging
+      - run: yarn restart:staging
