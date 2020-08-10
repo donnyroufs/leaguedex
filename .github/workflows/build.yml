@@ -2,11 +2,7 @@ name: CLIENT
 
 on:
   push:
-    branches:
-      - "**"
-  pull_request:
-    branches:
-      - "**"
+    branches: [master, development]
 
 jobs:
   build_client:
