@@ -2,7 +2,8 @@
   "name": "server",
   "version": "1.0.0",
   "scripts": {
-    "dev": "nodemon ./src/index.js"
+    "dev": "nodemon ./src/index.js",
+    "restart:staging": "pm2 restart Staging_leaguedex"
   },
   "main": "index.js",
   "license": "MIT",
@@ -21,6 +22,7 @@
     "nodemon": "^2.0.4"
   },
   "devDependencies": {
-    "@prisma/cli": "2.3.0"
+    "@prisma/cli": "2.3.0",
+    "pm2": "^4.4.0"
   }
 }
