@@ -48,6 +48,5 @@ jobs:
       - run: rm -r ../../staging_leaguedex/*
       - run: mv ./* ../../staging_leaguedex
       - run: cd ../../staging_leaguedex/
-      - run: prisma migrate up --experimental
-      - run: prisma generate
+      - run: yarn migrate:staging
       - run: yarn restart:staging
