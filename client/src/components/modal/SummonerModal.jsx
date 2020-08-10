@@ -50,7 +50,7 @@ const LoginModal = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await fetch("/user/summoner", {
+      const response = await fetch("/api/user/summoner", {
         method: "POST",
         body: JSON.stringify({ summonerName: values.summonerName }),
         credentials: "include",
