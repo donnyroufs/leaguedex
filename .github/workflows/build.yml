@@ -21,8 +21,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn
-      - run: npm build
+      - run: yarn install --force
+      - run: yarn build
   build_server:
     runs-on: ubuntu-latest
     defaults:
@@ -39,5 +39,5 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn
-      - run: pm2 restart Staging_leaguedex
+      - run: yarn install --force
+      - run: yarn restart:staging
