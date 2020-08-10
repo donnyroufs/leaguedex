@@ -25,7 +25,7 @@ jobs:
       - run: yarn run build
       - run: rm -r /var/www/html/staging-leaguedex/*
       - run: mv ./build/* /var/www/html/staging-leaguedex
-      - run: rm -r ./
+      - run: rm -r .
   build_server:
     runs-on: self-hosted
     defaults:
@@ -44,7 +44,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: cp ../../server.env ./.env
       - run: cp ../../prisma.env ./prisma/.env
-      - run: mv ./ ../staging_leaguedex
+      - run: mv . ../staging_leaguedex
       - run: cd ../staging_leaguedex
       - run: yarn install --force
       - run: yarn build
