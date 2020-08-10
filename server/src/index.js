@@ -1,5 +1,4 @@
-require("dotenv/config");
-
+const path = require("path");
 const express = require("express");
 const rateLimit = require("express-rate-limit");
 const { db, validateConnection } = require("./config/database");
@@ -8,6 +7,8 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const { handleError } = require("./helpers/error");
+
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const Application = require("./Application");
 const Riot = require("./lib/Riot");
