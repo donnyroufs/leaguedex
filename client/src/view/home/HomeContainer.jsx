@@ -3,7 +3,7 @@ import Home from "./Home";
 import { useQuery } from "react-query";
 
 const fetchChampions = async () => {
-  const response = await fetch("/champion");
+  const response = await fetch("/api/champion");
   return response.json();
 };
 

@@ -5,7 +5,7 @@ import Dashboard from "./Dashboard";
 import { Styles } from "./Dashboard.styles";
 
 const fetchUsers = async () => {
-  const response = await fetch("/user", {
+  const response = await fetch("/api/user", {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

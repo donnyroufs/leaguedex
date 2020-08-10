@@ -20,7 +20,7 @@ const useAuthProvider = () => {
 
   const login = async (formData, register = false) => {
     try {
-      const response = await fetch("/user/login", {
+      const response = await fetch("/api/user/login", {
         method: "POST",
         body: JSON.stringify(formData),
         headers: {
@@ -49,7 +49,7 @@ const useAuthProvider = () => {
 
   const register = async (formData) => {
     try {
-      const response = await fetch("/user/register", {
+      const response = await fetch("/api/user/register", {
         method: "POST",
         body: JSON.stringify(formData),
         headers: {
@@ -72,7 +72,7 @@ const useAuthProvider = () => {
 
   const logout = async () => {
     try {
-      await fetch("/user/logout", { method: "DELETE" });
+      await fetch("/api/user/logout", { method: "DELETE" });
       setUser(null);
       localStorage.removeItem("x-access-token");
       toast.info("Successfully logged out.");
@@ -83,7 +83,7 @@ const useAuthProvider = () => {
 
   const refreshToken = async () => {
     try {
-      const response = await fetch("/user/refresh");
+      const response = await fetch("/api/user/refresh");
       const { accessToken } = await response.json();
       const { data, exp } = decode(accessToken);
 
