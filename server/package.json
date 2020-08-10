@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "nodemon ./src/index.js",
-    "build": "babel -d ./build ./src -s --copy-files",
     "restart:staging": "pm2 restart staging_leaguedex",
     "migrate:staging": "prisma migrate up --experimental && prisma generate"
   },
@@ -25,12 +24,6 @@
     "nodemon": "^2.0.4"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.11.1",
-    "@babel/node": "^7.10.5",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/plugin-transform-runtime": "^7.11.0",
-    "@babel/preset-env": "^7.11.0",
     "@prisma/cli": "2.3.0",
     "pm2": "^4.4.0"
   }
