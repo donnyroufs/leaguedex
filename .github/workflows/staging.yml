@@ -41,11 +41,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: cd ../../staging_leaguedex/
-      - run: cd ../ && touch hello_world.js
-      # - run: cp ../server.env ..env
-      # - run: cp ../prisma.env ./prisma/.env
-      # - run: yarn install --force
-      # - run: yarn build
-      # - run: yarn migrate:staging
-      # - run: yarn restart:staging
+      - run: rm -r ../../staging_leaguedex/*
+      - run: mv ../../server.env ../../staging_leaguedex/.env
+      - run: mv ../../prisma.env ../../staging_leaguedex/prisma/.env
+      - run: cd ../../staging_leaguedex && yarn install --force
+      - run: cd ../../staging_leaguedex && yarn build
+      - run: cd ../../staging_leaguedex && yarn migrate:staging
+      - run: cd ../../staging_leaguedex && yarn restart:staging
