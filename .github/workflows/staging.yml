@@ -41,7 +41,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: cp ../../server.env ./src/.env
+      - run: cp ../../server.env ./.env
       - run: cp ../../prisma.env ./prisma/.env
       - run: yarn install --force
       - run: yarn build
