@@ -44,13 +44,9 @@ class UserController extends Controller {
   }
 
   async create(req, res, next) {
-    const { username, password, password_confirmation, email } = req.body;
-
+    const { username, password, email } = req.body;
+    
     try {
-      if (password !== password_confirmation) {
-        throw new ErrorHandler(400, 'Passwords do not match.');
-      }
-
       const hashedPassword = await this.Auth.hashPassword(password);
       await this.model.create({
         data: {
