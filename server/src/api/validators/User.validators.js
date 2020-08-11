@@ -1,4 +1,4 @@
-const { Joi } = require("express-joi");
+const { Joi } = require('express-joi');
 
 module.exports = {
   userRegister: {

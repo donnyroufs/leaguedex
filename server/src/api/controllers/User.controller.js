@@ -1,8 +1,8 @@
-const Controller = require("./Controller");
-const { ErrorHandler } = require("../../helpers/error");
-const { REFRESH_TOKEN } = require("../../helpers/constants");
-const Riot = require("../../lib/Riot");
-const { db } = require("../../config/database");
+const Controller = require('./Controller');
+const { ErrorHandler } = require('../../helpers/error');
+const { REFRESH_TOKEN } = require('../../helpers/constants');
+const Riot = require('../../lib/Riot');
+const { db } = require('../../config/database');
 
 class UserController extends Controller {
   constructor({ model, auth }) {
@@ -34,9 +34,9 @@ class UserController extends Controller {
 
     const formattedData = data.map((user) => ({
       username: user.username,
-      summonerName: user.summoner ? user.summoner.name : "-",
+      summonerName: user.summoner ? user.summoner.name : '-',
       email: user.email,
-      region: user.summoner ? user.summoner.region : "-",
+      region: user.summoner ? user.summoner.region : '-',
       createdAt: new Date(user.createdAt).toISOString().substr(0, 10),
     }));
 
@@ -48,7 +48,7 @@ class UserController extends Controller {
 
     try {
       if (password !== password_confirmation) {
-        throw new ErrorHandler(400, "Passwords do not match.");
+        throw new ErrorHandler(400, 'Passwords do not match.');
       }
 
       const hashedPassword = await this.Auth.hashPassword(password);
@@ -83,7 +83,7 @@ class UserController extends Controller {
         },
       });
 
-      if (!user) throw new ErrorHandler(403, "User or password is not valid.");
+      if (!user) throw new ErrorHandler(403, 'User or password is not valid.');
 
       const validPassword = await this.Auth.isValidPassword(
         password,
@@ -91,7 +91,7 @@ class UserController extends Controller {
       );
 
       if (!validPassword) {
-        throw new ErrorHandler(403, "Username or password is not valid.");
+        throw new ErrorHandler(403, 'Username or password is not valid.');
       }
 
       const payload = {
@@ -191,7 +191,7 @@ class UserController extends Controller {
       });
 
       if (!updateAccountPermissions)
-        throw ErrorHandler(500, "Could not update permissions.");
+        throw ErrorHandler(500, 'Could not update permissions.');
 
       const payload = {
         data: {

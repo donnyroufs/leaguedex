@@ -1,10 +1,10 @@
-const axios = require("axios");
-const { db } = require("../config/database");
+const axios = require('axios');
+const { db } = require('../config/database');
 
 class Riot {
   static endpoints = {
-    version: "https://ddragon.leagueoflegends.com/api/versions.json",
-    splash: "http://ddragon.leagueoflegends.com/cdn/img/champion/splash",
+    version: 'https://ddragon.leagueoflegends.com/api/versions.json',
+    splash: 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash',
   };
 
   static async syncChampions() {
@@ -24,7 +24,7 @@ class Riot {
           id: Number(champ.key),
           name: champ.name,
           image: `${this.endpoints.splash}/${champ.id}_0.jpg`,
-          tags: champ.tags.join(", "),
+          tags: champ.tags.join(', '),
           lore: champ.blurb,
           version,
         }));
@@ -48,7 +48,7 @@ class Riot {
     }
   }
 
-  static async getSummoner(summonerName, region = "euw1") {
+  static async getSummoner(summonerName, region = 'euw1') {
     try {
       const { data } = await axios.get(
         `https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}?api_key=${process.env.API_KEY}`
