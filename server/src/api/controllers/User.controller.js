@@ -45,7 +45,7 @@ class UserController extends Controller {
 
   async create(req, res, next) {
     const { username, password, email } = req.body;
-    
+
     try {
       const hashedPassword = await this.Auth.hashPassword(password);
       await this.model.create({
