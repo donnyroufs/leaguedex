@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "nodemon ./src/index.js",
-    "run:prettier": "prettier --check",
+    "run:prettier": "prettier --check ./src",
     "restart:staging": "pm2 restart staging_leaguedex",
     "migrate:staging": "prisma migrate up --experimental && prisma generate"
   },
