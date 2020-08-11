@@ -7,8 +7,8 @@ personalized notes, share your leaguedex with other players and more!
 
 ### Setup
 
-There are 2 requires .env files, look for the example env files and fill them in. When that's done,
-you need to run the migrations:
+There are 2 required .env files within the server folder, look for the example.env files and save those as `.env`.
+When that's done, make sure to create a database and then run our migrations:
 
 ```
 npx prisma migrate save --experimental
