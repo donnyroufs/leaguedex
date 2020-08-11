@@ -41,6 +41,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - run: cd ../../staging_leaguedex && yarn run:prettier
       - run: rm -r ../../staging_leaguedex/*
       - run: mv ./* ../../staging_leaguedex
       - run: cp ../../server.env ../../staging_leaguedex/.env
