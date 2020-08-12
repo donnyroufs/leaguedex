@@ -17,7 +17,7 @@ class Riot {
 
       if (cached.length < 1 || cached[0].version !== latest) {
         const { data } = await axios.get(
-          `http://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/champion.json`
+          `https://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/champion.json`
         );
         const { version, data: championsObj } = data;
         const champions = Object.values(championsObj).map((champ) => ({
