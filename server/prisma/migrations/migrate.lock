@@ -11,3 +11,4 @@
 20200808003202-created-at-updated-at-fields
 20200808005107-add-permissions-to-user
 20200808125233-make-champion-name-unique
+20200813201546-change-authentication-to-token

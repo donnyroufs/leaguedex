@@ -41,7 +41,7 @@ class Auth {
       if (!valid) return new ErrorHandler(403, 'Not allowed.');
 
       const { data: decoded } = jwt.decode(refreshToken);
-      const data = await db.authentication.findOne({
+      const data = await db.token.findOne({
         where: {
           username: decoded.username,
         },
@@ -57,7 +57,7 @@ class Auth {
   }
 
   static async removeRefreshToken(username) {
-    return db.authentication.delete({
+    return db.token.delete({
       where: {
         username,
       },
@@ -83,7 +83,7 @@ class Auth {
   }
 
   static async createOrUpdateRefreshToken(username, refreshToken) {
-    return db.authentication.upsert({
+    return db.token.upsert({
       where: {
         username,
       },
