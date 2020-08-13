@@ -4,7 +4,7 @@ const { db } = require('../config/database');
 class Riot {
   static endpoints = {
     version: 'https://ddragon.leagueoflegends.com/api/versions.json',
-    splash: 'http://ddragon.leagueoflegends.com/cdn/img/champion/splash',
+    splash: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash',
   };
 
   static async syncChampions() {
@@ -17,7 +17,7 @@ class Riot {
 
       if (cached.length < 1 || cached[0].version !== latest) {
         const { data } = await axios.get(
-          `http://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/champion.json`
+          `https://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/champion.json`
         );
         const { version, data: championsObj } = data;
         const champions = Object.values(championsObj).map((champ) => ({
