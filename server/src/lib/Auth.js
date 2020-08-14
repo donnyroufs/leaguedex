@@ -43,7 +43,7 @@ class Auth {
       const { data: decoded } = jwt.decode(refreshToken);
       const data = await db.token.findOne({
         where: {
-          username: decoded.username,
+          user_id: decoded.id,
         },
       });
 
@@ -56,10 +56,10 @@ class Auth {
     }
   }
 
-  static async removeRefreshToken(username) {
+  static async removeRefreshToken(userId) {
     return db.token.delete({
       where: {
-        username,
+        user_id: userId,
       },
     });
   }
@@ -82,14 +82,16 @@ class Auth {
     return { token, expirationDate };
   }
 
-  static async createOrUpdateRefreshToken(username, refreshToken) {
+  static async createOrUpdateRefreshToken(userId, refreshToken) {
     return db.token.upsert({
       where: {
-        username,
+        user_id: userId,
       },
       create: {
-        username,
         token: refreshToken,
+        user: {
+          connect: { id: userId },
+        },
       },
       update: {
         token: refreshToken,

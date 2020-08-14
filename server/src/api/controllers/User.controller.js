@@ -106,7 +106,7 @@ class UserController extends Controller {
         REFRESH_TOKEN
       );
 
-      await this.Auth.createOrUpdateRefreshToken(user.username, refreshToken);
+      await this.Auth.createOrUpdateRefreshToken(user.id, refreshToken);
 
       this.Auth.setRefreshCookie(res, refreshToken);
 
@@ -119,10 +119,10 @@ class UserController extends Controller {
   }
 
   async destroy(req, res, next) {
-    const username = req.user.username;
+    const userId = req.user.id;
 
     try {
-      this.Auth.removeRefreshToken(username);
+      this.Auth.removeRefreshToken(userId);
       this.Auth.setRefreshCookie(res, null, 0);
       res.sendStatus(200);
     } catch (err) {
@@ -141,10 +141,7 @@ class UserController extends Controller {
         REFRESH_TOKEN
       );
 
-      await this.Auth.createOrUpdateRefreshToken(
-        req.user.username,
-        refreshToken
-      );
+      await this.Auth.createOrUpdateRefreshToken(req.user.id, refreshToken);
 
       this.Auth.setRefreshCookie(res, refreshToken);
 
