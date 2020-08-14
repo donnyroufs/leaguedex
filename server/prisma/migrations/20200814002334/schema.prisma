@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -20,7 +20,8 @@ model User {
   Matchups    Matchup[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  token       Token?
+  token       Token?    @relation(fields: [token_id], references: [id])
+  token_id    Int?
 }
 
 model Summoner {
@@ -61,6 +62,5 @@ model Token {
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user_id   Int      @unique
-  user      User     @relation(fields: [user_id], references: [id])
+  User      User
 }
