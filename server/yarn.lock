@@ -135,15 +135,15 @@
   dependencies:
     debug "^4.1.1"
 
-"@prisma/cli@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@prisma/cli/-/cli-2.3.0.tgz#ddc89de63c2fcb88199fdd1b490a7616a2d32de1"
-  integrity sha512-S84VeeUR3I2Z1fkBh3x42KmVyFgiX4USzIN5N5EDyoWC8BSlMVs2eHeLlhHOtx68sDz5oNo/YEIM2bkU8cUZKA==
+"@prisma/cli@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@prisma/cli/-/cli-2.4.1.tgz#95f6cae48ff19c6177bb9f85816b27e1ffe5af53"
+  integrity sha512-vAOBnouBgCYndXmTcGxanfmhVWUCpwr3akBXiQH+ZKzTYf/pwSsWYpeaXNQfVtUEJEQ0kumfLGdq6ZXnfX//aA==
 
-"@prisma/client@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-2.3.0.tgz#3979d973e0eececad5387c791aa1dd63316fc690"
-  integrity sha512-mlXV/VdOKjEEoZPOmFOy7KJPecYGV5XSVXGsti0F1kkShpGcMvhPkpKhNOwIb/8muUTeN5NoNqEGqKDD5XKw3w==
+"@prisma/client@2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-2.4.1.tgz#840d0905e9d05d84313e333a3e0370df3b9815fe"
+  integrity sha512-13aphZb34ws8GuRxVsmgiQmUJRfcnnb5/Jy78/ZkpLyCk5ZpchO/Rr1KNiF/cfLHprdKOjSvUzthcx+tubaA2A==
   dependencies:
     pkg-up "^3.1.0"
 
@@ -420,22 +420,7 @@ charm@~0.1.1:
   resolved "https://registry.yarnpkg.com/charm/-/charm-0.1.2.tgz#06c21eed1a1b06aeb67553cdc53e23274bac2296"
   integrity sha1-BsIe7RobBq62dVPNxT4jJ0usIpY=
 
-chokidar@^3.2.2:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.4.1.tgz#e905bdecf10eaa0a0b1db0c664481cc4cbc22ba1"
-  integrity sha512-TQTJyr2stihpC4Sya9hs2Xh+O2wf+igjL36Y75xx2WdHuiICcn/XJza46Jwt0eT5hVpQOzo3FpY3cj3RVYLX0g==
-  dependencies:
-    anymatch "~3.1.1"
-    braces "~3.0.2"
-    glob-parent "~5.1.0"
-    is-binary-path "~2.1.0"
-    is-glob "~4.0.1"
-    normalize-path "~3.0.0"
-    readdirp "~3.4.0"
-  optionalDependencies:
-    fsevents "~2.1.2"
-
-chokidar@^3.3.0:
+chokidar@^3.2.2, chokidar@^3.3.0:
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.4.2.tgz#38dc8e658dec3809741eb3ef7bb0a47fe424232d"
   integrity sha512-IZHaDeBeI+sZJRX7lGcXsdzgvZqKv6sECqsbErJA4mHWfpRrD8B97kSFN4cQz6nGBGiuFia1MKR4d6c1o8Cv7A==
@@ -940,9 +925,9 @@ get-stream@^4.1.0:
     pump "^3.0.0"
 
 get-stream@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-5.1.0.tgz#01203cdc92597f9b909067c3e656cc1f4d3c4dc9"
-  integrity sha512-EXr1FOzrzTfGeL0gQdeFEvOMm2mzMOglyiOXSTpPC+iAjAKftbr3jpCMWynogwYnM+eSj9sHGc6wjIcDvYiygw==
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-5.2.0.tgz#4966a1795ee5ace65e706c4b7beb71257d6e22d3"
+  integrity sha512-nBF+F1rAZVCu/p7rjzgA+Yb4lfYXrpl7a6VmJrU8wF9I1CKvP/QwPNZHnOlwbTkY6dvtFIzFMSyQXbLoTQPRpA==
   dependencies:
     pump "^3.0.0"
 
@@ -1312,9 +1297,9 @@ lodash.once@^4.0.0:
   integrity sha1-DdOXEhPHxW34gJd9UEyI+0cal6w=
 
 lodash@^4.17.14:
-  version "4.17.19"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
-  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 log-driver@^1.2.7:
   version "1.2.7"
