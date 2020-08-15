@@ -1,12 +1,9 @@
 import React from "react";
-import { useAuth } from "../../hooks/useAuth";
 import { Container, Lock, Overlay } from "./Card.styles";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-const Card = ({ image, name }) => {
-  const { isAuthenticated, user } = useAuth();
-
-  if (!isAuthenticated || !user.summoner) {
+const Card = ({ image, name, has_matchups: hasMatchups }) => {
+  if (!hasMatchups) {
     return (
       <Container to="/" locked="true">
         <Overlay>
