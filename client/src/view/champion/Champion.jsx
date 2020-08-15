@@ -15,12 +15,7 @@ const Champion = ({ status, data }) => {
       <Container.Image src={data.image} alt={data.name} />
       <Container.Info>
         <Title>{data.name}</Title>
-        <Text>{data.lore}</Text>
-        <Container.Tags>
-          {data.tags.split(",").map((tag) => (
-            <Tag key={tag}>{tag}</Tag>
-          ))}
-        </Container.Tags>
+        currently broken. Redesign is on the way.
       </Container.Info>
     </Container>
   );
