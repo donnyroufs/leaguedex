@@ -4,6 +4,7 @@ const Auth = require('../../lib/Auth');
 const { createValidator } = require('express-joi-validation');
 const { userLogin, userRegister } = require('../validators/User.validators');
 const { db } = require('../../config/database');
+const formatters = require('../formatters/user.formatters');
 
 const validator = createValidator();
 
@@ -11,6 +12,7 @@ const router = express.Router();
 const controller = new Controller({
   model: db.user,
   auth: Auth,
+  formatters,
 });
 
 router.get('/', Auth.authenticateToken, controller.all);

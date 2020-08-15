@@ -5,9 +5,10 @@ const Riot = require('../../lib/Riot');
 const { db } = require('../../config/database');
 
 class UserController extends Controller {
-  constructor({ model, auth }) {
+  constructor({ model, auth, formatters }) {
     super(model);
     this.Auth = auth;
+    this.formatters = formatters;
 
     this.create = this.create.bind(this);
     this.login = this.login.bind(this);
@@ -32,13 +33,7 @@ class UserController extends Controller {
       },
     });
 
-    const formattedData = data.map((user) => ({
-      username: user.username,
-      summonerName: user.summoner ? user.summoner.name : '-',
-      email: user.email,
-      region: user.summoner ? user.summoner.region : '-',
-      createdAt: new Date(user.createdAt).toISOString().substr(0, 10),
-    }));
+    const formattedData = this.formatters.all(data);
 
     res.status(200).json(formattedData);
   }
