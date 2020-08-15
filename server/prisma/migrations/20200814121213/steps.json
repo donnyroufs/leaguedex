@@ -1,0 +1,266 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "matchups",
+      "type": "Matchup",
+      "arity": "List"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "Matchups"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Matchup",
+      "field": "game_id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Matchup",
+      "field": "champion_id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Matchup",
+      "field": "opponent_id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Matchup",
+      "field": "championA",
+      "type": "Champion",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Matchup",
+          "field": "championA"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Matchup",
+          "field": "championA"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"matchup_champion_id\""
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Matchup",
+          "field": "championA"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[champion_id]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Matchup",
+          "field": "championA"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Matchup",
+      "field": "championB",
+      "type": "Champion",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Matchup",
+          "field": "championB"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Matchup",
+          "field": "championB"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"matchup_opponent_id\""
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Matchup",
+          "field": "championB"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[opponent_id]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Matchup",
+          "field": "championB"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Matchup",
+      "field": "id"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Matchup",
+      "field": "champion_one"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Matchup",
+      "field": "champion_two"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Matchup",
+      "field": "lane",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "Matchup"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "Matchup"
+        },
+        "directive": "id"
+      },
+      "argument": "",
+      "value": "[champion_id, opponent_id, lane, user_id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Champion",
+      "field": "matchup_champion_id",
+      "type": "Matchup",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Champion",
+          "field": "matchup_champion_id"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Champion",
+          "field": "matchup_champion_id"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"matchup_champion_id\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "Champion",
+      "field": "matchup_opponent_id",
+      "type": "Matchup",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Champion",
+          "field": "matchup_opponent_id"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Champion",
+          "field": "matchup_opponent_id"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"matchup_opponent_id\""
+    }
+  ]
+}
