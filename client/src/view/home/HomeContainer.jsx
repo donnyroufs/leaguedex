@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Home from "./Home";
 import { useAuth } from "../../hooks/useAuth";
 import { getToken } from "../../helpers/getToken";
+import { MoonLoader } from "react-spinners";
 
 const fetchChampions = async (isAuthenticated) => {
   const endpoint = isAuthenticated ? "/api/matchup/played" : "/api/champion";
@@ -28,7 +29,11 @@ const HomeContainer = () => {
     });
   }, [isAuthenticated]);
 
-  return <Home champions={champions} loading={loading} />;
+  return loading ? (
+    <MoonLoader color="B8D0EC" />
+  ) : (
+    <Home champions={champions} loading={loading} />
+  );
 };
 
 export default HomeContainer;
