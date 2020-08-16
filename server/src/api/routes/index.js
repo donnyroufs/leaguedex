@@ -6,6 +6,9 @@ const matchupRoutes = require('./matchup.routes');
 
 const router = express.Router();
 
+router.use('/user', userRoutes);
+router.use('/champion', championRoutes);
+router.use('/matchup', matchupRoutes);
 router.use('/', (req, res) => {
   res.json({
     public_endpoints: {
@@ -14,9 +17,5 @@ router.use('/', (req, res) => {
     },
   });
 });
-
-router.use('/user', userRoutes);
-router.use('/champion', championRoutes);
-router.use('/matchup', matchupRoutes);
 
 module.exports = router;
