@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Title, Text, Tag } from "./Champion.styles.js";
+import { Container, Title } from "./Champion.styles.js";
 
 const Champion = ({ status, data }) => {
   if (status === "loading") {
