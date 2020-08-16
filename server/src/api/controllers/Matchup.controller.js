@@ -6,14 +6,74 @@ class MatchupController extends Controller {
   constructor(model) {
     super(model);
 
+    this.create = this.createOne.bind(this);
     this.getPlayedChampions = this.getPlayedChampions.bind(this);
+  }
+
+  async createOne(req, res, next) {
+    try {
+      const { id } = req.user;
+      const { lane, champion_id, opponent_id, game_id } = req.body;
+
+      const matchup = await this.model.findOne({
+        where: {
+          champion_id_opponent_id_lane_user_id: {
+            lane,
+            champion_id,
+            opponent_id,
+            user_id: id,
+          },
+        },
+        select: {
+          games_played: true,
+        },
+      });
+
+      await this.model.upsert({
+        create: {
+          lane,
+          game_id,
+          games_played: 1,
+          championA: {
+            connect: {
+              id: champion_id,
+            },
+          },
+          championB: {
+            connect: {
+              id: opponent_id,
+            },
+          },
+          user: {
+            connect: {
+              id,
+            },
+          },
+        },
+        update: {
+          games_played: matchup ? matchup.games_played + 1 : 1,
+          game_id,
+        },
+        where: {
+          champion_id_opponent_id_lane_user_id: {
+            lane,
+            champion_id,
+            opponent_id,
+            user_id: id,
+          },
+        },
+      });
+
+      res.sendStatus(201);
+    } catch (err) {
+      next(err);
+    }
   }
 
   async getPlayedChampions(req, res, next) {
     try {
       const { id } = req.user;
-      const champions = await db.$queryRaw(
-        `
+      const champions = await db.$queryRaw`
         SELECT DISTINCT
           "Champion"."name",
           "Champion"."image",
@@ -25,11 +85,9 @@ class MatchupController extends Controller {
         FROM "Matchup"
         RIGHT JOIN "Champion"
         ON "Champion"."id" = "Matchup"."champion_id"
-        AND "Matchup"."user_id" = '${id}'
+        AND "Matchup"."user_id" = ${id}
         ORDER BY "has_matchups" DESC
-      `
-      );
-
+      `;
       if (!champions) {
         return ErrorHandler(404, "Couldn't find any champions.");
       }
