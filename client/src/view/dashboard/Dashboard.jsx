@@ -1,5 +1,5 @@
 import React from "react";
-import { useTable } from "react-table";
+import { useTable, useFilters } from "react-table";
 
 const Dashboard = ({ status, data, isLoading }) => {
   const columns = React.useMemo(
@@ -7,18 +7,22 @@ const Dashboard = ({ status, data, isLoading }) => {
       {
         Header: "username",
         accessor: "username",
+        filterable: true,
       },
       {
         Header: "email",
         accessor: "email",
+        filterable: true,
       },
       {
         Header: "summonerName",
         accessor: "summonerName",
+        filterable: true,
       },
       {
         Header: "region",
         accessor: "region",
+        filterable: true,
       },
       {
         Header: "member since",
@@ -28,16 +32,43 @@ const Dashboard = ({ status, data, isLoading }) => {
     []
   );
 
+  function DefaultColumnFilter({
+    column: { filterValue, preFilteredRows, setFilter },
+  }) {
+    const count = preFilteredRows.length;
+
+    return (
+      <input
+        value={filterValue || ''}
+        onChange={e => {
+          setFilter(e.target.value || undefined)
+        }}
+        placeholder={`Search ${count} records...`}
+      />
+    );
+  };
+
+  const defaultColumn = React.useMemo(
+    () => ({
+      Filter: DefaultColumnFilter,
+    }),
+    []
+  );
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({
-    columns,
-    data,
-  });
+  } = useTable(
+    {
+      columns,
+      data,
+      defaultColumn
+    },
+    useFilters
+  );
 
   return (
     <table {...getTableProps()}>
@@ -45,7 +76,10 @@ const Dashboard = ({ status, data, isLoading }) => {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
+              <th {...column.getHeaderProps()}>
+                {column.render("Header")}
+                <div>{column.filterable ? column.render('Filter') : null}</div>
+              </th>
             ))}
           </tr>
         ))}

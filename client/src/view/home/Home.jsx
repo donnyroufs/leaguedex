@@ -4,10 +4,10 @@ import SearchWidget from "../../components/widget/SearchWidget";
 import Card from "../../components/card/CardContainer";
 import { Container } from "./Home.styles";
 
-const Home = ({ status, data }) => {
+const Home = ({ champions, loading }) => {
   const [value, setValue] = useState("");
 
-  if (status.loading) {
+  if (loading) {
     return <p>Loading...</p>;
   }
 
@@ -18,8 +18,8 @@ const Home = ({ status, data }) => {
         <SearchWidget value={value} setValue={setValue} />
       </Container.Widgets>
       <Container secondary>
-        {status === "success" &&
-          data
+        {champions.length > 0 &&
+          champions
             .filter((champ) => champ.name.toLowerCase().includes(value))
             .map((champion) => <Card key={champion.id} champion={champion} />)}
       </Container>

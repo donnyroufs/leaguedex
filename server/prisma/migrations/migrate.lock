@@ -1,13 +1,3 @@
 # Prisma Migrate lockfile v1
 
-20200802181618-init
-20200803190505-add_authentication
-20200803193225-make-username-unique
-20200803195457-npx-prisma-migrate-up---experimental
-20200803195527-set-unique-username-field
-20200803205141-add-created-at-field
-20200807131857-add-region-to-summoner
-20200807134914-add-summoner-id-and-increment-default-id
-20200808003202-created-at-updated-at-fields
-20200808005107-add-permissions-to-user
-20200808125233-make-champion-name-unique
+20200816101004-init

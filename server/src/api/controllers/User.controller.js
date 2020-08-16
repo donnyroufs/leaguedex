@@ -5,9 +5,10 @@ const Riot = require('../../lib/Riot');
 const { db } = require('../../config/database');
 
 class UserController extends Controller {
-  constructor({ model, auth }) {
+  constructor({ model, auth, formatters }) {
     super(model);
     this.Auth = auth;
+    this.formatters = formatters;
 
     this.create = this.create.bind(this);
     this.login = this.login.bind(this);
@@ -32,13 +33,7 @@ class UserController extends Controller {
       },
     });
 
-    const formattedData = data.map((user) => ({
-      username: user.username,
-      summonerName: user.summoner ? user.summoner.name : '-',
-      email: user.email,
-      region: user.summoner ? user.summoner.region : '-',
-      createdAt: new Date(user.createdAt).toISOString().substr(0, 10),
-    }));
+    const formattedData = this.formatters.all(data);
 
     res.status(200).json(formattedData);
   }
@@ -106,7 +101,7 @@ class UserController extends Controller {
         REFRESH_TOKEN
       );
 
-      await this.Auth.createOrUpdateRefreshToken(user.username, refreshToken);
+      await this.Auth.createOrUpdateRefreshToken(user.id, refreshToken);
 
       this.Auth.setRefreshCookie(res, refreshToken);
 
@@ -119,10 +114,10 @@ class UserController extends Controller {
   }
 
   async destroy(req, res, next) {
-    const username = req.user.username;
+    const userId = req.user.id;
 
     try {
-      this.Auth.removeRefreshToken(username);
+      this.Auth.removeRefreshToken(userId);
       this.Auth.setRefreshCookie(res, null, 0);
       res.sendStatus(200);
     } catch (err) {
@@ -141,10 +136,7 @@ class UserController extends Controller {
         REFRESH_TOKEN
       );
 
-      await this.Auth.createOrUpdateRefreshToken(
-        req.user.username,
-        refreshToken
-      );
+      await this.Auth.createOrUpdateRefreshToken(req.user.id, refreshToken);
 
       this.Auth.setRefreshCookie(res, refreshToken);
 

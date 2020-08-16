@@ -32,5 +32,4 @@ will be updated live. Incase you want to help us out, look thru the issues, and 
 
 - [Home Page](https://leaguedex.com)
 - [Staging Page](https://staging.leaguedex.com)
-- [insecure Staging Page](http://staging.leaguedex.com)
 - [Design Figma](https://www.figma.com/file/LKOTO3yHEvZXIYbJFiIdQk/Untitled?node-id=0%3A1)

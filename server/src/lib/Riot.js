@@ -24,8 +24,6 @@ class Riot {
           id: Number(champ.key),
           name: champ.name,
           image: `${this.endpoints.splash}/${champ.id}_0.jpg`,
-          tags: champ.tags.join(', '),
-          lore: champ.blurb,
           version,
         }));
 
