@@ -4,7 +4,7 @@ import SearchWidget from "../../components/widget/SearchWidget";
 import Card from "../../components/card/CardContainer";
 import { Container } from "./Home.styles";
 
-const Home = ({ champions, loading }) => {
+const Home = ({ champions, info, loading }) => {
   const [value, setValue] = useState("");
 
   if (loading) {
@@ -14,7 +14,7 @@ const Home = ({ champions, loading }) => {
   return (
     <Container>
       <Container.Widgets>
-        <InfoWidget />
+        <InfoWidget {...info} />
         <SearchWidget value={value} setValue={setValue} />
       </Container.Widgets>
       <Container secondary>

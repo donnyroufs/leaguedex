@@ -14,25 +14,53 @@ const fetchChampions = async (isAuthenticated) => {
     },
     credentials: "include",
   });
+
+  return response.json();
+};
+
+const fetchInfoCard = async () => {
+  const response = await fetch("/api/matchup/info", {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: getToken(),
+    },
+    credentials: "include",
+  });
+
   return response.json();
 };
 
 const HomeContainer = () => {
   const [champions, setChampions] = useState([]);
+  const [info, setInfo] = useState({
+    count: 0,
+    gamesPlayed: 0,
+  });
   const [loading, setLoading] = useState(true);
   const { isAuthenticated } = useAuth();
 
   React.useEffect(() => {
-    fetchChampions(isAuthenticated).then((data) => {
-      setChampions(data);
+    (async () => {
+      try {
+        setLoading(true);
+        const _champions = await fetchChampions(isAuthenticated);
+        setChampions(_champions);
+        if (isAuthenticated) {
+          const _info = await fetchInfoCard();
+          setInfo(_info);
+        }
+      } catch (err) {
+        console.error(err);
+      }
       setLoading(false);
-    });
+    })();
   }, [isAuthenticated]);
 
   return loading ? (
     <MoonLoader color="B8D0EC" />
   ) : (
-    <Home champions={champions} loading={loading} />
+    <Home champions={champions} info={info} loading={loading} />
   );
 };
 
