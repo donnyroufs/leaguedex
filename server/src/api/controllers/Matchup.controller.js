@@ -3,11 +3,14 @@ const { ErrorHandler } = require('../../helpers/error');
 const { db } = require('../../config/database');
 
 class MatchupController extends Controller {
-  constructor(model) {
-    super(model);
+  constructor({ model, formatters }) {
+    super(model, formatters);
+
+    this.formatters = formatters;
 
     this.create = this.createOne.bind(this);
     this.getPlayedChampions = this.getPlayedChampions.bind(this);
+    this.getInfoCard = this.getInfoCard.bind(this);
   }
 
   async createOne(req, res, next) {
@@ -93,6 +96,31 @@ class MatchupController extends Controller {
       }
 
       res.status(200).json(champions);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  // Count games_played, count records
+  async getInfoCard(req, res, next) {
+    try {
+      const { id } = req.user;
+      const count = await this.model.count({
+        where: {
+          user_id: id,
+        },
+      });
+
+      const data = await this.model.findMany({
+        where: {
+          user_id: id,
+        },
+        select: {
+          games_played: true,
+        },
+      });
+
+      res.status(200).json(this.formatters.getInfoCard({ count, data }));
     } catch (err) {
       next(err);
     }
