@@ -78,6 +78,7 @@ const useAuthProvider = () => {
       toast.info("Successfully logged out.");
     } catch (err) {
       setUser(null);
+      setToken(null);
     }
   };
 
