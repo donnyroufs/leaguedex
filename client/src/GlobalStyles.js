@@ -95,6 +95,12 @@ export const Link = styled(ReactLink)`
 
 export const Button = styled.button`
   ${GenericButton}
+
+  ${(props) =>
+    props.header &&
+    css`
+      margin-left: 1.25rem;
+    `}
 `;
 
 export default createGlobalStyle`
