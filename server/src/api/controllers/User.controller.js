@@ -158,7 +158,7 @@ class UserController extends Controller {
 
       const addedSummoner = await db.summoner.create({
         data: {
-          accountId: data.accountId,
+          accountId: data.id,
           name: data.name,
           level: data.summonerLevel,
           user: {
@@ -194,10 +194,7 @@ class UserController extends Controller {
         REFRESH_TOKEN
       );
 
-      await this.Auth.createOrUpdateRefreshToken(
-        req.user.username,
-        refreshToken
-      );
+      await this.Auth.createOrUpdateRefreshToken(req.user.id, refreshToken);
 
       this.Auth.setRefreshCookie(res, refreshToken);
 
