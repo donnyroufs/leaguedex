@@ -11,6 +11,7 @@ class MatchupController extends Controller {
     this.create = this.createOne.bind(this);
     this.getPlayedChampions = this.getPlayedChampions.bind(this);
     this.getInfoCard = this.getInfoCard.bind(this);
+    this.findGame = this.findGame.bind(this);
   }
 
   async createOne(req, res, next) {
@@ -121,6 +122,16 @@ class MatchupController extends Controller {
       });
 
       res.status(200).json(this.formatters.getInfoCard({ count, data }));
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async findGame(req, res, next) {
+    try {
+      const { summoner } = req.user;
+
+      res.send(summoner);
     } catch (err) {
       next(err);
     }
