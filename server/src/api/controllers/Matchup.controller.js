@@ -1,6 +1,7 @@
 const Controller = require('./Controller');
 const { ErrorHandler } = require('../../helpers/error');
 const { db } = require('../../config/database');
+const Riot = require('../../lib/Riot');
 
 class MatchupController extends Controller {
   constructor({ model, formatters }) {
@@ -79,6 +80,7 @@ class MatchupController extends Controller {
       const { id } = req.user;
       const champions = await db.$queryRaw`
         SELECT DISTINCT
+          "Champion"."id",
           "Champion"."name",
           "Champion"."image",
           case
@@ -130,8 +132,8 @@ class MatchupController extends Controller {
   async findGame(req, res, next) {
     try {
       const { summoner } = req.user;
-
-      res.send(summoner);
+      const data = await Riot.findMatch(summoner.accountId, summoner.region);
+      res.send(data);
     } catch (err) {
       next(err);
     }
