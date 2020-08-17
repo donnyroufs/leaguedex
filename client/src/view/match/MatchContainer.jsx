@@ -42,7 +42,6 @@ const MatchContainer = ({ history }) => {
   };
 
   useEffect(() => {
-    console.log(id);
     (async () => {
       if (id) {
         try {
@@ -55,6 +54,7 @@ const MatchContainer = ({ history }) => {
         }
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (

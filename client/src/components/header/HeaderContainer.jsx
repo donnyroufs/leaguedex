@@ -11,6 +11,7 @@ const HeaderContainer = () => {
     if (!hasMatch && isAuthenticated) {
       findMatch();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasMatch, isAuthenticated]);
 
   return <Header />;
