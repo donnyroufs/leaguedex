@@ -30,12 +30,13 @@ const useMatchProvider = () => {
         credentials: "include",
       });
       const data = await res.json();
-      setMatch(data);
-      return true;
+      setMatch(data.hasOwnProperty("status") ? null : data);
+      setLoading(false);
+      return data.hasOwnProperty("status");
     } catch (err) {
       console.error(err);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return {
