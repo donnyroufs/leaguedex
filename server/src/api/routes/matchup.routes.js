@@ -14,5 +14,7 @@ router.post('/create', Auth.authenticateToken, controller.createOne);
 router.get('/info', Auth.authenticateToken, controller.getInfoCard);
 router.get('/played', Auth.authenticateToken, controller.getPlayedChampions);
 router.get('/find', Auth.authenticateToken, controller.findGame);
+router.get('/latest/:id', Auth.authenticateToken, controller.getLatest);
+router.get('/:id', Auth.authenticateToken, controller.getDex);
 
 module.exports = router;
