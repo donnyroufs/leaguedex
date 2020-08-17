@@ -1,3 +1,4 @@
 # Prisma Migrate lockfile v1
 
 20200816101004-init
+20200817151808-make-summoner-optional
