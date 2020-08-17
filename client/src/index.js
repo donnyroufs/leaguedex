@@ -8,6 +8,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { ReactQueryDevtools } from "react-query-devtools";
 import { AuthProvider } from "./hooks/useAuth";
 import { ModalProvider } from "./hooks/useModal";
+import { MatchProvider } from "./hooks/useMatch";
+
 import "react-toastify/dist/ReactToastify.css";
 ReactDOM.render(
   <React.StrictMode>
@@ -16,9 +18,11 @@ ReactDOM.render(
       <GlobalStyle />
       <Router>
         <AuthProvider>
-          <ModalProvider>
-            <App />
-          </ModalProvider>
+          <MatchProvider>
+            <ModalProvider>
+              <App />
+            </ModalProvider>
+          </MatchProvider>
         </AuthProvider>
       </Router>
     </ThemeProvider>
