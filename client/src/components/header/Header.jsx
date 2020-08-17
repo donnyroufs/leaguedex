@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router";
 import { Container } from "./Header.styles";
-import { Button } from "../../GlobalStyles";
+import { Button, Link } from "../../GlobalStyles";
 import { useModal } from "../../hooks/useModal";
 import { BeatLoader } from "react-spinners";
 import { useAuth } from "../../hooks/useAuth";
@@ -11,19 +11,20 @@ const Header = () => {
   const history = useHistory();
   const modal = useModal();
   const { logout, isAuthenticated, user, isAllowed } = useAuth();
-  const { findMatch, hasMatch, loading } = useMatch();
+  const { findMatch, hasMatch, loading, match, setMatch } = useMatch();
 
   const handleLogout = (e) => {
     e.preventDefault();
     logout();
+    setMatch(null);
     history.push("/");
   };
 
   const handleFindMatch = async (e) => {
     e.preventDefault();
-    const success = await findMatch();
-    if (success) {
-      history.push("/match");
+    const inMatch = await findMatch();
+    if (inMatch) {
+      history.push(`/match/${match.gameId}`);
     }
   };
 
@@ -66,7 +67,18 @@ const Header = () => {
                 {!loading && "You are not in a match"}
               </Button>
             )}
-            {user.summoner && hasMatch && <Button>You are in a match</Button>}
+            {user.summoner && hasMatch && (
+              <Link
+                to={{
+                  pathname: `/match/${match.gameId}`,
+                  state: {
+                    ...match,
+                  },
+                }}
+              >
+                You are in a match
+              </Link>
+            )}
             <Button header onClick={handleLogout}>
               Log out
             </Button>
