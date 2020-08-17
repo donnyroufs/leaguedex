@@ -10,6 +10,7 @@ export const Container = styled.div`
   align-items: center;
   background: ${(props) => props.theme.header};
   z-index: 100;
+
   @media screen and (min-width: 968px) {
     display: none;
   }
