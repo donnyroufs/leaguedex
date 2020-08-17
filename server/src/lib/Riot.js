@@ -4,7 +4,7 @@ const { db } = require('../config/database');
 class Riot {
   static endpoints = {
     version: 'https://ddragon.leagueoflegends.com/api/versions.json',
-    splash: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash',
+    splash: 'https://ddragon.leagueoflegends.com/cdn/img/champion/loading',
   };
 
   static async syncChampions() {
