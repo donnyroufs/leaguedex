@@ -17,6 +17,20 @@ const routes = [
   },
   {
     exact: true,
+    path: "/match/:id",
+    name: "match",
+    component: view.Match,
+    permissions: 2,
+  },
+  {
+    exact: true,
+    path: "/dex/:id",
+    name: "dex",
+    component: view.Dex,
+    permissions: 2,
+  },
+  {
+    exact: true,
     path: "/admin/dashboard",
     name: "dashboard",
     component: view.Dashboard,
