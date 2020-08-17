@@ -13,6 +13,8 @@ class MatchupController extends Controller {
     this.getPlayedChampions = this.getPlayedChampions.bind(this);
     this.getInfoCard = this.getInfoCard.bind(this);
     this.findGame = this.findGame.bind(this);
+    this.getDex = this.getDex.bind(this);
+    this.getLatest = this.getLatest.bind(this);
   }
 
   async createOne(req, res, next) {
@@ -34,7 +36,7 @@ class MatchupController extends Controller {
         },
       });
 
-      await this.model.upsert({
+      const data = await this.model.upsert({
         create: {
           lane,
           game_id,
@@ -69,7 +71,9 @@ class MatchupController extends Controller {
         },
       });
 
-      res.sendStatus(201);
+      res.status(201).json({
+        id: data.id,
+      });
     } catch (err) {
       next(err);
     }
@@ -133,7 +137,95 @@ class MatchupController extends Controller {
     try {
       const { summoner } = req.user;
       const data = await Riot.findMatch(summoner.accountId, summoner.region);
-      res.send(data);
+
+      if (data.gameMode !== 'CLASSIC') {
+        next(err);
+      }
+
+      const champions = await db.champion.findMany();
+      const me = data.participants
+        .filter((player) => player.summonerId === req.user.summoner.accountId)
+        .map((player) => {
+          const champion = champions.find(
+            (champion) => champion.id === player.championId
+          );
+
+          return {
+            id: champion.id,
+            teamId: player.teamId,
+            name: champion.name,
+            image: champion.image,
+          };
+        });
+
+      const participants = data.participants.filter(
+        (player) => player.teamId !== me[0].teamId
+      );
+
+      const opponents = participants.map((player) => {
+        const champion = champions.find(
+          (champion) => champion.id === player.championId
+        );
+
+        return {
+          id: champion.id,
+          name: champion.name,
+          image: champion.image,
+        };
+      });
+
+      // me, gameId, gameStartTime
+      res.status(200).json({
+        gameId: data.gameId,
+        me: me[0],
+        opponents,
+        startTime: data.gameStartTime,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getDex(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const data = await this.model.findOne({
+        where: {
+          id: Number(id),
+        },
+      });
+
+      if (data.user_id !== req.user.id) {
+        throw new ErrorHandler(404, 'No matchups found for the given user.');
+      }
+
+      res.status(200).json(data);
+    } catch (err) {
+      console.log(err);
+      next(err);
+    }
+  }
+
+  async getLatest(req, res, next) {
+    try {
+      const { id } = req.user;
+      const { id: gameId } = req.params;
+
+      const [data] = await db.matchup.findMany({
+        take: 1,
+        where: {
+          user_id: Number(id),
+        },
+        orderBy: {
+          updatedAt: 'asc',
+        },
+      });
+
+      res.status(200).json({
+        ...data,
+        confirmed: gameId === data.game_id,
+      });
     } catch (err) {
       next(err);
     }
