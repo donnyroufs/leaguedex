@@ -32,17 +32,45 @@ const useMatchProvider = () => {
       const data = await res.json();
       setMatch(data.hasOwnProperty("status") ? null : data);
       setLoading(false);
-      return data.hasOwnProperty("status");
+      return !data.hasOwnProperty("status");
+    } catch (err) {
+      setLoading(false);
+    }
+  };
+
+  const createMatchup = async (opponent_id, lane) => {
+    try {
+      const payload = {
+        lane,
+        opponent_id: Number(opponent_id),
+        champion_id: match.me.id,
+        game_id: String(match.gameId),
+      };
+
+      const res = await fetch(`/api/matchup/create`, {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: getToken(),
+        },
+        credentials: "include",
+      });
+      const { id } = await res.json();
+
+      return id;
     } catch (err) {
       console.error(err);
-      setLoading(false);
     }
   };
 
   return {
     match,
+    setMatch,
     loading,
     findMatch,
+    createMatchup,
     hasMatch: !!match,
   };
 };
