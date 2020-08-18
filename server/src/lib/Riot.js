@@ -4,7 +4,7 @@ const { db } = require('../config/database');
 class Riot {
   static endpoints = {
     version: 'https://ddragon.leagueoflegends.com/api/versions.json',
-    splash: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash',
+    splash: 'https://ddragon.leagueoflegends.com/cdn/img/champion/loading',
   };
 
   static async syncChampions() {
@@ -54,6 +54,28 @@ class Riot {
       return data;
     } catch (err) {
       throw err;
+    }
+  }
+
+  static async findMatch(summonerId, region = 'euw1') {
+    try {
+      const { data } = await axios.get(
+        `https://${region}1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/${summonerId}?api_key=${process.env.API_KEY}`
+      );
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getGameResults(matchId, region = 'euw1') {
+    try {
+      const data = await axios.get(
+        ` https://${region}1.api.riotgames.com/lol/match/v4/matches/${matchId}?api_key=${process.env.API_KEY}`
+      );
+      return data;
+    } catch (_) {
+      return null;
     }
   }
 }

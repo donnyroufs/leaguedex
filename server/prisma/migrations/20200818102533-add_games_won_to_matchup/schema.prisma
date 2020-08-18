@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -18,7 +18,6 @@ model User {
   permissions Int       @default(1)
   summoner    Summoner?
   matchups    Matchup[]
-  Note        Note[]
   token       Token?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -39,33 +38,19 @@ model Summoner {
 model Matchup {
   id           Int      @default(autoincrement()) @unique
   games_played Int      @default(0)
-  games_won    Int?     @default(0)
-  games_lost   Int?     @default(0)
+  games_won    Int      @default(0)
   game_id      String
   champion_id  Int
   opponent_id  Int
   lane         String
   championA    Champion @relation("matchup_champion_id", fields: [champion_id], references: [id])
   championB    Champion @relation("matchup_opponent_id", fields: [opponent_id], references: [id])
-  Note         Note[]
   user         User     @relation(fields: [user_id], references: [id])
   user_id      Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   @@id([champion_id, opponent_id, lane, user_id])
-}
-
-model Note {
-  id         Int      @id @default(autoincrement())
-  tags       String?
-  content    String
-  matchup_id Int
-  matchup    Matchup  @relation(fields: [matchup_id], references: [id])
-  user_id    Int
-  user       User     @relation(fields: [user_id], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
 }
 
 model Champion {

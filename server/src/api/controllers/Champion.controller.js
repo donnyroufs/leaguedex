@@ -14,6 +14,7 @@ class ChampionController extends Controller {
       const champions = await db.$queryRaw(
         `
         SELECT DISTINCT
+          "Champion"."id",
           "Champion"."name",
           "Champion"."image",
           case

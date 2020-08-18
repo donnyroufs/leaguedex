@@ -2,18 +2,30 @@ import React from "react";
 import { useHistory } from "react-router";
 import { Container } from "./Header.styles";
 import { Button, Link } from "../../GlobalStyles";
-import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../hooks/useModal";
+import { BeatLoader } from "react-spinners";
+import { useAuth } from "../../hooks/useAuth";
+import { useMatch } from "../../hooks/useMatch";
 
 const Header = () => {
-  const { logout, isAuthenticated, user, isAllowed } = useAuth();
   const history = useHistory();
   const modal = useModal();
+  const { logout, isAuthenticated, user, isAllowed } = useAuth();
+  const { findMatch, hasMatch, loading, match, setMatch } = useMatch();
 
   const handleLogout = (e) => {
     e.preventDefault();
     logout();
+    setMatch(null);
     history.push("/");
+  };
+
+  const handleFindMatch = async (e) => {
+    e.preventDefault();
+    await findMatch();
+    if (hasMatch) {
+      history.push(`/match/${match.gameId}`);
+    }
   };
 
   return (
@@ -37,7 +49,7 @@ const Header = () => {
         {!isAuthenticated && (
           <>
             <Button onClick={() => modal.setModal("register")}>Register</Button>
-            <Button secondary onClick={() => modal.setModal("login")}>
+            <Button secondary header onClick={() => modal.setModal("login")}>
               Login
             </Button>
           </>
@@ -49,8 +61,27 @@ const Header = () => {
                 Add Summoner Account
               </Button>
             )}
-            {user.summoner && <Link to="/match">You are not in a match</Link>}
-            <Button onClick={handleLogout}>Log out</Button>
+            {user.summoner && !hasMatch && (
+              <Button header onClick={handleFindMatch} disabled={loading}>
+                {loading && <BeatLoader color="#B8D0EC" />}
+                {!loading && "You are not in a match"}
+              </Button>
+            )}
+            {user.summoner && hasMatch && (
+              <Link
+                to={{
+                  pathname: `/match/${match.gameId}`,
+                  state: {
+                    ...match,
+                  },
+                }}
+              >
+                You are in a match
+              </Link>
+            )}
+            <Button header onClick={handleLogout}>
+              Log out
+            </Button>
           </>
         )}
       </Container.Buttons>

@@ -16,6 +16,7 @@ import { LOGIN_FORM } from "../../constants";
 
 import { useModal } from "../../hooks/useModal";
 import { useAuth } from "../../hooks/useAuth";
+import { useMatch } from "../../hooks/useMatch";
 import { BeatLoader } from "react-spinners";
 
 const initialValues = {
@@ -30,6 +31,7 @@ const LoginModal = () => {
 
   const { login, isAuthenticated } = useAuth();
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
+  const { setMatch, hasMatch } = useMatch();
   const innerRef = useRef();
 
   const ref = useOnclickOutside(() => {
@@ -58,6 +60,9 @@ const LoginModal = () => {
         setErrorMessage("Username or password are not correct.");
       } else {
         setReverse(true);
+        if (hasMatch) {
+          setMatch(null);
+        }
         setTimeout(() => {
           setReverse(false);
         }, 600);

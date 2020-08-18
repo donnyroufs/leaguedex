@@ -1,0 +1,17 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "Summoner",
+      "field": "user_id",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Summoner",
+      "field": "user",
+      "arity": "Optional"
+    }
+  ]
+}

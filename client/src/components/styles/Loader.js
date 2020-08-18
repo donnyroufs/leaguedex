@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
   position: fixed;
@@ -14,4 +14,12 @@ export const Container = styled.div`
   pointer-events: none;
   z-index: 9000;
   opacity: ${(props) => props.hide && 0};
+
+  ${(props) =>
+    props.secondary &&
+    css`
+      top: 100px;
+      height: calc(100vh - 100px);
+      background: transparent;
+    `}
 `;

@@ -107,7 +107,9 @@ const LoginModal = () => {
             type="text"
             name="summonerName"
             value={values.summonerName}
-            placeholder="enter summoner name"
+            placeholder={
+              isAuthenticated ? user.username : "Enter summoner name"
+            }
             ref={innerRef}
             onChange={handleOnChange}
           />

@@ -95,6 +95,12 @@ export const Link = styled(ReactLink)`
 
 export const Button = styled.button`
   ${GenericButton}
+
+  ${(props) =>
+    props.header &&
+    css`
+      margin-left: 1.25rem;
+    `}
 `;
 
 export default createGlobalStyle`
@@ -112,6 +118,10 @@ export default createGlobalStyle`
       color: ${(props) => props.theme.third};
       font-family: 'Poppins', sans-serif;
       padding-bottom: calc(100px + 3rem);
+
+      @media screen and (min-width: 1200px) {
+        padding-bottom: 0;
+      }
     }
 
     .searchbar-icon {
