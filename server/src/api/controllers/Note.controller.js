@@ -12,7 +12,25 @@ class NotesController extends Controller {
 
   async createOne(req, res, next) {
     try {
-      res.sendStatus(201);
+      const { content, tags, matchupId } = req.body;
+      const created = await db.note.create({
+        data: {
+          content,
+          tags,
+          user: {
+            connect: {
+              id: Number(req.user.id),
+            },
+          },
+          matchup: {
+            connect: {
+              id: Number(matchupId),
+            },
+          },
+        },
+      });
+
+      res.status(201).json(created);
     } catch (err) {
       next(err);
     }
@@ -23,7 +41,7 @@ class NotesController extends Controller {
     try {
       const notes = await db.note.findMany({
         where: {
-          user_id: req.user.id,
+          user_id: Number(req.user.id),
           matchup_id: Number(id),
         },
         select: {
