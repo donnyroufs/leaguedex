@@ -32,6 +32,11 @@ export const Container = styled(Link)`
   transition: all 0.3s ease-in-out;
   cursor: ${(props) => (props.locked ? "not-allowed" : "pointer")};
 
+  @media screen and (min-width: 1200px) {
+    height: 100%;
+    min-height: 400px;
+  }
+
   &:hover {
     transform: scale(1.1);
   }
