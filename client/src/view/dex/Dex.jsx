@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Container } from "./Dex.styles";
 import { useParams } from "react-router";
 import { getToken } from "../../helpers/getToken";
+import * as Loader from "../../components/styles/Loader";
+import { MoonLoader } from "react-spinners";
 
 const fetchDex = async (id) => {
   const res = await fetch(`/api/matchup/${id}`, {
@@ -15,7 +17,7 @@ const fetchDex = async (id) => {
   return res.json();
 };
 
-const Dex = () => {
+const Dex = ({ finishMatch }) => {
   const [loading, setLoading] = useState(true);
   const [dex, setDex] = useState(null);
   const { id } = useParams();
@@ -32,12 +34,17 @@ const Dex = () => {
   }, [id]);
 
   if (loading) {
-    return "loading...";
+    return (
+      <Loader.Container hide={!loading && "true"} secondary>
+        <MoonLoader color="#B8D0EC" />
+      </Loader.Container>
+    );
   }
 
   return (
     <Container>
       <p>played games: {dex.games_played}</p>
+      <button onClick={finishMatch}>Game finished?</button>
     </Container>
   );
 };
