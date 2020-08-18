@@ -222,6 +222,48 @@ class MatchupController extends Controller {
         },
       });
 
+      const total = data.games_won + data.games_lost;
+      if (data.games_played > total) {
+        const { data: gameData } = await Riot.getGameResults(
+          data.game_id,
+          req.user.summoner.region
+        );
+
+        const { teamId: wonTeam } = gameData.teams.find(
+          (team) => team.win === 'Win'
+        );
+
+        const { participantId } = gameData.participantIdentities.find(
+          ({ player }) => player.summonerId === req.user.summoner.accountId
+        );
+
+        const { teamId } = gameData.participants.find(
+          (player) => player.participantId === participantId
+        );
+
+        const didWin = teamId === wonTeam;
+
+        if (didWin) {
+          await db.matchup.update({
+            where: {
+              id: data.id,
+            },
+            data: {
+              games_won: data.games_won + 1,
+            },
+          });
+        } else {
+          await db.matchup.update({
+            where: {
+              id: data.id,
+            },
+            data: {
+              games_lost: data.games_lost + 1,
+            },
+          });
+        }
+      }
+
       res.status(200).json({
         ...data,
         confirmed: gameId === data.game_id,
