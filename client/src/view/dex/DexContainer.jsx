@@ -1,5 +1,4 @@
 import React from "react";
-import { useParams } from "react-router";
 import Dex from "./Dex";
 import { getToken } from "../../helpers/getToken";
 import { useMatch } from "../../hooks/useMatch";
