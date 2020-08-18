@@ -12,15 +12,15 @@ export const Overlay = styled.div`
   width: 100%;
   z-index: 15;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
 `;
 
 export const Lock = styled(FaLock)`
   position: absolute;
-  color: #bababa;
-  height: 64px;
-  width: 64px;
+  color: #dfeeff;
+  height: 24px;
+  width: 24px;
+  margin: 0.5rem;
 `;
 
 export const Container = styled(Link)`
