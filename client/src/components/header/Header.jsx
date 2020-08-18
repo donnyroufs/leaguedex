@@ -22,8 +22,8 @@ const Header = () => {
 
   const handleFindMatch = async (e) => {
     e.preventDefault();
-    const inMatch = await findMatch();
-    if (inMatch) {
+    await findMatch();
+    if (hasMatch) {
       history.push(`/match/${match.gameId}`);
     }
   };
