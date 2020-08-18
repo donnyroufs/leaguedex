@@ -3,6 +3,8 @@ import { useParams } from "react-router";
 import Match from "./Match";
 import { useMatch } from "../../hooks/useMatch";
 import { getToken } from "../../helpers/getToken";
+import * as Loader from "../../components/styles/Loader";
+import { MoonLoader } from "react-spinners";
 
 const fetchLatest = async (id) => {
   const res = await fetch(`/api/matchup/latest/${id}`, {
@@ -17,9 +19,10 @@ const fetchLatest = async (id) => {
 };
 
 const MatchContainer = ({ history }) => {
+  const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const { id } = useParams();
-  const { createMatchup } = useMatch();
+  const { createMatchup, setMatch } = useMatch();
 
   const selectChampion = ({ id, name }) => {
     setSelected(id);
@@ -32,19 +35,34 @@ const MatchContainer = ({ history }) => {
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       if (id) {
         try {
           const data = await fetchLatest(id);
           if (data.confirmed) {
             history.push(`/dex/${data.id}`);
           }
+
+          if (data.updated) {
+            history.push("/");
+            setMatch(null);
+          }
         } catch (err) {
           return null;
         }
       }
+      setLoading(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  if (loading) {
+    return (
+      <Loader.Container hide={!loading && "true"} secondary>
+        <MoonLoader color="#B8D0EC" />
+      </Loader.Container>
+    );
+  }
 
   return (
     <Match
