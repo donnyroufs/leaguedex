@@ -15,17 +15,6 @@ const fetchLatest = async (id) => {
   });
   return res.json();
 };
-// const fetchDex = async (id) => {
-//   const res = await fetch(`/api/matchup/${id}`, {
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//       Authorization: getToken(),
-//     },
-//     credentials: "include",
-//   });
-//   return res.json();
-// };
 
 const MatchContainer = ({ history }) => {
   const [selected, setSelected] = useState(null);
