@@ -3,3 +3,6 @@
 20200816101004-init
 20200817151808-make-summoner-optional
 20200817210917-add-id-to-matchups
+20200818102533-add_games_won_to_matchup
+20200818103143-add_games_lost_to_matchup
+20200818105145-add_notes_table
