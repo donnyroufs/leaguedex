@@ -13,7 +13,7 @@ export const Container = styled.section`
     css`
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
+      gap: 1.5rem;
       width: 100%;
       margin-top: 3rem;
 
