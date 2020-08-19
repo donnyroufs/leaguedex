@@ -27,7 +27,7 @@ export const Wrapper = styled.div`
 `;
 
 Container.Title = styled.h2`
-  color: ${(props) => props.theme.primary};
+  color: ${(props) => props.theme.secondary};
   margin: 0 0 1.5rem 0;
 `;
 

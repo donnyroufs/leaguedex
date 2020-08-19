@@ -194,6 +194,10 @@ class MatchupController extends Controller {
         where: {
           id: Number(id),
         },
+        include: {
+          championA: true,
+          championB: true,
+        },
       });
 
       if (data.user_id !== req.user.id) {
@@ -202,7 +206,6 @@ class MatchupController extends Controller {
 
       res.status(200).json(data);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   }

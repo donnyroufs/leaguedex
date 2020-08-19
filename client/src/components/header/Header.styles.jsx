@@ -10,6 +10,14 @@ export const Container = styled.header`
   background: ${(props) => props.theme.header};
   border-bottom: 1px solid ${(props) => props.theme.border};
   padding: 0 2rem;
+
+  @media screen and (min-width: 968px) {
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    left: 0;
+    width: 100%;
+  }
 `;
 
 Container.Brand = styled(Link)`
