@@ -1,47 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Container } from "./Dex.styles";
-import { useParams } from "react-router";
-import { getToken } from "../../helpers/getToken";
+import React, { useState, useEffect, useRef } from "react";
+import { Container, Image, Header, Versus, Main, Notes } from "./Dex.styles";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
+import Stats from "../../components/stats/Stats";
+import { Form, Group, Label, Input } from "../../components/styles/Form";
 
-const fetchDex = async (id) => {
-  const res = await fetch(`/api/matchup/${id}`, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
-  const data = await res.json();
-  return { data, res };
-};
-
-const Dex = ({ finishMatch, createNote, notes, history }) => {
+const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
+  const ref = useRef();
   const [value, setValue] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [dex, setDex] = useState(null);
-  const { id } = useParams();
-
-  useEffect(() => {
-    (async () => {
-      if (id) {
-        try {
-          setLoading(true);
-          const { res, data } = await fetchDex(id);
-          if (res.status === 404) {
-            history.push("/");
-          }
-          setDex(data);
-          setLoading(false);
-        } catch (err) {
-          history.push("/");
-        }
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
 
   if (loading) {
     return (
@@ -51,45 +17,66 @@ const Dex = ({ finishMatch, createNote, notes, history }) => {
     );
   }
 
+  const handleClick = (e) => {
+    ref.current.focus();
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    createNote(value);
+    setValue("");
+  };
+
+  const getPercentage = (a, b) => (a / b) * 100;
+
   return (
     <Container>
-      <Container>
-        <p>played games: {dex.games_played}</p>
-        <button onClick={finishMatch}>Game finished?</button>
-      </Container>
-      <Container>
-        <form
-          onSubmit={(e) => {
-            createNote(e, value);
-            setValue("");
-          }}
-          style={{ marginBottom: "3rem" }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexFlow: "column nowrap",
-              width: "300px",
-              marginTop: "2rem",
-            }}
-          >
-            <label>Add an awesome note.</label>
-            <p>
-              <strong>Remember to stay calm if ur ian.</strong>
-            </p>
-            <input
-              style={{ padding: ".5rem", marginTop: ".25rem" }}
-              type="text"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder="Add note"
-              required
+      <Container.Left>
+        <Image src={dex.championA.image} alt={dex.championA.name} you />
+        <Image src={dex.championB.image} alt={dex.championB.name} />
+        <Versus>vs</Versus>
+      </Container.Left>
+      <Container.Right>
+        <Container.Right.Inner>
+          <Header>
+            <Stats label="lane" info="mid" />
+            <Stats
+              label="ratio"
+              info={Math.round(
+                getPercentage(dex.games_won, dex.games_played)
+              ).toFixed(0)}
             />
-          </div>
-        </form>
-        {notes.length > 0 &&
-          notes.map((note) => <p key={note.id}>{note.content}</p>)}
-      </Container>
+            <Stats label="wins" info={dex.games_won} />
+            <Stats label="losses" info={dex.games_lost} />
+          </Header>
+          <Main>
+            <Main.Header>
+              <Main.Title>Your notes</Main.Title>
+            </Main.Header>
+            <Form secondary onSubmit={handleSubmit}>
+              <Group secondary onClick={handleClick}>
+                <Label>Add note</Label>
+                <Input
+                  type="text"
+                  placeholder="Enter note"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                  secondary
+                  ref={ref}
+                />
+              </Group>
+            </Form>
+            <Notes>
+              {notes.length > 0 &&
+                notes
+                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                  .map((note) => (
+                    <Notes.Note key={note.id}>{note.content}</Notes.Note>
+                  ))}
+            </Notes>
+          </Main>
+        </Container.Right.Inner>
+      </Container.Right>
     </Container>
   );
 };
