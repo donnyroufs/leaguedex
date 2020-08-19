@@ -7,8 +7,17 @@ const Stats = ({ label, info }) => {
     <Container>
       <Container.Label>{label}</Container.Label>
       <Container.Info>
-        {typeof info === "number" ? <CountUp end={info} duration={5} /> : info}
-        {label === "ratio" && "%"}
+        {typeof info === "number" && (
+          <CountUp end={Number(info)} duration={5} />
+        )}
+
+        {label === "ratio" && (
+          <>
+            <CountUp end={Number(info)} duration={5} />%
+          </>
+        )}
+
+        {label === "lane" && label}
       </Container.Info>
     </Container>
   );
