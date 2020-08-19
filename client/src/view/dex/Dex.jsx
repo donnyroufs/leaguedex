@@ -40,7 +40,7 @@ const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
       <Container.Right>
         <Container.Right.Inner>
           <Header>
-            <Stats label="lane" info="mid" />
+            <Stats label="lane" info={dex.lane} />
             <Stats
               label="ratio"
               info={Math.round(

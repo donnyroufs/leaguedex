@@ -17,7 +17,7 @@ const Stats = ({ label, info }) => {
           </>
         )}
 
-        {label === "lane" && label}
+        {label === "lane" && info}
       </Container.Info>
     </Container>
   );
