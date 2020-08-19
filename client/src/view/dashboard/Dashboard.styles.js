@@ -3,20 +3,21 @@ import styled from "styled-components";
 export const Styles = styled.div`
   display: flex;
   justify-content: center;
-  
   width: 80%;
   margin: 4rem auto;
   max-width: 1400px;
 
   table {
+    margin-top: 3rem;
     border-spacing: 0;
     border: 1px solid ${(props) => props.theme.border};
 
-    th, td {
+    th,
+    td {
       margin: 0;
       padding: 1rem;
       border-bottom: 1px solid ${(props) => props.theme.border};
-      
+
       :last-child {
         border-right: 0;
       }
@@ -24,9 +25,9 @@ export const Styles = styled.div`
 
     th {
       border-right: 1px solid ${(props) => props.theme.border};
-    } 
+    }
 
-    tbody { 
+    tbody {
       tr {
         :nth-child(odd) {
           background-color: #f2f2f21c;
