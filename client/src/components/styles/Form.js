@@ -17,6 +17,12 @@ export const Form = styled.form`
 
   @media screen and (min-width: 968px) {
     width: 100%;
+
+    ${(props) =>
+      props.secondary &&
+      css`
+        max-width: 100%;
+      `}
   }
 `;
 export const Group = styled.div`
@@ -29,33 +35,57 @@ export const Group = styled.div`
   justify-content: center;
   padding: 0 1rem;
   margin-bottom: 1rem;
+
+  ${(props) =>
+    props.secondary &&
+    css`
+      transition: 0.3s ease-in-out all;
+      opacity: 0.4;
+      margin-top: 2rem;
+      margin-bottom: 0;
+      width: 100%;
+      background: #2c3a4a;
+      cursor: text;
+      &:hover {
+        opacity: 1;
+      }
+    `}
 `;
 export const Label = styled.label`
   font-weight: bold;
   font-size: 14px;
   margin-bottom: 0.3rem;
   margin-left: 0.1rem;
+  cursor: text;
 `;
 export const Input = styled.input`
   background: transparent;
   border: none;
   color: ${(props) => props.theme.secondary};
+  ${(props) =>
+    props.secondary &&
+    css`
+      width: 100%;
+    `}
   ::placeholder {
     text-transform: uppercase;
-    color: ${(props) => props.theme.placeholderFormText};
+    color: ${(props) =>
+      props.secondary ? "#7A8DA5" : props.theme.placeholderFormText};
     opacity: 1;
     font-weight: bold;
   }
 
   :-ms-input-placeholder {
     text-transform: uppercase;
-    color: ${(props) => props.theme.placeholderFormText};
+    color: ${(props) =>
+      props.secondary ? "#7A8DA5" : props.theme.placeholderFormText};
     font-weight: bold;
   }
 
   ::-ms-input-placeholder {
     text-transform: uppercase;
-    color: ${(props) => props.theme.placeholderFormText};
+    color: ${(props) =>
+      props.secondary ? "#7A8DA5" : props.theme.placeholderFormText};
     font-weight: bold;
   }
 `;
