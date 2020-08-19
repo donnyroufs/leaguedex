@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Container, Image, Header, Versus, Main, Notes } from "./Dex.styles";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
