@@ -4,6 +4,7 @@ import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import Stats from "../../components/stats/Stats";
 import { Form, Group, Label, Input } from "../../components/styles/Form";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
   const ref = useRef();
@@ -67,12 +68,22 @@ const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
               </Group>
             </Form>
             <Notes>
-              {notes.length > 0 &&
-                notes
-                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                  .map((note) => (
-                    <Notes.Note key={note.id}>{note.content}</Notes.Note>
-                  ))}
+              <TransitionGroup>
+                {notes.length > 0 &&
+                  notes
+                    .sort(
+                      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                    )
+                    .map((note) => (
+                      <CSSTransition
+                        timeout={500}
+                        classNames="fade-and-slide-in"
+                        key={note.id}
+                      >
+                        <Notes.Note key={note.id}>{note.content}</Notes.Note>
+                      </CSSTransition>
+                    ))}
+              </TransitionGroup>
             </Notes>
           </Main>
         </Container.Right.Inner>

@@ -41,6 +41,7 @@ export const scaleAnimationOut = keyframes`
     opacity: 0;
   }
 `;
+// fade-and-slide-in
 
 const GenericButton = css`
   outline: none;
@@ -133,5 +134,27 @@ export default createGlobalStyle`
 
     textarea:focus, input:focus{
       outline: none;
+    }
+
+    .fade-and-slide-in-enter {
+      transform: translateX(-32px);
+      opacity: 0.01;
+      transition: all 200 ease-in;
+    }
+
+    .fade-and-slide-in-enter.fade-and-slide-in-enter-active {
+      opacity: 1;
+      transform: translateX(0);
+      transition: all 400ms ease-in;
+    }
+
+    .fade-and-slide-in-leave {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .fade-and-sline-in-leave.fade-and-slide-in-leave-active {
+      transform: translateX(-32px);
+      opacity: 0.01;
     }
 `;
