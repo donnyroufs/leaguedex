@@ -48,6 +48,7 @@ class NotesController extends Controller {
           id: true,
           tags: true,
           content: true,
+          createdAt: true,
         },
       });
 
