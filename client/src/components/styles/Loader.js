@@ -21,5 +21,6 @@ export const Container = styled.div`
       top: 100px;
       height: calc(100vh - 100px);
       background: transparent;
+      z-index: 8000;
     `}
 `;
