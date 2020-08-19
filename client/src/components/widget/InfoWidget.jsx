@@ -10,8 +10,8 @@ const InfoWidget = ({ count, gamesPlayed }) => {
     <Widget title="Info card">
       {isAuthenticated && user.summoner && (
         <>
-          <Text>matchups recorded: {count}</Text>
-          <Text>champions played: {gamesPlayed}</Text>
+          <Text>Matchups played: {count}</Text>
+          <Text>Total games: {gamesPlayed}</Text>
         </>
       )}
 
