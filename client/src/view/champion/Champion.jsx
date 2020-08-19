@@ -1,22 +1,26 @@
 import React from "react";
-import { Container, Title } from "./Champion.styles.js";
+import { Link } from "react-router-dom";
+import { Container } from "./Champion.styles.js";
 
-const Champion = ({ status, data }) => {
-  if (status === "loading") {
+const Champion = ({ loading, matchups }) => {
+  if (loading) {
     return <p>Loading...</p>;
-  }
-
-  if (status !== "success") {
-    return <p>Something went wrong</p>;
   }
 
   return (
     <Container>
-      <Container.Image src={data.image} alt={data.name} />
-      <Container.Info>
-        <Title>{data.name}</Title>
-        currently broken. Redesign is on the way.
-      </Container.Info>
+      {matchups.map((matchup) => (
+        <Link
+          to={`/dex/${matchup.id}`}
+          style={{
+            textDecoration: "none",
+            color: "white",
+            marginBottom: "1rem",
+          }}
+        >
+          vs {matchup.championB.name}
+        </Link>
+      ))}
     </Container>
   );
 };

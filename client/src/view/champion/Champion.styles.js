@@ -9,7 +9,7 @@ export const Container = styled.section`
 
   @media screen and (min-width: 1200px) {
     margin-top: 150px;
-    flex-flow: row nowrap;
+    /* flex-flow: row nowrap; */
   }
 `;
 
