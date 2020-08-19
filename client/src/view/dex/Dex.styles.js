@@ -118,7 +118,7 @@ Notes.Note = styled.li`
   width: 100%;
   background: #2c3a4a;
   padding: 1.25rem;
-  color: #6481a2;
+  color: ${(props) => props.theme.secondary};
   border-radius: 6px;
   margin-top: 1.5rem;
 `;
