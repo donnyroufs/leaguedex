@@ -4,6 +4,19 @@ import Dex from "./Dex";
 import { getToken } from "../../helpers/getToken";
 import { useMatch } from "../../hooks/useMatch";
 
+const fetchDex = async (id) => {
+  const res = await fetch(`/api/matchup/${id}`, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: getToken(),
+    },
+    credentials: "include",
+  });
+  const data = await res.json();
+  return { data, res };
+};
+
 const fetchNotes = async (id) => {
   const res = await fetch(`/api/note/dex/${id}`, {
     headers: {
@@ -45,14 +58,14 @@ const fetchCreateNote = async (payload) => {
 
 const DexContainer = ({ history }) => {
   const { id } = useParams();
+  const [loading, setLoading] = useState(true);
   const { setMatch, match } = useMatch();
   const [notes, setNotes] = useState([]);
+  const [dex, setDex] = useState(null);
 
-  const createNote = async (e, noteValue) => {
-    e.preventDefault();
-
+  const createNote = async (value) => {
     const data = await fetchCreateNote({
-      content: noteValue,
+      content: value,
       matchupId: id,
       tags: null,
     });
@@ -94,12 +107,33 @@ const DexContainer = ({ history }) => {
     };
   }, [id]);
 
+  useEffect(() => {
+    (async () => {
+      if (id) {
+        try {
+          setLoading(true);
+          const { res, data } = await fetchDex(id);
+          if (res.status === 404) {
+            history.push("/");
+          }
+          setDex(data);
+          setLoading(false);
+        } catch (err) {
+          history.push("/");
+        }
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
   return (
     <Dex
       finishMatch={finishMatch}
       createNote={createNote}
       notes={notes}
       history={history}
+      dex={dex}
+      loading={loading}
     />
   );
 };
