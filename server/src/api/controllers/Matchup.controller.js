@@ -15,6 +15,7 @@ class MatchupController extends Controller {
     this.findGame = this.findGame.bind(this);
     this.getDex = this.getDex.bind(this);
     this.getLatest = this.getLatest.bind(this);
+    this.getAllMatchupsByChampion = this.getMatchups.bind(this);
   }
 
   async createOne(req, res, next) {
@@ -277,6 +278,28 @@ class MatchupController extends Controller {
         confirmed: gameId === data.game_id,
         updated,
       });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getMatchups(req, res, next) {
+    try {
+      const { champion } = req.query;
+      const matchups = await db.matchup.findMany({
+        where: {
+          championA: {
+            name: champion,
+          },
+          user_id: Number(req.user.id),
+        },
+        include: {
+          championA: true,
+          championB: true,
+        },
+      });
+
+      res.json(matchups);
     } catch (err) {
       next(err);
     }

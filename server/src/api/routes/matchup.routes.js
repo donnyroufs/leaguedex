@@ -11,6 +11,7 @@ const controller = new Controller({
 });
 
 router.post('/create', Auth.authenticateToken, controller.createOne);
+router.get('/all', Auth.authenticateToken, controller.getMatchups);
 router.get('/info', Auth.authenticateToken, controller.getInfoCard);
 router.get('/played', Auth.authenticateToken, controller.getPlayedChampions);
 router.get('/find', Auth.authenticateToken, controller.findGame);
