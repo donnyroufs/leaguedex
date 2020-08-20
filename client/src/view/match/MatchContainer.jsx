@@ -22,7 +22,7 @@ const MatchContainer = ({ history }) => {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const { id } = useParams();
-  const { createMatchup, match } = useMatch();
+  const { createMatchup, match, findMatch, hasMatch } = useMatch();
 
   const selectChampion = ({ id, name }) => {
     setSelected(id);
@@ -44,7 +44,12 @@ const MatchContainer = ({ history }) => {
           }
 
           if (data.updated) {
-            history.push("/");
+            await findMatch();
+            if (hasMatch) {
+              history.push(`/match/${match.gameId}`);
+            } else {
+              history.push("/");
+            }
           }
         } catch (err) {
           return null;
