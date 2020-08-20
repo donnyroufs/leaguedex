@@ -22,7 +22,7 @@ const MatchContainer = ({ history }) => {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const { id } = useParams();
-  const { createMatchup, setMatch } = useMatch();
+  const { createMatchup, match } = useMatch();
 
   const selectChampion = ({ id, name }) => {
     setSelected(id);
@@ -45,7 +45,6 @@ const MatchContainer = ({ history }) => {
 
           if (data.updated) {
             history.push("/");
-            setMatch(null);
           }
         } catch (err) {
           return null;
@@ -66,7 +65,7 @@ const MatchContainer = ({ history }) => {
 
   return (
     <Match
-      match={history.location.state}
+      match={match}
       selected={selected}
       selectChampion={selectChampion}
       selectRole={selectRole}
