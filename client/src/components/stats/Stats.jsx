@@ -8,12 +8,12 @@ const Stats = ({ label, info }) => {
       <Container.Label>{label}</Container.Label>
       <Container.Info>
         {typeof info === "number" && (
-          <CountUp end={Number(info)} duration={5} />
+          <CountUp end={Number(info)} duration={3} />
         )}
 
         {label === "ratio" && (
           <>
-            <CountUp end={Number(info)} duration={5} />%
+            <CountUp end={Number(info)} duration={3} />%
           </>
         )}
 
