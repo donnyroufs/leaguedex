@@ -48,6 +48,7 @@ const Header = () => {
     if (match.updated) {
       setMatch(null);
       setMin(0);
+      return;
     }
     const timer = setInterval(() => {
       const miliseconds = calculateGameTime(match.startTime + 30000);
@@ -59,7 +60,7 @@ const Header = () => {
       clearInterval(timer);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameTime, loading, hasMatch]);
+  }, [gameTime, loading, hasMatch, match]);
 
   return (
     <Container>
