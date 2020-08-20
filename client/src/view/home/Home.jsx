@@ -21,7 +21,9 @@ const Home = ({ champions, info, loading }) => {
         {champions.length > 0 &&
           champions
             .filter((champ) => champ.name.toLowerCase().includes(value))
-            .map((champion) => <Card key={champion.id} champion={champion} />)}
+            .map((champion) => (
+              <Card key={champion.name} champion={champion} />
+            ))}
       </Container>
     </Container>
   );
