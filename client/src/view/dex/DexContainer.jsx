@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import Dex from "./Dex";
 import { getToken } from "../../helpers/getToken";
 import { useMatch } from "../../hooks/useMatch";
+import { toast } from "react-toastify";
 
 const fetchDex = async (id) => {
   const res = await fetch(`/api/matchup/${id}`, {
@@ -64,13 +65,16 @@ const DexContainer = ({ history }) => {
   const [dex, setDex] = useState(null);
 
   const createNote = async (value) => {
-    const data = await fetchCreateNote({
-      content: value,
-      matchupId: id,
-      tags: null,
-    });
-
-    setNotes((current) => [...current, data]);
+    try {
+      const data = await fetchCreateNote({
+        content: value,
+        matchupId: id,
+        tags: "",
+      });
+      setNotes((current) => [...current, data]);
+    } catch (err) {
+      toast.error("Something went wrong...");
+    }
   };
 
   const finishMatch = (e) => {
