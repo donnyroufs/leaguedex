@@ -4,10 +4,12 @@ const { db } = require('../config/database');
 class Riot {
   static endpoints = {
     version: 'https://ddragon.leagueoflegends.com/api/versions.json',
-    splash: 'https://ddragon.leagueoflegends.com/cdn/img/champion/loading',
+    splash: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash',
+    image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/loading',
+    icon: 'https://ddragon.leagueoflegends.com/cdn/img/champion',
   };
 
-  static async syncChampions() {
+  static async syncStaticData() {
     try {
       const {
         data: [latest],
@@ -20,10 +22,13 @@ class Riot {
           `https://ddragon.leagueoflegends.com/cdn/${latest}/data/en_US/champion.json`
         );
         const { version, data: championsObj } = data;
+
         const champions = Object.values(championsObj).map((champ) => ({
           id: Number(champ.key),
           name: champ.name,
-          image: `${this.endpoints.splash}/${champ.id}_0.jpg`,
+          image: `${this.endpoints.image}/${champ.id}_0.jpg`,
+          splash: `${this.endpoints.splash}/${champ.id}_0.jpg`,
+          icon: `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champ.id}.png`,
           version,
         }));
 

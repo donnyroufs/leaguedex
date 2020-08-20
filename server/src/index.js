@@ -33,7 +33,7 @@ const app = new Application({
 
 (async () => {
   await app.initialize((app) => {
-    Riot.syncChampions();
+    Riot.syncStaticData();
   });
 })();
 
