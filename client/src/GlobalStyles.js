@@ -80,6 +80,13 @@ const GenericButton = css`
       margin-top: 2rem;
       width: 100%;
     `}
+
+  ${(props) =>
+    props.logout &&
+    css`
+      color: #83a2c5;
+      background: #232f3e;
+    `}
 `;
 
 export const utils = {
@@ -92,6 +99,13 @@ export const utils = {
 
 export const Link = styled(ReactLink)`
   ${GenericButton}
+
+  ${(props) =>
+    props.aboveAverage &&
+    css`
+      background-color: #e66e28;
+      color: #52270e;
+    `}
 `;
 
 export const Button = styled.button`
