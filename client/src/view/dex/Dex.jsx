@@ -5,6 +5,7 @@ import { MoonLoader } from "react-spinners";
 import Stats from "../../components/stats/Stats";
 import { Form, Group, Label, Input } from "../../components/styles/Form";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { toast } from "react-toastify";
 
 const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
   const ref = useRef();
@@ -24,7 +25,14 @@ const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (value.length < 1) return;
+    if (value.length <= 0) {
+      return toast.error("Notes can't be empty.");
+    }
+
+    if (value.length >= 200) {
+      return toast.error("Notes can't be longer than 200 characters.");
+    }
+
     createNote(value);
     setValue("");
   };
