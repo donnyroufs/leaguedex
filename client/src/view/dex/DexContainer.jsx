@@ -77,23 +77,21 @@ const DexContainer = ({ history }) => {
     }
   };
 
-  const finishMatch = (e) => {
+  const finishMatch = async (e) => {
     e.preventDefault();
-    (async () => {
-      if (match && match.gameId) {
-        try {
-          const data = await fetchLatest(match.gameId);
-          if (data.updated) {
-            history.push("/");
-            setMatch(null);
-          }
-        } catch (err) {
-          return null;
+    if (match && match.gameId) {
+      try {
+        const data = await fetchLatest(match.gameId);
+        if (data.updated) {
+          history.push("/");
+          setMatch(null);
         }
-      } else {
-        history.push("/");
+      } catch (err) {
+        return null;
       }
-    })();
+    } else {
+      history.push("/");
+    }
   };
 
   useEffect(() => {
