@@ -15,6 +15,7 @@ const Card = ({ image, name, has_matchups: hasMatchups }) => {
           effect="blur"
           height="100%"
           delayTime={500}
+          width="100%"
         />
       </Container>
     );
@@ -27,6 +28,7 @@ const Card = ({ image, name, has_matchups: hasMatchups }) => {
         alt={name}
         effect="blur"
         height="100%"
+        width="100%"
         delayTime={500}
       />
     </Container>
