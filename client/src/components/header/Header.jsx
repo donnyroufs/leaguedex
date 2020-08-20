@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import { Container } from "./Header.styles";
-import { Button, Link } from "../../GlobalStyles";
+import { Button } from "../../GlobalStyles";
 import { useModal } from "../../hooks/useModal";
 import { BeatLoader } from "react-spinners";
 import { useAuth } from "../../hooks/useAuth";
@@ -38,20 +38,28 @@ const Header = () => {
     await findMatch();
     if (hasMatch) {
       history.push(`/match/${match.gameId}`);
+    } else {
+      setMatch(null);
     }
   };
 
   useEffect(() => {
     if (loading || !hasMatch) return;
+    if (match.updated) {
+      setMatch(null);
+      setMin(0);
+    }
     const timer = setInterval(() => {
       const miliseconds = calculateGameTime(match.startTime);
       const { formatted, minutes } = formatTime(miliseconds);
       setMin(minutes);
       setGameTime(formatted);
     }, 1000);
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameTime, loading]);
+  }, [gameTime, loading, hasMatch]);
 
   return (
     <Container>
@@ -93,18 +101,13 @@ const Header = () => {
               </Button>
             )}
             {user.summoner && hasMatch && (
-              <Link
+              <Button
                 style={{ minWidth: "100px" }}
                 aboveAverage={min >= AVERAGE_GAMELENGTH}
-                to={{
-                  pathname: `/match/${match.gameId}`,
-                  state: {
-                    ...match,
-                  },
-                }}
+                onClick={handleFindMatch}
               >
                 {gameTime || "0:00"}
-              </Link>
+              </Button>
             )}
             <Button header logout onClick={handleLogout}>
               Log out
