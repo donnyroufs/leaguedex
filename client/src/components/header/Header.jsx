@@ -50,7 +50,7 @@ const Header = () => {
       setMin(0);
     }
     const timer = setInterval(() => {
-      const miliseconds = calculateGameTime(match.startTime);
+      const miliseconds = calculateGameTime(match.startTime + 30000);
       const { formatted, minutes } = formatTime(miliseconds);
       setMin(minutes);
       setGameTime(formatted);
