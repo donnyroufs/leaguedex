@@ -2,6 +2,7 @@ const Controller = require('./Controller');
 const { ErrorHandler } = require('../../helpers/error');
 const { db } = require('../../config/database');
 const Riot = require('../../lib/Riot');
+const { sync } = require('../middleware/syncMatchup.middleware');
 
 class MatchupController extends Controller {
   constructor({ model, formatters }) {
@@ -10,6 +11,7 @@ class MatchupController extends Controller {
     this.formatters = formatters;
 
     this.create = this.createOne.bind(this);
+    this.sync = this.sync.bind(this);
     this.getPlayedChampions = this.getPlayedChampions.bind(this);
     this.getInfoCard = this.getInfoCard.bind(this);
     this.findGame = this.findGame.bind(this);
@@ -212,71 +214,12 @@ class MatchupController extends Controller {
   }
 
   async getLatest(req, res, next) {
-    let updated = false;
     try {
-      const { id } = req.user;
       const { id: gameId } = req.params;
 
-      const [data] = await db.matchup.findMany({
-        take: 1,
-        where: {
-          user_id: Number(id),
-        },
-        orderBy: {
-          updatedAt: 'desc',
-        },
-      });
-
-      const total = data.games_won + data.games_lost;
-
-      if (data.games_played > total) {
-        const gameData = await Riot.getGameResults(
-          data.game_id,
-          req.user.summoner.region
-        );
-
-        if (gameData) {
-          const { teamId: wonTeam } = gameData.data.teams.find(
-            (team) => team.win === 'Win'
-          );
-
-          const { participantId } = gameData.data.participantIdentities.find(
-            ({ player }) => player.summonerId === req.user.summoner.accountId
-          );
-
-          const { teamId } = gameData.data.participants.find(
-            (player) => player.participantId === participantId
-          );
-
-          const didWin = teamId === wonTeam;
-
-          if (didWin) {
-            await db.matchup.update({
-              where: {
-                id: data.id,
-              },
-              data: {
-                games_won: data.games_won + 1,
-              },
-            });
-          } else {
-            await db.matchup.update({
-              where: {
-                id: data.id,
-              },
-              data: {
-                games_lost: data.games_lost + 1,
-              },
-            });
-          }
-          updated = true;
-        }
-      }
-
       res.status(200).json({
-        ...data,
-        confirmed: gameId === data.game_id,
-        updated,
+        ...req.match,
+        confirmed: gameId === req.match.game_id,
       });
     } catch (err) {
       next(err);
@@ -300,6 +243,25 @@ class MatchupController extends Controller {
       });
 
       res.json(matchups);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async sync(req, res, next) {
+    try {
+      const { id } = req.user;
+      const data = db.$queryRaw(`
+      SELECT "Matchup"."game_id"
+      FROM "Matchup" 
+      WHERE 
+        "Matchup"."games_lost" + "Matchup"."games_won" < "Matchup"."games_played"
+        AND "Matchup"."user_id" = ${id}`);
+
+      res.status(200).json({
+        outdated: data.length > 0,
+        data,
+      });
     } catch (err) {
       next(err);
     }
