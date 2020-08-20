@@ -73,6 +73,23 @@ export const Versus = styled.div`
   pointer-events: none;
 `;
 
+export const Status = styled.div`
+  z-index: 5;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  font-size: 3.5rem;
+  color: #fff;
+  text-shadow: 3px 1px 10px rgba(150, 150, 150, 1);
+  pointer-events: none;
+
+  @media screen and (min-width: 968px) {
+    top: 60%;
+  }
+`;
+
 export const Main = styled.main`
   display: flex;
   flex-flow: column nowrap;

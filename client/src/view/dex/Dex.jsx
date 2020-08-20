@@ -1,15 +1,25 @@
 import React, { useState, useRef } from "react";
-import { Container, Image, Header, Versus, Main, Notes } from "./Dex.styles";
+import {
+  Container,
+  Image,
+  Header,
+  Versus,
+  Main,
+  Notes,
+  Status,
+} from "./Dex.styles";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import Stats from "../../components/stats/Stats";
 import { Form, Group, Label, Input } from "../../components/styles/Form";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { toast } from "react-toastify";
+import { useMatch } from "../../hooks/useMatch";
 
 const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
   const ref = useRef();
   const [value, setValue] = useState("");
+  const { match } = useMatch();
 
   if (loading) {
     return (
@@ -45,6 +55,9 @@ const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
         <Image src={dex.championA.image} alt={dex.championA.name} you />
         <Image src={dex.championB.image} alt={dex.championB.name} />
         <Versus>vs</Versus>
+        <Status>
+          {dex && match && Number(dex.game_id) === match.gameId && "LIVE!"}
+        </Status>
       </Container.Left>
       <Container.Right>
         <Container.Right.Inner>
