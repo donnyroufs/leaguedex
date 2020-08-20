@@ -47,7 +47,8 @@ const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
     setValue("");
   };
 
-  const getPercentage = (a, b) => (a / b) * 100;
+  const isUpdated = (a, b, c) => a + b === c;
+  const getPercentage = (a, b, c) => (a / isUpdated(a, b, c) ? c : c - 1) * 100;
 
   return (
     <Container>
@@ -66,7 +67,7 @@ const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
             <Stats
               label="ratio"
               info={Math.round(
-                getPercentage(dex.games_won, dex.games_played)
+                getPercentage(dex.games_won, dex.games_lost, dex.games_played)
               ).toFixed(0)}
             />
             <Stats label="wins" info={dex.games_won} />
