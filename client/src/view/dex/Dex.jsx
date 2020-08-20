@@ -24,6 +24,7 @@ const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (value.length < 1) return;
     createNote(value);
     setValue("");
   };
