@@ -109,7 +109,7 @@ class Auth {
       httpOnly: true,
       expires: expiration,
       promo_shown: 1,
-      sameSite: 'Lax',
+      sameSite: true,
     };
 
     res.cookie('x-refresh-token', refreshToken, options);
