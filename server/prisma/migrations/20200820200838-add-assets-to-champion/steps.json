@@ -1,0 +1,19 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Champion",
+      "field": "splash",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Champion",
+      "field": "icon",
+      "type": "String",
+      "arity": "Required"
+    }
+  ]
+}
