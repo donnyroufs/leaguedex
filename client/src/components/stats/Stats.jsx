@@ -7,7 +7,7 @@ const Stats = ({ label, info }) => {
     <Container>
       <Container.Label>{label}</Container.Label>
       <Container.Info>
-        {typeof info === "number" && (
+        {typeof info === "number" && label !== "ratio" && (
           <CountUp end={Number(info)} duration={3} />
         )}
 
