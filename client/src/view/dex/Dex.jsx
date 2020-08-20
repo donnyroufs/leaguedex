@@ -51,7 +51,7 @@ const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
   const getPercentage = (a, b, c) => {
     const updated = isUpdated(a, b, c);
     const d = updated ? c : c - 1;
-    return ((a / d) * 100).toFixed(0);
+    return c === 1 && !updated ? 0 : ((a / d) * 100).toFixed(0);
   };
 
   return (
