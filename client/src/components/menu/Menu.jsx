@@ -85,9 +85,12 @@ const Menu = () => {
       <Container.Buttons>
         {!isAuthenticated && (
           <>
-            <Button onClick={() => modal.setModal("register")}>Register</Button>
+            <Button menu onClick={() => modal.setModal("register")}>
+              Register
+            </Button>
             <Button
               secondary
+              menu
               onClick={() => modal.setModal("login")}
               style={{ marginLeft: "1.25rem" }}
             >
@@ -146,6 +149,7 @@ const Menu = () => {
             )}
             <Button
               logout
+              menu
               onClick={handleLogout}
               style={{ marginLeft: "1.25rem" }}
             >
