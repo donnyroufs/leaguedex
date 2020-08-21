@@ -122,7 +122,16 @@ export const Button = styled.button`
     props.header &&
     css`
       margin-left: 1.25rem;
+      min-width: 150px;
+      max-height: 43px;
     `}
+
+    ${(props) =>
+      props.danger &&
+      css`
+        background: #d23f6f;
+        color: #1b0009;
+      `}
 `;
 
 export default createGlobalStyle`
