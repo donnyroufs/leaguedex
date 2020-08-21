@@ -5,7 +5,9 @@ const modalContext = createContext();
 export const ModalProvider = ({ children }) => {
   const modal = useModalProvider();
   return (
-    <modalContext.Provider value={modal}>{children}</modalContext.Provider>
+    <modalContext.Provider value={modal} displayName="Modal">
+      {children}
+    </modalContext.Provider>
   );
 };
 

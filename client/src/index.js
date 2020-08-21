@@ -9,6 +9,7 @@ import { ReactQueryDevtools } from "react-query-devtools";
 import { AuthProvider } from "./hooks/useAuth";
 import { ModalProvider } from "./hooks/useModal";
 import { MatchProvider } from "./hooks/useMatch";
+import { debugContextDevtool } from "react-context-devtool";
 
 import "react-toastify/dist/ReactToastify.css";
 ReactDOM.render(
@@ -29,3 +30,5 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
+
+debugContextDevtool(document.getElementById("root"));

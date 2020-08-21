@@ -6,7 +6,9 @@ const matchContext = createContext();
 export const MatchProvider = ({ children }) => {
   const match = useMatchProvider();
   return (
-    <matchContext.Provider value={match}>{children}</matchContext.Provider>
+    <matchContext.Provider value={match} displayName="Match">
+      {children}
+    </matchContext.Provider>
   );
 };
 
