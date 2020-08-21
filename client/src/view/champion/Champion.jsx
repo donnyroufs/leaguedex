@@ -1,5 +1,4 @@
 import React from "react";
-// import { Link } from "react-router-dom";
 import {
   Container,
   Header,
@@ -19,6 +18,10 @@ import { Button } from "../../GlobalStyles";
 
 const LANES = ["All", "Top", "Jungle", "Mid", "Adc", "Support"];
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 const Champion = ({
   loading,
   matchups,
@@ -36,7 +39,7 @@ const Champion = ({
     e.persist();
     setValues((old) => ({
       ...old,
-      [e.target.name]: e.target.value,
+      [e.target.name]: capitalizeFirstLetter(e.target.value),
     }));
   };
 
