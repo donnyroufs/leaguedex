@@ -14,6 +14,12 @@ FlashMessage.Inner = styled.span`
 export const Form = styled.form`
   width: 80%;
   max-width: 500px;
+  ${(props) =>
+    props.champion &&
+    css`
+      width: 100%;
+      max-width: 100%;
+    `}
 
   ${(props) =>
     props.secondary &&
@@ -24,6 +30,13 @@ export const Form = styled.form`
 
   @media screen and (min-width: 968px) {
     width: 100%;
+
+    ${(props) =>
+      props.champion &&
+      css`
+        display: flex;
+        max-width: 700px;
+      `}
 
     ${(props) =>
       props.secondary &&
@@ -43,6 +56,18 @@ export const Group = styled.div`
   justify-content: center;
   padding: 0 1rem;
   margin-bottom: 1rem;
+
+  ${(props) =>
+    props.champion &&
+    css`
+      background: #2c3a4a;
+
+      @media screen and (min-width: 968px) {
+        margin-bottom: 0;
+        margin-right: 1.5rem;
+        min-width: 250px;
+      }
+    `}
 
   ${(props) =>
     props.secondary &&
@@ -67,6 +92,15 @@ export const Label = styled.label`
   margin-left: 0.1rem;
   cursor: text;
 `;
+
+export const Select = styled.select`
+  background: transparent;
+  border: none;
+  outline: none;
+  color: ${(props) => props.theme.secondary};
+  margin-left: -2px;
+`;
+
 export const Input = styled.input`
   background: transparent;
   border: none;
