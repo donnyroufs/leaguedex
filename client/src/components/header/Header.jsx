@@ -7,6 +7,7 @@ import { BeatLoader } from "react-spinners";
 import { useAuth } from "../../hooks/useAuth";
 import { useMatch } from "../../hooks/useMatch";
 import { getToken } from "../../helpers/getToken";
+import { toast } from "react-toastify";
 
 const AVERAGE_GAMELENGTH = 35;
 
@@ -64,6 +65,7 @@ const Header = () => {
 
       if (confirmed && updated) {
         const _match = await findMatch();
+        toast.info("Match updated.");
         if (_match) {
           history.push(`/match/${_match.gameId}`);
         } else {
