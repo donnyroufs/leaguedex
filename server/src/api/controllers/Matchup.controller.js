@@ -228,12 +228,16 @@ class MatchupController extends Controller {
 
   async getMatchups(req, res, next) {
     try {
-      const { champion } = req.query;
+      const { champion, championB, lane } = req.query;
       const matchups = await db.matchup.findMany({
         where: {
           championA: {
             name: champion,
           },
+          championB: {
+            name: championB,
+          },
+          lane: lane ? lane.toLowerCase().trim() : undefined,
           user_id: Number(req.user.id),
         },
         include: {
