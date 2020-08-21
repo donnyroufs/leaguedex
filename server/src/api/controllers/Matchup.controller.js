@@ -235,7 +235,9 @@ class MatchupController extends Controller {
             name: champion,
           },
           championB: {
-            name: championB,
+            name: {
+              startsWith: championB,
+            },
           },
           lane: lane ? lane.toLowerCase().trim() : undefined,
           user_id: Number(req.user.id),
