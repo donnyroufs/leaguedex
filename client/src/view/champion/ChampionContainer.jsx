@@ -56,10 +56,11 @@ const ChampionContainer = ({
         const { data } = await fetchMatchups(name);
         setMatchups(data);
         setChampionA(data[0].championA);
+        setLoading(false);
       } catch (err) {
         console.error(err);
+        setLoading(false);
       }
-      setLoading(false);
     })();
   }, [name]);
 
