@@ -34,7 +34,7 @@ const finishMatch = async (match) => {
 const Menu = () => {
   const history = useHistory();
   const modal = useModal();
-  const { logout, isAuthenticated, user, isAllowed } = useAuth();
+  const { logout, isAuthenticated, user } = useAuth();
   const {
     findMatch,
     hasMatch,
