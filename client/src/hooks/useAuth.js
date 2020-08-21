@@ -84,6 +84,7 @@ const useAuthProvider = () => {
       setUser(null);
       setToken(null);
     }
+    setInitialLoad(true);
   };
 
   const refreshToken = async () => {
