@@ -16,7 +16,7 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { toast } from "react-toastify";
 import { useMatch } from "../../hooks/useMatch";
 
-const Dex = ({ finishMatch, createNote, notes, dex, history, loading }) => {
+const Dex = ({ createNote, notes, dex, loading }) => {
   const ref = useRef();
   const [value, setValue] = useState("");
   const { match } = useMatch();

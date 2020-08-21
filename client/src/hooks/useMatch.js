@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { useEffect, createContext, useContext, useState } from "react";
+import * as Timer from "../helpers/gameTimer";
 import { getToken } from "../helpers/getToken";
 
 const matchContext = createContext();
@@ -18,6 +19,7 @@ export const useMatch = () => {
 
 const useMatchProvider = () => {
   const [match, setMatch] = useState(null);
+  const [timer, setTimer] = useState("0:00");
   const [loading, setLoading] = useState(false);
 
   const findMatch = async () => {
@@ -59,13 +61,37 @@ const useMatchProvider = () => {
         },
         credentials: "include",
       });
-      const { id } = await res.json();
-
+      const { id, confirmed } = await res.json();
+      setMatch((old) => ({
+        ...old,
+        confirmed,
+      }));
       return id;
     } catch (err) {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    if (match && match.confirmed) {
+      const timer = setInterval(() => {
+        const miliseconds = Timer.calculateGameTime(match.startTime + 30000);
+        const { formatted } = Timer.formatTime(miliseconds);
+        setTimer(formatted);
+      }, 1000);
+
+      return () => {
+        clearInterval(timer);
+        setTimer("0:00");
+      };
+    }
+  }, [match]);
+
+  useEffect(() => {
+    return () => {
+      setMatch(null);
+    };
+  }, []);
 
   return {
     match,
@@ -74,5 +100,8 @@ const useMatchProvider = () => {
     findMatch,
     createMatchup,
     hasMatch: !!match,
+    confirmed: match && match.confirmed,
+    timer,
+    minutes: timer.split(":")[0],
   };
 };

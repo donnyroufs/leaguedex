@@ -76,7 +76,7 @@ class Riot {
   static async getGameResults(matchId, region = 'euw1') {
     try {
       const data = await axios.get(
-        ` https://${region}1.api.riotgames.com/lol/match/v4/matches/${matchId}?api_key=${process.env.API_KEY}`
+        `https://${region}1.api.riotgames.com/lol/match/v4/matches/${matchId}?api_key=${process.env.API_KEY}`
       );
       return data;
     } catch (_) {

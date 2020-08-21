@@ -11,7 +11,7 @@ class MatchupController extends Controller {
     this.formatters = formatters;
 
     this.create = this.createOne.bind(this);
-    this.sync = this.sync.bind(this);
+    this.syncAll = this.syncAll.bind(this);
     this.getPlayedChampions = this.getPlayedChampions.bind(this);
     this.getInfoCard = this.getInfoCard.bind(this);
     this.findGame = this.findGame.bind(this);
@@ -76,6 +76,7 @@ class MatchupController extends Controller {
 
       res.status(201).json({
         id: data.id,
+        confirmed: true,
       });
     } catch (err) {
       next(err);
@@ -141,7 +142,7 @@ class MatchupController extends Controller {
       const { summoner } = req.user;
       const data = await Riot.findMatch(summoner.accountId, summoner.region);
 
-      if (data.gameMode !== 'CLASSIC') {
+      if (data.gameMode !== 'CLASSIC' || data.gameStartTime <= 0) {
         next(err);
       }
 
@@ -177,12 +178,22 @@ class MatchupController extends Controller {
         };
       });
 
-      // me, gameId, gameStartTime
+      const [_data] = await db.matchup.findMany({
+        take: 1,
+        where: {
+          user_id: Number(req.user.id),
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+      });
+
       res.status(200).json({
         gameId: data.gameId,
         me: me[0],
         opponents,
         startTime: data.gameStartTime,
+        confirmed: _data ? Number(_data.game_id) === data.gameId : false,
       });
     } catch (err) {
       next(err);
@@ -254,20 +265,19 @@ class MatchupController extends Controller {
     }
   }
 
-  async sync(req, res, next) {
+  async syncAll(req, res, next) {
     try {
-      const { id } = req.user;
-      const data = db.$queryRaw(`
+      const { id, summoner } = req.user;
+      const [data] = await db.$queryRaw(`
       SELECT "Matchup"."game_id"
       FROM "Matchup" 
       WHERE 
         "Matchup"."games_lost" + "Matchup"."games_won" < "Matchup"."games_played"
         AND "Matchup"."user_id" = ${id}`);
 
-      res.status(200).json({
-        outdated: data.length > 0,
-        data,
-      });
+      const syncedData = await sync(id, summoner.accountId, summoner.region);
+
+      res.status(200).json(syncedData);
     } catch (err) {
       next(err);
     }

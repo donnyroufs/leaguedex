@@ -20,7 +20,6 @@ exports.sync = async (userId, accountId, region) => {
   // 1 game buffer
   if (outOfSync) {
     const gameData = await Riot.getGameResults(data.game_id, region);
-
     if (gameData) {
       const { teamId: wonTeam } = gameData.data.teams.find(
         (team) => team.win === 'Win'
@@ -75,7 +74,6 @@ exports.syncMatchup = async (req, _, next) => {
     req.match.inSync = !inSync ? updated : inSync;
     next();
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };

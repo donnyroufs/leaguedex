@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import Dex from "./Dex";
 import { getToken } from "../../helpers/getToken";
-import { useMatch } from "../../hooks/useMatch";
 import { toast } from "react-toastify";
 
 const fetchDex = async (id) => {
@@ -20,18 +19,6 @@ const fetchDex = async (id) => {
 
 const fetchNotes = async (id) => {
   const res = await fetch(`/api/note/dex/${id}`, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
-  return res.json();
-};
-
-const fetchLatest = async (id) => {
-  const res = await fetch(`/api/matchup/latest/${id}`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -60,7 +47,6 @@ const fetchCreateNote = async (payload) => {
 const DexContainer = ({ history }) => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
-  const { setMatch, match } = useMatch();
   const [notes, setNotes] = useState([]);
   const [dex, setDex] = useState(null);
 
@@ -77,38 +63,6 @@ const DexContainer = ({ history }) => {
     }
   };
 
-  const finishMatch = async (e) => {
-    e.preventDefault();
-    if (match && match.gameId) {
-      try {
-        const data = await fetchLatest(match.gameId);
-        if (data.updated) {
-          history.push("/");
-          setMatch(null);
-        }
-      } catch (err) {
-        return null;
-      }
-    } else {
-      history.push("/");
-    }
-  };
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const data = await fetchNotes(id);
-        setNotes(data);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
-
-    return () => {
-      setNotes([]);
-    };
-  }, [id]);
-
   useEffect(() => {
     (async () => {
       if (id) {
@@ -118,6 +72,9 @@ const DexContainer = ({ history }) => {
           if (res.status === 404) {
             history.push("/");
           }
+          const _data = await fetchNotes(id);
+          setNotes(_data);
+
           setDex(data);
           setLoading(false);
         } catch (err) {
@@ -125,12 +82,15 @@ const DexContainer = ({ history }) => {
         }
       }
     })();
+
+    return () => {
+      setNotes([]);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (
     <Dex
-      finishMatch={finishMatch}
       createNote={createNote}
       notes={notes}
       history={history}

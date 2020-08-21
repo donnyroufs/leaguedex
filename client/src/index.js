@@ -9,7 +9,7 @@ import { ReactQueryDevtools } from "react-query-devtools";
 import { AuthProvider } from "./hooks/useAuth";
 import { ModalProvider } from "./hooks/useModal";
 import { MatchProvider } from "./hooks/useMatch";
-// import { debugContextDevtool } from "react-context-devtool";
+import { debugContextDevtool } from "react-context-devtool";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -32,4 +32,6 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-// debugContextDevtool(document.getElementById("root"));
+if (process.env.NODE_ENV === "dev") {
+  debugContextDevtool(document.getElementById("root"));
+}

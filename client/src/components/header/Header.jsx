@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useHistory } from "react-router";
 import { Container } from "./Header.styles";
 import { Button } from "../../GlobalStyles";
@@ -6,61 +6,73 @@ import { useModal } from "../../hooks/useModal";
 import { BeatLoader } from "react-spinners";
 import { useAuth } from "../../hooks/useAuth";
 import { useMatch } from "../../hooks/useMatch";
+import { getToken } from "../../helpers/getToken";
 
 const AVERAGE_GAMELENGTH = 35;
 
-function formatTime(startTime) {
-  const minutes = Math.floor(startTime / 60000);
-  const seconds = ((startTime % 60000) / 1000).toFixed(0);
-  const formatted = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-  return { minutes, formatted };
-}
+const fetchLatest = async (id) => {
+  const res = await fetch(`/api/matchup/latest/${id}`, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: getToken(),
+    },
+    credentials: "include",
+  });
+  return res.json();
+};
 
-const calculateGameTime = (startTime) => Date.now() - startTime;
+const finishMatch = async (match) => {
+  try {
+    const data = await fetchLatest(match.gameId);
+    return data;
+  } catch (err) {
+    return null;
+  }
+};
 
 const Header = () => {
   const history = useHistory();
   const modal = useModal();
   const { logout, isAuthenticated, user, isAllowed } = useAuth();
-  const { findMatch, hasMatch, loading, match, setMatch } = useMatch();
-  const [gameTime, setGameTime] = useState(null);
-  const [min, setMin] = useState(0);
+  const {
+    findMatch,
+    hasMatch,
+    loading,
+    match,
+    setMatch,
+    confirmed,
+    timer,
+    minutes,
+  } = useMatch();
 
   const handleLogout = (e) => {
     e.preventDefault();
-    logout();
     setMatch(null);
+    logout();
     history.push("/");
   };
 
-  const handleFindMatch = async (e) => {
+  const handleNavigate = (e) => {
     e.preventDefault();
-    await findMatch();
-    if (hasMatch) {
-      history.push(`/match/${match.gameId}`);
-    } else {
-      setMatch(null);
-    }
-  };
+    (async () => {
+      const { confirmed, updated, id } = await finishMatch(match);
 
-  useEffect(() => {
-    if (loading || !hasMatch) return;
-    if (match.updated) {
-      setMatch(null);
-      setMin(0);
-      return;
-    }
-    const timer = setInterval(() => {
-      const miliseconds = calculateGameTime(match.startTime + 30000);
-      const { formatted, minutes } = formatTime(miliseconds);
-      setMin(minutes);
-      setGameTime(formatted);
-    }, 1000);
-    return () => {
-      clearInterval(timer);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameTime, loading, hasMatch, match]);
+      if (!confirmed || (confirmed && !updated)) {
+        history.push(`/dex/${id}`);
+      }
+
+      if (confirmed && updated) {
+        const _match = await findMatch();
+        if (_match) {
+          history.push(`/match/${_match.gameId}`);
+        } else {
+          history.push(`/`);
+          setMatch(null);
+        }
+      }
+    })();
+  };
 
   return (
     <Container>
@@ -83,11 +95,16 @@ const Header = () => {
         {!isAuthenticated && (
           <>
             <Button onClick={() => modal.setModal("register")}>Register</Button>
-            <Button secondary header onClick={() => modal.setModal("login")}>
+            <Button
+              secondary
+              onClick={() => modal.setModal("login")}
+              style={{ marginLeft: "1.25rem" }}
+            >
               Login
             </Button>
           </>
         )}
+
         {isAuthenticated && (
           <>
             {!user.summoner && (
@@ -95,22 +112,52 @@ const Header = () => {
                 Add Summoner Account
               </Button>
             )}
-            {user.summoner && !hasMatch && (
-              <Button header onClick={handleFindMatch} disabled={loading}>
-                {loading && <BeatLoader color="#B8D0EC" />}
-                {!loading && "You are not in a match"}
-              </Button>
+
+            {user.summoner && (
+              <>
+                {!hasMatch && (
+                  <>
+                    {!confirmed && (
+                      <Button header onClick={findMatch} disabled={loading}>
+                        {loading && <BeatLoader color="#B8D0EC" />}
+                        {!loading && "Not in a match"}
+                      </Button>
+                    )}
+                  </>
+                )}
+
+                {hasMatch && (
+                  <>
+                    {!confirmed && (
+                      <Button
+                        header
+                        onClick={() => history.push(`/match/${match.gameId}`)}
+                      >
+                        You are in a match
+                      </Button>
+                    )}
+                    {confirmed && (
+                      <Button
+                        header
+                        aboveAverage={minutes >= AVERAGE_GAMELENGTH}
+                        onClick={handleNavigate}
+                      >
+                        {timer.split(":")[1] !== "00" ? (
+                          timer
+                        ) : (
+                          <BeatLoader color="#B8D0EC" />
+                        )}
+                      </Button>
+                    )}
+                  </>
+                )}
+              </>
             )}
-            {user.summoner && hasMatch && (
-              <Button
-                style={{ minWidth: "100px" }}
-                aboveAverage={min >= AVERAGE_GAMELENGTH}
-                onClick={handleFindMatch}
-              >
-                {gameTime || "0:00"}
-              </Button>
-            )}
-            <Button header logout onClick={handleLogout}>
+            <Button
+              logout
+              onClick={handleLogout}
+              style={{ marginLeft: "1.25rem" }}
+            >
               Log out
             </Button>
           </>

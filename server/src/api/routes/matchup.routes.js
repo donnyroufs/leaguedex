@@ -11,7 +11,7 @@ const controller = new Controller({
   formatters,
 });
 
-router.get('/sync', Auth.authenticateToken, syncMatchup, controller.sync);
+router.get('/sync', Auth.authenticateToken, controller.syncAll);
 router.post('/create', Auth.authenticateToken, controller.createOne);
 router.get('/all', Auth.authenticateToken, controller.getMatchups);
 router.get('/info', Auth.authenticateToken, controller.getInfoCard);
