@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "jwt-decode": "^2.2.0",
     "react": "^16.13.1",
+    "react-context-devtool": "^2.0.0",
     "react-cool-onclickoutside": "^1.5.5",
     "react-countup": "^4.3.3",
     "react-dom": "^16.13.1",
