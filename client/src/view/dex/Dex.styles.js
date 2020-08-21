@@ -93,10 +93,10 @@ export const Status = styled.div`
 export const Main = styled.main`
   display: flex;
   flex-flow: column nowrap;
-  text-align: center;
+  align-items: center;
 
   @media screen and (min-width: 968px) {
-    text-align: left;
+    align-items: flex-start;
   }
 `;
 
@@ -122,6 +122,7 @@ export const Notes = styled.ul`
   flex-flow: column nowrap;
   list-style: none;
   margin: 2rem 0;
+  width: 100%;
   padding: 0 1.5rem;
 
   @media screen and (min-width: 968px) {

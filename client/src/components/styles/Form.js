@@ -15,12 +15,20 @@ export const Form = styled.form`
   width: 80%;
   max-width: 500px;
 
+  ${(props) =>
+    props.secondary &&
+    css`
+      width: 100%;
+      padding: 0 1.5rem;
+    `}
+
   @media screen and (min-width: 968px) {
     width: 100%;
 
     ${(props) =>
       props.secondary &&
       css`
+        padding: 0;
         max-width: 100%;
       `}
   }
@@ -45,6 +53,7 @@ export const Group = styled.div`
       margin-bottom: 0;
       width: 100%;
       background: #2c3a4a;
+      text-align: left;
       cursor: text;
       &:hover {
         opacity: 1;
