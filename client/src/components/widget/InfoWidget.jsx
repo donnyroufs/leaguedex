@@ -7,7 +7,7 @@ const InfoWidget = ({ count, gamesPlayed }) => {
   const { isAuthenticated, user } = useAuth();
 
   return (
-    <Widget title="Info card">
+    <Widget title="Info">
       {isAuthenticated && user.summoner && (
         <>
           <Text>Matchups played: {count}</Text>
