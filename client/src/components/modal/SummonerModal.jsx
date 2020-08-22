@@ -26,7 +26,7 @@ const LoginModal = () => {
   const [values, setValues] = useState(initialValues);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { isAuthenticated, getToken, user, setUser } = useAuth();
+  const { isAuthenticated, getToken, user, setUser, refreshToken } = useAuth();
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const innerRef = useRef();
 
@@ -67,6 +67,8 @@ const LoginModal = () => {
         ...user,
         ...data,
       });
+
+      refreshToken();
       toast.info("Added account successfully.");
       setModal(null);
     } catch (err) {

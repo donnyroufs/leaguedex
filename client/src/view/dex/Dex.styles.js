@@ -76,7 +76,7 @@ export const Versus = styled.div`
 export const Status = styled.div`
   z-index: 5;
   position: absolute;
-  top: 70%;
+  top: 65%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-weight: bold;
@@ -85,7 +85,7 @@ export const Status = styled.div`
   text-shadow: 3px 1px 10px rgba(150, 150, 150, 1);
   pointer-events: none;
 
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 968px) {
     top: 60%;
   }
 `;
