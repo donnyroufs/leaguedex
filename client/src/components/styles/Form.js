@@ -44,6 +44,21 @@ export const Form = styled.form`
         padding: 0;
         max-width: 100%;
       `}
+
+    ${(props) =>
+      props.tweak &&
+      css`
+        padding: 0 1.5rem;
+      `}
+  }
+
+  @media screen and (min-width: 1200px) {
+    ${(props) =>
+      props.tweak &&
+      css`
+        padding: 0;
+      `}
+
   }
 `;
 export const Group = styled.div`
