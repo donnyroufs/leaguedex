@@ -63,11 +63,11 @@ export const Results = styled.div`
   width: 80%;
   margin-top: 3rem;
   display: grid;
+  gap: 1.5rem;
   margin-bottom: 3rem;
 
   @media screen and (min-width: 968px) {
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 1.5rem;
     width: 100%;
   }
 `;
