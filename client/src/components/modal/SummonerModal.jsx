@@ -70,7 +70,7 @@ const LoginModal = () => {
       toast.info("Added account successfully.");
       setModal(null);
     } catch (err) {
-      toast.error("Something went wrong on our end. Please try again later.");
+      toast.error("Summoner does not seem to exist.");
     }
     setLoading(false);
   };
