@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.section`
   height: 100%;
 
-  @media screen and (min-width: 968px) {
+  @media screen and (min-width: 1200px) {
     display: flex;
     min-height: calc(100vh - 100px);
   }
@@ -13,7 +13,7 @@ Container.Left = styled.aside`
   position: relative;
   display: flex;
 
-  @media screen and (min-width: 968px) {
+  @media screen and (min-width: 1200px) {
     position: fixed;
     top: 100px;
     left: 0;
@@ -24,7 +24,7 @@ Container.Left = styled.aside`
 `;
 
 Container.Right = styled.section`
-  @media screen and (min-width: 968px) {
+  @media screen and (min-width: 1200px) {
     width: 70%;
     margin-left: 30%;
     display: flex;
@@ -33,7 +33,7 @@ Container.Right = styled.section`
 `;
 
 Container.Right.Inner = styled.div`
-  @media screen and (min-width: 968px) {
+  @media screen and (min-width: 1200px) {
     width: 70%;
   }
 `;
@@ -53,7 +53,7 @@ export const Header = styled.header`
   padding: 0 1.5rem;
   margin: 3rem 0;
 
-  @media screen and (min-width: 968px) {
+  @media screen and (min-width: 1200px) {
     padding: 0;
     margin: 4rem 0 4rem 0;
     grid-template-columns: repeat(4, 1fr);
@@ -85,7 +85,7 @@ export const Status = styled.div`
   text-shadow: 3px 1px 10px rgba(150, 150, 150, 1);
   pointer-events: none;
 
-  @media screen and (min-width: 968px) {
+  @media screen and (min-width: 1200px) {
     top: 60%;
   }
 `;
@@ -95,7 +95,7 @@ export const Main = styled.main`
   flex-flow: column nowrap;
   align-items: center;
 
-  @media screen and (min-width: 968px) {
+  @media screen and (min-width: 1200px) {
     align-items: flex-start;
   }
 `;
@@ -111,7 +111,7 @@ Main.Header = styled.div`
   display: flex;
   justify-content: center;
 
-  @media screen and (min-width: 968px) {
+  @media screen and (min-width: 1200px) {
     justify-content: space-between;
     margin-bottom: 2rem;
   }
@@ -125,7 +125,7 @@ export const Notes = styled.ul`
   width: 100%;
   padding: 0 1.5rem;
 
-  @media screen and (min-width: 968px) {
+  @media screen and (min-width: 1200px) {
     margin: 0 0 3rem 0;
     padding: 0;
   }

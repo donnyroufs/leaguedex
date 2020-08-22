@@ -83,7 +83,7 @@ const Dex = ({ createNote, notes, dex, loading }) => {
             <Main.Header>
               <Main.Title>Your notes</Main.Title>
             </Main.Header>
-            <Form secondary champion onSubmit={handleSubmit}>
+            <Form secondary champion tweak onSubmit={handleSubmit}>
               <Group secondary onClick={handleClick}>
                 <Label>Add note</Label>
                 <Input
