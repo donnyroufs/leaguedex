@@ -1,8 +1,10 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import decode from "jwt-decode";
 
 const authContext = createContext();
+
+const BUFFER = 15000;
 
 export const AuthProvider = ({ children }) => {
   const auth = useAuthProvider();
@@ -21,6 +23,7 @@ const useAuthProvider = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [initialLoad, setInitialLoad] = useState(true);
+  const [exp, setExp] = useState(null);
 
   const login = async (formData, register = false) => {
     try {
@@ -36,15 +39,13 @@ const useAuthProvider = () => {
       const { accessToken } = await response.json();
       const { data, exp } = decode(accessToken);
       setTimeout(() => {
+        setExp(exp);
         setToken(accessToken);
         setUser(data);
       }, 600);
       if (register)
         toast.info("Successfully created an account and logged in.");
       else toast.info("You have successfully logged in.");
-      if (exp) {
-        await autoRefreshAccessToken(exp);
-      }
       return true;
     } catch (err) {
       setUser(null);
@@ -70,6 +71,7 @@ const useAuthProvider = () => {
         return true;
       }
     } catch (err) {
+      setExp(null);
       setUser(null);
     }
   };
@@ -81,6 +83,7 @@ const useAuthProvider = () => {
       localStorage.removeItem("x-access-token");
       toast.info("Successfully logged out.");
     } catch (err) {
+      setExp(null);
       setUser(null);
       setToken(null);
     }
@@ -93,13 +96,11 @@ const useAuthProvider = () => {
       const { accessToken } = await response.json();
       const { data, exp } = decode(accessToken);
 
+      setExp(exp);
       setToken(accessToken);
       setUser(data);
       if (loading) {
         setLoading(false);
-      }
-      if (exp) {
-        autoRefreshAccessToken(exp);
       }
     } catch (err) {
       setLoading(false);
@@ -107,20 +108,19 @@ const useAuthProvider = () => {
     }
   };
 
-  const autoRefreshAccessToken = async (expirationDate) => {
-    const INTERVAL = 5000;
-    const BUFFER = 20;
+  useEffect(() => {
+    if (!user || !exp) return;
 
-    const timeId = setTimeout(async () => {
-      const currentTime = new Date().getTime() / 1000;
-      if (expirationDate < currentTime + BUFFER) {
-        await refreshToken();
-        clearTimeout(timeId);
-      } else {
-        await autoRefreshAccessToken(expirationDate);
-      }
+    const currentTime = new Date().getTime() / 1000;
+    const INTERVAL = (exp - currentTime) * 1000 - BUFFER;
+
+    const timeId = setInterval(async () => {
+      await refreshToken();
     }, INTERVAL);
-  };
+
+    return () => clearInterval(timeId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const setToken = (token) => {
     localStorage.setItem("x-access-token", token);
