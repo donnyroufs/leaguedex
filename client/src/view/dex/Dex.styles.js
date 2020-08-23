@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.section`
   height: 100%;
@@ -97,6 +97,7 @@ export const Main = styled.main`
 
   @media screen and (min-width: 1200px) {
     align-items: flex-start;
+    min-height: 650px;
   }
 `;
 
@@ -144,4 +145,38 @@ Notes.Note = styled.li`
   color: ${(props) => props.theme.secondary};
   border-radius: 6px;
   margin-top: 1.5rem;
+`;
+
+export const FilterContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 50px;
+  margin-top: 3rem;
+  padding: 0 1.5rem;
+
+  @media screen and (min-width: 1200px) {
+    margin-top: 2rem;
+    padding: 0;
+  }
+`;
+
+export const Tag = styled.button`
+  padding: 0.75rem 1.25rem;
+  border-radius: 4px;
+  background: #2c3a4a;
+  margin-right: 1rem;
+  outline: none;
+  border: none;
+  color: ${(props) => props.theme.secondary};
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 1rem;
+
+  ${(props) =>
+    props.active &&
+    css`
+      background: ${(props) => props.theme.primary};
+      color: #fff;
+    `}
 `;
