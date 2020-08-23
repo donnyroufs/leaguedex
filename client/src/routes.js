@@ -31,6 +31,20 @@ const routes = [
   },
   {
     exact: true,
+    path: "/shared/:username",
+    name: "shared",
+    component: view.Shared,
+    permissions: 0,
+  },
+  {
+    exact: true,
+    path: "/shared/:username/:id",
+    name: "shared",
+    component: view.SharedDex,
+    permissions: 0,
+  },
+  {
+    exact: true,
     path: "/admin/dashboard",
     name: "dashboard",
     component: view.Dashboard,
