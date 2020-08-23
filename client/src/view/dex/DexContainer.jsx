@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import Dex from "./Dex";
 import { getToken } from "../../helpers/getToken";
+import { parseTags } from "../../helpers/parseTags";
 import { toast } from "react-toastify";
 
 const fetchDex = async (id) => {
@@ -51,11 +52,12 @@ const DexContainer = ({ history }) => {
   const [dex, setDex] = useState(null);
 
   const createNote = async (value) => {
+    const tags = parseTags(value);
     try {
       const data = await fetchCreateNote({
         content: value,
         matchupId: id,
-        tags: "",
+        tags: tags.length > 0 ? tags.toString() : null,
       });
       setNotes((current) => [...current, data]);
     } catch (err) {
@@ -73,8 +75,8 @@ const DexContainer = ({ history }) => {
             history.push("/");
           }
           const _data = await fetchNotes(id);
-          setNotes(_data);
 
+          setNotes(_data);
           setDex(data);
           setLoading(false);
         } catch (err) {
