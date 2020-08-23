@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { Container } from "./Toggle.styles";
 import { getToken } from "../../helpers/getToken";
 
@@ -15,9 +15,8 @@ const fetchUpdatePrivacy = async (query) => {
   return res.json();
 };
 
-const Toggle = ({ lane, champion_id, opponent_id, private: privacy }) => {
+const Toggle = ({ lane, champion_id, opponent_id, privacy, setPrivacy }) => {
   const initialLoad = useRef(true);
-  const [state, setState] = useState(privacy);
 
   useEffect(() => {
     if (initialLoad.current) {
@@ -26,25 +25,21 @@ const Toggle = ({ lane, champion_id, opponent_id, private: privacy }) => {
     }
 
     fetchUpdatePrivacy(
-      `?lane=${lane}&champion_id=${champion_id}&opponent_id=${opponent_id}&private=${state}`
-    )
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => console.error(err));
-  }, [state, lane, champion_id, opponent_id, privacy]);
+      `?lane=${lane}&champion_id=${champion_id}&opponent_id=${opponent_id}&private=${privacy}`
+    ).catch((err) => console.error(err));
+  }, [privacy, lane, champion_id, opponent_id]);
 
   return (
     <Container>
       <Container.Option
-        selected={state === true}
-        onClick={() => setState(true)}
+        selected={privacy === true}
+        onClick={() => setPrivacy(true)}
       >
         Private
       </Container.Option>
       <Container.Option
-        selected={state === false}
-        onClick={() => setState(false)}
+        selected={privacy === false}
+        onClick={() => setPrivacy(false)}
       >
         Public
       </Container.Option>
