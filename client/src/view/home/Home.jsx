@@ -4,12 +4,8 @@ import SearchWidget from "../../components/widget/SearchWidget";
 import Card from "../../components/card/CardContainer";
 import { Container } from "./Home.styles";
 
-const Home = ({ champions, info, loading }) => {
+const Home = ({ champions, info }) => {
   const [value, setValue] = useState("");
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <Container>

@@ -29,7 +29,7 @@ const Card = ({ image, name, has_matchups: hasMatchups }) => {
         effect="blur"
         height="100%"
         width="100%"
-        delayTime={500}
+        delayTime={100}
       />
     </Container>
   );
