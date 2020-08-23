@@ -138,13 +138,18 @@ export const Notes = styled.ul`
 `;
 
 Notes.Note = styled.li`
+  display: flex;
+  justify-content: space-between;
   text-align: left;
   width: 100%;
   background: #2c3a4a;
   padding: 1.25rem;
+  padding-right: 2rem;
+  line-height: 1.7;
   color: ${(props) => props.theme.secondary};
   border-radius: 6px;
   margin-top: 1.5rem;
+  cursor: pointer;
 `;
 
 export const FilterContainer = styled.div`
@@ -179,4 +184,34 @@ export const Tag = styled.button`
       background: ${(props) => props.theme.primary};
       color: #fff;
     `}
+`;
+
+export const Remove = styled.button`
+  display: block;
+  pointer-events: none;
+  transition: 0.15s ease-in-out all;
+  user-select: none;
+  border-radius: 100%;
+  opacity: 0;
+  height: 32px;
+  width: 32px;
+  color: white;
+  cursor: pointer;
+  outline: none;
+  background: #ec4179;
+  color: #27303a;
+  border: none;
+  font-size: 1.15rem;
+  font-weight: bold;
+
+  ${(props) =>
+    props.clicked &&
+    css`
+      pointer-events: all;
+      opacity: 1;
+    `}
+
+  &:hover {
+    opacity: 0.7;
+  }
 `;
