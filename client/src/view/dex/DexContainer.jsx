@@ -45,6 +45,20 @@ const fetchCreateNote = async (payload) => {
   return res.json();
 };
 
+const fetchDeleteNote = async (noteId) => {
+  const res = await fetch(`/api/note/${noteId}`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: getToken(),
+    },
+    credentials: "include",
+  });
+
+  return res.json();
+};
+
 const DexContainer = ({ history }) => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
@@ -57,7 +71,7 @@ const DexContainer = ({ history }) => {
       const data = await fetchCreateNote({
         content: value,
         matchupId: id,
-        tags: tags.length > 0 ? tags.toString() : null,
+        tags: tags.length > 0 ? tags.toString() : "",
       });
       setNotes((current) => [...current, data]);
     } catch (err) {
@@ -91,6 +105,16 @@ const DexContainer = ({ history }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
+  const deleteNote = async (e, noteId) => {
+    e.preventDefault();
+    fetchDeleteNote(noteId)
+      .then((data) => {
+        const newNotes = notes.filter((note) => note.id !== noteId);
+        setNotes(newNotes);
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <Dex
       createNote={createNote}
@@ -98,6 +122,7 @@ const DexContainer = ({ history }) => {
       history={history}
       dex={dex}
       loading={loading}
+      deleteNote={deleteNote}
     />
   );
 };
