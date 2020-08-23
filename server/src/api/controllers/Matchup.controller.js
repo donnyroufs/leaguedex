@@ -205,7 +205,6 @@ class MatchupController extends Controller {
     try {
       const { id } = req.params;
       const shared = req.query.shared || false;
-      console.log(shared);
 
       const data = await this.model.findOne({
         where: {
