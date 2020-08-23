@@ -15,8 +15,9 @@ import { Form, Group, Label, Input } from "../../components/styles/Form";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { toast } from "react-toastify";
 import { useMatch } from "../../hooks/useMatch";
+import Toggle from "../../components/toggle/Toggle";
 
-const Dex = ({ createNote, notes, dex, loading }) => {
+const Dex = ({ createNote, notes, dex, loading, shared = false }) => {
   const ref = useRef();
   const [value, setValue] = useState("");
   const { match } = useMatch();
@@ -35,6 +36,7 @@ const Dex = ({ createNote, notes, dex, loading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (shared) return;
     if (value.length <= 0) {
       return toast.error("Notes can't be empty.");
     }
@@ -82,20 +84,27 @@ const Dex = ({ createNote, notes, dex, loading }) => {
           <Main>
             <Main.Header>
               <Main.Title>Your notes</Main.Title>
+              {!shared && (
+                <Main.Toggle>
+                  <Toggle {...dex} />
+                </Main.Toggle>
+              )}
             </Main.Header>
-            <Form secondary champion tweak onSubmit={handleSubmit}>
-              <Group secondary onClick={handleClick}>
-                <Label>Add note</Label>
-                <Input
-                  type="text"
-                  placeholder="Enter note"
-                  value={value}
-                  onChange={(e) => setValue(e.target.value)}
-                  secondary
-                  ref={ref}
-                />
-              </Group>
-            </Form>
+            {!shared && (
+              <Form secondary champion tweak onSubmit={handleSubmit}>
+                <Group secondary onClick={handleClick}>
+                  <Label>Add note</Label>
+                  <Input
+                    type="text"
+                    placeholder="Enter note"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    secondary
+                    ref={ref}
+                  />
+                </Group>
+              </Form>
+            )}
             <Notes>
               <TransitionGroup>
                 {notes.length > 0 &&

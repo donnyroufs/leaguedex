@@ -18,6 +18,7 @@ class MatchupController extends Controller {
     this.getDex = this.getDex.bind(this);
     this.getLatest = this.getLatest.bind(this);
     this.getAllMatchupsByChampion = this.getMatchups.bind(this);
+    this.updatePrivate = this.updatePrivate.bind(this);
   }
 
   async createOne(req, res, next) {
@@ -203,6 +204,8 @@ class MatchupController extends Controller {
   async getDex(req, res, next) {
     try {
       const { id } = req.params;
+      const shared = req.query.shared || false;
+      console.log(shared);
 
       const data = await this.model.findOne({
         where: {
@@ -278,6 +281,30 @@ class MatchupController extends Controller {
       const syncedData = await sync(id, summoner.accountId, summoner.region);
 
       res.status(200).json(syncedData);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async updatePrivate(req, res, next) {
+    const { id } = req.user;
+    const { lane, champion_id, opponent_id, private: _private } = req.query;
+    try {
+      await db.matchup.update({
+        where: {
+          champion_id_opponent_id_lane_user_id: {
+            lane: lane.trim(),
+            champion_id: Number(champion_id),
+            opponent_id: Number(opponent_id),
+            user_id: Number(id),
+          },
+        },
+        data: {
+          private: _private === 'true',
+        },
+      });
+
+      res.sendStatus(204);
     } catch (err) {
       next(err);
     }

@@ -51,7 +51,7 @@ export const Header = styled.header`
   align-items: center;
   background-image: ${(props) => `url(${props.img})`};
   height: 300px;
-  width: 100vw;
+  width: 100%;
   background-size: cover;
 
   @media screen and (min-width: 968px) {

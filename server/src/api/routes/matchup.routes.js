@@ -4,6 +4,7 @@ const { db } = require('../../config/database');
 const Auth = require('../../lib/Auth');
 const formatters = require('../formatters/matchup.formatters');
 const { syncMatchup } = require('../middleware/syncMatchup.middleware');
+const e = require('express');
 
 const router = express.Router();
 const controller = new Controller({
@@ -11,6 +12,7 @@ const controller = new Controller({
   formatters,
 });
 
+router.put('/private', Auth.authenticateToken, controller.updatePrivate);
 router.get('/sync', Auth.authenticateToken, controller.syncAll);
 router.post('/create', Auth.authenticateToken, controller.createOne);
 router.get('/all', Auth.authenticateToken, controller.getMatchups);
