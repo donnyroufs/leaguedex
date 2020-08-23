@@ -166,26 +166,28 @@ export default createGlobalStyle`
       outline: none;
     }
 
-    .fade-and-slide-in-enter {
-      transform: translateX(-32px);
+    .fade-enter {
+      opacity: 0;
+  transform: scale(0.9);
+      /* transform: translateX(-32px);
       opacity: 0.01;
-      transition: all 200 ease-in;
+      transition: all 200 ease-in; */
     }
 
-    .fade-and-slide-in-enter.fade-and-slide-in-enter-active {
+    .fade-enter-active {
       opacity: 1;
       transform: translateX(0);
-      transition: all 400ms ease-in;
+      transition: opacity 300ms, transform 300ms;
     }
 
-    .fade-and-slide-in-leave {
-      transform: translateX(0);
+    .fade-exit {
       opacity: 1;
     }
 
-    .fade-and-sline-in-leave.fade-and-slide-in-leave-active {
-      transform: translateX(-32px);
-      opacity: 0.01;
+    .fade-exit-active {
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 300ms, transform 300ms;
     }
 
     input:-internal-autofill-selected {
