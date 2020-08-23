@@ -187,4 +187,8 @@ export default createGlobalStyle`
       transform: translateX(-32px);
       opacity: 0.01;
     }
+
+    input:-internal-autofill-selected {
+      background-color: transparent !important;
+    }
 `;
