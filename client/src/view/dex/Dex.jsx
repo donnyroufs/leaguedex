@@ -21,6 +21,9 @@ import { useMatch } from "../../hooks/useMatch";
 import { parseTagsV2 } from "../../helpers/parseTags";
 import Highlight from "react-highlighter";
 import Toggle from "../../components/toggle/Toggle";
+import useClipboard from "react-hook-clipboard";
+import { useAuth } from "../../hooks/useAuth";
+import { FaLink } from "react-icons/fa";
 
 const Dex = ({
   createNote,
@@ -35,14 +38,24 @@ const Dex = ({
   const [tags, setTags] = useState([]);
   const [filter, setFilter] = useState("");
   const [toDel, setToDel] = useState(null);
+  const [, copyToClipboard] = useClipboard();
+  const [link, setLink] = useState(null);
+  const [privacy, setPrivacy] = useState(false);
+  const { user } = useAuth();
   const { match } = useMatch();
 
   useEffect(() => {
     if (dex) {
       const _tags = parseTagsV2(notes);
       setTags(_tags);
+      setPrivacy(dex.private);
+      setLink(
+        process.env.NODE_ENV === "prod"
+          ? `https://leaguedex.com/shared/${user.username}/${dex.id}`
+          : `https://staging.leaguedex.com/shared/${user.username}/${dex.id}`
+      );
     }
-  }, [dex, notes]);
+  }, [dex, notes, user.username]);
 
   if (loading) {
     return (
@@ -105,14 +118,40 @@ const Dex = ({
           </Header>
           <Main>
             <Main.Header>
-              <Main.Title>Your notes</Main.Title>
+              <Main.Title>
+                {!privacy && !shared && (
+                  <FaLink
+                    className="clipboard"
+                    onClick={() => {
+                      copyToClipboard(link);
+                      toast.info("copied link to clipboard");
+                    }}
+                  />
+                )}
+                Your notes
+              </Main.Title>
               {!shared && (
                 <Main.Toggle>
-                  <Toggle {...dex} />
+                  <Toggle {...dex} privacy={privacy} setPrivacy={setPrivacy} />
                 </Main.Toggle>
               )}
             </Main.Header>
             <FilterContainer>
+              {tags.length <= 0 && (
+                <p style={{ marginTop: "-1rem" }}>
+                  Create custom tags by adding{" "}
+                  <mark
+                    style={{
+                      color: "#3F8BE4",
+                      backgroundColor: "transparent",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    @
+                  </mark>{" "}
+                  infront of a keyword!
+                </p>
+              )}
               {tags.length > 0 &&
                 tags.map((tag) => (
                   <Tag
