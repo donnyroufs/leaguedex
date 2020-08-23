@@ -193,4 +193,15 @@ export default createGlobalStyle`
     input:-internal-autofill-selected {
       background-color: transparent !important;
     }
+
+    .clipboard {
+      font-size: 1rem;
+      cursor: pointer;
+      margin-right: .3rem;
+      margin-bottom: .15rem;
+
+      @media screen and (min-width: 1200px) {
+        margin-right: .66rem;
+      }
+    }
 `;
