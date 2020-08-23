@@ -18,6 +18,7 @@ router.post(
   validator.body(createNote),
   controller.createOne
 );
+router.delete('/:noteId', Auth.authenticateToken, controller.deleteOne);
 router.get('/dex/:id', Auth.authenticateToken, controller.findByMatchupId);
 
 module.exports = router;

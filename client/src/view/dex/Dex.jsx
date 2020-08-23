@@ -9,6 +9,7 @@ import {
   Status,
   Tag,
   FilterContainer,
+  Remove,
 } from "./Dex.styles";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
@@ -21,11 +22,19 @@ import { parseTagsV2 } from "../../helpers/parseTags";
 import Highlight from "react-highlighter";
 import Toggle from "../../components/toggle/Toggle";
 
-const Dex = ({ createNote, notes, dex, loading, shared = false }) => {
+const Dex = ({
+  createNote,
+  notes,
+  dex,
+  loading,
+  deleteNote,
+  shared = false,
+}) => {
   const ref = useRef();
   const [value, setValue] = useState("");
   const [tags, setTags] = useState([]);
   const [filter, setFilter] = useState("");
+  const [toDel, setToDel] = useState(null);
   const { match } = useMatch();
 
   useEffect(() => {
@@ -149,7 +158,14 @@ const Dex = ({ createNote, notes, dex, loading, shared = false }) => {
                         classNames="fade"
                         key={note.id}
                       >
-                        <Notes.Note key={note.id}>
+                        <Notes.Note
+                          key={note.id}
+                          onClick={() =>
+                            setToDel((prev) =>
+                              prev === note.id ? null : note.id
+                            )
+                          }
+                        >
                           <Highlight
                             search={filter.length > 0 ? `@${filter}` : ""}
                             matchStyle={{
@@ -159,6 +175,14 @@ const Dex = ({ createNote, notes, dex, loading, shared = false }) => {
                           >
                             {note.content}
                           </Highlight>
+                          {!shared && (
+                            <Remove
+                              clicked={toDel === note.id}
+                              onClick={(e) => deleteNote(e, toDel)}
+                            >
+                              &times;
+                            </Remove>
+                          )}
                         </Notes.Note>
                       </CSSTransition>
                     ))}
