@@ -10,6 +10,24 @@ class NotesController extends Controller {
     this.findByMatchupId - this.findByMatchupId.bind(this);
   }
 
+  async deleteOne(req, res, next) {
+    const { id } = req.user;
+    const { noteId } = req.params;
+
+    try {
+      const result = await db.note.deleteMany({
+        where: {
+          id: Number(noteId),
+          user_id: Number(id),
+        },
+      });
+
+      res.status(202).json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+
   async createOne(req, res, next) {
     try {
       const { content, tags, matchupId } = req.body;
