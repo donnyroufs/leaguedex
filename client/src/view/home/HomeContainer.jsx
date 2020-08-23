@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Home from "./Home";
 import { useAuth } from "../../hooks/useAuth";
 import { getToken } from "../../helpers/getToken";
+import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 
 const fetchChampions = async (isAuthenticated) => {
@@ -31,6 +32,20 @@ const fetchInfoCard = async () => {
   return response.json();
 };
 
+function loadImages(images) {
+  return images.map((imageFile) => {
+    return new Promise((resolve) => {
+      const image = new Image();
+
+      image.onload = () => {
+        resolve(image);
+      };
+
+      image.src = imageFile;
+    });
+  });
+}
+
 const HomeContainer = () => {
   const [champions, setChampions] = useState([]);
   const [info, setInfo] = useState({
@@ -46,6 +61,12 @@ const HomeContainer = () => {
         setLoading(true);
         const _champions = await fetchChampions(isAuthenticated);
         setChampions(_champions);
+        const assets = _champions
+          .map((champ, index) => (index < 12 ? champ.image : null))
+          .filter((img) => img);
+
+        await Promise.all(loadImages(assets));
+
         if (isAuthenticated) {
           const _info = await fetchInfoCard();
           setInfo(_info);
@@ -57,11 +78,15 @@ const HomeContainer = () => {
     })();
   }, [isAuthenticated]);
 
-  return loading ? (
-    <MoonLoader color="B8D0EC" />
-  ) : (
-    <Home champions={champions} info={info} loading={loading} />
-  );
+  if (loading) {
+    return (
+      <Loader.Container hide={!loading && "true"}>
+        <MoonLoader color="#B8D0EC" />
+      </Loader.Container>
+    );
+  }
+
+  return <Home champions={champions} info={info} loading={loading} />;
 };
 
 export default HomeContainer;
