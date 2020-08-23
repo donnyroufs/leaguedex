@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Container,
   Image,
@@ -7,6 +7,8 @@ import {
   Main,
   Notes,
   Status,
+  Tag,
+  FilterContainer,
 } from "./Dex.styles";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
@@ -15,12 +17,23 @@ import { Form, Group, Label, Input } from "../../components/styles/Form";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { toast } from "react-toastify";
 import { useMatch } from "../../hooks/useMatch";
+import { parseTagsV2 } from "../../helpers/parseTags";
+import Highlight from "react-highlighter";
 import Toggle from "../../components/toggle/Toggle";
 
 const Dex = ({ createNote, notes, dex, loading, shared = false }) => {
   const ref = useRef();
   const [value, setValue] = useState("");
+  const [tags, setTags] = useState([]);
+  const [filter, setFilter] = useState("");
   const { match } = useMatch();
+
+  useEffect(() => {
+    if (dex) {
+      const _tags = parseTagsV2(notes);
+      setTags(_tags);
+    }
+  }, [dex, notes]);
 
   if (loading) {
     return (
@@ -90,6 +103,20 @@ const Dex = ({ createNote, notes, dex, loading, shared = false }) => {
                 </Main.Toggle>
               )}
             </Main.Header>
+            <FilterContainer>
+              {tags.length > 0 &&
+                tags.map((tag) => (
+                  <Tag
+                    key={tag}
+                    active={tag === filter}
+                    onClick={() =>
+                      setFilter((current) => (current === tag ? "" : tag))
+                    }
+                  >
+                    {tag}
+                  </Tag>
+                ))}
+            </FilterContainer>
             {!shared && (
               <Form secondary champion tweak onSubmit={handleSubmit}>
                 <Group secondary onClick={handleClick}>
@@ -112,13 +139,27 @@ const Dex = ({ createNote, notes, dex, loading, shared = false }) => {
                     .sort(
                       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
                     )
+                    .filter((note) =>
+                      filter ? note.tags.includes(filter) : note
+                    )
                     .map((note) => (
                       <CSSTransition
                         timeout={500}
-                        classNames="fade-and-slide-in"
+                        unmountOnExit
+                        classNames="fade"
                         key={note.id}
                       >
-                        <Notes.Note key={note.id}>{note.content}</Notes.Note>
+                        <Notes.Note key={note.id}>
+                          <Highlight
+                            search={filter.length > 0 ? `@${filter}` : ""}
+                            matchStyle={{
+                              color: "#3F8BE4",
+                              background: "transparent",
+                            }}
+                          >
+                            {note.content}
+                          </Highlight>
+                        </Notes.Note>
                       </CSSTransition>
                     ))}
               </TransitionGroup>
