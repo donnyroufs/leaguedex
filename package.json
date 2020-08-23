@@ -2,12 +2,15 @@
   "name": "leaguedex",
   "version": "1.0.0",
   "scripts": {
-	"run:dev": "concurrently \"yarn:client\" \"yarn:server\"",
-	"client": "cd ./client && yarn start --prefix client",
-	"server": "cd ./server && yarn dev --prefix server"
+    "run:dev": "concurrently \"yarn:client\" \"yarn:server\"",
+    "client": "cd ./client && yarn start --prefix client",
+    "server": "cd ./server && yarn dev --prefix server"
   },
   "main": "index.js",
   "repository": "https://github.com/donnyroufs/leaguedex-revamp.git",
   "author": "Donny Roufs <iamchets@yahoo.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react-highlighter": "^0.4.3"
+  }
 }

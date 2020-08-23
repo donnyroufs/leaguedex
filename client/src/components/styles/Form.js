@@ -98,6 +98,10 @@ export const Group = styled.div`
       &:hover {
         opacity: 1;
       }
+
+      &:focus-within {
+        opacity: 1;
+      }
     `}
 `;
 export const Label = styled.label`
