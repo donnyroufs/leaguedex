@@ -107,15 +107,20 @@ Main.Title = styled.h1`
   margin: 0;
 `;
 
-Main.Header = styled.div`
+Main.Header = styled.header`
+  width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
 
   @media screen and (min-width: 1200px) {
+    padding: 0;
     justify-content: space-between;
     margin-bottom: 2rem;
   }
 `;
+
+Main.Toggle = styled.div``;
 
 export const Notes = styled.ul`
   display: flex;
