@@ -9046,6 +9046,11 @@ react-highlighter@^0.4.3:
     escape-string-regexp "^1.0.5"
     prop-types "^15.6.0"
 
+react-hook-clipboard@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-hook-clipboard/-/react-hook-clipboard-1.0.0.tgz#f0a856e82bb7a0db6dd641d422d1f28addf86fd0"
+  integrity sha512-9ix27NypRb2LUXJ9Xry6oFfG/dHt5MMNdHNKiogHBwIsN2rybr2ZnMDIDDwg+tQfX3Anfa7SDWZq4JdTDjMstw==
+
 react-icons@^3.10.0:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-3.10.0.tgz#6c217a2dde2e8fa8d293210023914b123f317297"
