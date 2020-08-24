@@ -4,16 +4,9 @@ import { useMatch } from "../../hooks/useMatch";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 
-
 const MatchContainer = ({ history }) => {
   const [selected, setSelected] = useState(null);
-  const {
-    createMatchup,
-    match,
-    hasMatch,
-    confirmed,
-    loading,
-  } = useMatch();
+  const { createMatchup, match, hasMatch, confirmed, loading } = useMatch();
 
   const selectChampion = ({ id, name }) => {
     setSelected(id);
@@ -34,7 +27,7 @@ const MatchContainer = ({ history }) => {
 
   if (loading) {
     return (
-      <Loader.Container hide={!loading && "true"} secondary>
+      <Loader.Container hide={!loading} secondary>
         <MoonLoader color="#B8D0EC" />
       </Loader.Container>
     );

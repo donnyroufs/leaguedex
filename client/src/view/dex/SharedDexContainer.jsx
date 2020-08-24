@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import Dex from "./Dex";
+import * as Loader from "../../components/styles/Loader";
+import { MoonLoader } from "react-spinners";
 import { getToken } from "../../helpers/getToken";
 
 const fetchDex = async (id, username) => {
@@ -59,6 +61,14 @@ const DexContainer = ({ history }) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  if (loading) {
+    return (
+      <Loader.Container hide={!loading} secondary>
+        <MoonLoader color="#B8D0EC" />
+      </Loader.Container>
+    );
+  }
 
   return (
     <Dex
