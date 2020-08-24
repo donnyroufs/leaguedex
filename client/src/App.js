@@ -10,8 +10,6 @@ import routes from "./routes";
 import { useAuth } from "./hooks/useAuth";
 import { useModal } from "./hooks/useModal";
 import { useMatch } from "./hooks/useMatch";
-import * as Loader from "./components/styles/Loader";
-import { MoonLoader } from "react-spinners";
 import { getToken } from "./helpers/getToken";
 
 const syncData = async () => {
