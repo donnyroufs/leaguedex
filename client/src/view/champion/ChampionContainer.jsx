@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Champion from "./Champion";
+import * as Loader from "../../components/styles/Loader";
+import { MoonLoader } from "react-spinners";
 import { getToken } from "../../helpers/getToken";
+import { loadImage } from "../../helpers/loadImages";
 
 const fetchMatchups = async (name, params = "") => {
   const res = await fetch(`/api/matchup/all?champion=${name}${params}`, {
@@ -54,6 +57,7 @@ const ChampionContainer = ({
     (async () => {
       try {
         const { data } = await fetchMatchups(name);
+        await loadImage(data[0].championA.splash);
         setMatchups(data);
         setChampionA(data[0].championA);
         setLoading(false);
@@ -64,9 +68,16 @@ const ChampionContainer = ({
     })();
   }, [name]);
 
+  if (loading) {
+    return (
+      <Loader.Container hide={!loading} secondary>
+        <MoonLoader color="#B8D0EC" />
+      </Loader.Container>
+    );
+  }
+
   return (
     <Champion
-      loading={loading}
       matchups={matchups}
       name={name}
       setValues={setValues}

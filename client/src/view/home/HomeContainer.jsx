@@ -4,6 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { getToken } from "../../helpers/getToken";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
+import { loadAssets, build } from "../../helpers/loadImages";
 
 const fetchChampions = async (isAuthenticated) => {
   const endpoint = isAuthenticated ? "/api/matchup/played" : "/api/champion";
@@ -32,20 +33,6 @@ const fetchInfoCard = async () => {
   return response.json();
 };
 
-function loadImages(images) {
-  return images.map((imageFile) => {
-    return new Promise((resolve) => {
-      const image = new Image();
-
-      image.onload = () => {
-        resolve(image);
-      };
-
-      image.src = imageFile;
-    });
-  });
-}
-
 const HomeContainer = () => {
   const [champions, setChampions] = useState([]);
   const [info, setInfo] = useState({
@@ -61,11 +48,9 @@ const HomeContainer = () => {
         setLoading(true);
         const _champions = await fetchChampions(isAuthenticated);
         setChampions(_champions);
-        const assets = _champions
-          .map((champ, index) => (index < 12 ? champ.image : null))
-          .filter((img) => img);
 
-        await Promise.all(loadImages(assets));
+        const assets = build(_champions, 12);
+        await loadAssets(assets);
 
         if (isAuthenticated) {
           const _info = await fetchInfoCard();

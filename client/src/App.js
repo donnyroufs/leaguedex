@@ -10,8 +10,6 @@ import routes from "./routes";
 import { useAuth } from "./hooks/useAuth";
 import { useModal } from "./hooks/useModal";
 import { useMatch } from "./hooks/useMatch";
-import * as Loader from "./components/styles/Loader";
-import { MoonLoader } from "react-spinners";
 import { getToken } from "./helpers/getToken";
 
 const syncData = async () => {
@@ -59,11 +57,12 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  if (loading) {
+    return null;
+  }
+
   return (
     <Layout>
-      <Loader.Container hide={!loading && "true"}>
-        <MoonLoader color="#B8D0EC" />
-      </Loader.Container>
       <ToastContainer
         position="top-center"
         autoClose={3000}

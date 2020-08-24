@@ -4,6 +4,9 @@ import Dex from "./Dex";
 import { getToken } from "../../helpers/getToken";
 import { parseTags } from "../../helpers/parseTags";
 import { toast } from "react-toastify";
+import * as Loader from "../../components/styles/Loader";
+import { MoonLoader } from "react-spinners";
+import { build, loadAssets } from "../../helpers/loadImages";
 
 const fetchDex = async (id) => {
   const res = await fetch(`/api/matchup/${id}`, {
@@ -88,8 +91,11 @@ const DexContainer = ({ history }) => {
           if (res.status === 404) {
             history.push("/");
           }
+
           const _data = await fetchNotes(id);
 
+          const assets = build([data.championA, data.championB], 2);
+          await loadAssets(assets);
           setNotes(_data);
           setDex(data);
           setLoading(false);
@@ -114,6 +120,14 @@ const DexContainer = ({ history }) => {
       })
       .catch((err) => console.error(err));
   };
+
+  if (loading) {
+    return (
+      <Loader.Container hide={!loading} secondary>
+        <MoonLoader color="#B8D0EC" />
+      </Loader.Container>
+    );
+  }
 
   return (
     <Dex

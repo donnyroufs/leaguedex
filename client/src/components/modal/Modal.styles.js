@@ -11,7 +11,7 @@ export const Container = styled.div`
   top: 0;
   height: 100vh;
   width: 100vw;
-  z-index: 50;
+  z-index: 10001;
   background: rgba(27, 39, 53, 0.75);
   justify-content: center;
   align-items: center;

@@ -11,8 +11,6 @@ import {
   FilterContainer,
   Remove,
 } from "./Dex.styles";
-import * as Loader from "../../components/styles/Loader";
-import { MoonLoader } from "react-spinners";
 import Stats from "../../components/stats/Stats";
 import { Form, Group, Label, Input } from "../../components/styles/Form";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
@@ -56,14 +54,6 @@ const Dex = ({
       );
     }
   }, [dex, notes, user.username]);
-
-  if (loading) {
-    return (
-      <Loader.Container hide={!loading && "true"} secondary>
-        <MoonLoader color="#B8D0EC" />
-      </Loader.Container>
-    );
-  }
 
   const handleClick = (e) => {
     ref.current.focus();
