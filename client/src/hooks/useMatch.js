@@ -1,6 +1,7 @@
 import React, { useEffect, createContext, useContext, useState } from "react";
 import * as Timer from "../helpers/gameTimer";
 import { getToken } from "../helpers/getToken";
+import { build, loadAssets } from "../helpers/loadImages";
 
 const matchContext = createContext();
 
@@ -34,6 +35,13 @@ const useMatchProvider = () => {
         credentials: "include",
       });
       const data = await res.json();
+      if (data.hasOwnProperty("status")) {
+        setMatch(null);
+      } else {
+        const assets = build(data.opponents, 5);
+        await loadAssets(assets);
+        setMatch(data);
+      }
       setMatch(data.hasOwnProperty("status") ? null : data);
       setLoading(false);
       return !data.hasOwnProperty("status");
