@@ -4,16 +4,16 @@ function build(data, limit, prop = "image") {
     .filter((item) => item);
 }
 
-function loadImage(image) {
+function loadImage(imageFile) {
   return new Promise((resolve) => {
     const image = new Image();
     image.onload = () => resolve(image);
-    image.src = image;
+    image.src = imageFile;
   });
 }
 
 function loadImages(images) {
-  return images.map((imageFile) => loadImage);
+  return images.map((imageFile) => loadImage(imageFile));
 }
 
 async function loadAssets(assets) {
