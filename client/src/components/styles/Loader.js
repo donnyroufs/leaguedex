@@ -18,8 +18,6 @@ export const Container = styled.div`
   ${(props) =>
     props.secondary &&
     css`
-      top: 100px;
-      height: calc(100vh - 100px);
       background: transparent;
       z-index: 8000;
     `}
