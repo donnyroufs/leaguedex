@@ -14,7 +14,7 @@ export const Container = styled.header`
   @media screen and (min-width: 968px) {
     position: fixed;
     top: 0;
-    z-index: 100;
+    z-index: 10000;
     left: 0;
     width: 100%;
   }
