@@ -59,11 +59,12 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  if (loading) {
+    return null;
+  }
+
   return (
     <Layout>
-      <Loader.Container hide={!loading && "true"}>
-        <MoonLoader color="#B8D0EC" />
-      </Loader.Container>
       <ToastContainer
         position="top-center"
         autoClose={3000}
