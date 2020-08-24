@@ -23,14 +23,7 @@ import useClipboard from "react-hook-clipboard";
 import { useAuth } from "../../hooks/useAuth";
 import { FaLink } from "react-icons/fa";
 
-const Dex = ({
-  createNote,
-  notes,
-  dex,
-  loading,
-  deleteNote,
-  shared = false,
-}) => {
+const Dex = ({ createNote, notes, dex, deleteNote, shared = false }) => {
   const ref = useRef();
   const [value, setValue] = useState("");
   const [tags, setTags] = useState([]);
@@ -47,13 +40,16 @@ const Dex = ({
       const _tags = parseTagsV2(notes);
       setTags(_tags);
       setPrivacy(dex.private);
-      setLink(
-        process.env.NODE_ENV === "prod"
-          ? `https://leaguedex.com/shared/${user.username}/${dex.id}`
-          : `https://staging.leaguedex.com/shared/${user.username}/${dex.id}`
-      );
+      if (!shared) {
+        setLink(
+          process.env.NODE_ENV === "prod"
+            ? `https://leaguedex.com/shared/${user.username}/${dex.id}`
+            : `https://staging.leaguedex.com/shared/${user.username}/${dex.id}`
+        );
+      }
     }
-  }, [dex, notes, user.username]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dex, notes]);
 
   const handleClick = (e) => {
     ref.current.focus();
