@@ -204,4 +204,7 @@ export default createGlobalStyle`
         margin-right: .66rem;
       }
     }
+    .Toastify__toast-container {
+      z-index: 9999999999;
+    }
 `;
