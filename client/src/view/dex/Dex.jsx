@@ -113,7 +113,7 @@ const Dex = ({ createNote, notes, dex, deleteNote, shared = false }) => {
           <Header>
             <Stats label="lane" info={dex.lane} />
             <Stats
-              label="ratio"
+              label="win ratio"
               info={getPercentage(
                 dex.games_won,
                 dex.games_lost,
