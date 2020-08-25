@@ -15,7 +15,7 @@ const Dashboard = ({ status, data, isLoading }) => {
         filterable: true,
       },
       {
-        Header: "summonerName",
+        Header: "summoner name",
         accessor: "summonerName",
         filterable: true,
       },
@@ -23,6 +23,10 @@ const Dashboard = ({ status, data, isLoading }) => {
         Header: "region",
         accessor: "region",
         filterable: true,
+      },
+      {
+        Header: "games played",
+        accessor: "gamesPlayed",
       },
       {
         Header: "member since",
@@ -39,14 +43,14 @@ const Dashboard = ({ status, data, isLoading }) => {
 
     return (
       <input
-        value={filterValue || ''}
-        onChange={e => {
-          setFilter(e.target.value || undefined)
+        value={filterValue || ""}
+        onChange={(e) => {
+          setFilter(e.target.value || undefined);
         }}
         placeholder={`Search ${count} records...`}
       />
     );
-  };
+  }
 
   const defaultColumn = React.useMemo(
     () => ({
@@ -65,7 +69,7 @@ const Dashboard = ({ status, data, isLoading }) => {
     {
       columns,
       data,
-      defaultColumn
+      defaultColumn,
     },
     useFilters
   );
@@ -78,7 +82,7 @@ const Dashboard = ({ status, data, isLoading }) => {
             {headerGroup.headers.map((column) => (
               <th {...column.getHeaderProps()}>
                 {column.render("Header")}
-                <div>{column.filterable ? column.render('Filter') : null}</div>
+                <div>{column.filterable ? column.render("Filter") : null}</div>
               </th>
             ))}
           </tr>

@@ -18,7 +18,7 @@ class UserController extends Controller {
   }
 
   async all(req, res) {
-    const data = await this.model.findMany({
+    const data = await db.user.findMany({
       select: {
         username: true,
         summoner: {
@@ -30,6 +30,11 @@ class UserController extends Controller {
         },
         email: true,
         createdAt: true,
+        matchups: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 
