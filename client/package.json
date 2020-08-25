@@ -13,7 +13,7 @@
     "react-countup": "^4.3.3",
     "react-device-detect": "^1.13.1",
     "react-dom": "^16.13.1",
-    "react-highlighter": "^0.4.3",
+    "react-highlight-words": "^0.16.0",
     "react-hook-clipboard": "^1.0.0",
     "react-icons": "^3.10.0",
     "react-lazy-load-image-component": "^1.5.0",
