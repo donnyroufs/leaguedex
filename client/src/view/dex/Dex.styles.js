@@ -159,6 +159,7 @@ export const FilterContainer = styled.div`
   min-height: 50px;
   margin-top: 3rem;
   padding: 0 1.5rem;
+  width: 100%;
 
   @media screen and (min-width: 1200px) {
     margin-top: 2rem;
