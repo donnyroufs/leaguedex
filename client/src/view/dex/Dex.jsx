@@ -17,17 +17,18 @@ import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { toast } from "react-toastify";
 import { useMatch } from "../../hooks/useMatch";
 import { parseTagsV2 } from "../../helpers/parseTags";
-import Highlight from "react-highlighter";
+import Highlight from "react-highlight-words";
 import Toggle from "../../components/toggle/Toggle";
 import useClipboard from "react-hook-clipboard";
 import { useAuth } from "../../hooks/useAuth";
 import { FaLink } from "react-icons/fa";
+import { arraysEqual } from "../../helpers/arrayHelpers";
 
 const Dex = ({ createNote, notes, dex, deleteNote, shared = false }) => {
   const ref = useRef();
   const [value, setValue] = useState("");
   const [tags, setTags] = useState([]);
-  const [filter, setFilter] = useState("");
+  const [query, setQuery] = useState([]);
   const [toDel, setToDel] = useState(null);
   const [, copyToClipboard] = useClipboard();
   const [link, setLink] = useState(null);
@@ -75,6 +76,26 @@ const Dex = ({ createNote, notes, dex, deleteNote, shared = false }) => {
     const updated = isUpdated(a, b, c);
     const d = updated ? c : c - 1;
     return c === 1 && !updated ? 0 : ((a / d) * 100).toFixed(0);
+  };
+
+  const onFilter = (e, tag) => {
+    e.preventDefault();
+    if (query.includes(tag)) {
+      const newQuery = query.filter((t) => t !== tag);
+      setQuery(newQuery);
+    } else {
+      setQuery((current) => [...current, tag]);
+    }
+  };
+
+  const filteredNotes = () => {
+    if (query.length === 0) {
+      return notes;
+    } else if (query.length === 1) {
+      return notes.filter((note) => note.tags.includes(query[0]));
+    } else {
+      return notes.filter((note) => arraysEqual(note.tags.split(","), query));
+    }
   };
 
   return (
@@ -142,10 +163,8 @@ const Dex = ({ createNote, notes, dex, deleteNote, shared = false }) => {
                 tags.map((tag) => (
                   <Tag
                     key={tag}
-                    active={tag === filter}
-                    onClick={() =>
-                      setFilter((current) => (current === tag ? "" : tag))
-                    }
+                    active={query.includes(tag)}
+                    onClick={(e) => onFilter(e, tag)}
                   >
                     {tag}
                   </Tag>
@@ -169,12 +188,9 @@ const Dex = ({ createNote, notes, dex, deleteNote, shared = false }) => {
             <Notes>
               <TransitionGroup>
                 {notes.length > 0 &&
-                  notes
+                  filteredNotes()
                     .sort(
                       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-                    )
-                    .filter((note) =>
-                      filter ? note.tags.includes(filter) : note
                     )
                     .map((note) => (
                       <CSSTransition
@@ -192,14 +208,10 @@ const Dex = ({ createNote, notes, dex, deleteNote, shared = false }) => {
                           }
                         >
                           <Highlight
-                            search={filter.length > 0 ? `@${filter}` : ""}
-                            matchStyle={{
-                              color: "#3F8BE4",
-                              background: "transparent",
-                            }}
-                          >
-                            {note.content}
-                          </Highlight>
+                            searchWords={query}
+                            highlightClassName="highlightNote"
+                            textToHighlight={note.content}
+                          />
                           {!shared && (
                             <Remove
                               clicked={toDel === note.id}

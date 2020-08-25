@@ -207,4 +207,9 @@ export default createGlobalStyle`
     .Toastify__toast-container {
       z-index: 9999999999;
     }
+
+    .highlightNote {
+       color: ${(props) => props.theme.primary};
+       background: transparent;
+    }
 `;
