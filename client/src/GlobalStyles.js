@@ -176,14 +176,14 @@ export default createGlobalStyle`
 
     @keyframes autofill {
         100% {
-            background: transparent;
+            background: transparent !important;
             color: inherit;
         }
     }
 
     @-webkit-keyframes autofill {
         100% {
-            background: transparent;
+            background: transparent !important;
             color: inherit;
         }
     }
@@ -212,6 +212,7 @@ export default createGlobalStyle`
     input:-internal-autofill-selected {
       background-color: transparent !important;
     }
+    
 
     .clipboard {
       font-size: 1rem;
