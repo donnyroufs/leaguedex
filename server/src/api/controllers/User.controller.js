@@ -15,6 +15,7 @@ class UserController extends Controller {
     this.destroy = this.destroy.bind(this);
     this.refresh = this.refresh.bind(this);
     this.addSummmonerAccount = this.addSummmonerAccount.bind(this);
+    this.getRegions = this.getRegions.bind(this);
   }
 
   async all(req, res) {
@@ -154,18 +155,19 @@ class UserController extends Controller {
   }
 
   async addSummmonerAccount(req, res, next) {
-    const { summonerName } = req.body;
+    const { summonerName, region } = req.body;
 
     try {
-      const data = await Riot.getSummoner(summonerName);
+      const data = await Riot.getSummoner(summonerName, region);
 
-      if (!data) throw ErrorHandler(500, "Couldn't make the request.");
+      if (!data) throw ErrorHandler(404, 'Could not find the summoner.');
 
       const addedSummoner = await db.summoner.create({
         data: {
           accountId: data.id,
           name: data.name,
           level: data.summonerLevel,
+          region: region,
           user: {
             connect: {
               id: Number(req.user.id),
@@ -209,6 +211,11 @@ class UserController extends Controller {
     } catch (err) {
       next(err);
     }
+  }
+
+  getRegions(_, res) {
+    const data = Riot.getRegions();
+    res.status(200).json(data);
   }
 }
 
