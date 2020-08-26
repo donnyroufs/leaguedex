@@ -9,6 +9,7 @@ export const Container = styled.section`
 `;
 
 Container.Wrapper = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   opacity: ${(props) => (props.selected ? 1 : 0.45)};
@@ -39,4 +40,11 @@ Container.Role = styled.div`
   font-size: 1.4rem;
   text-transform: uppercase;
   margin-bottom: 6rem;
+`;
+
+Container.Text = styled.h2`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: ${(props) => props.theme.secondary};
 `;

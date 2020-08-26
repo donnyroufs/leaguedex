@@ -23,8 +23,9 @@ const Match = ({ match, selectChampion, selected, selectRole }) => {
               effect="blur"
               height="100%"
               width="100%"
-              delayTime={500}
+              delayTime={100}
             />
+            <Container.Text>{opponent.name}</Container.Text>
           </Container.Wrapper>
         ))}
       </Container>
