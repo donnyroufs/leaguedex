@@ -16,6 +16,7 @@ const controller = new Controller({
 });
 
 router.get('/', Auth.authenticateToken, controller.all);
+router.get('/region', controller.getRegions);
 
 router.post('/register', validator.body(userRegister), controller.create);
 router.post('/login', validator.body(userLogin), controller.login);
