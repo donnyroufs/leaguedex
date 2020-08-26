@@ -9,6 +9,19 @@ class Riot {
     icon: 'https://ddragon.leagueoflegends.com/cdn/img/champion',
   };
 
+  static regions = {
+    EUW: 'EUW1',
+    EUN: 'EUN1',
+    BR: 'BR1',
+    JP: 'JP1',
+    KR: 'KR',
+    LA: 'LA1',
+    NA: 'NA1',
+    OC: 'OC1',
+    TR: 'TR1',
+    RU: 'RU',
+  };
+
   static async syncStaticData() {
     try {
       const {
@@ -51,7 +64,7 @@ class Riot {
     }
   }
 
-  static async getSummoner(summonerName, region = 'euw1') {
+  static async getSummoner(summonerName, region = this.regions.EUW) {
     try {
       const { data } = await axios.get(
         `https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}?api_key=${process.env.API_KEY}`
@@ -62,10 +75,10 @@ class Riot {
     }
   }
 
-  static async findMatch(summonerId, region = 'euw1') {
+  static async findMatch(summonerId, region = this.regions.EUW) {
     try {
       const { data } = await axios.get(
-        `https://${region}1.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/${summonerId}?api_key=${process.env.API_KEY}`
+        `https://${region}.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/${summonerId}?api_key=${process.env.API_KEY}`
       );
       return data;
     } catch (err) {
@@ -73,7 +86,7 @@ class Riot {
     }
   }
 
-  static async getGameResults(matchId, region = 'euw1') {
+  static async getGameResults(matchId, region = this.regions.EUW) {
     try {
       const data = await axios.get(
         `https://${region}1.api.riotgames.com/lol/match/v4/matches/${matchId}?api_key=${process.env.API_KEY}`
@@ -82,6 +95,10 @@ class Riot {
     } catch (_) {
       return null;
     }
+  }
+
+  static getRegions() {
+    return this.regions;
   }
 }
 
