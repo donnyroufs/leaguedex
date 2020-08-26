@@ -127,11 +127,11 @@ export const Button = styled.button`
     `}
 
     ${(props) =>
-      props.danger &&
-      css`
-        background: #d23f6f;
-        color: #1b0009;
-      `}
+    props.danger &&
+    css`
+      background: #d23f6f;
+      color: #1b0009;
+    `}
 `;
 
 export default createGlobalStyle`
@@ -166,12 +166,31 @@ export default createGlobalStyle`
       outline: none;
     }
 
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        -webkit-animation: autofill 0s forwards;
+        animation: autofill 0s forwards;
+    }
+
+    @keyframes autofill {
+        100% {
+            background: transparent;
+            color: inherit;
+        }
+    }
+
+    @-webkit-keyframes autofill {
+        100% {
+            background: transparent;
+            color: inherit;
+        }
+    }
+
     .fade-enter {
       opacity: 0;
-  transform: scale(0.9);
-      /* transform: translateX(-32px);
-      opacity: 0.01;
-      transition: all 200 ease-in; */
+      transform: scale(0.9);
     }
 
     .fade-enter-active {
