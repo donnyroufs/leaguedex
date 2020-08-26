@@ -7,6 +7,7 @@ import {
   Label,
   Group,
   Footer,
+  Select,
   FlashMessage,
 } from "../styles/Form";
 import { Button } from "../../GlobalStyles";
@@ -19,12 +20,19 @@ import decode from "jwt-decode";
 
 const initialValues = {
   summonerName: "",
+  region: "euw1",
 };
 
-const LoginModal = () => {
+const fetchRegions = async () => {
+  const res = await fetch("/api/user/region");
+  return res.json();
+};
+
+const SummonerModal = () => {
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState(initialValues);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [regions, setRegions] = useState([]);
 
   const { isAuthenticated, getToken, user, setUser, refreshToken } = useAuth();
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
@@ -40,11 +48,12 @@ const LoginModal = () => {
     }
   });
 
-  const handleOnChange = (e) =>
+  const handleOnChange = (e) => {
     setValues({
       ...values,
       [e.target.name]: e.target.value,
     });
+  };
 
   const handleSummoner = async (e) => {
     e.preventDefault();
@@ -52,7 +61,7 @@ const LoginModal = () => {
       setLoading(true);
       const response = await fetch("/api/user/summoner", {
         method: "POST",
-        body: JSON.stringify({ summonerName: values.summonerName }),
+        body: JSON.stringify(values),
         credentials: "include",
         headers: {
           Accept: "application/json",
@@ -78,6 +87,11 @@ const LoginModal = () => {
   };
 
   useEffect(() => {
+    (async () => {
+      const data = await fetchRegions();
+      if (!data) console.error("No regions found.");
+      setRegions(data);
+    })();
     if (isAuthenticated) {
       setErrorMessage(null);
       setValues(initialValues);
@@ -116,6 +130,24 @@ const LoginModal = () => {
             onChange={handleOnChange}
           />
         </Group>
+        <Group>
+          <Label>Region</Label>
+          <Select onChange={handleOnChange} name="region" value={values.region}>
+            {Object.entries(regions).map(([region, value]) => (
+              <option
+                key={value}
+                value={value}
+                style={{
+                  display: "block",
+                  paddingBottom: "1rem",
+                  backgroundColor: "#2c3a4a",
+                }}
+              >
+                {region}
+              </option>
+            ))}
+          </Select>
+        </Group>
         <Button
           type="submit"
           form="true"
@@ -135,4 +167,4 @@ const LoginModal = () => {
   );
 };
 
-export default LoginModal;
+export default SummonerModal;
