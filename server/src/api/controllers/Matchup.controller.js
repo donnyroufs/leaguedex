@@ -19,6 +19,7 @@ class MatchupController extends Controller {
     this.getLatest = this.getLatest.bind(this);
     this.getAllMatchupsByChampion = this.getMatchups.bind(this);
     this.updatePrivate = this.updatePrivate.bind(this);
+    this.revertMatchup = this.revertMatchup.bind(this);
   }
 
   async createOne(req, res, next) {
@@ -308,6 +309,45 @@ class MatchupController extends Controller {
       next(err);
     }
   }
+
+  // async revertMatchup(req, res, next) {
+  //   try {
+  //     const { id } = req.user;
+  //     const { gamesPlayed, champion_id, opponent_id, lane } = req.params;
+
+  //     if (gamesPlayed <= 1) {
+  //       await db.matchup.delete({
+  //         where: {
+  //           champion_id_opponent_id_lane_user_id: {
+  //             lane: lane.trim(),
+  //             champion_id: Number(champion_id),
+  //             opponent_id: Number(opponent_id),
+  //             user_id: Number(id),
+  //           },
+  //         },
+  //       });
+  //     } else {
+  //       await db.matchup.update({
+  //         where: {
+  //           champion_id_opponent_id_lane_user_id: {
+  //             lane: lane.trim(),
+  //             champion_id: Number(champion_id),
+  //             opponent_id: Number(opponent_id),
+  //             user_id: Number(id),
+  //           },
+  //         },
+  //         data: {
+  //           games_played: gamesPlayed - 1,
+  //           game_id: null,
+  //         },
+  //       });
+  //     }
+
+  //     res.sendStatus(201);
+  //   } catch (err) {
+  //     next(err);
+  //   }
+  // }
 }
 
 module.exports = MatchupController;
