@@ -19,7 +19,7 @@ class MatchupController extends Controller {
     this.getLatest = this.getLatest.bind(this);
     this.getAllMatchupsByChampion = this.getMatchups.bind(this);
     this.updatePrivate = this.updatePrivate.bind(this);
-    this.revertMatchup = this.revertMatchup.bind(this);
+    // this.revertMatchup = this.revertMatchup.bind(this);
   }
 
   async createOne(req, res, next) {
