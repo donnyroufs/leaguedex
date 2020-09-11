@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "./Match.styles";
+import { Container, Footer } from "./Match.styles";
 
 const Match = ({ match, selectChampion, selected, selectRole }) => {
   const roles = ["top", "jungle", "mid", "adc", "support"];
@@ -11,23 +11,28 @@ const Match = ({ match, selectChampion, selected, selectRole }) => {
   if (!selected) {
     return (
       <Container>
-        {match.opponents.map((opponent) => (
-          <Container.Wrapper
-            key={opponent.id}
-            onClick={() => selectChampion(opponent)}
-            selected={selected === opponent.id}
-          >
-            <Container.Image
-              src={opponent.image}
-              alt={opponent.id}
-              effect="blur"
-              height="100%"
-              width="100%"
-              delayTime={100}
-            />
-            <Container.Text>{opponent.name}</Container.Text>
-          </Container.Wrapper>
-        ))}
+        <Container.Inner>
+          {match.opponents.map((opponent) => (
+            <Container.Wrapper
+              key={opponent.id}
+              onClick={() => selectChampion(opponent)}
+              selected={selected === opponent.id}
+            >
+              <Container.Image
+                src={opponent.image}
+                alt={opponent.id}
+                effect="blur"
+                height="100%"
+                width="100%"
+                delayTime={100}
+              />
+              <Container.Text>{opponent.name}</Container.Text>
+            </Container.Wrapper>
+          ))}
+        </Container.Inner>
+        <Footer>
+          <Footer.Text>PICK YOUR OPPONENT</Footer.Text>
+        </Footer>
       </Container>
     );
   }
@@ -35,15 +40,20 @@ const Match = ({ match, selectChampion, selected, selectRole }) => {
   if (selected) {
     return (
       <Container>
-        {roles.map((role) => (
-          <Container.Wrapper
-            key={role}
-            role="true"
-            onClick={() => selectRole(role)}
-          >
-            <Container.Role>{role}</Container.Role>
-          </Container.Wrapper>
-        ))}
+        <Container.Inner>
+          {roles.map((role) => (
+            <Container.Wrapper
+              key={role}
+              role="true"
+              onClick={() => selectRole(role)}
+            >
+              <Container.Role>{role}</Container.Role>
+            </Container.Wrapper>
+          ))}
+        </Container.Inner>
+        <Footer>
+          <Footer.Text>PICK YOUR LANE</Footer.Text>
+        </Footer>
       </Container>
     );
   }
