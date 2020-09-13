@@ -167,6 +167,15 @@ export const FilterContainer = styled.div`
   }
 `;
 
+Main.Revert = styled.button`
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: ${(props) => props.theme.danger};
+  margin-right: 1.5rem;
+  background: none;
+`;
+
 export const Tag = styled.button`
   padding: 0.75rem 1.25rem;
   border-radius: 4px;
