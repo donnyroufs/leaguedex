@@ -93,7 +93,7 @@ const DexContainer = ({ history }) => {
   const [loading, setLoading] = useState(true);
   const [notes, setNotes] = useState([]);
   const [dex, setDex] = useState(null);
-  const { match, revertMatch } = useMatch();
+  const { revertMatch } = useMatch();
 
   const createNote = async (value) => {
     const tags = parseTags(value);
