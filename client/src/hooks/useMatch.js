@@ -80,6 +80,15 @@ const useMatchProvider = () => {
     }
   };
 
+  const revertMatch = (history) => {
+    setMatch((currentValue) => ({
+      ...currentValue,
+      confirmed: false,
+    }));
+
+    history.push(`/match/${match.matchId}`);
+  };
+
   useEffect(() => {
     if (match && match.confirmed) {
       const timer = setInterval(() => {
@@ -111,5 +120,6 @@ const useMatchProvider = () => {
     confirmed: match && match.confirmed,
     timer,
     minutes: timer.split(":")[0],
+    revertMatch,
   };
 };
