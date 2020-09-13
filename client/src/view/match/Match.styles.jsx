@@ -4,8 +4,15 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 export const Container = styled.section`
   overflow: hidden;
   display: flex;
+  flex-flow: column nowrap;
   height: calc(100vh - 100px);
   justify-content: space-between;
+`;
+
+Container.Inner = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  height: 85%;
 `;
 
 Container.Wrapper = styled.div`
@@ -46,5 +53,22 @@ Container.Text = styled.h2`
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  color: ${(props) => props.theme.secondary};
+  color: #fcfcfc;
+  text-shadow: 2px 2px #212121;
+`;
+
+export const Footer = styled.footer`
+  height: 15%;
+  width: 100%;
+  border-top: 1px solid ${(props) => props.theme.primary};
+  display: grid;
+  place-items: center;
+`;
+
+Footer.Text = styled.h1`
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 2.5rem;
+  color: #58697c;
 `;

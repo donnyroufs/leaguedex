@@ -47,5 +47,5 @@ jobs:
       - run: cp ../../prisma_production.env ../../production_leaguedex/prisma/.env
       - run: cd ../../production_leaguedex && yarn install --force
       - run: cd ../../production_leaguedex && yarn run:prettier
-      - run: cd ../../production_leaguedex && yarn migrate:staging
-      - run: cd ../../production_leaguedex && yarn restart:staging
+      - run: cd ../../production_leaguedex && yarn migrate:prod
+      - run: cd ../../production_leaguedex && yarn restart:prod

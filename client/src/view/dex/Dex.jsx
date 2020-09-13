@@ -24,7 +24,14 @@ import { useAuth } from "../../hooks/useAuth";
 import { FaLink } from "react-icons/fa";
 import { arraysEqual } from "../../helpers/arrayHelpers";
 
-const Dex = ({ createNote, notes, dex, deleteNote, shared = false }) => {
+const Dex = ({
+  createNote,
+  notes,
+  dex,
+  deleteNote,
+  handleRevert = Function,
+  shared = false,
+}) => {
   const ref = useRef();
   const [value, setValue] = useState("");
   const [tags, setTags] = useState([]);
@@ -98,15 +105,15 @@ const Dex = ({ createNote, notes, dex, deleteNote, shared = false }) => {
     }
   };
 
+  const liveMatch = () => dex && match && Number(dex.game_id) === match.gameId;
+
   return (
     <Container>
       <Container.Left>
         <Image src={dex.championA.image} alt={dex.championA.name} you />
         <Image src={dex.championB.image} alt={dex.championB.name} />
         <Versus>vs</Versus>
-        <Status>
-          {dex && match && Number(dex.game_id) === match.gameId && "LIVE!"}
-        </Status>
+        {liveMatch() && <Status>LIVE!</Status>}
       </Container.Left>
       <Container.Right>
         <Container.Right.Inner>
@@ -135,16 +142,37 @@ const Dex = ({ createNote, notes, dex, deleteNote, shared = false }) => {
                     }}
                   />
                 )}
-                Your notes
+                {shared ? "Notes" : "Your notes"}
               </Main.Title>
-              {!shared && (
-                <Main.Toggle>
-                  <Toggle {...dex} privacy={privacy} setPrivacy={setPrivacy} />
-                </Main.Toggle>
-              )}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                {!shared && (
+                  <>
+                    {liveMatch() && (
+                      <Main.Revert
+                        style={{ marginRight: "1rem", cursor: "pointer" }}
+                        onClick={handleRevert}
+                      >
+                        Picked wrong matchup?
+                      </Main.Revert>
+                    )}
+                    <Main.Toggle>
+                      <Toggle
+                        {...dex}
+                        privacy={privacy}
+                        setPrivacy={setPrivacy}
+                      />
+                    </Main.Toggle>
+                  </>
+                )}
+              </div>
             </Main.Header>
             <FilterContainer>
-              {tags.length <= 0 && (
+              {tags.length <= 0 && !shared && (
                 <p style={{ marginTop: "-1rem" }}>
                   Create custom tags by adding{" "}
                   <mark
@@ -186,6 +214,9 @@ const Dex = ({ createNote, notes, dex, deleteNote, shared = false }) => {
               </Form>
             )}
             <Notes>
+              {shared &&
+                notes.length <= 0 &&
+                "There are no notes for this matchup."}
               <TransitionGroup>
                 {notes.length > 0 &&
                   filteredNotes()

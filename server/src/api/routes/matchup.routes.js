@@ -12,6 +12,7 @@ const controller = new Controller({
   formatters,
 });
 
+router.put('/revert', Auth.authenticateToken, controller.revertMatchup);
 router.put('/private', Auth.authenticateToken, controller.updatePrivate);
 router.get('/sync', Auth.authenticateToken, controller.syncAll);
 router.post('/create', Auth.authenticateToken, controller.createOne);

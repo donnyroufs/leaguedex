@@ -8,3 +8,4 @@
 20200818105145-add_notes_table
 20200820200838-add-assets-to-champion
 20200822210619-add_private_field_to_matchup
+20200911192543-make_game_id_nullable
