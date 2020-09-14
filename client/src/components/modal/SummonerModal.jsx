@@ -100,7 +100,7 @@ const SummonerModal = () => {
       });
       setModal(null);
     }
-  }, [isAuthenticated, setModal]);
+  }, [isAuthenticated, setModal, user.username]);
 
   useEffect(() => {
     setErrorMessage(null);
@@ -108,7 +108,7 @@ const SummonerModal = () => {
       ...initialValues,
       summonerName: user.username,
     });
-  }, [modal]);
+  }, [modal, user.username]);
 
   useEffect(() => innerRef.current && innerRef.current.focus(), [isOpen]);
 
