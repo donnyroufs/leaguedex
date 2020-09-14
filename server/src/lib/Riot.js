@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { db } = require('../config/database');
+const { ErrorHandler } = require('../helpers/error');
 
 class Riot {
   static endpoints = {
@@ -82,7 +83,7 @@ class Riot {
       );
       return data;
     } catch (err) {
-      throw err;
+      throw new ErrorHandler(404, 'No match found.');
     }
   }
 
