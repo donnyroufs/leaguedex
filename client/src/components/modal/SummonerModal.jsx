@@ -94,14 +94,20 @@ const SummonerModal = () => {
     })();
     if (isAuthenticated) {
       setErrorMessage(null);
-      setValues(initialValues);
+      setValues({
+        ...initialValues,
+        summonerName: user.username,
+      });
       setModal(null);
     }
   }, [isAuthenticated, setModal]);
 
   useEffect(() => {
     setErrorMessage(null);
-    setValues(initialValues);
+    setValues({
+      ...initialValues,
+      summonerName: user.username,
+    });
   }, [modal]);
 
   useEffect(() => innerRef.current && innerRef.current.focus(), [isOpen]);
