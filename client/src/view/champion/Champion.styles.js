@@ -19,6 +19,7 @@ Container.Inner = styled.div`
     width: 95%;
     max-width: 1400px;
     margin: 0 auto;
+    z-index: 5;
   }
 `;
 
@@ -55,7 +56,12 @@ export const Header = styled.header`
   background-size: cover;
 
   @media screen and (min-width: 968px) {
-    height: 600px;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    opacity: 0.1;
   }
 `;
 
