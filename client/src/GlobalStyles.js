@@ -170,8 +170,10 @@ export default createGlobalStyle`
     input:-webkit-autofill:hover,
     input:-webkit-autofill:focus,
     input:-webkit-autofill:active {
-        -webkit-animation: autofill 0s forwards;
-        animation: autofill 0s forwards;
+        -webkit-animation: autofill 0s forwards !important;
+        animation: autofill 0s forwards !important;
+         -webkit-box-shadow: 0 0 0 30px #27303a inset !important;
+         box-shadow: 0 0 0 30px #27303a inset !important;
     }
 
     @keyframes autofill {
