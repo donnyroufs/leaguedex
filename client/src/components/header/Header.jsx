@@ -8,6 +8,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useMatch } from "../../hooks/useMatch";
 import { getToken } from "../../helpers/getToken";
 import { toast } from "react-toastify";
+import ReactTooltip from "react-tooltip";
 
 const AVERAGE_GAMELENGTH = 35;
 
@@ -78,6 +79,7 @@ const Header = () => {
 
   return (
     <Container>
+      <ReactTooltip />
       <Container.Brand to="/">
         <Container.Brand.Image src="/logo.svg" alt="leaguedex logo" />
       </Container.Brand>
@@ -120,9 +122,14 @@ const Header = () => {
                 {!hasMatch && (
                   <>
                     {!confirmed && (
-                      <Button header onClick={findMatch} disabled={loading}>
+                      <Button
+                        header
+                        onClick={findMatch}
+                        disabled={loading}
+                        data-tip="Games are detected after loading screen."
+                      >
                         {loading && <BeatLoader color="#B8D0EC" />}
-                        {!loading && "Not in a match"}
+                        {!loading && "Find live match"}
                       </Button>
                     )}
                   </>
