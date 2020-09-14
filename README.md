@@ -30,6 +30,6 @@ will be updated live. Incase you want to help us out, look thru the issues, and 
 
 ### Links
 
-- [Home Page](https://leaguedex.com)
-- [Staging Page](https://staging.leaguedex.com)
+- [Production Website](https://leaguedex.com)
+- [Staging Website](https://staging.leaguedex.com)
 - [Design Figma](https://www.figma.com/file/LKOTO3yHEvZXIYbJFiIdQk/Untitled?node-id=0%3A1)
