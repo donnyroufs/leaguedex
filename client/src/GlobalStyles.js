@@ -174,18 +174,19 @@ export default createGlobalStyle`
         animation: autofill 0s forwards !important;
          -webkit-box-shadow: 0 0 0 30px #27303a inset !important;
          box-shadow: 0 0 0 30px #27303a inset !important;
+         background-color: #27303a !important;
     }
 
     @keyframes autofill {
         100% {
-            background: transparent !important;
+            background: #27303a !important;
             color: inherit;
         }
     }
 
     @-webkit-keyframes autofill {
         100% {
-            background: transparent !important;
+            background: #27303a !important;
             color: inherit;
         }
     }
