@@ -175,10 +175,11 @@ export default createGlobalStyle`
     select:-webkit-autofill,
     select:-webkit-autofill:hover,
     select:-webkit-autofill:focus {
-      border: none;
-      -webkit-text-fill-color: #B8D0EC;
-      -webkit-box-shadow: 0 0 0px 1000px #27303a inset;
-      transition: background-color 5000s ease-in-out 0s;
+      border: none !important;
+      -webkit-text-fill-color: #B8D0EC !important;
+      -webkit-box-shadow: 0 0 0px 1000px #27303a inset !important;
+      box-shadow: 0 0 0px 1000px #27303a inset !important;
+      transition: background-color 5000s ease-in-out 0s !important;
     }
    
     .fade-enter {
