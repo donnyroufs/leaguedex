@@ -96,19 +96,22 @@ const SummonerModal = () => {
       setErrorMessage(null);
       setValues({
         ...initialValues,
-        summonerName: user.username,
+        summonerName: isAuthenticated ? user.username : "",
       });
       setModal(null);
     }
-  }, [isAuthenticated, setModal, user.username]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, setModal]);
 
   useEffect(() => {
     setErrorMessage(null);
     setValues({
       ...initialValues,
-      summonerName: user.username,
+      summonerName: isAuthenticated ? user.username : "",
     });
-  }, [modal, user.username]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modal]);
 
   useEffect(() => innerRef.current && innerRef.current.focus(), [isOpen]);
 
