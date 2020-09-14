@@ -172,8 +172,8 @@ export default createGlobalStyle`
     input:-webkit-autofill:active {
         -webkit-animation: autofill 0s forwards !important;
         animation: autofill 0s forwards !important;
-         -webkit-box-shadow: 0 0 0 30px #27303a inset !important;
-         box-shadow: 0 0 0 30px #27303a inset !important;
+         -webkit-box-shadow: 0 0 0 30px #B8D0EC inset !important;
+         box-shadow: 0 0 0 30px #B8D0EC inset !important;
          background-color: #27303a !important;
          color: #B8D0EC !important;
     }
