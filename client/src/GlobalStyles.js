@@ -181,14 +181,14 @@ export default createGlobalStyle`
     @keyframes autofill {
         100% {
             background: #27303a !important;
-            color: #B8D0EC;
+            color: #B8D0EC !important;
         }
     }
 
     @-webkit-keyframes autofill {
         100% {
             background: #27303a !important;
-            color: #B8D0EC;
+            color: #B8D0EC !important;
         }
     }
 
