@@ -167,31 +167,20 @@ export default createGlobalStyle`
     }
 
     input:-webkit-autofill,
-    input:-webkit-autofill:hover,
+    input:-webkit-autofill:hover, 
     input:-webkit-autofill:focus,
-    input:-webkit-autofill:active {
-        -webkit-animation: autofill 0s forwards !important;
-        animation: autofill 0s forwards !important;
-         -webkit-box-shadow: 0 0 0 30px #B8D0EC inset !important;
-         box-shadow: 0 0 0 30px #B8D0EC inset !important;
-         background-color: #27303a !important;
-         color: #B8D0EC !important;
+    textarea:-webkit-autofill,
+    textarea:-webkit-autofill:hover,
+    textarea:-webkit-autofill:focus,
+    select:-webkit-autofill,
+    select:-webkit-autofill:hover,
+    select:-webkit-autofill:focus {
+      border: none;
+      -webkit-text-fill-color: #B8D0EC;
+      -webkit-box-shadow: 0 0 0px 1000px #27303a inset;
+      transition: background-color 5000s ease-in-out 0s;
     }
-
-    @keyframes autofill {
-        100% {
-            background: #27303a !important;
-            color: #B8D0EC !important;
-        }
-    }
-
-    @-webkit-keyframes autofill {
-        100% {
-            background: #27303a !important;
-            color: #B8D0EC !important;
-        }
-    }
-
+   
     .fade-enter {
       opacity: 0;
       transform: scale(0.9);
