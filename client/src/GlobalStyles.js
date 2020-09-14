@@ -175,19 +175,20 @@ export default createGlobalStyle`
          -webkit-box-shadow: 0 0 0 30px #27303a inset !important;
          box-shadow: 0 0 0 30px #27303a inset !important;
          background-color: #27303a !important;
+         color: #B8D0EC !important;
     }
 
     @keyframes autofill {
         100% {
             background: #27303a !important;
-            color: inherit;
+            color: #B8D0EC;
         }
     }
 
     @-webkit-keyframes autofill {
         100% {
             background: #27303a !important;
-            color: inherit;
+            color: #B8D0EC;
         }
     }
 
