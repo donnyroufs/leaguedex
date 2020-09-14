@@ -1,5 +1,5 @@
-require('dotenv/config');
-// require('dotenv').config({ path: '../.env' });
+const { resolve } = require('path');
+require('dotenv').config({ path: resolve(__dirname, '../.env') });
 
 const path = require('path');
 const express = require('express');

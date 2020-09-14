@@ -68,7 +68,7 @@ const Champion = ({
                       backgroundColor: "#2c3a4a",
                     }}
                   >
-                    {lane}
+                    {lane.toUpperCase()}
                   </option>
                 ))}
               </Select>

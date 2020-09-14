@@ -58,7 +58,6 @@ export const Form = styled.form`
       css`
         padding: 0;
       `}
-
   }
 `;
 export const Group = styled.div`
@@ -69,7 +68,6 @@ export const Group = styled.div`
   text-transform: uppercase;
   display: flex;
   justify-content: center;
-  padding: 0 1rem;
   margin-bottom: 1rem;
 
   ${(props) =>
@@ -80,6 +78,7 @@ export const Group = styled.div`
       @media screen and (min-width: 968px) {
         margin-bottom: 0;
         margin-right: 1.5rem;
+        border: 1px solid #425469;
         min-width: 250px;
       }
     `}
@@ -110,6 +109,7 @@ export const Label = styled.label`
   margin-bottom: 0.3rem;
   margin-left: 0.1rem;
   cursor: text;
+  padding: 0 1rem;
 `;
 
 export const Select = styled.select`
@@ -118,12 +118,14 @@ export const Select = styled.select`
   outline: none;
   color: ${(props) => props.theme.secondary};
   margin-left: -2px;
+  padding: 0 1rem;
 `;
 
 export const Input = styled.input`
   background: transparent;
   border: none;
   color: ${(props) => props.theme.secondary};
+  padding: 0 1rem;
   ${(props) =>
     props.secondary &&
     css`

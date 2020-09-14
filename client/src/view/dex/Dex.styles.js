@@ -130,10 +130,12 @@ export const Notes = styled.ul`
   margin: 2rem 0;
   width: 100%;
   padding: 0 1.5rem;
+  min-height: 150px;
 
   @media screen and (min-width: 1200px) {
     margin: 0 0 3rem 0;
     padding: 0;
+    min-height: auto;
   }
 `;
 

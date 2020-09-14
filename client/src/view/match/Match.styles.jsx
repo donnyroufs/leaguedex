@@ -38,7 +38,7 @@ Container.Wrapper = styled.div`
 
 Container.Image = styled(LazyLoadImage)`
   width: 100%;
-  object-position: center center;
+  object-position: top center;
   object-fit: cover;
 `;
 
@@ -51,8 +51,8 @@ Container.Role = styled.div`
 
 Container.Text = styled.h2`
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  margin: 0 auto;
+  bottom: 50px;
   color: #fcfcfc;
   text-shadow: 2px 2px #212121;
 `;
