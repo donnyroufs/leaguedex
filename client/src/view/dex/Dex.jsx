@@ -49,11 +49,7 @@ const Dex = ({
       setTags(_tags);
       setPrivacy(dex.private);
       if (!shared) {
-        setLink(
-          process.env.NODE_ENV === "prod"
-            ? `https://leaguedex.com/shared/${user.username}/${dex.id}`
-            : `https://staging.leaguedex.com/shared/${user.username}/${dex.id}`
-        );
+        setLink(`https://leaguedex.com/shared/${user.username}/${dex.id}`);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

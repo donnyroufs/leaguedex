@@ -32,6 +32,6 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-if (process.env.NODE_ENV === "dev") {
+if (process.env.NODE_ENV === "debug") {
   debugContextDevtool(document.getElementById("root"));
 }
