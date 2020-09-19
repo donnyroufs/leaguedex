@@ -4,6 +4,7 @@ import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { getToken } from "../../helpers/getToken";
 import { loadImage } from "../../helpers/loadImages";
+import Helmet from "react-helmet";
 
 const fetchMatchups = async (name, params = "") => {
   const res = await fetch(`/api/matchup/all?champion=${name}${params}`, {
@@ -77,14 +78,19 @@ const ChampionContainer = ({
   }
 
   return (
-    <Champion
-      matchups={matchups}
-      name={name}
-      setValues={setValues}
-      values={values}
-      onSearch={onSearch}
-      championA={championA}
-    />
+    <>
+      <Helmet>
+        <title>Leaguedex - Champions</title>
+      </Helmet>
+      <Champion
+        matchups={matchups}
+        name={name}
+        setValues={setValues}
+        values={values}
+        onSearch={onSearch}
+        championA={championA}
+      />
+    </>
   );
 };
 

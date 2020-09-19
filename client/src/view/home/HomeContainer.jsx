@@ -5,6 +5,7 @@ import { getToken } from "../../helpers/getToken";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { loadAssets, build } from "../../helpers/loadImages";
+import Helmet from "react-helmet";
 
 const fetchChampions = async (isAuthenticated) => {
   const endpoint = isAuthenticated ? "/api/matchup/played" : "/api/champion";
@@ -71,7 +72,14 @@ const HomeContainer = () => {
     );
   }
 
-  return <Home champions={champions} info={info} loading={loading} />;
+  return (
+    <>
+      <Helmet>
+        <title>Leagudex</title>
+      </Helmet>
+      <Home champions={champions} info={info} loading={loading} />
+    </>
+  );
 };
 
 export default HomeContainer;

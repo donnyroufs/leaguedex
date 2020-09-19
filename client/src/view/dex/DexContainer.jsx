@@ -8,6 +8,7 @@ import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { build, loadAssets } from "../../helpers/loadImages";
 import { useMatch } from "../../hooks/useMatch";
+import Helmet from "react-helmet";
 
 const fetchDex = async (id) => {
   const res = await fetch(`/api/matchup/${id}`, {
@@ -171,15 +172,21 @@ const DexContainer = ({ history }) => {
   }
 
   return (
-    <Dex
-      createNote={createNote}
-      notes={notes}
-      history={history}
-      dex={dex}
-      loading={loading}
-      deleteNote={deleteNote}
-      handleRevert={handleRevert}
-    />
+    <>
+      <Helmet>
+        <title>Leaguedex - Champion Dex</title>
+      </Helmet>
+
+      <Dex
+        createNote={createNote}
+        notes={notes}
+        history={history}
+        dex={dex}
+        loading={loading}
+        deleteNote={deleteNote}
+        handleRevert={handleRevert}
+      />
+    </>
   );
 };
 

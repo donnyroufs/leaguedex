@@ -3,6 +3,7 @@ import Match from "./Match";
 import { useMatch } from "../../hooks/useMatch";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
+import { Helmet } from "react-helmet";
 
 const MatchContainer = ({ history }) => {
   const [selected, setSelected] = useState(null);
@@ -34,12 +35,17 @@ const MatchContainer = ({ history }) => {
   }
 
   return (
-    <Match
-      match={match}
-      selected={selected}
-      selectChampion={selectChampion}
-      selectRole={selectRole}
-    />
+    <>
+      <Helmet>
+        <title>Leaguedex - Match Found</title>
+      </Helmet>
+      <Match
+        match={match}
+        selected={selected}
+        selectChampion={selectChampion}
+        selectRole={selectRole}
+      />
+    </>
   );
 };
 

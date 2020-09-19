@@ -4,6 +4,7 @@ import Dex from "./Dex";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { getToken } from "../../helpers/getToken";
+import Helmet from "react-helmet";
 
 const fetchDex = async (id, username) => {
   const res = await fetch(`/api/shared/${username}/dex?id=${id}`, {
@@ -71,14 +72,19 @@ const DexContainer = ({ history }) => {
   }
 
   return (
-    <Dex
-      shared={true}
-      createNote={() => null}
-      notes={notes}
-      history={history}
-      dex={dex}
-      loading={loading}
-    />
+    <>
+      <Helmet>
+        <title>Leaguedex - Champion Dex</title>
+      </Helmet>
+      <Dex
+        shared={true}
+        createNote={() => null}
+        notes={notes}
+        history={history}
+        dex={dex}
+        loading={loading}
+      />
+    </>
   );
 };
 
