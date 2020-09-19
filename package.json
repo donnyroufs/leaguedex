@@ -10,7 +10,5 @@
   "repository": "https://github.com/donnyroufs/leaguedex-revamp.git",
   "author": "Donny Roufs <iamchets@yahoo.com>",
   "license": "MIT",
-  "dependencies": {
-    "react-helmet": "^6.1.0"
-  }
+  "dependencies": {}
 }
