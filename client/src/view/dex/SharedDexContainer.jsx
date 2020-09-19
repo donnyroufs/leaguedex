@@ -74,7 +74,7 @@ const DexContainer = ({ history }) => {
   return (
     <>
       <Helmet>
-        <title>Leaguedex - Champion Dex</title>
+        <title>Leaguedex - Shared Champion Dex</title>
       </Helmet>
       <Dex
         shared={true}

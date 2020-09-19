@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Shared from "./Shared";
+import Helmet from "react-helmet";
 
 const fetchPublicMatchups = async (username) => {
   const res = await fetch(`/api/shared?username=${username}`);
@@ -22,7 +23,14 @@ const SharedContainer = (props) => {
         setLoading(false);
       });
   }, [props.match.params.username]);
-  return <Shared {...props} matchups={matchups} loading={loading} />;
+  return (
+    <>
+      <Helmet>
+        <title>Leaguedex - {props.match.params.username}'s profile</title>
+      </Helmet>
+      <Shared {...props} matchups={matchups} loading={loading} />;
+    </>
+  );
 };
 
 export default SharedContainer;
