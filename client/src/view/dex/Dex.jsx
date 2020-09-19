@@ -49,7 +49,7 @@ const Dex = ({
       setTags(_tags);
       setPrivacy(dex.private);
       if (!shared) {
-        setLink(`https://leaguedex.com/shared/${user.username}/${dex.id}`);
+        setLink(`https://leaguedex.com/profile/${user.username}/dex/${dex.id}`);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

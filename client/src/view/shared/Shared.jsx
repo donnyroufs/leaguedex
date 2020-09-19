@@ -14,7 +14,7 @@ const Shared = ({ matchups, loading, match }) => {
           {matchups.length > 0 &&
             matchups.map((matchup) => (
               <Card
-                to={`/shared/${match.params.username}/${matchup.id}`}
+                to={`/profile/${match.params.username}/dex/${matchup.id}`}
                 key={matchup.id}
               >
                 <Card.Background
