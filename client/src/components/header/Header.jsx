@@ -55,26 +55,32 @@ const Header = () => {
     history.push("/");
   };
 
-  const handleNavigate = (e) => {
+  const handleFindMatch = async (e) => {
     e.preventDefault();
-    (async () => {
-      const { confirmed, updated, id } = await finishMatch(match);
+    const _match = await findMatch();
+    if (_match) {
+      history.push(`/match/${_match.gameId}`);
+    }
+  };
 
-      if (!confirmed || (confirmed && !updated)) {
-        history.push(`/dex/${id}`);
-      }
+  const handleNavigate = async (e) => {
+    e.preventDefault();
+    const { confirmed, updated, id } = await finishMatch(match);
 
-      if (confirmed && updated) {
-        const _match = await findMatch();
-        toast.info("Match updated.");
-        if (_match) {
-          history.push(`/match/${_match.gameId}`);
-        } else {
-          history.push(`/`);
-          setMatch(null);
-        }
+    if (!confirmed || (confirmed && !updated)) {
+      history.push(`/dex/${id}`);
+    }
+
+    if (confirmed && updated) {
+      const _match = await findMatch();
+      toast.info("Match updated.");
+      if (_match) {
+        history.push(`/match/${_match.gameId}`);
+      } else {
+        history.push(`/`);
+        setMatch(null);
       }
-    })();
+    }
   };
 
   return (
@@ -124,7 +130,7 @@ const Header = () => {
                     {!confirmed && (
                       <Button
                         header
-                        onClick={findMatch}
+                        onClick={handleFindMatch}
                         disabled={loading}
                         data-tip="Games are detected after loading screen."
                       >
