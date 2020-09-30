@@ -6,7 +6,7 @@ export const Container = styled.div`
     background: #23303f;
     margin-right: ${home ? 1 : 0}rem;
 
-    @media screen and(min-width: 968px) {
+    @media screen and (min-width: 968px) {
       margin-left: ${home ? 1 : 0}rem;
       margin-right: 0;
     }
