@@ -9,7 +9,7 @@ export default {
   placeholderText: "#697E97",
   dark: "#27303A",
   placeholderFormText: "#4A5765",
-  modal: "#323F4E",
+  modal: "#0e2129",
   danger: "#ff528a",
   tag: "#4E6075",
   lineHeight: "2",
