@@ -8,12 +8,14 @@ export const Container = styled.header`
 
   display: flex;
   flex-flow: column nowrap;
+  height: 175px;
 `;
 
 Container.Inner = styled.div`
   width: 80%;
   max-width: 1400px;
   margin: 0 auto;
+  height: 100%;
 
   @media screen and(min-width: 1200px) {
     width: 100%;
@@ -22,10 +24,13 @@ Container.Inner = styled.div`
 
 Container.Bottom = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
 `;
 
 Container.Brand = styled(Link)`
-  margin: 0;
+  margin: 0 0 0 0.6rem;
 `;
 
 Container.Brand.Image = styled.img``;
