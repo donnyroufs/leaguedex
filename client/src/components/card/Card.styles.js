@@ -25,7 +25,6 @@ export const Lock = styled(FaLock)`
 
 export const Container = styled(Link)`
   position: relative;
-  border: 1px solid ${(props) => props.theme.border};
   display: block;
   width: 100%;
   height: 225px;
