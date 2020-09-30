@@ -85,6 +85,7 @@ const GenericButton = css`
     css`
       color: #83a2c5;
       background: #232f3e;
+      margin-left: 1rem;
     `}
     
   ${(props) =>
