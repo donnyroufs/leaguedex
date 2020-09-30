@@ -40,7 +40,7 @@ const Champion = ({
 
   return (
     <Container>
-      <Header img={championA.splash} />
+      {/* <Header img={championA.splash} /> */}
       <Container.Inner>
         <Container.Wrapper>
           <Title>{name}</Title>
