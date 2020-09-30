@@ -1,13 +1,11 @@
 import React from "react";
 import Header from "./Header";
 
-import { useHistory } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../hooks/useModal";
 import { useMatch } from "../../hooks/useMatch";
 
 const HeaderContainer = (props) => {
-  const history = useHistory();
   const { isAuthenticated, logout, hasSummoner } = useAuth();
   const { setModal } = useModal();
   const { setMatch } = useMatch();
