@@ -29,8 +29,18 @@ export const Container = styled.section`
 
 Container.Widgets = styled.div`
   width: 100%;
+  min-height: 80px;
   @media screen and (min-width: 968px) {
     display: flex;
     justify-content: space-between;
+  }
+`;
+
+export const Widget = styled.div`
+  display: flex;
+  width: 100%;
+
+  @media screen and (min-width: 968px) {
+    width: auto;
   }
 `;

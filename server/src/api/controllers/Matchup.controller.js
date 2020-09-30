@@ -144,7 +144,7 @@ class MatchupController extends Controller {
       const { summoner } = req.user;
       const data = await Riot.findMatch(summoner.accountId, summoner.region);
 
-      if (data.gameMode !== 'CLASSIC' || data.gameStartTime <= 0) {
+      if (data.gameMode !== 'CLASSIC') {
         next(err);
       }
 

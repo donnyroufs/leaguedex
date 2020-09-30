@@ -2,11 +2,11 @@ import React from "react";
 import { Container } from "./Stats.styles";
 import CountUp from "react-countup";
 
-const Stats = ({ label, info }) => {
+const Stats = ({ label, info, page }) => {
   return (
-    <Container>
-      <Container.Label>{label}</Container.Label>
-      <Container.Info>
+    <Container home={page === "home"}>
+      <Container.Label home={page === "home"}>{label}</Container.Label>
+      <Container.Info home={page === "home"}>
         {typeof info === "number" && label !== "win ratio" && (
           <CountUp end={Number(info)} duration={3} />
         )}

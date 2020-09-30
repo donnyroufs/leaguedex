@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Container,
-  Header,
-  Results,
-  Card,
-  Title,
-  Details,
-} from "./Champion.styles.js";
+import { Container, Results, Card, Title, Details } from "./Champion.styles.js";
 import {
   Form,
   Group,
@@ -40,7 +33,6 @@ const Champion = ({
 
   return (
     <Container>
-      <Header img={championA.splash} />
       <Container.Inner>
         <Container.Wrapper>
           <Title>{name}</Title>

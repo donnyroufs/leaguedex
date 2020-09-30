@@ -1,183 +1,80 @@
 import React from "react";
-import { useHistory } from "react-router";
-import { Container } from "./Header.styles";
+import StatusBar from "../statusbar/StatusBarContainer";
+
+import { Container, LinkIcon, Links } from "./Header.styles";
 import { Button } from "../../GlobalStyles";
-import { useModal } from "../../hooks/useModal";
-import { BeatLoader } from "react-spinners";
-import { useAuth } from "../../hooks/useAuth";
-import { useMatch } from "../../hooks/useMatch";
-import { getToken } from "../../helpers/getToken";
-import { toast } from "react-toastify";
-import ReactTooltip from "react-tooltip";
+import { FaQuestionCircle, FaUser, FaTachometerAlt } from "react-icons/fa";
 
-const AVERAGE_GAMELENGTH = 35;
-
-const fetchLatest = async (id) => {
-  const res = await fetch(`/api/matchup/latest/${id}`, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
-  return res.json();
-};
-
-const finishMatch = async (match) => {
-  try {
-    const data = await fetchLatest(match.gameId);
-    return data;
-  } catch (err) {
-    return null;
-  }
-};
-
-const Header = () => {
-  const history = useHistory();
-  const modal = useModal();
-  const { logout, isAuthenticated, user, isAllowed } = useAuth();
-  const {
-    findMatch,
-    hasMatch,
-    loading,
-    match,
-    setMatch,
-    confirmed,
-    timer,
-    minutes,
-  } = useMatch();
-
-  const handleLogout = (e) => {
-    e.preventDefault();
-    setMatch(null);
-    logout();
-    history.push("/");
-  };
-
-  const handleFindMatch = async (e) => {
-    e.preventDefault();
-    const _match = await findMatch();
-    if (_match) {
-      history.push(`/match/${_match.gameId}`);
-    }
-  };
-
-  const handleNavigate = async (e) => {
-    e.preventDefault();
-    const { confirmed, updated, id } = await finishMatch(match);
-
-    if (!confirmed || (confirmed && !updated)) {
-      history.push(`/dex/${id}`);
-    }
-
-    if (confirmed && updated) {
-      const _match = await findMatch();
-      toast.info("Match updated.");
-      if (_match) {
-        history.push(`/match/${_match.gameId}`);
-      } else {
-        history.push(`/`);
-        setMatch(null);
-      }
-    }
-  };
-
+const Header = ({
+  isAuthenticated,
+  setModal,
+  handleLogout,
+  hasSummoner,
+  user,
+  handleFindMatch,
+  handleMatchupSelection,
+  handleLiveMatch,
+  isAdmin,
+}) => {
   return (
     <Container>
-      <ReactTooltip />
-      <Container.Brand to="/">
-        <Container.Brand.Image src="/logo.svg" alt="leaguedex logo" />
-      </Container.Brand>
-      {user && (
-        <Container.Account>
-          {user.permissions < 10 && (
-            <Container.Name to="/">{user.username}</Container.Name>
-          )}
-          {isAllowed(10) && (
-            <Container.Name to="/admin/dashboard">
-              {user.username}
-            </Container.Name>
-          )}
-        </Container.Account>
-      )}
-      <Container.Buttons authenticated={isAuthenticated}>
-        {!isAuthenticated && (
-          <>
-            <Button onClick={() => modal.setModal("register")}>Register</Button>
-            <Button
-              secondary
-              onClick={() => modal.setModal("login")}
-              style={{ marginLeft: "1.25rem" }}
-            >
-              Login
-            </Button>
-          </>
-        )}
-
-        {isAuthenticated && (
-          <>
-            {!user.summoner && (
-              <Button onClick={() => modal.setModal("summoner")}>
-                Add Summoner Account
-              </Button>
-            )}
-
-            {user.summoner && (
+      <StatusBar
+        isAuthenticated={isAuthenticated}
+        hasSummoner={hasSummoner}
+        handleFindMatch={handleFindMatch}
+        handleLiveMatch={handleLiveMatch}
+        handleMatchupSelection={handleMatchupSelection}
+      />
+      <Container.Inner>
+        <Container.Bottom>
+          <Container.Brand to="/">
+            <Container.Brand.Image src="/logo.svg" alt="leaguedex logo" />
+          </Container.Brand>
+          <Container.Buttons authenticated={isAuthenticated}>
+            <Links>
+              <LinkIcon to="/about">
+                <FaQuestionCircle fontSize="1.5rem" />
+              </LinkIcon>
+              {isAuthenticated && (
+                <>
+                  {/* <LinkIcon to="/settings">
+                    <FaCog fontSize="1.5rem" />
+                  </LinkIcon> */}
+                  {isAdmin && (
+                    <LinkIcon to={`/admin/dashboard`}>
+                      <FaTachometerAlt fontSize="1.5rem" />
+                    </LinkIcon>
+                  )}
+                  <LinkIcon to={`/profile/${user.username}`}>
+                    <FaUser fontSize="1.5rem" />
+                  </LinkIcon>
+                </>
+              )}
+            </Links>
+            {!isAuthenticated && (
               <>
-                {!hasMatch && (
-                  <>
-                    {!confirmed && (
-                      <Button
-                        header
-                        onClick={handleFindMatch}
-                        disabled={loading}
-                        data-tip="Games are detected after loading screen."
-                      >
-                        {loading && <BeatLoader color="#B8D0EC" />}
-                        {!loading && "Find live match"}
-                      </Button>
-                    )}
-                  </>
-                )}
-
-                {hasMatch && (
-                  <>
-                    {!confirmed && (
-                      <Button
-                        header
-                        onClick={() => history.push(`/match/${match.gameId}`)}
-                      >
-                        You are in a match
-                      </Button>
-                    )}
-                    {confirmed && (
-                      <Button
-                        header
-                        aboveAverage={minutes >= AVERAGE_GAMELENGTH}
-                        onClick={handleNavigate}
-                      >
-                        {timer.split(":")[1] !== "00" ? (
-                          timer
-                        ) : (
-                          <BeatLoader color="#B8D0EC" />
-                        )}
-                      </Button>
-                    )}
-                  </>
-                )}
+                <Button onClick={() => setModal("register")}>Register</Button>
+                <Button logout onClick={() => setModal("login")}>
+                  Login
+                </Button>
               </>
             )}
-            <Button
-              logout
-              onClick={handleLogout}
-              style={{ marginLeft: "1.25rem" }}
-            >
-              Log out
-            </Button>
-          </>
-        )}
-      </Container.Buttons>
+            {isAuthenticated && (
+              <>
+                {!hasSummoner && (
+                  <Button onClick={() => setModal("summoner")}>
+                    Add Summoner Account
+                  </Button>
+                )}
+
+                <Button logout onClick={handleLogout}>
+                  Log out
+                </Button>
+              </>
+            )}
+          </Container.Buttons>
+        </Container.Bottom>
+      </Container.Inner>
     </Container>
   );
 };

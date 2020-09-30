@@ -5,19 +5,21 @@ export const Container = styled.section`
 
   @media screen and (min-width: 1200px) {
     display: flex;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 175px);
   }
 `;
 
 Container.Left = styled.aside`
   position: relative;
   display: flex;
+  margin-top: -75px;
 
   @media screen and (min-width: 1200px) {
+    margin-top: 0;
     position: fixed;
-    top: 100px;
+    top: 175px;
     left: 0;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 175px);
     width: 30%;
     z-index: 10;
   }
@@ -51,11 +53,11 @@ export const Header = styled.header`
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   padding: 0 1.5rem;
-  margin: 3rem 0;
+  margin: 0 0 3rem 0;
 
   @media screen and (min-width: 1200px) {
     padding: 0;
-    margin: 4rem 0 4rem 0;
+    margin: 0 0 4rem 0;
     grid-template-columns: repeat(4, 1fr);
   }
 `;

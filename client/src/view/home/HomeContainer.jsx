@@ -77,7 +77,12 @@ const HomeContainer = () => {
       <Helmet>
         <title>Leagudex</title>
       </Helmet>
-      <Home champions={champions} info={info} loading={loading} />
+      <Home
+        champions={champions}
+        info={info}
+        loading={loading}
+        isAuthenticated={isAuthenticated}
+      />
     </>
   );
 };

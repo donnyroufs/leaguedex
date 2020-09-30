@@ -113,6 +113,7 @@ const useMatchProvider = () => {
   return {
     match,
     setMatch,
+    setLoading,
     loading,
     findMatch,
     createMatchup,

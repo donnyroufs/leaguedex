@@ -5,7 +5,8 @@ export const Container = styled.div`
 `;
 
 export const Wrapper = styled.div`
+  margin-top: 75px;
   @media screen and (min-width: 968px) {
-    margin-top: 100px;
+    margin-top: 275px;
   }
 `;

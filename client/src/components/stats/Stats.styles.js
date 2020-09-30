@@ -1,16 +1,34 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.div`
+  ${({ home }) => css`
+    height: ${home ? 80 : 120}px;
+    background: #23303f;
+    margin-right: ${home ? 1 : 0}rem;
+
+    @media screen and (min-width: 968px) {
+      margin-left: ${home ? 1 : 0}rem;
+      margin-right: 0;
+    }
+  `}
+
   display: flex;
+  flex-grow: 1;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  border: 1px solid #3d4c5e;
   border-radius: 6px;
-  height: 120px;
+  padding: 0 1.5rem;
+
+  @media screen and (min-width: 968px) {
+    flex-grow: 0;
+  }
 `;
 
 Container.Label = styled.h3`
+  ${({ home }) => css`
+    font-size: ${home ? 0.8 : 1}rem;
+  `}
   font-weight: 300;
   color: ${(props) => props.theme.secondary};
   opacity: 0.5;
@@ -20,9 +38,11 @@ Container.Label = styled.h3`
 `;
 
 Container.Info = styled.p`
+  ${({ home }) => css`
+    font-size: ${home ? 1.5 : 2}rem;
+  `}
   padding: 0;
   margin: 0.3rem 0;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 2rem;
 `;
