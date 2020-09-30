@@ -41,7 +41,6 @@ export const scaleAnimationOut = keyframes`
     opacity: 0;
   }
 `;
-// fade-and-slide-in
 
 const GenericButton = css`
   outline: none;
