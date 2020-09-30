@@ -3,7 +3,7 @@ import StatusBar from "../statusbar/StatusBarContainer";
 
 import { Container, LinkIcon, Links } from "./Header.styles";
 import { Button } from "../../GlobalStyles";
-import { FaQuestionCircle, FaUser } from "react-icons/fa";
+import { FaQuestionCircle, FaUser, FaTachometerAlt } from "react-icons/fa";
 
 const Header = ({
   isAuthenticated,
@@ -14,6 +14,7 @@ const Header = ({
   handleFindMatch,
   handleMatchupSelection,
   handleLiveMatch,
+  isAdmin,
 }) => {
   return (
     <Container>
@@ -39,6 +40,11 @@ const Header = ({
                   {/* <LinkIcon to="/settings">
                     <FaCog fontSize="1.5rem" />
                   </LinkIcon> */}
+                  {isAdmin && (
+                    <LinkIcon to={`/admin/dashboard`}>
+                      <FaTachometerAlt fontSize="1.5rem" />
+                    </LinkIcon>
+                  )}
                   <LinkIcon to={`/profile/${user.username}`}>
                     <FaUser fontSize="1.5rem" />
                   </LinkIcon>

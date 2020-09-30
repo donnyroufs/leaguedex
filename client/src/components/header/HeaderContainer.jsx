@@ -31,7 +31,7 @@ const finishMatch = async (match) => {
 
 const HeaderContainer = (props) => {
   const history = useHistory();
-  const { isAuthenticated, logout, hasSummoner, user } = useAuth();
+  const { isAuthenticated, logout, hasSummoner, user, isAdmin } = useAuth();
   const { setModal } = useModal();
   const { setMatch, findMatch, match, setLoading } = useMatch();
 
@@ -87,6 +87,7 @@ const HeaderContainer = (props) => {
       handleFindMatch={handleFindMatch}
       handleLiveMatch={handleLiveMatch}
       handleMatchupSelection={handleMatchupSelection}
+      isAdmin={isAdmin}
     />
   );
 };
