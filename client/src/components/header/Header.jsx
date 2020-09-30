@@ -16,22 +16,14 @@ const Header = ({ isAuthenticated, setModal, handleLogout, hasSummoner }) => {
           {!isAuthenticated && (
             <>
               <Button onClick={() => setModal("register")}>Register</Button>
-              <Button
-                secondary
-                onClick={() => setModal("login")}
-                style={{ marginLeft: "1.25rem" }}
-              >
+              <Button secondary onClick={() => setModal("login")}>
                 Login
               </Button>
             </>
           )}
           {isAuthenticated && (
             <>
-              <Button
-                logout
-                onClick={handleLogout}
-                style={{ marginLeft: "1.25rem" }}
-              >
+              <Button logout onClick={handleLogout}>
                 Log out
               </Button>
 
