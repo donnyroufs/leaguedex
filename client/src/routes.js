@@ -51,6 +51,13 @@ const routes = [
     permissions: 10,
   },
   {
+    exact: true,
+    path: "/about",
+    name: "about",
+    component: view.About,
+    permissions: 1,
+  },
+  {
     exact: false,
     path: "*",
     name: "",
