@@ -11,10 +11,19 @@ const Header = ({
   handleLogout,
   hasSummoner,
   user,
+  handleFindMatch,
+  handleMatchupSelection,
+  handleLiveMatch,
 }) => {
   return (
     <Container>
-      <StatusBar />
+      <StatusBar
+        isAuthenticated={isAuthenticated}
+        hasSummoner={hasSummoner}
+        handleFindMatch={handleFindMatch}
+        handleLiveMatch={handleLiveMatch}
+        handleMatchupSelection={handleMatchupSelection}
+      />
       <Container.Inner>
         <Container.Bottom>
           <Container.Brand to="/">
@@ -46,15 +55,15 @@ const Header = ({
             )}
             {isAuthenticated && (
               <>
-                <Button logout onClick={handleLogout}>
-                  Log out
-                </Button>
-
                 {!hasSummoner && (
                   <Button onClick={() => setModal("summoner")}>
                     Add Summoner Account
                   </Button>
                 )}
+
+                <Button logout onClick={handleLogout}>
+                  Log out
+                </Button>
               </>
             )}
           </Container.Buttons>
