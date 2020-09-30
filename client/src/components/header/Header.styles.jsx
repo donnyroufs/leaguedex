@@ -9,6 +9,14 @@ export const Container = styled.header`
   display: flex;
   flex-flow: column nowrap;
   height: 175px;
+
+  @media screen and (min-width: 968px) {
+    position: fixed;
+    top: 0;
+    z-index: 10000;
+    left: 0;
+    width: 100%;
+  }
 `;
 
 Container.Inner = styled.div`
