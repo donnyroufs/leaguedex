@@ -5,8 +5,10 @@ export const Container = styled.section`
   overflow: hidden;
   display: flex;
   flex-flow: column nowrap;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 175px);
   justify-content: space-between;
+  /* Quick ugly fix */
+  margin-top: -100px;
 `;
 
 Container.Inner = styled.div`
