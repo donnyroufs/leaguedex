@@ -73,13 +73,14 @@ export const Group = styled.div`
   ${(props) =>
     props.champion &&
     css`
-      background: #2c3a4a;
+      background: #23303f;
 
       @media screen and (min-width: 968px) {
         margin-bottom: 0;
         margin-right: 1.5rem;
-        border: 1px solid #425469;
-        min-width: 250px;
+        min-width: 350px;
+        border-radius: 6px;
+        height: 100%;
       }
     `}
 
@@ -104,9 +105,12 @@ export const Group = styled.div`
     `}
 `;
 export const Label = styled.label`
+  ${({ home }) => css`
+    margin-bottom: ${home ? 0.5 : 0.3}rem;
+  `}
+
   font-weight: bold;
   font-size: 14px;
-  margin-bottom: 0.3rem;
   margin-left: 0.1rem;
   cursor: text;
   padding: 0 1rem;
