@@ -16,7 +16,6 @@ const HeaderContainer = (props) => {
     e.preventDefault();
     setMatch(null);
     logout();
-    history.push("/");
   };
 
   return (
