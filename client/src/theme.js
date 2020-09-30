@@ -4,7 +4,7 @@ export default {
   third: "#A8BFDA",
   border: "#536579",
   secondaryButton: "#6E7E92",
-  background: "#232F3E",
+  background: "#1B2735",
   header: "#18222F",
   placeholderText: "#697E97",
   dark: "#27303A",
