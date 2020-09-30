@@ -4,8 +4,14 @@ export const Container = styled.div`
   ${({ theme }) => css`
     background: ${theme.primary};
   `}
+
+  display: none;
   color: #fff;
   padding: 1rem;
+
+  @media screen and (min-width: 968px) {
+    display: block;
+  }
 `;
 
 Container.Inner = styled.div`
@@ -21,7 +27,20 @@ Container.Inner = styled.div`
 
 Container.Status = styled.div``;
 
-Container.Actions = styled.div``;
+Container.Actions = styled.div`
+  position: relative;
+  :after {
+    opacity: 0.4;
+    content: "";
+    position: absolute;
+    width: 125%;
+    height: 1px;
+    background: ${(props) => props.theme.secondary};
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: -75%;
+  }
+`;
 
 export const Button = styled.button`
   ${({ secondary }) => css`

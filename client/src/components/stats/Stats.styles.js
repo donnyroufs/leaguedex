@@ -13,11 +13,16 @@ export const Container = styled.div`
   `}
 
   display: flex;
+  flex-grow: 1;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
   border-radius: 6px;
   padding: 0 1.5rem;
+
+  @media screen and (min-width: 968px) {
+    flex-grow: 0;
+  }
 `;
 
 Container.Label = styled.h3`

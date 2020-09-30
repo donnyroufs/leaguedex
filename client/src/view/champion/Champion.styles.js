@@ -4,17 +4,12 @@ import { Link } from "react-router-dom";
 export const Container = styled.section`
   display: flex;
   flex-flow: column nowrap;
-
-  @media screen and (min-width: 968px) {
-    margin-top: 100px;
-  }
 `;
 
 Container.Inner = styled.div`
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  margin: 3rem 0;
   @media screen and (min-width: 968px) {
     width: 95%;
     max-width: 1400px;
@@ -29,7 +24,7 @@ Container.Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 6rem 0 3rem 0;
+    margin: 0 0 3rem 0;
     width: 100%;
   }
 `;

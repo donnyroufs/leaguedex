@@ -3,7 +3,7 @@ import StatusBar from "./StatusBar";
 
 const STATUS_MESSAGES = {
   INITIAL: "Are you currently in a match?",
-  LOG_IN: "See match status by logging in",
+  LOG_IN: "Match status becomes available when logged in",
   ADD_SUMMONER: "Get started by adding your summoner account",
   IN_MATCH: "In matchup select",
   CONFIRMED_MATCH: "You are currently in a live match",

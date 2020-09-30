@@ -69,6 +69,7 @@ export const Group = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
+  width: ${(props) => (props.home ? "100%" : "auto")};
 
   ${(props) =>
     props.champion &&
