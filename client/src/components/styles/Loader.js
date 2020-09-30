@@ -6,7 +6,7 @@ export const Container = styled.div`
   left: 0;
   height: 100vh;
   width: 100vw;
-  background: rgba(50, 63, 78, 1);
+  background: ${(props) => props.theme.backgroundColour};
   display: flex;
   justify-content: center;
   transition: opacity 0.5s ease-in-out 0.35s;
