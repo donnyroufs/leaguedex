@@ -1,10 +1,17 @@
 import React from "react";
 import StatusBar from "../statusbar/StatusBarContainer";
 
-import { Container } from "./Header.styles";
+import { Container, LinkIcon, Links } from "./Header.styles";
 import { Button } from "../../GlobalStyles";
+import { FaQuestionCircle, FaUser } from "react-icons/fa";
 
-const Header = ({ isAuthenticated, setModal, handleLogout, hasSummoner }) => {
+const Header = ({
+  isAuthenticated,
+  setModal,
+  handleLogout,
+  hasSummoner,
+  user,
+}) => {
   return (
     <Container>
       <StatusBar />
@@ -14,10 +21,25 @@ const Header = ({ isAuthenticated, setModal, handleLogout, hasSummoner }) => {
             <Container.Brand.Image src="/logo.svg" alt="leaguedex logo" />
           </Container.Brand>
           <Container.Buttons authenticated={isAuthenticated}>
+            <Links>
+              <LinkIcon to="/about">
+                <FaQuestionCircle fontSize="1.5rem" />
+              </LinkIcon>
+              {isAuthenticated && (
+                <>
+                  {/* <LinkIcon to="/settings">
+                    <FaCog fontSize="1.5rem" />
+                  </LinkIcon> */}
+                  <LinkIcon to={`/profile/${user.username}`}>
+                    <FaUser fontSize="1.5rem" />
+                  </LinkIcon>
+                </>
+              )}
+            </Links>
             {!isAuthenticated && (
               <>
                 <Button onClick={() => setModal("register")}>Register</Button>
-                <Button secondary onClick={() => setModal("login")}>
+                <Button logout onClick={() => setModal("login")}>
                   Login
                 </Button>
               </>

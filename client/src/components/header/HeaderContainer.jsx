@@ -6,7 +6,7 @@ import { useModal } from "../../hooks/useModal";
 import { useMatch } from "../../hooks/useMatch";
 
 const HeaderContainer = (props) => {
-  const { isAuthenticated, logout, hasSummoner } = useAuth();
+  const { isAuthenticated, logout, hasSummoner, user } = useAuth();
   const { setModal } = useModal();
   const { setMatch } = useMatch();
 
@@ -23,6 +23,7 @@ const HeaderContainer = (props) => {
       setModal={setModal}
       handleLogout={handleLogout}
       hasSummoner={hasSummoner}
+      user={user}
     />
   );
 };
