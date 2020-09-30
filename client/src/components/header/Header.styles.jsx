@@ -10,6 +10,16 @@ export const Container = styled.header`
   flex-flow: column nowrap;
 `;
 
+Container.Inner = styled.div`
+  width: 80%;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  @media screen and(min-width: 1200px) {
+    width: 100%;
+  }
+`;
+
 Container.Bottom = styled.div`
   display: flex;
 `;
