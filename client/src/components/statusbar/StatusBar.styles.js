@@ -4,8 +4,16 @@ export const Container = styled.div`
   ${({ theme }) => css`
     background: ${theme.primary};
   `}
-  display: flex;
-  justify-content: space-between;
   color: #fff;
   padding: 1rem;
+`;
+
+Container.Inner = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 80%;
+  @media screen and(min-width: 1200px) {
+    width: 100%;
+  }
 `;
