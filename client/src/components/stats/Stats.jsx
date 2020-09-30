@@ -18,9 +18,6 @@ const Stats = ({ label, info, page }) => {
         )}
 
         {label === "lane" && info}
-        {page === "home" && info > 0 && (
-          <CountUp end={Number(info)} duration={3} />
-        )}
       </Container.Info>
     </Container>
   );
