@@ -1,5 +1,6 @@
 import React from "react";
 import StatusBar from "./StatusBar";
+import { useStatus } from "../../hooks/useStatus";
 
 const STATUS_MESSAGES = {
   INITIAL: "Are you currently in a match?",
@@ -14,7 +15,9 @@ const STATUS_MESSAGES = {
 };
 
 const StatusBarContainer = (props) => {
-  return <StatusBar {...props} msg={STATUS_MESSAGES} />;
+  const { status } = useStatus();
+
+  return <StatusBar {...props} msg={STATUS_MESSAGES} status={status} />;
 };
 
 export default StatusBarContainer;

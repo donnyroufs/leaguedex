@@ -9,6 +9,7 @@ const StatusBar = ({
   isAuthenticated,
   hasSummoner,
   handleFindMatch,
+  status,
 }) => {
   const { hasMatch, confirmed, loading } = useMatch();
 
@@ -28,7 +29,11 @@ const StatusBar = ({
               {/* If we dont have a match */}
               {!hasMatch && msg.INITIAL}
               {/* If we do have a match */}
-              {hasMatch && !confirmed && msg.IN_MATCH}
+              {hasMatch &&
+                !confirmed &&
+                `${msg.IN_MATCH} - ${
+                  status ? status : "go pick your matchup!"
+                }`}
               {/* We have a match and we have selected the matchup */}
               {hasMatch && confirmed && msg.CONFIRMED_MATCH}
             </>
