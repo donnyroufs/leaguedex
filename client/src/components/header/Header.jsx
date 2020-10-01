@@ -67,7 +67,7 @@ const Header = ({
                   </Button>
                 )}
 
-                <Button logout onClick={handleLogout}>
+                <Button hide-xs logout onClick={handleLogout}>
                   Log out
                 </Button>
               </>
