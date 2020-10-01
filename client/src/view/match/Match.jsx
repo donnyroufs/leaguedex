@@ -30,9 +30,6 @@ const Match = ({ match, selectChampion, selected, selectRole }) => {
             </Container.Wrapper>
           ))}
         </Container.Inner>
-        <Footer>
-          <Footer.Text>PICK YOUR OPPONENT</Footer.Text>
-        </Footer>
       </Container>
     );
   }
@@ -51,9 +48,6 @@ const Match = ({ match, selectChampion, selected, selectRole }) => {
             </Container.Wrapper>
           ))}
         </Container.Inner>
-        <Footer>
-          <Footer.Text>PICK YOUR LANE</Footer.Text>
-        </Footer>
       </Container>
     );
   }

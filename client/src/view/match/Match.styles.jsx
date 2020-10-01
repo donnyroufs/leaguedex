@@ -5,28 +5,42 @@ export const Container = styled.section`
   overflow: hidden;
   display: flex;
   flex-flow: column nowrap;
-  height: calc(100vh - 175px);
   justify-content: space-between;
   /* Quick ugly fix */
   margin-top: -100px;
+
+  @media screen and (min-width: 968px) {
+    height: calc(100vh - 175px);
+  }
 `;
 
 Container.Inner = styled.div`
   display: flex;
-  flex-flow: row nowrap;
-  height: 85%;
+  flex-flow: column nowrap;
+  height: 100%;
+  border-top: 1px solid #435d75;
+
+  @media screen and (min-width: 968px) {
+    flex-flow: row nowrap;
+  }
 `;
 
 Container.Wrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+  flex: 1;
   opacity: ${(props) => (props.selected ? 1 : 0.45)};
   transition: all 0.3s ease-in-out;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 500px;
+  object-fit: cover;
+
+  @media screen and (min-width: 968px) {
+    height: 100%;
+  }
 
   &:hover {
     opacity: 1;
@@ -60,14 +74,15 @@ Container.Text = styled.h2`
 `;
 
 export const Footer = styled.footer`
-  height: 15%;
+  height: 120px;
   width: 100%;
-  border-top: 1px solid ${(props) => props.theme.primary};
   display: grid;
   place-items: center;
 `;
 
 Footer.Text = styled.h1`
+  margin: 0;
+  padding: 0;
   font-weight: bold;
   letter-spacing: 0.03em;
   text-transform: uppercase;
