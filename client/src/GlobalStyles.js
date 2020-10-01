@@ -138,6 +138,15 @@ export const Button = styled.button`
       background: #d23f6f;
       color: #1b0009;
     `}
+
+    ${(props) =>
+    props["hide-xs"] &&
+    css`
+      display: none;
+      @media screen and (min-width: 968px) {
+        display: flex;
+      }
+    `}
 `;
 
 export default createGlobalStyle`
