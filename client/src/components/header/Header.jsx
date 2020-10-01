@@ -62,7 +62,7 @@ const Header = ({
             {isAuthenticated && (
               <>
                 {!hasSummoner && (
-                  <Button onClick={() => setModal("summoner")}>
+                  <Button hide-xs onClick={() => setModal("summoner")}>
                     Add Summoner Account
                   </Button>
                 )}
