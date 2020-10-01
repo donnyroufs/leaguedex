@@ -1,17 +1,6 @@
 import styled, { css } from "styled-components";
 
 export const Container = styled.div`
-  ${({ home }) => css`
-    height: ${home ? 80 : 120}px;
-    background: #23303f;
-    margin-right: ${home ? 1 : 0}rem;
-
-    @media screen and (min-width: 968px) {
-      margin-left: ${home ? 1 : 0}rem;
-      margin-right: 0;
-    }
-  `}
-
   display: flex;
   flex-grow: 1;
   flex-flow: column nowrap;
@@ -23,6 +12,19 @@ export const Container = styled.div`
   @media screen and (min-width: 968px) {
     flex-grow: 0;
   }
+
+  ${({ home }) => css`
+    height: ${home ? 80 : 120}px;
+    background: #23303f;
+    flex-grow: 0;
+    width: 48%;
+
+    @media screen and (min-width: 968px) {
+      margin-left: ${home ? 1 : 0}rem;
+      flex-grow: 1;
+      width: fit-content;
+    }
+  `}
 `;
 
 Container.Label = styled.h3`

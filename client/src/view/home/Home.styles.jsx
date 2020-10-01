@@ -38,9 +38,11 @@ Container.Widgets = styled.div`
 
 export const Widget = styled.div`
   display: flex;
+  justify-content: space-between;
   width: 100%;
 
   @media screen and (min-width: 968px) {
+    justify-content: flex-start;
     width: auto;
   }
 `;
