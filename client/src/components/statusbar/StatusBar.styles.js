@@ -33,12 +33,15 @@ Container.Actions = styled.div`
     opacity: 0.4;
     content: "";
     position: absolute;
-    width: 125%;
+    width: 50%;
     height: 1px;
     background: ${(props) => props.theme.secondary};
     top: 50%;
     transform: translate(-50%, -50%);
     left: -75%;
+    @media screen and (min-width: 1200px) {
+      width: 125%;
+    }
   }
 `;
 
