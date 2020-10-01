@@ -38,8 +38,9 @@ Container.Actions = styled.div`
     background: ${(props) => props.theme.secondary};
     top: 50%;
     transform: translate(-50%, -50%);
-    left: -75%;
-    @media screen and (min-width: 1200px) {
+    left: -35%;
+    @media screen and (min-width: 1600px) {
+      left: -75%;
       width: 125%;
     }
   }
