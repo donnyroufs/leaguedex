@@ -1,7 +1,7 @@
 import React from "react";
-import { Container, Footer } from "./Match.styles";
+import { Container } from "./Match.styles";
 
-const Match = ({ match, selectChampion, selected, selectRole }) => {
+const Match = ({ match, selectChampion, selected, selectRole, setStatus }) => {
   const roles = ["top", "jungle", "mid", "adc", "support"];
 
   if (!match) {
@@ -9,6 +9,7 @@ const Match = ({ match, selectChampion, selected, selectRole }) => {
   }
 
   if (!selected) {
+    setStatus("Picking opponent");
     return (
       <Container>
         <Container.Inner>
@@ -35,6 +36,7 @@ const Match = ({ match, selectChampion, selected, selectRole }) => {
   }
 
   if (selected) {
+    setStatus("Picking opponents lane");
     return (
       <Container>
         <Container.Inner>

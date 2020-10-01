@@ -4,9 +4,11 @@ import { useMatch } from "../../hooks/useMatch";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { Helmet } from "react-helmet";
+import { useStatus } from "../../hooks/useStatus";
 
 const MatchContainer = ({ history }) => {
   const [selected, setSelected] = useState(null);
+  const { setStatus } = useStatus();
   const { createMatchup, match, hasMatch, confirmed, loading } = useMatch();
 
   const selectChampion = ({ id, name }) => {
@@ -22,6 +24,10 @@ const MatchContainer = ({ history }) => {
     if (!hasMatch) {
       history.push("/");
     }
+
+    return () => {
+      setStatus("");
+    };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasMatch, confirmed]);
@@ -44,6 +50,7 @@ const MatchContainer = ({ history }) => {
         selected={selected}
         selectChampion={selectChampion}
         selectRole={selectRole}
+        setStatus={setStatus}
       />
     </>
   );
