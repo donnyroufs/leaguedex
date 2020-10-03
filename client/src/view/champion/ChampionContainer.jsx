@@ -39,6 +39,7 @@ const ChampionContainer = ({
   match: {
     params: { name },
   },
+  history,
 }) => {
   const [loading, setLoading] = useState(true);
   const [matchups, setMatchups] = useState([]);
@@ -80,6 +81,10 @@ const ChampionContainer = ({
     ],
     []
   );
+
+  const handleNavigate = (id) => {
+    history.push(`/dex/${id}`);
+  };
 
   useEffect(() => {
     if (initialLoad.current) {
@@ -125,6 +130,7 @@ const ChampionContainer = ({
         value={value}
         setValue={setValue}
         championA={championA}
+        handleNavigate={handleNavigate}
       />
     </>
   );
