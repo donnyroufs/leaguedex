@@ -1,7 +1,8 @@
 import React from "react";
 import Toggle from "../../components/toggle/Toggle";
+import { FaSortUp, FaSortDown, FaSort } from "react-icons/fa";
 import { Form, Group, Input, Label } from "../../components/styles/Form";
-import { useTable, useFilters } from "react-table";
+import { useTable, useSortBy } from "react-table";
 import { Container, Image, ToggleContainer, Title } from "./Champion.styles";
 
 const Champion = ({
@@ -11,8 +12,9 @@ const Champion = ({
   onSearch,
   setValue,
   value,
+  handleNavigate,
 }) => {
-  const tableInstance = useTable({ columns, data });
+  const tableInstance = useTable({ columns, data }, useSortBy);
 
   const {
     getTableProps,
@@ -50,55 +52,44 @@ const Champion = ({
       <Container.Body>
         <table {...getTableProps()}>
           <thead>
-            {
-              // Loop over the header rows
-              headerGroups.map((headerGroup) => (
-                // Apply the header row props
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {
-                    // Loop over the headers in each row
-                    headerGroup.headers.map((column) => (
-                      // Apply the header cell props
-                      <th {...column.getHeaderProps()}>
-                        {
-                          // Render the header
-                          column.render("Header")
-                        }
-                      </th>
-                    ))
-                  }
-                </tr>
-              ))
-            }
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.render("Header")}
+                    <span>
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <FaSortUp />
+                        ) : (
+                          <FaSortDown />
+                        )
+                      ) : (
+                        <FaSort style={{ paddingTop: ".2rem" }} />
+                      )}
+                    </span>
+                  </th>
+                ))}
+              </tr>
+            ))}
           </thead>
-          {/* Apply the table body props */}
           <tbody {...getTableBodyProps()}>
-            {
-              // Loop over the table rows
-              rows.map((row) => {
-                // Prepare the row for display
-                prepareRow(row);
-                return (
-                  // Apply the row props
-                  <tr {...row.getRowProps()}>
-                    {
-                      // Loop over the rows cells
-                      row.cells.map((cell) => {
-                        // Apply the cell props
-                        return (
-                          <td {...cell.getCellProps()}>
-                            {
-                              // Render the cell contents
-                              cell.render("Cell")
-                            }
-                          </td>
-                        );
-                      })
-                    }
-                  </tr>
-                );
-              })
-            }
+            {rows.length <= 0 && "No matchups found."}
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  onClick={() => handleNavigate(row.original.id)}
+                >
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </Container.Body>
