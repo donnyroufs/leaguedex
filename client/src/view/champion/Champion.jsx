@@ -42,6 +42,7 @@ const Champion = ({
               name="championB"
               onChange={(e) => setValue(e.target.value)}
               value={value}
+              autoComplete="off"
             />
           </Group>
         </Form>
