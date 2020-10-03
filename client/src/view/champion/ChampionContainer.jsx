@@ -7,6 +7,8 @@ import { loadImage } from "../../helpers/loadImages";
 import Helmet from "react-helmet";
 import { useDebounce } from "use-debounce";
 
+const nameCapitalized = (name) => name.charAt(0).toUpperCase() + name.slice(1);
+
 const fetchMatchups = async (payload) => {
   const query = createQuery(payload);
   const res = await fetch("/api/matchup/all?" + query, {
@@ -27,8 +29,9 @@ const createQuery = ({ name, championB }) => {
   });
 
   if (championB) {
-    params.set("championB", championB);
+    params.set("championB", nameCapitalized(championB));
   }
+
   return params;
 };
 
