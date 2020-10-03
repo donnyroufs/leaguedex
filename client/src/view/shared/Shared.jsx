@@ -9,7 +9,8 @@ const Shared = ({ matchups, loading, match }) => {
   return (
     <Container>
       <Results>
-        {matchups.length <= 0 && "No public matchups."}
+        {matchups.length <= 0 &&
+          "This user does not seem to have public matchups."}
         {matchups.length > 0 &&
           matchups.map((matchup) => (
             <Card
