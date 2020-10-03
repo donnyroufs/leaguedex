@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import Champion from "./Champion";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { getToken } from "../../helpers/getToken";
 import { loadImage } from "../../helpers/loadImages";
 import Helmet from "react-helmet";
+import { useDebounce } from "use-debounce";
 
-const fetchMatchups = async (name, params = "") => {
-  const res = await fetch(`/api/matchup/all?champion=${name}${params}`, {
+const fetchMatchups = async (payload) => {
+  const query = createQuery(payload);
+  const res = await fetch("/api/matchup/all?" + query, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -19,18 +21,15 @@ const fetchMatchups = async (name, params = "") => {
   return { data, res };
 };
 
-const createQuery = ({ lane, championB }) => {
-  let query = "";
+const createQuery = ({ name, championB }) => {
+  const params = new URLSearchParams({
+    champion: name,
+  });
 
-  if (championB.length > 1) {
-    query += `&championB=${championB}`;
+  if (championB) {
+    params.set("championB", championB);
   }
-
-  if (lane !== "All") {
-    query += `&lane=${lane}`;
-  }
-
-  return query;
+  return params;
 };
 
 const ChampionContainer = ({
@@ -39,33 +38,67 @@ const ChampionContainer = ({
   },
 }) => {
   const [loading, setLoading] = useState(true);
-  const [values, setValues] = useState({
-    championB: "",
-    lane: "All",
-  });
   const [matchups, setMatchups] = useState([]);
   const [championA, setChampionA] = useState({});
+  const [value, setValue] = useState("");
+  const [debouncedValue] = useDebounce(value, 300);
+  const initialLoad = useRef(true);
 
-  const onSearch = (e) => {
-    e.preventDefault();
-    const query = createQuery(values);
-    fetchMatchups(name, query)
+  const columns = useMemo(
+    () => [
+      {
+        Header: "opponent",
+        accessor: "opponent",
+      },
+      {
+        Header: "lane",
+        accessor: "lane",
+      },
+      {
+        Header: "games played",
+        accessor: "games_played",
+      },
+      {
+        Header: "wins",
+        accessor: "games_won",
+      },
+      {
+        Header: "lost",
+        accessor: "games_lost",
+      },
+      {
+        Header: "win ratio",
+        accessor: "win_ratio",
+      },
+      {
+        Header: "privacy",
+        accessor: "private",
+      },
+    ],
+    []
+  );
+
+  useEffect(() => {
+    if (initialLoad.current) {
+      return;
+    }
+    fetchMatchups({ name, championB: debouncedValue })
       .then(({ data }) => setMatchups(data))
       .catch((err) => console.error(err));
-  };
+  }, [debouncedValue]);
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await fetchMatchups(name);
+        const { data } = await fetchMatchups({ name });
         await loadImage(data[0].championA.splash);
         setMatchups(data);
         setChampionA(data[0].championA);
         setLoading(false);
       } catch (err) {
-        console.error(err);
         setLoading(false);
       }
+      initialLoad.current = false;
     })();
   }, [name]);
 
@@ -83,11 +116,11 @@ const ChampionContainer = ({
         <title>Leaguedex - Champions</title>
       </Helmet>
       <Champion
+        columns={columns}
         matchups={matchups}
         name={name}
-        setValues={setValues}
-        values={values}
-        onSearch={onSearch}
+        value={value}
+        setValue={setValue}
         championA={championA}
       />
     </>

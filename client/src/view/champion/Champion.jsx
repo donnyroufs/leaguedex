@@ -1,106 +1,106 @@
 import React from "react";
-import { Container, Results, Card, Title, Details } from "./Champion.styles.js";
-import {
-  Form,
-  Group,
-  Input,
-  Label,
-  Select,
-} from "../../components/styles/Form";
-import { Button } from "../../GlobalStyles";
-
-const LANES = ["All", "Top", "Jungle", "Mid", "Adc", "Support"];
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+import Toggle from "../../components/toggle/Toggle";
+import { Form, Group, Input, Label } from "../../components/styles/Form";
+import { useTable, useFilters } from "react-table";
+import { Container, Image, ToggleContainer, Title } from "./Champion.styles";
 
 const Champion = ({
-  matchups,
-  name,
-  values,
-  setValues,
+  championA: me,
+  columns,
+  matchups: data = [],
   onSearch,
-  championA,
+  setValue,
+  value,
 }) => {
-  const handleOnChange = (e) => {
-    e.persist();
-    setValues((old) => ({
-      ...old,
-      [e.target.name]: capitalizeFirstLetter(e.target.value),
-    }));
-  };
+  const tableInstance = useTable({ columns, data });
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = tableInstance;
 
   return (
     <Container>
-      <Container.Inner>
-        <Container.Wrapper>
-          <Title>{name}</Title>
-          <Form champion onSubmit={onSearch}>
-            <Group champion>
-              <Label>Versus</Label>
-              <Input
-                type="text"
-                placeholder="Enter champion"
-                name="championB"
-                onChange={handleOnChange}
-                value={values.championB}
-              />
-            </Group>
-            <Group champion>
-              <Label>Lane</Label>
-              <Select name="lane" onChange={handleOnChange} value={values.lane}>
-                {LANES.map((lane) => (
-                  <option
-                    key={lane}
-                    value={lane}
-                    style={{
-                      display: "block",
-                      paddingBottom: "1rem",
-                      backgroundColor: "#2c3a4a",
-                    }}
-                  >
-                    {lane.toUpperCase()}
-                  </option>
-                ))}
-              </Select>
-            </Group>
-            <Button style={{ width: "100%", fontSize: "1rem" }}>Search</Button>
-          </Form>
-        </Container.Wrapper>
-        <Results>
-          {matchups.length <= 0 && "No matchups found."}
-          {matchups.length > 0 &&
-            matchups.map((matchup) => (
-              <Card to={`/dex/${matchup.id}`} key={matchup.id}>
-                <Card.Background
-                  src={matchup.championB.splash}
-                  alt={matchup.championB.name}
-                />
-                <Card.Image
-                  src={matchup.championB.icon}
-                  alt={matchup.championB.name}
-                />
-                <Details name="played">
-                  <Details.Title>played</Details.Title>
-                  <Details.Text>{matchup.games_played}</Details.Text>
-                </Details>
-                <Details name="wins">
-                  <Details.Title>wins</Details.Title>
-                  <Details.Text>{matchup.games_won}</Details.Text>
-                </Details>
-                <Details name="lane">
-                  <Details.Title>lane</Details.Title>
-                  <Details.Text>{matchup.lane}</Details.Text>
-                </Details>
-                <Details name="losses">
-                  <Details.Title>losses</Details.Title>
-                  <Details.Text>{matchup.games_lost}</Details.Text>
-                </Details>
-              </Card>
-            ))}
-        </Results>
-      </Container.Inner>
+      <Container.Header>
+        <Container.Header.Left>
+          <Image src={me.icon} alt="champion image of yourself." />
+          <Title>All matchups privacy</Title>
+          <ToggleContainer>
+            <Toggle privacy={true} />
+          </ToggleContainer>
+        </Container.Header.Left>
+        <Form champion onSubmit={onSearch}>
+          <Group champion>
+            <Label>Find Opponent</Label>
+            <Input
+              champion
+              type="text"
+              placeholder="Enter Champion Name"
+              name="championB"
+              onChange={(e) => setValue(e.target.value)}
+              value={value}
+            />
+          </Group>
+        </Form>
+      </Container.Header>
+      <Container.Body>
+        <table {...getTableProps()}>
+          <thead>
+            {
+              // Loop over the header rows
+              headerGroups.map((headerGroup) => (
+                // Apply the header row props
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {
+                    // Loop over the headers in each row
+                    headerGroup.headers.map((column) => (
+                      // Apply the header cell props
+                      <th {...column.getHeaderProps()}>
+                        {
+                          // Render the header
+                          column.render("Header")
+                        }
+                      </th>
+                    ))
+                  }
+                </tr>
+              ))
+            }
+          </thead>
+          {/* Apply the table body props */}
+          <tbody {...getTableBodyProps()}>
+            {
+              // Loop over the table rows
+              rows.map((row) => {
+                // Prepare the row for display
+                prepareRow(row);
+                return (
+                  // Apply the row props
+                  <tr {...row.getRowProps()}>
+                    {
+                      // Loop over the rows cells
+                      row.cells.map((cell) => {
+                        // Apply the cell props
+                        return (
+                          <td {...cell.getCellProps()}>
+                            {
+                              // Render the cell contents
+                              cell.render("Cell")
+                            }
+                          </td>
+                        );
+                      })
+                    }
+                  </tr>
+                );
+              })
+            }
+          </tbody>
+        </table>
+      </Container.Body>
     </Container>
   );
 };

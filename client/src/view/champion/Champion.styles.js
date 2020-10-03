@@ -4,60 +4,57 @@ import { Link } from "react-router-dom";
 export const Container = styled.section`
   display: flex;
   flex-flow: column nowrap;
-`;
-
-Container.Inner = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  @media screen and (min-width: 968px) {
-    width: 95%;
-    max-width: 1400px;
-    margin: 0 auto;
-    z-index: 5;
-  }
-`;
-
-Container.Wrapper = styled.div`
+  margin: 0 auto;
   width: 80%;
-  @media screen and (min-width: 968px) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 0 3rem 0;
-    width: 100%;
-  }
+  max-width: 1400px;
 `;
 
-Container.Image = styled.img`
-  object-fit: cover;
-  border-bottom: 1px solid ${(props) => props.theme.border};
-
-  @media screen and (min-width: 1200px) {
-    border: 1px solid ${(props) => props.theme.border};
-    margin-left: 3rem;
-    height: 350px;
-    width: 500px;
-  }
-`;
-
-export const Header = styled.header`
+Container.Header = styled.header`
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  background-image: ${(props) => `url(${props.img})`};
-  height: 300px;
-  width: 100%;
-  background-size: cover;
+  flex-wrap: wrap;
+  margin-bottom: 100px;
+  justify-content: center;
 
   @media screen and (min-width: 968px) {
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    opacity: 0.1;
+    justify-content: space-between;
   }
+`;
+
+Container.Header.Left = styled.div`
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 128px 1fr;
+  grid-template-areas:
+    "image title"
+    "image toggle";
+  align-items: center;
+
+  @media screen and (min-width: 968px) {
+    grid-template-columns: 128px 300px;
+  }
+`;
+
+Container.Body = styled.main``;
+
+export const Title = styled.h3`
+  grid-area: title;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+`;
+
+export const Image = styled.img`
+  grid-area: image;
+  border-radius: 100%;
+  height: 96px;
+  width: 96px;
+`;
+
+export const ToggleContainer = styled.div`
+  grid-area: toggle;
+  width: fit-content;
 `;
 
 export const Results = styled.div`
@@ -136,6 +133,6 @@ Details.Text = styled.p`
   font-weight: bold;
 `;
 
-export const Title = styled.h2`
-  margin: 0 0 2rem 0;
-`;
+// export const Title = styled.h2`
+//   margin: 0 0 2rem 0;
+// `;
