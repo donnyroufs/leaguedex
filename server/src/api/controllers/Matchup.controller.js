@@ -15,6 +15,7 @@ class MatchupController extends Controller {
     this.getPlayedChampions = this.getPlayedChampions.bind(this);
     this.getInfoCard = this.getInfoCard.bind(this);
     this.findGame = this.findGame.bind(this);
+    this.getMatchups = this.getMatchups.bind(this);
     this.getDex = this.getDex.bind(this);
     this.getLatest = this.getLatest.bind(this);
     this.getAllMatchupsByChampion = this.getMatchups.bind(this);
@@ -262,7 +263,8 @@ class MatchupController extends Controller {
         },
       });
 
-      res.json(matchups);
+      const formattedJson = this.formatters.getPlayedMatchups(matchups);
+      res.status(200).json(formattedJson);
     } catch (err) {
       next(err);
     }
