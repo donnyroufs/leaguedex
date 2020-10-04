@@ -28,6 +28,14 @@ export const Form = styled.form`
       padding: 0 1.5rem;
     `}
 
+  ${(props) =>
+    props.notes &&
+    css`
+      padding: 0;
+      margin-top: 2rem;
+    `}
+    
+    
   @media screen and (min-width: 968px) {
     width: 100%;
 
@@ -45,6 +53,7 @@ export const Form = styled.form`
         padding: 0;
         max-width: 100%;
       `}
+
 
     ${(props) =>
       props.tweak &&
@@ -110,6 +119,17 @@ export const Group = styled.div`
       &:focus-within {
         opacity: 1;
       }
+    `}
+
+    ${(props) =>
+    props.notes &&
+    css`
+      opacity: 1;
+      background: #18222f;
+      color: #617e9f;
+      border-radius: 6px;
+      margin-top: 0;
+      margin-bottom: 2rem;
     `}
 `;
 export const Label = styled.label`
