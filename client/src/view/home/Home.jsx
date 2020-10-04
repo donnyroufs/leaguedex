@@ -10,6 +10,12 @@ const Home = ({ champions, info, isAuthenticated }) => {
   return (
     <Container>
       <Container.Widgets>
+        {isAuthenticated && (
+          <Widget>
+            <Stats label="Matchups" page="home" info={info.count} />
+            <Stats label="Total Games" page="home" info={info.gamesPlayed} />
+          </Widget>
+        )}
         <Widget>
           <Group home champion>
             <Label home>Find Dex</Label>
@@ -21,13 +27,6 @@ const Home = ({ champions, info, isAuthenticated }) => {
             />
           </Group>
         </Widget>
-
-        {isAuthenticated && (
-          <Widget>
-            <Stats label="Matchups" page="home" info={info.count} />
-            <Stats label="Total Games" page="home" info={info.gamesPlayed} />
-          </Widget>
-        )}
       </Container.Widgets>
       <Container secondary>
         {champions.length > 0 &&
