@@ -83,6 +83,7 @@ const DexContainer = ({ history }) => {
         history={history}
         dex={dex}
         loading={loading}
+        isLive={() => false}
       />
     </>
   );
