@@ -35,11 +35,10 @@ export const Filter = styled.div`
   flex-wrap: wrap;
   align-items: center;
   min-height: 50px;
-  margin-top: 1rem;
+  margin-top: ${(props) => props.mt};
   width: 100%;
 
   @media screen and (min-width: 1200px) {
-    margin-top: 1rem;
     padding: 0;
   }
 `;

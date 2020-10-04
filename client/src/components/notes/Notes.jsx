@@ -97,7 +97,7 @@ const Notes = ({
         {shared ? "Notes" : "Your notes"}
       </Title>
 
-      <Filter>
+      <Filter mt={tags.length <= 0 ? "2rem" : "1rem"}>
         {tags.length <= 0 && !shared && (
           <Text>
             Create custom tags by adding <Mark>@</Mark> infront of a keyword!
