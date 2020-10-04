@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Toggle from "../../components/toggle/Toggle";
 import { FaSortUp, FaSortDown, FaSort } from "react-icons/fa";
 import { Form, Group, Input, Label } from "../../components/styles/Form";
 import { useTable, useSortBy } from "react-table";
 import { Container, Image, ToggleContainer, Title } from "./Champion.styles";
+
+const statusMatchupsPrivacy = (matchups) =>
+  matchups.every(({ private: privacy }) => privacy === "private");
 
 const Champion = ({
   championA: me,
@@ -13,6 +16,8 @@ const Champion = ({
   setValue,
   value,
   handleNavigate,
+  privacy,
+  setPrivacy,
 }) => {
   const tableInstance = useTable({ columns, data }, useSortBy);
 
@@ -24,6 +29,11 @@ const Champion = ({
     prepareRow,
   } = tableInstance;
 
+  useEffect(() => {
+    const currentStatus = statusMatchupsPrivacy(data);
+    setPrivacy(currentStatus);
+  }, [me]);
+
   return (
     <Container>
       <Container.Header>
@@ -31,7 +41,12 @@ const Champion = ({
           <Image src={me.icon} alt="champion image of yourself." />
           <Title>All matchups privacy</Title>
           <ToggleContainer>
-            <Toggle privacy={true} />
+            <Toggle
+              privacy={privacy}
+              setPrivacy={setPrivacy}
+              all="true"
+              champion_id={me ? me.id : null}
+            />
           </ToggleContainer>
         </Container.Header.Left>
         <Form champion onSubmit={onSearch}>

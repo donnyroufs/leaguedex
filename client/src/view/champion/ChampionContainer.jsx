@@ -42,6 +42,7 @@ const ChampionContainer = ({
   history,
 }) => {
   const [loading, setLoading] = useState(true);
+  const [privacy, setPrivacy] = useState(false);
   const [matchups, setMatchups] = useState([]);
   const [championA, setChampionA] = useState({});
   const [value, setValue] = useState("");
@@ -108,7 +109,7 @@ const ChampionContainer = ({
       }
       initialLoad.current = false;
     })();
-  }, [name]);
+  }, [name, privacy]);
 
   if (loading) {
     return (
@@ -131,6 +132,8 @@ const ChampionContainer = ({
         setValue={setValue}
         championA={championA}
         handleNavigate={handleNavigate}
+        privacy={privacy}
+        setPrivacy={setPrivacy}
       />
     </>
   );
