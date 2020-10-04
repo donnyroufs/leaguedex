@@ -94,7 +94,7 @@ const ChampionContainer = ({
     fetchMatchups({ name, championB: debouncedValue })
       .then(({ data }) => setMatchups(data))
       .catch((err) => console.error(err));
-  }, [debouncedValue]);
+  }, [debouncedValue, name]);
 
   useEffect(() => {
     (async () => {

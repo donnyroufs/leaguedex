@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Toggle from "../../components/toggle/Toggle";
 import { FaSortUp, FaSortDown, FaSort } from "react-icons/fa";
 import { Form, Group, Input, Label } from "../../components/styles/Form";
@@ -32,7 +32,7 @@ const Champion = ({
   useEffect(() => {
     const currentStatus = statusMatchupsPrivacy(data);
     setPrivacy(currentStatus);
-  }, [me]);
+  }, [me, data, setPrivacy]);
 
   return (
     <Container>
