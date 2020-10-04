@@ -122,5 +122,6 @@ const useMatchProvider = () => {
     timer,
     minutes: timer.split(":")[0],
     revertMatch,
+    isLive: (dex) => dex && match && Number(dex.game_id) === match.gameId,
   };
 };
