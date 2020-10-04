@@ -25,10 +25,6 @@ Container.Inner = styled.div`
   max-width: 1400px;
   margin: 0 auto;
   height: 100%;
-
-  @media screen and(min-width: 1200px) {
-    width: 100%;
-  }
 `;
 
 Container.Bottom = styled.div`

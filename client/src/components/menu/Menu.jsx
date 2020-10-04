@@ -89,8 +89,8 @@ const Menu = () => {
               Register
             </Button>
             <Button
-              secondary
               menu
+              logout
               onClick={() => modal.setModal("login")}
               style={{ marginLeft: "1.25rem" }}
             >

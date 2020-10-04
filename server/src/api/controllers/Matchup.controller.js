@@ -15,6 +15,7 @@ class MatchupController extends Controller {
     this.getPlayedChampions = this.getPlayedChampions.bind(this);
     this.getInfoCard = this.getInfoCard.bind(this);
     this.findGame = this.findGame.bind(this);
+    this.getMatchups = this.getMatchups.bind(this);
     this.getDex = this.getDex.bind(this);
     this.getLatest = this.getLatest.bind(this);
     this.getAllMatchupsByChampion = this.getMatchups.bind(this);
@@ -262,7 +263,8 @@ class MatchupController extends Controller {
         },
       });
 
-      res.json(matchups);
+      const formattedJson = this.formatters.getPlayedMatchups(matchups);
+      res.status(200).json(formattedJson);
     } catch (err) {
       next(err);
     }
@@ -288,21 +290,35 @@ class MatchupController extends Controller {
 
   async updatePrivate(req, res, next) {
     const { id } = req.user;
-    const { lane, champion_id, opponent_id, private: _private } = req.query;
+    const {
+      lane,
+      champion_id,
+      opponent_id,
+      private: _private,
+      all,
+    } = req.query;
+
     try {
-      await db.matchup.update({
-        where: {
-          champion_id_opponent_id_lane_user_id: {
-            lane: lane.trim(),
-            champion_id: Number(champion_id),
-            opponent_id: Number(opponent_id),
-            user_id: Number(id),
+      if (all === 'true') {
+        await db.$queryRaw(`
+        UPDATE "Matchup" SET "private" = ${_private === 'true'} 
+        WHERE "user_id" = ${Number(id)} 
+        AND "champion_id" = ${champion_id}`);
+      } else {
+        await db.matchup.update({
+          where: {
+            champion_id_opponent_id_lane_user_id: {
+              lane: lane.trim(),
+              champion_id: Number(champion_id),
+              opponent_id: Number(opponent_id),
+              user_id: Number(id),
+            },
           },
-        },
-        data: {
-          private: _private === 'true',
-        },
-      });
+          data: {
+            private: _private === 'true',
+          },
+        });
+      }
 
       res.sendStatus(204);
     } catch (err) {

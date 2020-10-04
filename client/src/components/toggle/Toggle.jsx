@@ -1,9 +1,31 @@
 import React from "react";
 import { Container } from "./Toggle.styles";
 import { getToken } from "../../helpers/getToken";
+import { toast } from "react-toastify";
 
-const fetchUpdatePrivacy = async (query) => {
-  return fetch(`/api/matchup/private${query}`, {
+const makeQuery = ({
+  lane,
+  champion_id,
+  opponent_id,
+  private: privacy,
+  all,
+}) => {
+  const params = new URLSearchParams({ lane, champion_id, private: !privacy });
+  if (opponent_id) {
+    params.set("opponent_id", opponent_id);
+  }
+
+  if (all) {
+    params.set("all", all);
+  }
+
+  return params;
+};
+
+const fetchUpdatePrivacy = async (payload) => {
+  console.log(payload);
+  const query = makeQuery(payload);
+  return fetch(`/api/matchup/private?${query}`, {
     method: "PUT",
     headers: {
       Accept: "application/json",
@@ -14,13 +36,29 @@ const fetchUpdatePrivacy = async (query) => {
   });
 };
 
-const Toggle = ({ lane, champion_id, opponent_id, privacy, setPrivacy }) => {
+const Toggle = ({
+  lane,
+  champion_id,
+  opponent_id,
+  privacy,
+  setPrivacy,
+  all,
+}) => {
   const handleClick = (value) => {
-    fetchUpdatePrivacy(
-      `?lane=${lane}&champion_id=${champion_id}&opponent_id=${opponent_id}&private=${value}`
-    )
-      .then(() => setPrivacy(value))
-      .catch((err) => console.error(err));
+    fetchUpdatePrivacy({
+      lane,
+      champion_id,
+      opponent_id,
+      private: privacy,
+      all,
+    })
+      .then(() => {
+        setPrivacy(value);
+        toast.info("Updated privacy settings successfully");
+      })
+      .catch((err) =>
+        toast.error("Something went wrong. Could not update privacy settings.")
+      );
   };
 
   return (

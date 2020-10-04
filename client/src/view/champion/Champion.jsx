@@ -1,106 +1,113 @@
-import React from "react";
-import { Container, Results, Card, Title, Details } from "./Champion.styles.js";
-import {
-  Form,
-  Group,
-  Input,
-  Label,
-  Select,
-} from "../../components/styles/Form";
-import { Button } from "../../GlobalStyles";
+import React, { useEffect } from "react";
+import Toggle from "../../components/toggle/Toggle";
+import { FaSortUp, FaSortDown, FaSort } from "react-icons/fa";
+import { Form, Group, Input, Label } from "../../components/styles/Form";
+import { useTable, useSortBy } from "react-table";
+import { Container, Image, ToggleContainer, Title } from "./Champion.styles";
 
-const LANES = ["All", "Top", "Jungle", "Mid", "Adc", "Support"];
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+const statusMatchupsPrivacy = (matchups) =>
+  matchups.every(({ private: privacy }) => privacy === "private");
 
 const Champion = ({
-  matchups,
-  name,
-  values,
-  setValues,
+  championA: me,
+  columns,
+  matchups: data = [],
   onSearch,
-  championA,
+  setValue,
+  value,
+  handleNavigate,
+  privacy,
+  setPrivacy,
 }) => {
-  const handleOnChange = (e) => {
-    e.persist();
-    setValues((old) => ({
-      ...old,
-      [e.target.name]: capitalizeFirstLetter(e.target.value),
-    }));
-  };
+  const tableInstance = useTable({ columns, data }, useSortBy);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = tableInstance;
+
+  useEffect(() => {
+    const currentStatus = statusMatchupsPrivacy(data);
+    setPrivacy(currentStatus);
+  }, [me, data, setPrivacy]);
 
   return (
     <Container>
-      <Container.Inner>
-        <Container.Wrapper>
-          <Title>{name}</Title>
-          <Form champion onSubmit={onSearch}>
-            <Group champion>
-              <Label>Versus</Label>
-              <Input
-                type="text"
-                placeholder="Enter champion"
-                name="championB"
-                onChange={handleOnChange}
-                value={values.championB}
-              />
-            </Group>
-            <Group champion>
-              <Label>Lane</Label>
-              <Select name="lane" onChange={handleOnChange} value={values.lane}>
-                {LANES.map((lane) => (
-                  <option
-                    key={lane}
-                    value={lane}
-                    style={{
-                      display: "block",
-                      paddingBottom: "1rem",
-                      backgroundColor: "#2c3a4a",
-                    }}
-                  >
-                    {lane.toUpperCase()}
-                  </option>
+      <Container.Header>
+        <Container.Header.Left>
+          <Image src={me.icon} alt="champion image of yourself." />
+          <Title>All matchups privacy</Title>
+          <ToggleContainer>
+            <Toggle
+              privacy={privacy}
+              setPrivacy={setPrivacy}
+              all="true"
+              champion_id={me ? me.id : null}
+            />
+          </ToggleContainer>
+        </Container.Header.Left>
+        <Form champion onSubmit={onSearch}>
+          <Group champion>
+            <Label>Find Opponent</Label>
+            <Input
+              champion
+              type="text"
+              placeholder="Enter Champion Name"
+              name="championB"
+              onChange={(e) => setValue(e.target.value)}
+              value={value}
+              autoComplete="off"
+            />
+          </Group>
+        </Form>
+      </Container.Header>
+      <Container.Body>
+        <table {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                    {column.render("Header")}
+                    <span>
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <FaSortUp />
+                        ) : (
+                          <FaSortDown />
+                        )
+                      ) : (
+                        <FaSort style={{ paddingTop: ".2rem" }} />
+                      )}
+                    </span>
+                  </th>
                 ))}
-              </Select>
-            </Group>
-            <Button style={{ width: "100%", fontSize: "1rem" }}>Search</Button>
-          </Form>
-        </Container.Wrapper>
-        <Results>
-          {matchups.length <= 0 && "No matchups found."}
-          {matchups.length > 0 &&
-            matchups.map((matchup) => (
-              <Card to={`/dex/${matchup.id}`} key={matchup.id}>
-                <Card.Background
-                  src={matchup.championB.splash}
-                  alt={matchup.championB.name}
-                />
-                <Card.Image
-                  src={matchup.championB.icon}
-                  alt={matchup.championB.name}
-                />
-                <Details name="played">
-                  <Details.Title>played</Details.Title>
-                  <Details.Text>{matchup.games_played}</Details.Text>
-                </Details>
-                <Details name="wins">
-                  <Details.Title>wins</Details.Title>
-                  <Details.Text>{matchup.games_won}</Details.Text>
-                </Details>
-                <Details name="lane">
-                  <Details.Title>lane</Details.Title>
-                  <Details.Text>{matchup.lane}</Details.Text>
-                </Details>
-                <Details name="losses">
-                  <Details.Title>losses</Details.Title>
-                  <Details.Text>{matchup.games_lost}</Details.Text>
-                </Details>
-              </Card>
+              </tr>
             ))}
-        </Results>
-      </Container.Inner>
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.length <= 0 && "No matchups found."}
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  onClick={() => handleNavigate(row.original.id)}
+                >
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </Container.Body>
     </Container>
   );
 };

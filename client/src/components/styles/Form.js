@@ -18,7 +18,7 @@ export const Form = styled.form`
     props.champion &&
     css`
       width: 100%;
-      max-width: 100%;
+      max-width: 968px;
     `}
 
   ${(props) =>
@@ -35,7 +35,8 @@ export const Form = styled.form`
       props.champion &&
       css`
         display: flex;
-        max-width: 700px;
+        align-items: center;
+        width: auto;
       `}
 
     ${(props) =>
@@ -60,6 +61,7 @@ export const Form = styled.form`
       `}
   }
 `;
+
 export const Group = styled.div`
   display: flex;
   flex-flow: column nowrap;
@@ -74,14 +76,19 @@ export const Group = styled.div`
   ${(props) =>
     props.champion &&
     css`
+      margin-top: 0.3rem;
       background: #23303f;
+      margin-top: 2rem;
+      width: 100%;
 
       @media screen and (min-width: 968px) {
         margin-bottom: 0;
-        margin-right: 1.5rem;
+        margin-top: 0;
         min-width: 350px;
         border-radius: 6px;
-        height: 100%;
+        height: 80px;
+        min-width: 320px;
+        max-width: 400px;
       }
     `}
 
@@ -136,6 +143,13 @@ export const Input = styled.input`
     css`
       width: 100%;
     `}
+
+  ${(props) =>
+    props.champion &&
+    css`
+      margin-top: 0.3rem;
+    `}
+
   ::placeholder {
     text-transform: uppercase;
     color: ${(props) =>
