@@ -290,21 +290,35 @@ class MatchupController extends Controller {
 
   async updatePrivate(req, res, next) {
     const { id } = req.user;
-    const { lane, champion_id, opponent_id, private: _private } = req.query;
+    const {
+      lane,
+      champion_id,
+      opponent_id,
+      private: _private,
+      all,
+    } = req.query;
+
     try {
-      await db.matchup.update({
-        where: {
-          champion_id_opponent_id_lane_user_id: {
-            lane: lane.trim(),
-            champion_id: Number(champion_id),
-            opponent_id: Number(opponent_id),
-            user_id: Number(id),
+      if (all === 'true') {
+        await db.$queryRaw(`
+        UPDATE "Matchup" SET "private" = ${_private === 'true'} 
+        WHERE "user_id" = ${Number(id)} 
+        AND "champion_id" = ${champion_id}`);
+      } else {
+        await db.matchup.update({
+          where: {
+            champion_id_opponent_id_lane_user_id: {
+              lane: lane.trim(),
+              champion_id: Number(champion_id),
+              opponent_id: Number(opponent_id),
+              user_id: Number(id),
+            },
           },
-        },
-        data: {
-          private: _private === 'true',
-        },
-      });
+          data: {
+            private: _private === 'true',
+          },
+        });
+      }
 
       res.sendStatus(204);
     } catch (err) {
