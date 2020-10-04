@@ -148,12 +148,14 @@ const Notes = ({
                       highlightClassName="highlightNote"
                       textToHighlight={note.content}
                     />
-                    <Dropdown
-                      show={show}
-                      handleSetShow={handleSetShow}
-                      id={note.id}
-                      deleteNote={deleteNote}
-                    />
+                    {!shared && (
+                      <Dropdown
+                        show={show}
+                        handleSetShow={handleSetShow}
+                        id={note.id}
+                        deleteNote={deleteNote}
+                      />
+                    )}
                   </Item>
                 </CSSTransition>
               ))}
