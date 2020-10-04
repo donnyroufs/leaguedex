@@ -228,6 +228,7 @@ export default createGlobalStyle`
       cursor: pointer;
       margin-right: .3rem;
       margin-bottom: .15rem;
+      color: #007aff;
 
       @media screen and (min-width: 1200px) {
         margin-right: .66rem;
@@ -238,7 +239,7 @@ export default createGlobalStyle`
     }
 
     .highlightNote {
-       color: ${(props) => props.theme.primary};
+       color: #62adff;
        background: transparent;
     }
 `;
