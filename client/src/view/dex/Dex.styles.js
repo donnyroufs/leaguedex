@@ -1,231 +1,159 @@
 import styled, { css } from "styled-components";
 
 export const Container = styled.section`
-  height: 100%;
-
-  @media screen and (min-width: 1200px) {
-    display: flex;
-    min-height: calc(100vh - 175px);
-  }
-`;
-
-Container.Left = styled.aside`
-  position: relative;
   display: flex;
-  margin-top: -75px;
+  flex-flow: column nowrap;
+  width: 80%;
+  margin: 0 auto;
+  max-width: 1400px;
+  height: calc(100vh - 170px);
 
   @media screen and (min-width: 1200px) {
-    margin-top: 0;
-    position: fixed;
-    top: 175px;
-    left: 0;
-    height: calc(100vh - 175px);
-    width: 30%;
-    z-index: 10;
+    flex-flow: row nowrap;
   }
 `;
 
-Container.Right = styled.section`
-  @media screen and (min-width: 1200px) {
-    width: 70%;
-    margin-left: 30%;
-    display: flex;
-    justify-content: center;
-  }
+Container.Left = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 6;
 `;
 
-Container.Right.Inner = styled.div`
-  @media screen and (min-width: 1200px) {
-    width: 70%;
-  }
-`;
+Container.Right = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  flex: 8;
 
-export const Image = styled.img`
-  width: 50%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(${(props) => (props.you ? "0" : "100%")});
-  opacity: ${(props) => (props.you ? "0.7" : "0.35")};
+  @media screen and (min-width: 1200px) {
+    margin-left: 100px;
+  }
+
+  @media screen and (min-width: 1400px) {
+    margin-left: 200px;
+  }
 `;
 
 export const Header = styled.header`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  padding: 0 1.5rem;
-  margin: 0 0 3rem 0;
+  height: 200px;
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  @media screen and (min-width: 500px) {
+    flex-flow: row wrap;
+  }
 
   @media screen and (min-width: 1200px) {
-    padding: 0;
-    margin: 0 0 4rem 0;
-    grid-template-columns: repeat(4, 1fr);
+    height: 100px;
+    min-height: 100px;
+    flex-flow: row nowrap;
   }
 `;
 
-export const Versus = styled.div`
-  z-index: 5;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-weight: bold;
-  font-size: 5rem;
-  color: #fff;
-  text-shadow: 3px 1px 10px rgba(150, 150, 150, 1);
-  pointer-events: none;
+Header.Left = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+Header.Right = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media screen and (min-width: 1200px) {
+    justify-content: flex-end;
+  }
+
+  ${(props) =>
+    props.type === "stats" &&
+    css`
+      display: flex;
+      flex-flow: column nowrap;
+    `}
 `;
 
 export const Status = styled.div`
-  z-index: 5;
-  position: absolute;
-  top: 65%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-weight: bold;
-  font-size: 3.5rem;
-  color: #fff;
-  text-shadow: 3px 1px 10px rgba(150, 150, 150, 1);
-  pointer-events: none;
-
-  @media screen and (min-width: 968px) {
-    top: 60%;
-  }
-`;
-
-export const Main = styled.main`
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
+  display: none;
 
   @media screen and (min-width: 1200px) {
-    align-items: flex-start;
-    min-height: 650px;
+    display: flex;
+    background: ${({ theme }) => theme.primary};
+    border-radius: 6px;
+    padding: 0.8rem 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: bold;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    margin-right: 1rem;
+  }
+
+  @media screen and (min-width: 1600px) {
+    margin-right: 2rem;
   }
 `;
 
-Main.Title = styled.h1`
-  color: ${(props) => props.theme.secondary};
+export const Text = styled.p`
+  font-size: 0.9rem;
   font-weight: bold;
   text-transform: uppercase;
-  margin: 0;
-`;
 
-Main.Header = styled.header`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 1.5rem;
+  @media screen and (min-width: 968px) {
+    font-size: 1rem;
+  }
 
   @media screen and (min-width: 1200px) {
-    padding: 0;
-    justify-content: space-between;
-    margin-bottom: 2rem;
+    font-size: 0.9rem;
   }
+
+  @media screen and (min-width: 1400px) {
+    font-size: 1.1rem;
+  }
+
+  ${(props) =>
+    props.type === "runes" &&
+    css`
+      background: #18222f;
+      text-transform: none;
+      font-size: 1rem;
+      font-weight: normal;
+      padding: 2rem;
+      border-radius: 6px;
+    `}
 `;
 
-Main.Toggle = styled.div``;
+export const Highlight = styled.mark`
+  background: none;
+  color: #3f8be4;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0 0.4rem;
+`;
 
-export const Notes = styled.ul`
+export const Runes = styled.section`
   display: flex;
   flex-flow: column nowrap;
-  list-style: none;
-  margin: 2rem 0;
-  width: 100%;
-  padding: 0 1.5rem;
-  min-height: 150px;
-
-  @media screen and (min-width: 1200px) {
-    margin: 0 0 3rem 0;
-    padding: 0;
-    min-height: auto;
-  }
-`;
-
-Notes.Note = styled.li`
-  display: flex;
-  justify-content: space-between;
-  text-align: left;
-  width: 100%;
-  background: #2c3a4a;
-  padding: 1.25rem;
-  padding-right: 2rem;
-  line-height: 1.7;
-  color: ${(props) => props.theme.secondary};
-  border-radius: 6px;
-  margin-top: 1.5rem;
-  cursor: pointer;
-`;
-
-export const FilterContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  min-height: 50px;
-  margin-top: 3rem;
-  padding: 0 1.5rem;
-  width: 100%;
-
-  @media screen and (min-width: 1200px) {
-    margin-top: 2rem;
-    padding: 0;
-  }
-`;
-
-Main.Revert = styled.button`
-  outline: none;
-  border: none;
-  cursor: pointer;
-  color: ${(props) => props.theme.danger};
-  margin-right: 1.5rem;
-  background: none;
-`;
-
-export const Tag = styled.button`
-  padding: 0.75rem 1.25rem;
-  border-radius: 4px;
-  background: #2c3a4a;
-  margin-right: 1rem;
-  outline: none;
-  border: none;
-  color: ${(props) => props.theme.secondary};
-  cursor: pointer;
-  font-size: 14px;
-  margin-bottom: 1rem;
-
-  ${(props) =>
-    props.active &&
-    css`
-      background: ${(props) => props.theme.primary};
-      color: #fff;
-    `}
-`;
-
-export const Remove = styled.button`
-  display: block;
   pointer-events: none;
-  transition: 0.15s ease-in-out all;
-  user-select: none;
-  border-radius: 100%;
-  opacity: 0;
-  height: 32px;
-  width: 32px;
-  color: white;
-  cursor: pointer;
-  outline: none;
-  background: #ec4179;
-  color: #27303a;
-  border: none;
-  font-size: 1.15rem;
+  margin-top: 4rem;
+
+  @media screen and (min-width: 968px) {
+    margin-top: 6rem;
+  }
+`;
+
+export const Title = styled.h1`
+  font-size: 1.5rem;
   font-weight: bold;
+  color: ${({ theme }) => theme.secondary};
+`;
 
-  ${(props) =>
-    props.clicked &&
-    css`
-      pointer-events: all;
-      opacity: 1;
-    `}
+export const Notes = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  margin-top: 4rem;
 
-  &:hover {
-    opacity: 0.7;
+  @media screen and (min-width: 968px) {
+    margin-top: 6rem;
   }
 `;

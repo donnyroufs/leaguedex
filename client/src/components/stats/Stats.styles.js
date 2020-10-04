@@ -8,6 +8,9 @@ export const Container = styled.div`
   align-items: center;
   border-radius: 6px;
   padding: 0 1.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   @media screen and (min-width: 968px) {
     flex-grow: 0;
@@ -20,7 +23,7 @@ export const Container = styled.div`
     width: 48%;
 
     @media screen and (min-width: 968px) {
-      margin-left: ${home ? 1 : 0}rem;
+      margin-right: ${home ? 1 : 0}rem;
       flex-grow: 1;
       width: fit-content;
     }

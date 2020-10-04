@@ -94,7 +94,7 @@ const DexContainer = ({ history }) => {
   const [loading, setLoading] = useState(true);
   const [notes, setNotes] = useState([]);
   const [dex, setDex] = useState(null);
-  const { revertMatch } = useMatch();
+  const { revertMatch, isLive } = useMatch();
 
   const createNote = async (value) => {
     const tags = parseTags(value);
@@ -135,7 +135,6 @@ const DexContainer = ({ history }) => {
           }
 
           const _data = await fetchNotes(id);
-
           const assets = build([data.championA, data.championB], 2);
           await loadAssets(assets);
           setNotes(_data);
@@ -185,6 +184,7 @@ const DexContainer = ({ history }) => {
         loading={loading}
         deleteNote={deleteNote}
         handleRevert={handleRevert}
+        isLive={isLive}
       />
     </>
   );

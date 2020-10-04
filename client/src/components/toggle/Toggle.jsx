@@ -23,7 +23,6 @@ const makeQuery = ({
 };
 
 const fetchUpdatePrivacy = async (payload) => {
-  console.log(payload);
   const query = makeQuery(payload);
   return fetch(`/api/matchup/private?${query}`, {
     method: "PUT",
