@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { handleError, ErrorHandler } = require('../helpers/error');
 const { db } = require('../config/database');
+const app = require('../Application');
 
 class Auth {
   static options = {
@@ -110,6 +111,7 @@ class Auth {
       expires: expiration,
       promo_shown: 1,
       sameSite: true,
+      secure: app.inProduction ? true : false,
     };
 
     res.cookie('x-refresh-token', refreshToken, options);

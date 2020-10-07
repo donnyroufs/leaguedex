@@ -13,6 +13,10 @@ class Application {
     this.helpers = helpers;
   }
 
+  static inProduction() {
+    return process.env.NODE_ENV === 'production';
+  }
+
   async initialize(callback) {
     this._setMiddleware();
 
