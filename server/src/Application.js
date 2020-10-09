@@ -4,6 +4,8 @@ class Application {
     max: 10,
   };
 
+  static inProduction = process.env.NODE_ENV === 'production';
+
   constructor({ server, database, middleware, routes, helpers = {} } = {}) {
     this.express = server;
     this.app = this.express();
@@ -11,10 +13,6 @@ class Application {
     this.middleware = middleware;
     this.routes = routes;
     this.helpers = helpers;
-  }
-
-  static inProduction() {
-    return process.env.NODE_ENV === 'production';
   }
 
   async initialize(callback) {
