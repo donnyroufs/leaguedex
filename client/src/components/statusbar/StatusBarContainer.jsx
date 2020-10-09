@@ -3,7 +3,7 @@ import StatusBar from "./StatusBar";
 import { useHistory } from "react-router-dom";
 import { useStatus } from "../../hooks/useStatus";
 import { toast } from "react-toastify";
-import { getToken } from "../../helpers/getToken";
+import makeRequest from "../../helpers/makeRequest";
 
 const STATUS_MESSAGES = {
   INITIAL: "Are you currently in a match?",
@@ -17,30 +17,18 @@ const STATUS_MESSAGES = {
   SEARCHING: "Searching...",
 };
 
-const fetchRevertMatchup = async ({
-  lane,
-  champion_id,
-  games_played: gamesPlayed,
-  opponent_id,
-}) => {
+async function fetchRevertMatchup({ lane, champion_id, games_played: gamesPlayed, opponent_id }) {
   const params = new URLSearchParams({
     lane,
     champion_id,
     gamesPlayed,
     opponent_id,
   });
-  const res = await fetch(`/api/matchup/revert?${params}`, {
-    method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
+  const res = await makeRequest(`/api/matchup/revert?${params}`, {
+    method: "PUT"
   });
-
-  return res.status === 204;
-};
+  return res.status === 204
+}
 
 const StatusBarContainer = ({ revertMatch, ...props }) => {
   const history = useHistory();

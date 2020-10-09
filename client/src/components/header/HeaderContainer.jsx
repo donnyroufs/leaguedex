@@ -2,32 +2,25 @@ import React from "react";
 import Header from "./Header";
 
 import { useHistory } from "react-router";
-import { getToken } from "../../helpers/getToken";
 import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../hooks/useModal";
 import { useMatch } from "../../hooks/useMatch";
 import { toast } from "react-toastify";
+import makeRequest from '../../helpers/makeRequest';
 
-const fetchLatest = async (id) => {
-  const res = await fetch(`/api/matchup/latest/${id}`, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
-  return res.json();
-};
+async function fetchLatest(id) {
+  const res = await makeRequest(`/api/matchup/latest/${id}`);
+  return res.json()
+}
 
-const finishMatch = async (match) => {
+async function finishMatch(match) {
   try {
     const data = await fetchLatest(match.gameId);
     return data;
-  } catch (err) {
+  } catch (_) {
     return null;
   }
-};
+}
 
 const HeaderContainer = (props) => {
   const history = useHistory();
@@ -38,6 +31,7 @@ const HeaderContainer = (props) => {
   const handleFindMatch = async (e) => {
     e.preventDefault();
     const _match = await findMatch();
+    console.log(_match)
     if (_match) {
       history.push(`/match/${_match.gameId}`);
     }

@@ -1,36 +1,20 @@
 import React, { useState } from "react";
 import Home from "./Home";
 import { useAuth } from "../../hooks/useAuth";
-import { getToken } from "../../helpers/getToken";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { loadAssets, build } from "../../helpers/loadImages";
 import Helmet from "react-helmet";
+import makeRequest from "../../helpers/makeRequest";
 
 const fetchChampions = async (isAuthenticated) => {
   const endpoint = isAuthenticated ? "/api/matchup/played" : "/api/champion";
-  const response = await fetch(endpoint, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
-
+  const response = await makeRequest(endpoint)
   return response.json();
 };
 
 const fetchInfoCard = async () => {
-  const response = await fetch("/api/matchup/info", {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
-
+  const response = await makeRequest(`/api/matchup/info`)
   return response.json();
 };
 

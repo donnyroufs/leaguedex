@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Shared from "./Shared";
 import Helmet from "react-helmet";
+import makeRequest from "../../helpers/makeRequest";
 
 const fetchPublicMatchups = async (username) => {
-  const res = await fetch(`/api/shared?username=${username}`);
+  const res = await makeRequest(`/api/shared?username=${username}`)
   return res.json();
 };
 

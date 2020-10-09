@@ -2,23 +2,16 @@ import React, { useEffect, useState, useMemo, useRef } from "react";
 import Champion from "./Champion";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
-import { getToken } from "../../helpers/getToken";
 import { loadImage } from "../../helpers/loadImages";
 import Helmet from "react-helmet";
 import { useDebounce } from "use-debounce";
+import makeRequest from "../../helpers/makeRequest";
 
 const nameCapitalized = (name) => name.charAt(0).toUpperCase() + name.slice(1);
 
 const fetchMatchups = async (payload) => {
   const query = createQuery(payload);
-  const res = await fetch("/api/matchup/all?" + query, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
+  const res = await makeRequest(`/api/matchup/all?${query}`)
   const data = await res.json();
   return { data, res };
 };

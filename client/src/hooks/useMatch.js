@@ -1,7 +1,7 @@
 import React, { useEffect, createContext, useContext, useState } from "react";
 import * as Timer from "../helpers/gameTimer";
-import { getToken } from "../helpers/getToken";
 import { build, loadAssets } from "../helpers/loadImages";
+import makeRequest from "../helpers/makeRequest";
 
 const matchContext = createContext();
 
@@ -26,14 +26,7 @@ const useMatchProvider = () => {
   const findMatch = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/matchup/find`, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: getToken(),
-        },
-        credentials: "include",
-      });
+      const res = await makeRequest(`/api/matchup/find`);
       const data = await res.json();
       if (data.hasOwnProperty("status")) {
         setMatch(null);
@@ -59,15 +52,9 @@ const useMatchProvider = () => {
         game_id: String(match.gameId),
       };
 
-      const res = await fetch(`/api/matchup/create`, {
+      const res = await makeRequest(`/api/matchup/create`, {
         method: "POST",
         body: JSON.stringify(payload),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: getToken(),
-        },
-        credentials: "include",
       });
       const { id, confirmed } = await res.json();
       setMatch((old) => ({
