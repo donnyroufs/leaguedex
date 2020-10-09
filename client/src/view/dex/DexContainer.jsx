@@ -8,6 +8,7 @@ import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { build, loadAssets } from "../../helpers/loadImages";
 import { useMatch } from "../../hooks/useMatch";
+import { useStatus } from "../../hooks/useStatus";
 import Helmet from "react-helmet";
 
 const fetchDex = async (id) => {
@@ -64,37 +65,12 @@ const fetchDeleteNote = async (noteId) => {
   return res.json();
 };
 
-const fetchRevertMatchup = async ({
-  lane,
-  champion_id,
-  games_played: gamesPlayed,
-  opponent_id,
-}) => {
-  const params = new URLSearchParams({
-    lane,
-    champion_id,
-    gamesPlayed,
-    opponent_id,
-  });
-  const res = await fetch(`/api/matchup/revert?${params}`, {
-    method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
-
-  return res.status === 204;
-};
-
 const DexContainer = ({ history }) => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [notes, setNotes] = useState([]);
-  const [dex, setDex] = useState(null);
-  const { revertMatch, isLive } = useMatch();
+  const { isLive } = useMatch();
+  const { setDex, dex } = useStatus();
 
   const createNote = async (value) => {
     const tags = parseTags(value);
@@ -110,20 +86,6 @@ const DexContainer = ({ history }) => {
     }
   };
 
-  const handleRevert = async () => {
-    try {
-      const response = await fetchRevertMatchup(dex);
-      if (!response) {
-        return toast.error(
-          "Couldn't revert matchup, perhaps you need to remove your current notes."
-        );
-      }
-      revertMatch(history);
-    } catch (err) {
-      toast.error("Something went wrong on our end.");
-    }
-  };
-
   useEffect(() => {
     (async () => {
       if (id) {
@@ -134,9 +96,12 @@ const DexContainer = ({ history }) => {
             history.push("/");
           }
 
+          setDex(data);
+
           const _data = await fetchNotes(id);
           const assets = build([data.championA, data.championB], 2);
           await loadAssets(assets);
+
           setNotes(_data);
           setDex(data);
           setLoading(false);
@@ -183,7 +148,6 @@ const DexContainer = ({ history }) => {
         dex={dex}
         loading={loading}
         deleteNote={deleteNote}
-        handleRevert={handleRevert}
         isLive={isLive}
       />
     </>
