@@ -17,9 +17,12 @@ export const useStatus = () => {
 
 const useStatusProvider = () => {
   const [status, setStatus] = useState(null);
+  const [dex, setDex] = useState(null);
 
   return {
     status,
     setStatus,
+    dex,
+    setDex,
   };
 };
