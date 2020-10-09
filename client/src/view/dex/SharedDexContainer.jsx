@@ -3,31 +3,17 @@ import { useParams } from "react-router";
 import Dex from "./Dex";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
-import { getToken } from "../../helpers/getToken";
 import Helmet from "react-helmet";
+import makeRequest from "../../helpers/makeRequest";
 
 const fetchDex = async (id, username) => {
-  const res = await fetch(`/api/shared/${username}/dex?id=${id}`, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
+  const res = await makeRequest(`/api/shared/${username}/dex?id=${id}`);
   const data = await res.json();
   return { data, res };
 };
 
 const fetchNotes = async (id, username) => {
-  const res = await fetch(`/api/shared/${username}/dex/note?id=${id}`, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
+  const res = await makeRequest(`/api/shared/${username}/dex/note?id=${id}`);
   return res.json();
 };
 

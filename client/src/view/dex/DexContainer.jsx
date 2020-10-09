@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import Dex from "./Dex";
-import { getToken } from "../../helpers/getToken";
 import { parseTags } from "../../helpers/parseTags";
 import { toast } from "react-toastify";
 import * as Loader from "../../components/styles/Loader";
@@ -10,58 +9,31 @@ import { build, loadAssets } from "../../helpers/loadImages";
 import { useMatch } from "../../hooks/useMatch";
 import { useStatus } from "../../hooks/useStatus";
 import Helmet from "react-helmet";
+import makeRequest from "../../helpers/makeRequest";
 
 const fetchDex = async (id) => {
-  const res = await fetch(`/api/matchup/${id}`, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
+  const res = await makeRequest(`/api/matchup/${id}`);
   const data = await res.json();
   return { data, res };
 };
 
 const fetchNotes = async (id) => {
-  const res = await fetch(`/api/note/dex/${id}`, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
+  const res = await makeRequest(`/api/note/dex/${id}`);
   return res.json();
 };
 
 const fetchCreateNote = async (payload) => {
-  const res = await fetch(`/api/note/create`, {
+  const res = await makeRequest(`/api/note/create`, {
     method: "POST",
-    body: JSON.stringify(payload),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
-
+    body: JSON.stringify(payload)
+  })
   return res.json();
 };
 
 const fetchDeleteNote = async (noteId) => {
-  const res = await fetch(`/api/note/${noteId}`, {
-    method: "DELETE",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
-
+  const res = await makeRequest(`/api/note/${noteId}`, {
+    method: "DELETE"
+  })
   return res.json();
 };
 

@@ -10,20 +10,12 @@ import routes from "./routes";
 import { useAuth } from "./hooks/useAuth";
 import { useModal } from "./hooks/useModal";
 import { useMatch } from "./hooks/useMatch";
-import { getToken } from "./helpers/getToken";
+import makeRequest from "./helpers/makeRequest";
 
-const syncData = async () => {
-  const response = await fetch("/api/matchup/sync", {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
-
-  return response.json();
-};
+async function syncData() {
+  const res = await makeRequest("/api/matchup/sync");
+  return res.json();
+}
 
 const App = () => {
   const {

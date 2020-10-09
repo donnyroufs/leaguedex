@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "./Toggle.styles";
-import { getToken } from "../../helpers/getToken";
 import { toast } from "react-toastify";
+import makeRequest from "../../helpers/makeRequest";
 
 const makeQuery = ({
   lane,
@@ -22,18 +22,12 @@ const makeQuery = ({
   return params;
 };
 
-const fetchUpdatePrivacy = async (payload) => {
+async function fetchUpdatePrivacy(payload) {
   const query = makeQuery(payload);
-  return fetch(`/api/matchup/private?${query}`, {
-    method: "PUT",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
+  return makeRequest(`/api/matchup/private?${query}`, {
+    method: "PUT"
   });
-};
+}
 
 const Toggle = ({
   lane,
@@ -55,7 +49,7 @@ const Toggle = ({
         setPrivacy(value);
         toast.info("Updated privacy settings successfully");
       })
-      .catch((err) =>
+      .catch((_) =>
         toast.error("Something went wrong. Could not update privacy settings.")
       );
   };

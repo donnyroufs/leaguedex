@@ -1,20 +1,13 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { getToken } from "../../helpers/getToken";
 import Dashboard from "./Dashboard";
 import { Styles } from "./Dashboard.styles";
 import Helmet from "react-helmet";
+import makeRequest from "../../helpers/makeRequest";
 
 const fetchUsers = async () => {
-  const response = await fetch("/api/user", {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      authorization: getToken(),
-    },
-    credentials: "include",
-  });
-  return response.json();
+  const response = await makeRequest(`/api/user`)
+  return response.json()
 };
 
 const DashboardContainer = () => {

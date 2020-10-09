@@ -5,31 +5,24 @@ import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../hooks/useModal";
 import { useMatch } from "../../hooks/useMatch";
 import { useHistory } from "react-router";
-import { getToken } from "../../helpers/getToken";
 import { BeatLoader } from "react-spinners";
+import makeRequest from "../../helpers/makeRequest";
 
 const AVERAGE_GAMELENGTH = 35;
 
-const fetchLatest = async (id) => {
-  const res = await fetch(`/api/matchup/latest/${id}`, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
-  return res.json();
-};
+async function fetchLatest(id) {
+  const res = await makeRequest(`/api/matchup/latest/${id}`)
+  return res.json()
+}
 
-const finishMatch = async (match) => {
+async function finishMatch(match) {
   try {
     const data = await fetchLatest(match.gameId);
     return data;
   } catch (err) {
     return null;
   }
-};
+}
 
 const Menu = () => {
   const history = useHistory();
