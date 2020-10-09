@@ -15,6 +15,8 @@ const Header = ({
   handleMatchupSelection,
   handleLiveMatch,
   isAdmin,
+  revertMatch,
+  dex
 }) => {
   return (
     <Container>
@@ -24,6 +26,7 @@ const Header = ({
         handleFindMatch={handleFindMatch}
         handleLiveMatch={handleLiveMatch}
         handleMatchupSelection={handleMatchupSelection}
+        revertMatch={revertMatch}
       />
       <Container.Inner>
         <Container.Bottom>

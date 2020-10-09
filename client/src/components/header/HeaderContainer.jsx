@@ -33,7 +33,7 @@ const HeaderContainer = (props) => {
   const history = useHistory();
   const { isAuthenticated, logout, hasSummoner, user, isAdmin } = useAuth();
   const { setModal } = useModal();
-  const { setMatch, findMatch, match, setLoading } = useMatch();
+  const { setMatch, findMatch, match, setLoading, revertMatch } = useMatch();
 
   const handleFindMatch = async (e) => {
     e.preventDefault();
@@ -88,6 +88,7 @@ const HeaderContainer = (props) => {
       handleLiveMatch={handleLiveMatch}
       handleMatchupSelection={handleMatchupSelection}
       isAdmin={isAdmin}
+      revertMatch={revertMatch}
     />
   );
 };

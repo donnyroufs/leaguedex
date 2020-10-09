@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Button } from "./StatusBar.styles";
 import { useMatch } from "../../hooks/useMatch";
+import { useStatus } from "../../hooks/useStatus";
 
 const StatusBar = ({
   handleMatchupSelection,
@@ -9,9 +10,11 @@ const StatusBar = ({
   isAuthenticated,
   hasSummoner,
   handleFindMatch,
+  handleRevertMatchup,
   status,
 }) => {
   const { hasMatch, confirmed, loading } = useMatch();
+  const { dex } = useStatus();
 
   return (
     <Container>
@@ -54,7 +57,11 @@ const StatusBar = ({
               {/* We have a match and we have selected the matchup */}
               {hasMatch && confirmed && (
                 <>
-                  <Button secondary>Revert Matchup</Button>
+                  {dex && (
+                    <Button secondary onClick={handleRevertMatchup}>
+                      Revert Matchup
+                    </Button>
+                  )}
                   <Button onClick={handleLiveMatch}>Go To Match</Button>
                 </>
               )}
