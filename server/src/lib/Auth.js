@@ -107,11 +107,11 @@ class Auth {
   static async setRefreshCookie(res, refreshToken, exp = 10080) {
     const expiration = this.setExpirationDate(exp);
     const options = {
-      httpOnly: true,
+      httpOnly: app.inProduction,
       expires: expiration,
       promo_shown: 1,
       sameSite: true,
-      secure: app.inProduction ? true : false,
+      secure: app.inProduction,
     };
 
     res.cookie('x-refresh-token', refreshToken, options);
