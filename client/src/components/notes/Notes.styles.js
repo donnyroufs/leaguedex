@@ -5,7 +5,7 @@ export const List = styled.ul`
   padding: 0%;
   margin: 0;
   list-style: none;
-  min-height: 500px;
+  min-height: 200px;
   margin-bottom: 2rem;
 
   ${(props) =>
@@ -13,6 +13,10 @@ export const List = styled.ul`
     css`
       margin-top: 2rem;
     `}
+
+  @media screen and (min-width: 1200px) {
+    min-height: 400px;
+  }
 `;
 export const Item = styled.li`
   position: relative;
