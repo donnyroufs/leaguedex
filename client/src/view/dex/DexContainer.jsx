@@ -20,8 +20,8 @@ const fetchDex = async (id) => {
   return { data, res };
 };
 
-const fetchNotes = async (id) => {
-  const res = await makeRequest(`/api/note/dex/${id}`);
+const fetchNotes = async (id, championId) => {
+  const res = await makeRequest(`/api/note/dex/${id}?championId=${championId}`);
   return res.json();
 };
 
@@ -53,6 +53,7 @@ const DexContainer = ({ history }) => {
       const data = await fetchCreateNote({
         content: value,
         matchupId: id,
+        championId: dex.champion_id,
         tags: tags.length > 0 ? tags.toString() : "",
       });
       setNotes((current) => [...current, removeChar(data)]);
@@ -73,7 +74,7 @@ const DexContainer = ({ history }) => {
 
           setDex(data);
 
-          const _data = await fetchNotes(id);
+          const _data = await fetchNotes(id, data.champion_id);
           const assets = build([data.championA, data.championB], 2);
           await loadAssets(assets);
 
