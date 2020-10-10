@@ -10,7 +10,9 @@ import { useMatch } from "../../hooks/useMatch";
 import { useStatus } from "../../hooks/useStatus";
 import Helmet from "react-helmet";
 import makeRequest from "../../helpers/makeRequest";
-import removeTagsFromNotes from "../../helpers/removeTagsFromNotes";
+import removeTagsFromNotes, {
+  removeChar,
+} from "../../helpers/removeTagsFromNotes";
 
 const fetchDex = async (id) => {
   const res = await makeRequest(`/api/matchup/${id}`);
@@ -26,15 +28,15 @@ const fetchNotes = async (id) => {
 const fetchCreateNote = async (payload) => {
   const res = await makeRequest(`/api/note/create`, {
     method: "POST",
-    body: JSON.stringify(payload)
-  })
+    body: JSON.stringify(payload),
+  });
   return res.json();
 };
 
 const fetchDeleteNote = async (noteId) => {
   const res = await makeRequest(`/api/note/${noteId}`, {
-    method: "DELETE"
-  })
+    method: "DELETE",
+  });
   return res.json();
 };
 
@@ -53,7 +55,7 @@ const DexContainer = ({ history }) => {
         matchupId: id,
         tags: tags.length > 0 ? tags.toString() : "",
       });
-      setNotes((current) => [...current, data]);
+      setNotes((current) => [...current, removeChar(data)]);
     } catch (err) {
       toast.error("Something went wrong...");
     }
@@ -76,7 +78,7 @@ const DexContainer = ({ history }) => {
           await loadAssets(assets);
 
           setNotes(removeTagsFromNotes(_data));
-          
+
           setDex(data);
           setLoading(false);
         } catch (err) {
