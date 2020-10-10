@@ -152,8 +152,10 @@ export const Notes = styled.div`
   display: flex;
   flex-flow: column nowrap;
   margin-top: 4rem;
+  margin-bottom: 6rem;
 
   @media screen and (min-width: 968px) {
+    margin-bottom: 4rem;
     margin-top: 6rem;
   }
 `;
