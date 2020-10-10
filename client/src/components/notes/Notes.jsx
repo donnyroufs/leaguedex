@@ -120,6 +120,7 @@ const Notes = ({
       </Title>
 
       <Filter mt={tags.length <= 0 ? "2rem" : "1rem"}>
+        {shared && notes.length <= 0 && "There are no notes for this matchup."}
         {tags.length <= 0 && !shared && (
           <Text>
             Create custom tags by adding <Mark>@</Mark> infront of a keyword!
@@ -153,7 +154,6 @@ const Notes = ({
       )}
 
       <List shared={shared}>
-        {shared && notes.length <= 0 && "There are no notes for this matchup."}
         <TransitionGroup>
           {notes.length > 0 &&
             filteredNotes()
