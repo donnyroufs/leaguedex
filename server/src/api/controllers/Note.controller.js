@@ -30,11 +30,12 @@ class NotesController extends Controller {
 
   async createOne(req, res, next) {
     try {
-      const { content, tags, matchupId } = req.body;
+      const { content, tags, matchupId, championId } = req.body;
       const created = await db.note.create({
         data: {
           content,
           tags,
+          champion_id: Number(championId),
           user: {
             connect: {
               id: Number(req.user.id),
@@ -56,6 +57,8 @@ class NotesController extends Controller {
 
   async findByMatchupId(req, res, next) {
     const { id } = req.params;
+    const { championId: champion_id } = req.query;
+
     try {
       const notes = await db.note.findMany({
         where: {
@@ -70,9 +73,30 @@ class NotesController extends Controller {
         },
       });
 
-      // Create formatter
-      res.status(200).json(notes);
+      const globalNotes = await db.$queryRaw(`
+          SELECT 
+            "Note"."id",
+            "Note"."tags",
+            "Note"."content",
+            "Note"."createdAt"
+          FROM 
+            "Note"
+          WHERE 
+            "Note"."user_id" = ${req.user.id}
+          AND
+            "Note"."champion_id" = ${Number(champion_id)}
+          AND 
+            "Note"."tags" ~ 'global'
+        `);
+
+      const mergedArray = [...notes, ...globalNotes];
+      const uniqueNotes = [
+        ...new Map(mergedArray.map((item) => [item.id, item])).values(),
+      ];
+
+      res.status(200).json(uniqueNotes);
     } catch (err) {
+      console.log(err);
       next(err);
     }
   }

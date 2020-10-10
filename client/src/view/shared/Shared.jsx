@@ -18,12 +18,12 @@ const Shared = ({ matchups, loading, match }) => {
               key={matchup.id}
             >
               <Card.Background
-                src={matchup.championB.splash}
-                alt={matchup.championB.name}
+                src={matchup.championA.splash}
+                alt={matchup.championA.name}
               />
               <Card.Image
-                src={matchup.championB.icon}
-                alt={matchup.championB.name}
+                src={matchup.championA.icon}
+                alt={matchup.championA.name}
               />
               <Details name="played">
                 <Details.Title>played</Details.Title>

@@ -10,6 +10,9 @@ import { useMatch } from "../../hooks/useMatch";
 import { useStatus } from "../../hooks/useStatus";
 import Helmet from "react-helmet";
 import makeRequest from "../../helpers/makeRequest";
+import removeTagsFromNotes, {
+  removeChar,
+} from "../../helpers/removeTagsFromNotes";
 
 const fetchDex = async (id) => {
   const res = await makeRequest(`/api/matchup/${id}`);
@@ -17,23 +20,23 @@ const fetchDex = async (id) => {
   return { data, res };
 };
 
-const fetchNotes = async (id) => {
-  const res = await makeRequest(`/api/note/dex/${id}`);
+const fetchNotes = async (id, championId) => {
+  const res = await makeRequest(`/api/note/dex/${id}?championId=${championId}`);
   return res.json();
 };
 
 const fetchCreateNote = async (payload) => {
   const res = await makeRequest(`/api/note/create`, {
     method: "POST",
-    body: JSON.stringify(payload)
-  })
+    body: JSON.stringify(payload),
+  });
   return res.json();
 };
 
 const fetchDeleteNote = async (noteId) => {
   const res = await makeRequest(`/api/note/${noteId}`, {
-    method: "DELETE"
-  })
+    method: "DELETE",
+  });
   return res.json();
 };
 
@@ -50,9 +53,10 @@ const DexContainer = ({ history }) => {
       const data = await fetchCreateNote({
         content: value,
         matchupId: id,
+        championId: dex.champion_id,
         tags: tags.length > 0 ? tags.toString() : "",
       });
-      setNotes((current) => [...current, data]);
+      setNotes((current) => [...current, removeChar(data)]);
     } catch (err) {
       toast.error("Something went wrong...");
     }
@@ -70,11 +74,12 @@ const DexContainer = ({ history }) => {
 
           setDex(data);
 
-          const _data = await fetchNotes(id);
+          const _data = await fetchNotes(id, data.champion_id);
           const assets = build([data.championA, data.championB], 2);
           await loadAssets(assets);
 
-          setNotes(_data);
+          setNotes(removeTagsFromNotes(_data));
+
           setDex(data);
           setLoading(false);
         } catch (err) {
