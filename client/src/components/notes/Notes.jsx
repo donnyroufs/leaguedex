@@ -71,6 +71,33 @@ const Notes = ({
     setValue("");
   };
 
+  const handleCopy = () => {
+    copyToClipboard(link);
+    toast.info("copied link to clipboard");
+  };
+
+  // !TODO refactor when my brain can handle it ;')
+  const suggestion = (tagName) => {
+    let str = "";
+
+    if (!value) {
+      str = "";
+      return;
+    }
+
+    if (value.split("@").length < 2) return "";
+    value.split("@").forEach((word) => {
+      const result = tags.filter((tag) => tag.toLowerCase().includes(word))[0];
+      if (tags.includes(result)) {
+        str = result;
+      } else {
+        str = word;
+      }
+    });
+
+    return tagName.includes(str);
+  };
+
   useEffect(() => {
     if (notes) {
       const _tags = parseTagsV2(notes);
@@ -82,11 +109,6 @@ const Notes = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes]);
-
-  const handleCopy = () => {
-    copyToClipboard(link);
-    toast.info("copied link to clipboard");
-  };
 
   return (
     <Container>
@@ -109,6 +131,7 @@ const Notes = ({
               key={tag}
               active={query.includes(tag)}
               onClick={(e) => onFilter(e, tag)}
+              suggested={suggestion(tag)}
             >
               {tag}
             </Tag>
@@ -137,7 +160,7 @@ const Notes = ({
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((note) => (
                 <CSSTransition
-                  timeout={500}
+                  timeout={300}
                   unmountOnExit
                   classNames="fade"
                   key={note.id}
