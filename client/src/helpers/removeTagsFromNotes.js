@@ -10,4 +10,6 @@ function removeTagsFromNotes(notes = [], char = "@") {
   return newNotes;
 }
 
+export { removeChar };
+
 export default removeTagsFromNotes;
