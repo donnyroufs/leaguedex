@@ -108,14 +108,3 @@ export const Text = styled.p`
   width: 100%;
   pointer-events: none;
 `;
-
-export const Suggestions = styled.div`
-  position: absolute;
-  left: 1rem;
-  z-index: 0;
-  pointer-events: none;
-  font-size: 1rem;
-  font-weight: 400;
-  text-transform: initial;
-  /* color: #303b48; */
-`;
