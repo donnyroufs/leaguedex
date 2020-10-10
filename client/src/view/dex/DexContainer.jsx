@@ -10,6 +10,7 @@ import { useMatch } from "../../hooks/useMatch";
 import { useStatus } from "../../hooks/useStatus";
 import Helmet from "react-helmet";
 import makeRequest from "../../helpers/makeRequest";
+import removeTagsFromNotes from "../../helpers/removeTagsFromNotes";
 
 const fetchDex = async (id) => {
   const res = await makeRequest(`/api/matchup/${id}`);
@@ -74,7 +75,8 @@ const DexContainer = ({ history }) => {
           const assets = build([data.championA, data.championB], 2);
           await loadAssets(assets);
 
-          setNotes(_data);
+          setNotes(removeTagsFromNotes(_data));
+          
           setDex(data);
           setLoading(false);
         } catch (err) {
