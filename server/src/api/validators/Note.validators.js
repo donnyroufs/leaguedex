@@ -5,5 +5,6 @@ module.exports = {
     content: Joi.string().min(1).max(200).required(),
     tags: Joi.string().allow('').required(),
     matchupId: Joi.string().min(1).max(32).required(),
+    championId: Joi.number(),
   }),
 };
