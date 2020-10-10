@@ -34,7 +34,7 @@ Container.Right = styled.div`
 `;
 
 export const Header = styled.header`
-  height: 200px;
+  height: ${(props) => (props.stats ? "350px" : "100px")};
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
@@ -42,6 +42,7 @@ export const Header = styled.header`
   align-items: center;
 
   @media screen and (min-width: 500px) {
+    height: ${(props) => (props.stats ? "200px" : "100px")};
     flex-flow: row wrap;
   }
 

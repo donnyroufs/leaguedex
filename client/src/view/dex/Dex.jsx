@@ -35,8 +35,8 @@ const Dex = ({ dex, isLive, shared, notes, createNote, deleteNote }) => {
         <Runes />
       </Container.Left>
       <Container.Right>
-        <Header type="stats">
-          <Stats label="lane" info={dex.lane} page="home" />
+        <Header type="stats" stats>
+          <Stats label="lane" info={dex.lane} page="home" type="dex" />
           <Stats
             page="home"
             marginTop="1rem"
@@ -46,9 +46,10 @@ const Dex = ({ dex, isLive, shared, notes, createNote, deleteNote }) => {
               dex.games_lost,
               dex.games_played
             )}
+            type="dex"
           />
-          <Stats page="home" label="wins" info={dex.games_won} />
-          <Stats page="home" label="losses" info={dex.games_lost} />
+          <Stats type="dex" page="home" label="wins" info={dex.games_won} />
+          <Stats type="dex" page="home" label="losses" info={dex.games_lost} />
         </Header>
         <Notes
           {...dex}
