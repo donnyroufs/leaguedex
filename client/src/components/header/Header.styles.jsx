@@ -41,7 +41,10 @@ Container.Brand = styled(Link)`
 Container.Brand.Image = styled.img``;
 
 Container.Buttons = styled.div`
-  display: flex;
+  display: none;
+  @media screen and (min-width: 968px) {
+    display: flex;
+  }
 `;
 
 export const LinkIcon = styled(Link)`

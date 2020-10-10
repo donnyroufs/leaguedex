@@ -28,6 +28,17 @@ export const Container = styled.div`
       width: fit-content;
     }
   `}
+
+  ${({ dex }) =>
+    dex &&
+    css`
+      margin-top: 1rem;
+      width: 100%;
+
+      @media screen and (min-width: 500px) {
+        width: 47%;
+      }
+    `}
 `;
 
 Container.Label = styled.h3`

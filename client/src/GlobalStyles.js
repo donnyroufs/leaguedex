@@ -235,6 +235,7 @@ export default createGlobalStyle`
       }
     }
     .Toastify__toast-container {
+      text-align: center;
       z-index: 9999999999;
     }
 

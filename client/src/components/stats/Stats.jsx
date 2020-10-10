@@ -2,9 +2,9 @@ import React from "react";
 import { Container } from "./Stats.styles";
 import CountUp from "react-countup";
 
-const Stats = ({ label, info, page }) => {
+const Stats = ({ label, info, page, type }) => {
   return (
-    <Container home={page === "home"}>
+    <Container home={page === "home"} dex={type === "dex"}>
       <Container.Label home={page === "home"}>{label}</Container.Label>
       <Container.Info home={page === "home"}>
         {typeof info === "number" && label !== "win ratio" && (

@@ -5,7 +5,7 @@ export const List = styled.ul`
   padding: 0%;
   margin: 0;
   list-style: none;
-  min-height: 500px;
+  min-height: 200px;
   margin-bottom: 2rem;
 
   ${(props) =>
@@ -13,6 +13,10 @@ export const List = styled.ul`
     css`
       margin-top: 2rem;
     `}
+
+  @media screen and (min-width: 1200px) {
+    min-height: 400px;
+  }
 `;
 export const Item = styled.li`
   position: relative;
@@ -107,15 +111,4 @@ export const Text = styled.p`
   margin-top: -0.8rem;
   width: 100%;
   pointer-events: none;
-`;
-
-export const Suggestions = styled.div`
-  position: absolute;
-  left: 1rem;
-  z-index: 0;
-  pointer-events: none;
-  font-size: 1rem;
-  font-weight: 400;
-  text-transform: initial;
-  /* color: #303b48; */
 `;
