@@ -19,6 +19,7 @@ router.post('/register', validator.body(userRegister), wrap(controller.create));
 router.post('/login', validator.body(userLogin), wrap(controller.login));
 
 router.delete('/logout', Auth.validateRefreshToken, wrap(controller.destroy));
+router.get('/renew', Auth.validateRefreshToken, wrap(controller.renew));
 router.get('/refresh', Auth.validateRefreshToken, wrap(controller.refresh));
 
 router.post(

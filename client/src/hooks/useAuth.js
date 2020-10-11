@@ -25,6 +25,11 @@ async function fetchLogout() {
   });
 }
 
+async function renew() {
+  const response = await makeRequest("/api/user/renew");
+  return response.json();
+}
+
 async function refresh() {
   const response = await makeRequest(`/api/user/refresh`);
   return response.json();
@@ -100,6 +105,23 @@ const useAuthProvider = () => {
     setInitialLoad(true);
   };
 
+  const renewAuth = async () => {
+    try {
+      const { accessToken } = await renew();
+      const { data, exp } = decode(accessToken);
+
+      setExp(exp);
+      setToken(accessToken);
+      setUser(data);
+      if (loading) {
+        setLoading(false);
+      }
+    } catch (err) {
+      setLoading(false);
+      setUser(null);
+    }
+  };
+
   const refreshToken = async () => {
     try {
       const { accessToken } = await refresh();
@@ -147,6 +169,7 @@ const useAuthProvider = () => {
     register,
     login,
     logout,
+    renewAuth,
     refreshToken,
     loading,
     user,

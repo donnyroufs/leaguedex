@@ -27,13 +27,45 @@ class Application {
   }
 
   _setMiddleware() {
+    const whitelist = [
+      'https://staging.leaguedex.com',
+      'https://leaguedex.com',
+    ];
+    const corsOptions = this.inProduction
+      ? {
+          origin: function (origin, callback) {
+            if (whitelist.indexOf(origin) !== -1) {
+              callback(null, true);
+            } else {
+              callback(new Error('Not allowed by CORS'));
+            }
+          },
+          credentials: true,
+        }
+      : {
+          credentials: true,
+        };
+
+    this.app.use(this.middleware.cookieParser());
+    const csrfProtection = this.middleware.csurf({
+      cookie: {
+        httpOnly: true,
+        secure: this.inProduction,
+      },
+    });
+
+    this.app.use(csrfProtection, (req, res, next) => {
+      const csrfToken = req.csrfToken();
+      res.cookie('csrf-token', csrfToken);
+      next();
+    });
+
     this.app.use('/api/user/login', this.middleware.rateLimit(this.userApi));
     this.app.use('/api/user/register', this.middleware.rateLimit(this.userApi));
-    this.app.use(this.middleware.cookieParser());
     this.app.use(this.express.json());
     this.app.use(this.middleware.morgan('tiny'));
-    this.app.use(this.middleware.cors());
-    this.app.use('/api', this.routes.api);
+    this.app.use(this.middleware.cors(corsOptions));
+    this.app.use('/api', csrfProtection, this.routes.api);
     this.app.use((err, req, res, next) => {
       this.helpers.handleError(err, res);
     });
