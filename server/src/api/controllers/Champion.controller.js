@@ -3,11 +3,10 @@ const Controller = require('./Controller');
 class ChampionController extends Controller {
   constructor(props) {
     super(props);
-    this.all = this.all.bind(this);
   }
 
   async all(_, res) {
-    const champions = await this.db.getAllChampions();
+    const champions = await this.model.getAllChampions();
 
     if (!champions) {
       return ErrorHandler(404, 'could not find any champions in the database.');
