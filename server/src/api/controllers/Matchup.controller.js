@@ -5,10 +5,8 @@ const Riot = require('../../lib/Riot');
 const { sync } = require('../middleware/syncMatchup.middleware');
 
 class MatchupController extends Controller {
-  constructor({ model, formatters }) {
-    super(model, formatters);
-
-    this.formatters = formatters;
+  constructor(...props) {
+    super(...props);
 
     this.create = this.createOne.bind(this);
     this.syncAll = this.syncAll.bind(this);
