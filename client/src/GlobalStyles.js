@@ -234,6 +234,11 @@ export default createGlobalStyle`
         margin-right: .66rem;
       }
     }
+
+    .Toastify__toast--info {
+      background: #007aff;
+    }
+    
     .Toastify__toast-container {
       text-align: center;
       z-index: 9999999999;
