@@ -8,7 +8,7 @@ const app = require('../Application');
 class Auth {
   static options = {
     [ACCESS_TOKEN]: {
-      expiresIn: '1m',
+      expiresIn: '3m',
     },
     [REFRESH_TOKEN]: {
       expiresIn: '7d',
