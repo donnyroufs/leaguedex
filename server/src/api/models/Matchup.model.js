@@ -187,6 +187,36 @@ class MatchupModel extends Model {
       },
     });
   }
+
+  async deleteMatchup(userId, { lane, champion_id, opponent_id }) {
+    await this.db.delete({
+      where: {
+        champion_id_opponent_id_lane_user_id: {
+          lane: lane.trim(),
+          champion_id: Number(champion_id),
+          opponent_id: Number(opponent_id),
+          user_id: Number(userId),
+        },
+      },
+    });
+  }
+
+  async revertMatchup(userId, { gamesPlayed, champion_id, opponent_id, lane }) {
+    await this.db.update({
+      where: {
+        champion_id_opponent_id_lane_user_id: {
+          lane: lane.trim(),
+          champion_id: Number(champion_id),
+          opponent_id: Number(opponent_id),
+          user_id: Number(userId),
+        },
+      },
+      data: {
+        games_played: gamesPlayed - 1,
+        game_id: undefined,
+      },
+    });
+  }
 }
 
 module.exports = new MatchupModel(db.matchup);

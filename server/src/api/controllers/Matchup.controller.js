@@ -158,42 +158,15 @@ class MatchupController extends Controller {
   }
 
   async revertMatchup(req, res, next) {
-    try {
-      const { id } = req.user;
-      const { gamesPlayed, champion_id, opponent_id, lane } = req.query;
+    const { id: userId } = req.user;
 
-      if (gamesPlayed <= 1) {
-        await db.matchup.delete({
-          where: {
-            champion_id_opponent_id_lane_user_id: {
-              lane: lane.trim(),
-              champion_id: Number(champion_id),
-              opponent_id: Number(opponent_id),
-              user_id: Number(id),
-            },
-          },
-        });
-      } else {
-        await db.matchup.update({
-          where: {
-            champion_id_opponent_id_lane_user_id: {
-              lane: lane.trim(),
-              champion_id: Number(champion_id),
-              opponent_id: Number(opponent_id),
-              user_id: Number(id),
-            },
-          },
-          data: {
-            games_played: gamesPlayed - 1,
-            game_id: undefined,
-          },
-        });
-      }
-
-      res.sendStatus(204);
-    } catch (err) {
-      next(err);
+    if (req.query.gamesPlayed <= 1) {
+      await this.model.deleteMatchup(userId, req.query);
+    } else {
+      await this.model.revertMatchup(userId, req.query);
     }
+
+    res.sendStatus(204);
   }
 }
 
