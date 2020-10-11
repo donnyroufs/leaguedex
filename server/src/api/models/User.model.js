@@ -1,5 +1,20 @@
-import Model from './Model';
+const Model = require('./Model');
+const { db } = require('../../config/database');
 
-class UserModel extends Model {}
+class UserModel extends Model {
+  constructor(props) {
+    super(props);
+  }
 
-export default UserModel;
+  async create({ username, hashedPassword, email }) {
+    await this.db.create({
+      data: {
+        username,
+        password: hashedPassword,
+        email,
+      },
+    });
+  }
+}
+
+module.exports = new UserModel(db.user);
