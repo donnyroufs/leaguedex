@@ -7,7 +7,6 @@ class NoteModel extends Model {
   }
 
   async createOne(userId, { championId, content, tags, matchupId }) {
-    console.log({ content });
     const newResource = await this.db.create({
       data: {
         content,
@@ -27,6 +26,17 @@ class NoteModel extends Model {
     });
 
     return newResource;
+  }
+
+  async deleteOne(userId, noteId) {
+    await this.db.deleteMany({
+      where: {
+        id: Number(noteId),
+        user_id: Number(userId),
+      },
+    });
+
+    return true;
   }
 }
 
