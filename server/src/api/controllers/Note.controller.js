@@ -3,11 +3,11 @@ const { ErrorHandler } = require('../../helpers/error');
 const { db } = require('../../config/database');
 
 class NotesController extends Controller {
-  constructor(props) {
-    super(props);
+  constructor(...props) {
+    super(...props);
 
+    this.findByMatchId = this.findByMatchId.bind(this);
     this.createOne = this.createOne.bind(this);
-    this.findByMatchupId - this.findByMatchupId.bind(this);
   }
 
   async createOne(req, res) {
@@ -27,50 +27,17 @@ class NotesController extends Controller {
     res.status(202).json(result);
   }
 
-  async findByMatchupId(req, res, next) {
+  async findByMatchId(req, res) {
     const { id } = req.params;
-    const { championId: champion_id } = req.query;
+    const { id: userId } = req.user;
+    const { championId } = req.query;
 
-    try {
-      const notes = await db.note.findMany({
-        where: {
-          user_id: Number(req.user.id),
-          matchup_id: Number(id),
-        },
-        select: {
-          id: true,
-          tags: true,
-          content: true,
-          createdAt: true,
-        },
-      });
+    const notes = await this.model.getScopedNotes(id, userId);
+    const globalNotes = await this.model.getGlobalNotes(userId, championId);
 
-      const globalNotes = await db.$queryRaw(`
-          SELECT 
-            "Note"."id",
-            "Note"."tags",
-            "Note"."content",
-            "Note"."createdAt"
-          FROM 
-            "Note"
-          WHERE 
-            "Note"."user_id" = ${req.user.id}
-          AND
-            "Note"."champion_id" = ${Number(champion_id)}
-          AND 
-            "Note"."tags" ~ 'global'
-        `);
+    const uniqueNotes = this.formatters.mergeNotes(notes, globalNotes);
 
-      const mergedArray = [...notes, ...globalNotes];
-      const uniqueNotes = [
-        ...new Map(mergedArray.map((item) => [item.id, item])).values(),
-      ];
-
-      res.status(200).json(uniqueNotes);
-    } catch (err) {
-      console.log(err);
-      next(err);
-    }
+    res.status(200).json(uniqueNotes);
   }
 }
 
