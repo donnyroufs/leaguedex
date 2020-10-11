@@ -1,7 +1,6 @@
 const { resolve } = require('path');
 require('dotenv').config({ path: resolve(__dirname, '../.env') });
 
-const path = require('path');
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const { db, validateConnection } = require('./config/database');
@@ -10,6 +9,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const { handleError } = require('./helpers/error');
+const csurf = require('csurf');
 
 const Application = require('./Application');
 const Riot = require('./lib/Riot');
@@ -22,6 +22,7 @@ const app = new Application({
     cookieParser,
     cors,
     rateLimit,
+    csurf,
   },
   routes: {
     api: apiRoutes,
