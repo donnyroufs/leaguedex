@@ -12,3 +12,10 @@ export function arraysEqual(_a, _b) {
 
   return true;
 }
+
+export function filterByTags(_a, _b) {
+  return _a.filter((note) => {
+    const noteTags = note.tags.split(",");
+    return _b.every((tag) => noteTags.includes(tag));
+  });
+}

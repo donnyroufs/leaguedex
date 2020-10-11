@@ -7,7 +7,7 @@ import { Title, Notes as Container } from "../../view/dex/Dex.styles";
 import { List, Item, Filter, Tag, Mark, Text } from "./Notes.styles";
 import { Form, Group, Input } from "../../components/styles/Form";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { arraysEqual } from "../../helpers/arrayHelpers";
+import { filterByTags } from "../../helpers/arrayHelpers";
 import Highlight from "react-highlight-words";
 import Dropdown from "../dropdown/Dropdown";
 
@@ -42,13 +42,14 @@ const Notes = ({
       setQuery((current) => [...current, tag]);
     }
   };
+
   const filteredNotes = () => {
     if (query.length === 0) {
       return notes;
     } else if (query.length === 1) {
       return notes.filter((note) => note.tags.includes(query[0]));
     } else {
-      return notes.filter((note) => arraysEqual(note.tags.split(","), query));
+      return filterByTags(notes, query);
     }
   };
 
