@@ -16,6 +16,7 @@ class UserController extends Controller {
     this.create = this.create.bind(this);
     this.login = this.login.bind(this);
     this.destroy = this.destroy.bind(this);
+    this.renew = this.renew.bind(this);
     this.refresh = this.refresh.bind(this);
     this.addSummmonerAccount = this.addSummmonerAccount.bind(this);
     this.getRegions = this.getRegions.bind(this);
@@ -78,7 +79,7 @@ class UserController extends Controller {
     res.sendStatus(200);
   }
 
-  async refresh(req, res) {
+  async renew(req, res) {
     const payload = {
       data: req.user,
     };
@@ -94,7 +95,17 @@ class UserController extends Controller {
 
     const { token: accessToken } = await Auth.createToken(payload);
 
-    res.status(200).json({ accessToken });
+    res.status(201).json({ accessToken });
+  }
+
+  async refresh(req, res) {
+    const payload = {
+      data: req.user,
+    };
+
+    const { token: accessToken } = await Auth.createToken(payload);
+
+    res.status(201).json({ accessToken });
   }
 
   async addSummmonerAccount(req, res) {
