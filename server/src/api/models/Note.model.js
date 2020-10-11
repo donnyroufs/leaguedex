@@ -1,5 +1,6 @@
-import Model from './Model';
+const Model = require('./Model');
+const { db } = require('../../config/database');
 
 class NoteModel extends Model {}
 
-export default NoteModel;
+module.exports = new NoteModel(db.note);
