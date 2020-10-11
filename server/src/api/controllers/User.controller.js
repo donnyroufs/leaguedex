@@ -1,5 +1,9 @@
 const Controller = require('./Controller');
-const { ErrorHandler } = require('../../helpers/error');
+const {
+  ErrorHandler,
+  NotFoundError,
+  NotAuthorized,
+} = require('../../helpers/error');
 const { REFRESH_TOKEN } = require('../../helpers/constants');
 const Riot = require('../../lib/Riot');
 const { db } = require('../../config/database');
@@ -29,54 +33,41 @@ class UserController extends Controller {
   async login(req, res, next) {
     const { username, password } = req.body;
 
-    try {
-      const user = await this.model.findOne({
-        where: {
-          username,
-        },
-        select: {
-          id: true,
-          username: true,
-          password: true,
-          summoner: true,
-          permissions: true,
-        },
-      });
+    const user = await this.model.findUser(username);
 
-      if (!user) throw new ErrorHandler(403, 'User or password is not valid.');
-
-      const validPassword = await Auth.isValidPassword(password, user.password);
-
-      if (!validPassword) {
-        throw new ErrorHandler(403, 'Username or password is not valid.');
-      }
-
-      const payload = {
-        data: {
-          id: user.id,
-          username: user.username,
-          summoner: user.summoner,
-          permissions: user.permissions,
-        },
-      };
-
-      const { token: accessToken } = await Auth.createToken(payload);
-
-      const { token: refreshToken } = await Auth.createToken(
-        payload,
-        REFRESH_TOKEN
-      );
-
-      await Auth.createOrUpdateRefreshToken(user.id, refreshToken);
-
-      Auth.setRefreshCookie(res, refreshToken);
-
-      res.status(200).json({
-        accessToken,
-      });
-    } catch (err) {
-      next(err);
+    if (!user) {
+      throw new NotFoundError('username or password is not valid');
     }
+
+    const validPassword = await Auth.isValidPassword(password, user.password);
+
+    if (!validPassword) {
+      throw new NotAuthorized('username or password is not valid');
+    }
+
+    const payload = {
+      data: {
+        id: user.id,
+        username: user.username,
+        summoner: user.summoner,
+        permissions: user.permissions,
+      },
+    };
+
+    const { token: accessToken } = await Auth.createToken(payload);
+
+    const { token: refreshToken } = await Auth.createToken(
+      payload,
+      REFRESH_TOKEN
+    );
+
+    await Auth.createOrUpdateRefreshToken(user.id, refreshToken);
+
+    Auth.setRefreshCookie(res, refreshToken);
+
+    res.status(200).json({
+      accessToken,
+    });
   }
 
   async destroy(req, res, next) {

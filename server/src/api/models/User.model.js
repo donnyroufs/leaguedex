@@ -15,6 +15,23 @@ class UserModel extends Model {
       },
     });
   }
+
+  async findUser(username) {
+    const resource = await this.db.findOne({
+      where: {
+        username,
+      },
+      select: {
+        id: true,
+        username: true,
+        password: true,
+        summoner: true,
+        permissions: true,
+      },
+    });
+
+    return resource;
+  }
 }
 
 module.exports = new UserModel(db.user);
