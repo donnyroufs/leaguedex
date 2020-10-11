@@ -100,7 +100,7 @@ const RegisterModal = () => {
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
-        <Group>
+        <Group auth>
           <Label>username</Label>
           <Input
             type="text"
@@ -111,7 +111,7 @@ const RegisterModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Group>
+        <Group auth>
           <Label>email address</Label>
           <Input
             type="text"
@@ -121,7 +121,7 @@ const RegisterModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Group>
+        <Group auth>
           <Label>password</Label>
           <Input
             type="password"
@@ -131,7 +131,7 @@ const RegisterModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Group>
+        <Group auth>
           <Label>retype password</Label>
           <Input
             type="password"

@@ -26,15 +26,15 @@ const initialValues = {
 
 async function fetchRegions() {
   const res = await makeRequest(`/api/user/region`);
-  return res.json()
+  return res.json();
 }
 
 async function fetchSummoner(data) {
   const res = await makeRequest(`/api/user/summoner`, {
     method: "POST",
-    body: JSON.stringify(data)
-  })
-  return res.json()
+    body: JSON.stringify(data),
+  });
+  return res.json();
 }
 
 const SummonerModal = () => {
@@ -43,7 +43,7 @@ const SummonerModal = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [regions, setRegions] = useState([]);
 
-  const { isAuthenticated,  user, setUser, refreshToken } = useAuth();
+  const { isAuthenticated, user, setUser, refreshToken } = useAuth();
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const innerRef = useRef();
 
@@ -68,7 +68,7 @@ const SummonerModal = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const { accessToken } = await fetchSummoner(values)
+      const { accessToken } = await fetchSummoner(values);
       const { data } = decode(accessToken);
 
       setUser({
@@ -125,7 +125,7 @@ const SummonerModal = () => {
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
-        <Group>
+        <Group auth>
           <Label>summoner name</Label>
           <Input
             type="text"
@@ -138,7 +138,7 @@ const SummonerModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Group>
+        <Group auth>
           <Label>Region</Label>
           <Select onChange={handleOnChange} name="region" value={values.region}>
             {Object.entries(regions).map(([region, value]) => (

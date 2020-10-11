@@ -131,7 +131,14 @@ export const Group = styled.div`
       margin-top: 0;
       margin-bottom: 2rem;
     `}
+
+    ${(props) =>
+    props.auth &&
+    css`
+      background: #142230;
+    `}
 `;
+
 export const Label = styled.label`
   ${({ home }) => css`
     margin-bottom: ${home ? 0.5 : 0.3}rem;
