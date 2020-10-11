@@ -19,7 +19,7 @@ async function syncData() {
 
 const App = () => {
   const {
-    refreshToken,
+    renewAuth,
     user,
     loading,
     initialLoad,
@@ -30,7 +30,7 @@ const App = () => {
   const { findMatch, hasMatch } = useMatch();
 
   useEffect(() => {
-    refreshToken();
+    renewAuth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
