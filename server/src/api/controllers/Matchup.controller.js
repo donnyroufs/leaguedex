@@ -21,67 +21,16 @@ class MatchupController extends Controller {
     this.revertMatchup = this.revertMatchup.bind(this);
   }
 
-  async createOne(req, res, next) {
-    try {
-      const { id } = req.user;
-      const { lane, champion_id, opponent_id, game_id } = req.body;
+  async createOne(req, res) {
+    const { id: userId } = req.user;
 
-      const matchup = await this.model.findOne({
-        where: {
-          champion_id_opponent_id_lane_user_id: {
-            lane,
-            champion_id,
-            opponent_id,
-            user_id: id,
-          },
-        },
-        select: {
-          games_played: true,
-        },
-      });
+    const matchup = await this.model.findMatchup(userId, req.body);
+    const data = await this.model.createOrUpdate(userId, matchup, req.body);
 
-      const data = await this.model.upsert({
-        create: {
-          lane,
-          game_id,
-          games_played: 1,
-          championA: {
-            connect: {
-              id: champion_id,
-            },
-          },
-          championB: {
-            connect: {
-              id: opponent_id,
-            },
-          },
-          user: {
-            connect: {
-              id,
-            },
-          },
-        },
-        update: {
-          games_played: matchup ? matchup.games_played + 1 : 1,
-          game_id,
-        },
-        where: {
-          champion_id_opponent_id_lane_user_id: {
-            lane,
-            champion_id,
-            opponent_id,
-            user_id: id,
-          },
-        },
-      });
-
-      res.status(201).json({
-        id: data.id,
-        confirmed: true,
-      });
-    } catch (err) {
-      next(err);
-    }
+    res.status(201).json({
+      id: data.id,
+      confirmed: true,
+    });
   }
 
   async getPlayedChampions(req, res, next) {
