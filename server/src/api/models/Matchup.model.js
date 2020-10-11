@@ -161,6 +161,32 @@ class MatchupModel extends Model {
 
     return resources;
   }
+
+  async updatePrivateBulk(userId, { private: _private, champion_id }) {
+    await db.$queryRaw(`
+        UPDATE "Matchup" SET "private" = ${_private === 'true'} 
+        WHERE "user_id" = ${userId} 
+        AND "champion_id" = ${champion_id}`);
+  }
+
+  async updatePrivate(
+    userId,
+    { lane, private: _private, champion_id, opponent_id }
+  ) {
+    await this.db.update({
+      where: {
+        champion_id_opponent_id_lane_user_id: {
+          lane: lane.trim(),
+          champion_id: Number(champion_id),
+          opponent_id: Number(opponent_id),
+          user_id: Number(userId),
+        },
+      },
+      data: {
+        private: _private === 'true',
+      },
+    });
+  }
 }
 
 module.exports = new MatchupModel(db.matchup);
