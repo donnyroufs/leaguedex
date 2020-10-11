@@ -30,7 +30,7 @@ class UserController extends Controller {
     res.sendStatus(201);
   }
 
-  async login(req, res, next) {
+  async login(req, res) {
     const { username, password } = req.body;
 
     const user = await this.model.findUser(username);
@@ -70,16 +70,12 @@ class UserController extends Controller {
     });
   }
 
-  async destroy(req, res, next) {
-    const userId = req.user.id;
+  async destroy(req, res) {
+    const userId = req.user;
 
-    try {
-      Auth.removeRefreshToken(userId);
-      Auth.setRefreshCookie(res, null, 0);
-      res.sendStatus(200);
-    } catch (err) {
-      next(err);
-    }
+    Auth.removeRefreshToken(userId);
+    Auth.setRefreshCookie(res, null, 0);
+    res.sendStatus(200);
   }
 
   async refresh(req, res, next) {
