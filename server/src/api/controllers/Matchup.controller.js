@@ -44,29 +44,13 @@ class MatchupController extends Controller {
     res.status(200).json(champions);
   }
 
-  // Count games_played, count records
-  async getInfoCard(req, res, next) {
-    try {
-      const { id } = req.user;
-      const count = await this.model.count({
-        where: {
-          user_id: id,
-        },
-      });
+  async getInfoCard(req, res) {
+    const { id } = req.user;
 
-      const data = await this.model.findMany({
-        where: {
-          user_id: id,
-        },
-        select: {
-          games_played: true,
-        },
-      });
+    const count = await this.model.getGamesPlayed(id);
+    const data = await this.model.getRecordedGames(id);
 
-      res.status(200).json(this.formatters.getInfoCard({ count, data }));
-    } catch (err) {
-      next(err);
-    }
+    res.status(200).json(this.formatters.getInfoCard({ count, data }));
   }
 
   async findGame(req, res, next) {

@@ -87,6 +87,29 @@ class MatchupModel extends Model {
 
     return resource;
   }
+
+  async getGamesPlayed(userId) {
+    const resource = await this.db.count({
+      where: {
+        user_id: userId,
+      },
+    });
+
+    return resource;
+  }
+
+  async getRecordedGames(userId) {
+    const resource = await this.db.findMany({
+      where: {
+        user_id: userId,
+      },
+      select: {
+        games_played: true,
+      },
+    });
+
+    return resource;
+  }
 }
 
 module.exports = new MatchupModel(db.matchup);
