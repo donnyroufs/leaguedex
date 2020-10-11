@@ -78,27 +78,23 @@ class UserController extends Controller {
     res.sendStatus(200);
   }
 
-  async refresh(req, res, next) {
-    try {
-      const payload = {
-        data: req.user,
-      };
+  async refresh(req, res) {
+    const payload = {
+      data: req.user,
+    };
 
-      const { token: refreshToken } = await Auth.createToken(
-        payload,
-        REFRESH_TOKEN
-      );
+    const { token: refreshToken } = await Auth.createToken(
+      payload,
+      REFRESH_TOKEN
+    );
 
-      await Auth.createOrUpdateRefreshToken(req.user.id, refreshToken);
+    await Auth.createOrUpdateRefreshToken(req.user.id, refreshToken);
 
-      Auth.setRefreshCookie(res, refreshToken);
+    Auth.setRefreshCookie(res, refreshToken);
 
-      const { token: accessToken } = await Auth.createToken(payload);
+    const { token: accessToken } = await Auth.createToken(payload);
 
-      res.status(200).json({ accessToken });
-    } catch (err) {
-      next(err);
-    }
+    res.status(200).json({ accessToken });
   }
 
   async addSummmonerAccount(req, res, next) {
