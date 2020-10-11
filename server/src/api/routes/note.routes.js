@@ -11,17 +11,10 @@ const validator = createValidator();
 const router = express.Router();
 const controller = new Controller(model);
 
-router.post(
-  '/create',
-  Auth.authenticateToken,
-  validator.body(createNote),
-  wrap(controller.createOne)
-);
-router.delete('/:noteId', Auth.authenticateToken, wrap(controller.deleteOne));
-router.get(
-  '/dex/:id',
-  Auth.authenticateToken,
-  wrap(controller.findByMatchupId)
-);
+router.use(Auth.authenticateToken);
+
+router.post('/create', validator.body(createNote), wrap(controller.createOne));
+router.delete('/:noteId', wrap(controller.deleteOne));
+router.get('/dex/:id', wrap(controller.findByMatchupId));
 
 module.exports = router;
