@@ -3,11 +3,18 @@ const { ErrorHandler } = require('../../helpers/error');
 const { db } = require('../../config/database');
 
 class NotesController extends Controller {
-  constructor({ model }) {
-    super(model);
+  constructor(props) {
+    super(props);
 
     this.createOne = this.createOne.bind(this);
     this.findByMatchupId - this.findByMatchupId.bind(this);
+  }
+
+  async createOne(req, res) {
+    const { id } = req.user;
+    const created = await this.model.createOne(id, req.body);
+
+    res.status(201).json(created);
   }
 
   async deleteOne(req, res, next) {
@@ -23,33 +30,6 @@ class NotesController extends Controller {
       });
 
       res.status(202).json(result);
-    } catch (err) {
-      next(err);
-    }
-  }
-
-  async createOne(req, res, next) {
-    try {
-      const { content, tags, matchupId, championId } = req.body;
-      const created = await db.note.create({
-        data: {
-          content,
-          tags,
-          champion_id: Number(championId),
-          user: {
-            connect: {
-              id: Number(req.user.id),
-            },
-          },
-          matchup: {
-            connect: {
-              id: Number(matchupId),
-            },
-          },
-        },
-      });
-
-      res.status(201).json(created);
     } catch (err) {
       next(err);
     }
