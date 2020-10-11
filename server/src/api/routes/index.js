@@ -13,7 +13,7 @@ router.use('/champion', championRoutes);
 router.use('/matchup', matchupRoutes);
 router.use('/note', noteRoutes);
 router.use('/shared', sharedRoutes);
-router.use('/', (req, res) => {
+router.use('/', (_, res) => {
   res.json({
     public_endpoints: {
       '/champion': 'get all league of legends champions',
