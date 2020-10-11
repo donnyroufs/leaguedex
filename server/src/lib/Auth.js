@@ -1,7 +1,7 @@
 const { ACCESS_TOKEN, REFRESH_TOKEN } = require('../helpers/constants');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { handleError, ErrorHandler } = require('../helpers/error');
+const { ErrorHandler, NotAuthorized } = require('../helpers/error');
 const { db } = require('../config/database');
 const app = require('../Application');
 
@@ -16,6 +16,14 @@ class Auth {
   };
 
   static HASH_ROUNDS = 10;
+
+  static isAdmin(req, _, next) {
+    if (req.user.permissions >= 10) {
+      return next();
+    } else {
+      throw new NotAuthorized();
+    }
+  }
 
   static authenticateToken(req, _, next) {
     const authHeader = req.headers['authorization'];
