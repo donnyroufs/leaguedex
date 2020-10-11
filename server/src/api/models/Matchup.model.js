@@ -1,5 +1,10 @@
-import Model from './Model';
+const { db } = require('../../config/database');
+const Model = require('./Model');
 
-class MatchupModel extends Model {}
+class MatchupModel extends Model {
+  constructor(...props) {
+    super(...props);
+  }
+}
 
-export default MatchupModel;
+module.exports = new MatchupModel(db.matchup);
