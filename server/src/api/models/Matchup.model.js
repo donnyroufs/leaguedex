@@ -124,6 +124,20 @@ class MatchupModel extends Model {
 
     return resource;
   }
+
+  async getDex(matchId) {
+    const resource = await this.db.findOne({
+      where: {
+        id: Number(matchId),
+      },
+      include: {
+        championA: true,
+        championB: true,
+      },
+    });
+
+    return resource;
+  }
 }
 
 module.exports = new MatchupModel(db.matchup);

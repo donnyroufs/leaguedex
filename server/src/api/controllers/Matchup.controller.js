@@ -104,29 +104,16 @@ class MatchupController extends Controller {
     });
   }
 
-  async getDex(req, res, next) {
-    try {
-      const { id } = req.params;
-      const shared = req.query.shared || false;
+  async getDex(req, res) {
+    const { id } = req.params;
 
-      const data = await this.model.findOne({
-        where: {
-          id: Number(id),
-        },
-        include: {
-          championA: true,
-          championB: true,
-        },
-      });
+    const data = await this.model.getDex(id);
 
-      if (data.user_id !== req.user.id) {
-        throw new ErrorHandler(404, 'No matchups found for the given user.');
-      }
-
-      res.status(200).json(data);
-    } catch (err) {
-      next(err);
+    if (data.user_id !== req.user.id) {
+      throw new NotFoundError('no matchups found for the given user');
     }
+
+    res.status(200).json(data);
   }
 
   async getLatest(req, res, next) {
