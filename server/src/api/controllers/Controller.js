@@ -1,4 +1,4 @@
-const { ErrorHandler } = require('../../helpers/error');
+const { ErrorHandler, NotFoundError } = require('../../helpers/error');
 
 class Controller {
   constructor(model, db, formatters) {
@@ -14,87 +14,57 @@ class Controller {
     this.deleteOne = this.deleteOne.bind(this);
   }
 
-  async all(req, res) {
-    const data = await this.db.findMany();
+  async all(_, res) {
+    const data = await this.model.all();
+
+    if (!data) {
+      throw new NotFoundError();
+    }
+
     res.status(200).json(data);
   }
 
-  async findOneById(req, res, next) {
-    try {
-      const { id } = req.params;
-      const item = await this.db.findOne({
-        where: {
-          id: Number(id),
-        },
-      });
-      if (!item) {
-        throw new ErrorHandler(404, `No entries found with the id: ${id}`);
-      }
-      res.status(200).json(item);
-    } catch (err) {
-      next(err);
+  async findOneById(req, res) {
+    const { id } = req.params;
+    const resource = await this.model.findOneById(Number(id));
+
+    if (!resource) {
+      throw new NotFoundError();
     }
+
+    res.status(200).json(resource);
   }
 
   async findOneByName(req, res, next) {
-    try {
-      const { name } = req.params;
-      const item = await this.db.findOne({
-        where: {
-          name: String(name),
-        },
-      });
-      if (!item) {
-        throw new ErrorHandler(404, `No entries found with the name: ${name}`);
-      }
-      res.status(200).json(item);
-    } catch (err) {
-      next(err);
+    const { name } = req.params;
+
+    const resource = await this.model.findOneByName(name);
+
+    if (!resource) {
+      throw new NotFoundError();
     }
+
+    res.status(200).json(resource);
   }
 
-  async createOne(req, res, next) {
-    try {
-      const newItem = await this.db.create({
-        data: {
-          ...req.body,
-        },
-      });
-      res.status(201).json(newItem);
-    } catch (err) {
-      next(err);
-    }
+  async createOne(req, res) {
+    const newResource = await this.model.createOne(req.body);
+
+    res.status(201).json(newResource);
   }
 
-  async updateOne(req, res, next) {
-    try {
-      const { id } = req.params;
-      const item = await this.db.update({
-        where: {
-          id: Number(id),
-        },
-        data: {
-          ...req.body,
-        },
-      });
-      res.status(204).json(item);
-    } catch (err) {
-      next(err);
-    }
+  async updateOne(req, res) {
+    const { id } = req.params;
+    const resource = await this.model.updateOne(id, req.body);
+
+    res.status(204).json(resource);
   }
 
   async deleteOne(req, res, next) {
     const { id } = req.params;
-    try {
-      await this.db.delete({
-        where: {
-          id: Number(id),
-        },
-      });
-      res.status(204).json({});
-    } catch (err) {
-      next(err);
-    }
+    await this.model.deleteOne(id);
+
+    res.status(204).json({});
   }
 }
 
