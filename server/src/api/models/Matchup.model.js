@@ -110,6 +110,20 @@ class MatchupModel extends Model {
 
     return resource;
   }
+
+  async getLatestMatchup(userId) {
+    const resource = await this.db.findMany({
+      take: 1,
+      where: {
+        user_id: userId,
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+    });
+
+    return resource;
+  }
 }
 
 module.exports = new MatchupModel(db.matchup);

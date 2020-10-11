@@ -53,67 +53,55 @@ class MatchupController extends Controller {
     res.status(200).json(this.formatters.getInfoCard({ count, data }));
   }
 
-  async findGame(req, res, next) {
-    try {
-      const { summoner } = req.user;
-      const data = await Riot.findMatch(summoner.accountId, summoner.region);
+  async findGame(req, res) {
+    const { summoner, id: userId } = req.user;
+    const data = await Riot.findMatch(summoner.accountId, summoner.region);
 
-      if (data.gameMode !== 'CLASSIC') {
-        next(err);
-      }
+    if (data.gameMode !== 'CLASSIC') {
+      throw new NotFoundError();
+    }
 
-      const champions = await db.champion.findMany();
-      const me = data.participants
-        .filter((player) => player.summonerId === req.user.summoner.accountId)
-        .map((player) => {
-          const champion = champions.find(
-            (champion) => champion.id === player.championId
-          );
-
-          return {
-            id: champion.id,
-            teamId: player.teamId,
-            name: champion.name,
-            image: champion.image,
-          };
-        });
-
-      const participants = data.participants.filter(
-        (player) => player.teamId !== me[0].teamId
-      );
-
-      const opponents = participants.map((player) => {
+    const champions = await db.champion.findMany();
+    const me = data.participants
+      .filter((player) => player.summonerId === req.user.summoner.accountId)
+      .map((player) => {
         const champion = champions.find(
           (champion) => champion.id === player.championId
         );
 
         return {
           id: champion.id,
+          teamId: player.teamId,
           name: champion.name,
           image: champion.image,
         };
       });
 
-      const [_data] = await db.matchup.findMany({
-        take: 1,
-        where: {
-          user_id: Number(req.user.id),
-        },
-        orderBy: {
-          updatedAt: 'desc',
-        },
-      });
+    const participants = data.participants.filter(
+      (player) => player.teamId !== me[0].teamId
+    );
 
-      res.status(200).json({
-        gameId: data.gameId,
-        me: me[0],
-        opponents,
-        startTime: data.gameStartTime,
-        confirmed: _data ? Number(_data.game_id) === data.gameId : false,
-      });
-    } catch (err) {
-      next(err);
-    }
+    const opponents = participants.map((player) => {
+      const champion = champions.find(
+        (champion) => champion.id === player.championId
+      );
+
+      return {
+        id: champion.id,
+        name: champion.name,
+        image: champion.image,
+      };
+    });
+
+    const [_data] = await this.model.getLatestMatchup(userId);
+
+    res.status(200).json({
+      gameId: data.gameId,
+      me: me[0],
+      opponents,
+      startTime: data.gameStartTime,
+      confirmed: _data ? Number(_data.game_id) === data.gameId : false,
+    });
   }
 
   async getDex(req, res, next) {
