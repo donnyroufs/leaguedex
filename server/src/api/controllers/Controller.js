@@ -1,8 +1,10 @@
 const { ErrorHandler } = require('../../helpers/error');
 
 class Controller {
-  constructor(model) {
+  constructor(model, db, formatters) {
+    this.db = db;
     this.model = model;
+    this.formatters = formatters;
 
     this.all = this.all.bind(this);
     this.findOneById = this.findOneById.bind(this);
@@ -13,14 +15,14 @@ class Controller {
   }
 
   async all(req, res) {
-    const data = await this.model.findMany();
+    const data = await this.db.findMany();
     res.status(200).json(data);
   }
 
   async findOneById(req, res, next) {
     try {
       const { id } = req.params;
-      const item = await this.model.findOne({
+      const item = await this.db.findOne({
         where: {
           id: Number(id),
         },
@@ -37,7 +39,7 @@ class Controller {
   async findOneByName(req, res, next) {
     try {
       const { name } = req.params;
-      const item = await this.model.findOne({
+      const item = await this.db.findOne({
         where: {
           name: String(name),
         },
@@ -53,7 +55,7 @@ class Controller {
 
   async createOne(req, res, next) {
     try {
-      const newItem = await this.model.create({
+      const newItem = await this.db.create({
         data: {
           ...req.body,
         },
@@ -67,7 +69,7 @@ class Controller {
   async updateOne(req, res, next) {
     try {
       const { id } = req.params;
-      const item = await this.model.update({
+      const item = await this.db.update({
         where: {
           id: Number(id),
         },
@@ -84,7 +86,7 @@ class Controller {
   async deleteOne(req, res, next) {
     const { id } = req.params;
     try {
-      await this.model.delete({
+      await this.db.delete({
         where: {
           id: Number(id),
         },
