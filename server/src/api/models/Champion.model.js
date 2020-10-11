@@ -1,7 +1,7 @@
-import Model from './Model';
+const Model = require('./Model');
 
 class ChampionModel extends Model {
   async all() {}
 }
 
-export default ChampionModel;
+module.exports = ChampionModel;

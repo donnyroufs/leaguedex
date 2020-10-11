@@ -1,9 +1,9 @@
 const express = require('express');
 const Controller = require('../controllers/Controller');
-const { db } = require('../../config/database');
+const model = require('../models/Champion.model');
 
 const router = express.Router();
-const controller = new Controller(db.champion);
+const controller = new Controller(model);
 
 router.get('/', controller.all);
 router.get('/:name', controller.findOneByName);
