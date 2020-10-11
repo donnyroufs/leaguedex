@@ -1,8 +1,7 @@
 const { ErrorHandler, NotFoundError } = require('../../helpers/error');
 
 class Controller {
-  constructor(model, db, formatters) {
-    this.db = db;
+  constructor(model, formatters) {
     this.model = model;
     this.formatters = formatters;
 
