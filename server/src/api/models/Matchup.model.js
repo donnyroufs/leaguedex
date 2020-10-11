@@ -66,6 +66,27 @@ class MatchupModel extends Model {
 
     return resource;
   }
+
+  async getPlayedChampions(userId) {
+    const resource = await db.$queryRaw`
+        SELECT DISTINCT
+          "Champion"."id",
+          "Champion"."name",
+          "Champion"."image",
+          case
+            when "Matchup"."opponent_id" IS NOT NULL
+              then true
+              else false
+          end as has_matchups
+        FROM "Matchup"
+        RIGHT JOIN "Champion"
+        ON "Champion"."id" = "Matchup"."champion_id"
+        AND "Matchup"."user_id" = ${userId}
+        ORDER BY "has_matchups" DESC
+      `;
+
+    return resource;
+  }
 }
 
 module.exports = new MatchupModel(db.matchup);
