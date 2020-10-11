@@ -32,6 +32,37 @@ class UserModel extends Model {
 
     return resource;
   }
+
+  async createSummoner(userId, { id, name, summonerLevel, region }) {
+    const newResource = await db.summoner.create({
+      data: {
+        accountId: id,
+        name: name,
+        level: summonerLevel,
+        region: region,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    });
+
+    return newResource;
+  }
+
+  async updateAccountPermissions(userId, permissions = 2) {
+    const updatedResource = await this.db.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        permissions,
+      },
+    });
+
+    return updatedResource;
+  }
 }
 
 module.exports = new UserModel(db.user);

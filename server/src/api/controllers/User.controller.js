@@ -97,63 +97,47 @@ class UserController extends Controller {
     res.status(200).json({ accessToken });
   }
 
-  async addSummmonerAccount(req, res, next) {
+  async addSummmonerAccount(req, res) {
+    const { id: userId } = req.user;
     const { summonerName, region } = req.body;
 
-    try {
-      const data = await Riot.getSummoner(summonerName, region);
+    const data = await Riot.getSummoner(summonerName, region);
 
-      if (!data) throw ErrorHandler(404, 'Could not find the summoner.');
+    if (!data) throw NotFoundError('could not find the summoner account.');
 
-      const addedSummoner = await db.summoner.create({
-        data: {
-          accountId: data.id,
-          name: data.name,
-          level: data.summonerLevel,
-          region: region,
-          user: {
-            connect: {
-              id: Number(req.user.id),
-            },
-          },
-        },
-      });
+    const addedSummoner = await this.model.createSummoner(userId, {
+      ...req.body,
+      ...data,
+    });
 
-      const updateAccountPermissions = await this.model.update({
-        where: {
-          id: Number(req.user.id),
-        },
-        data: {
-          permissions: 2,
-        },
-      });
+    const updateAccountPermissions = await this.model.updateAccountPermissions(
+      userId
+    );
 
-      if (!updateAccountPermissions)
-        throw ErrorHandler(500, 'Could not update permissions.');
-
-      const payload = {
-        data: {
-          ...req.user,
-          summoner: addedSummoner,
-          permissions: 2,
-        },
-      };
-
-      const { token: refreshToken } = await Auth.createToken(
-        payload,
-        REFRESH_TOKEN
-      );
-
-      await Auth.createOrUpdateRefreshToken(req.user.id, refreshToken);
-
-      Auth.setRefreshCookie(res, refreshToken);
-
-      const { token: accessToken } = await Auth.createToken(payload);
-
-      res.status(201).json({ accessToken });
-    } catch (err) {
-      next(err);
+    if (!updateAccountPermissions) {
+      throw ErrorHandler(500, 'Could not update permissions.');
     }
+
+    const payload = {
+      data: {
+        ...req.user,
+        summoner: addedSummoner,
+        permissions: 2,
+      },
+    };
+
+    const { token: refreshToken } = await Auth.createToken(
+      payload,
+      REFRESH_TOKEN
+    );
+
+    await Auth.createOrUpdateRefreshToken(req.user.id, refreshToken);
+
+    Auth.setRefreshCookie(res, refreshToken);
+
+    const { token: accessToken } = await Auth.createToken(payload);
+
+    res.status(201).json({ accessToken });
   }
 
   getRegions(_, res) {
