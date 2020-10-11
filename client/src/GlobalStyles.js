@@ -192,8 +192,8 @@ export default createGlobalStyle`
     select:-webkit-autofill:focus {
       border: none !important;
       -webkit-text-fill-color: #B8D0EC !important;
-      -webkit-box-shadow: 0 0 0px 1000px #27303a inset !important;
-      box-shadow: 0 0 0px 1000px #27303a inset !important;
+      -webkit-box-shadow: 0 0 0px 1000px #142230 inset !important;
+      box-shadow: 0 0 0px 1000px #142230 inset !important;
       transition: background-color 5000s ease-in-out 0s !important;
     }
    
