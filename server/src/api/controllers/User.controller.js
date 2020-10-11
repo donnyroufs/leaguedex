@@ -72,7 +72,7 @@ class UserController extends Controller {
   }
 
   async destroy(req, res) {
-    const userId = req.user;
+    const { id: userId } = req.user;
 
     Auth.removeRefreshToken(userId);
     Auth.setRefreshCookie(res, null, 0);
