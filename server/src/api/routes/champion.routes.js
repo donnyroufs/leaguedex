@@ -5,7 +5,7 @@ const { db } = require('../../config/database');
 const wrap = require('../../helpers/wrap');
 
 const router = express.Router();
-const controller = new Controller(model, db.champion);
+const controller = new Controller(model);
 
 router.get('/', wrap(controller.all));
 router.get('/:name', wrap(controller.findOneByName));
