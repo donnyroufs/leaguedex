@@ -12,6 +12,7 @@ const validator = createValidator();
 const router = express.Router();
 const controller = new Controller(model, formatters, Auth);
 
+router.get('/', Auth.authenticateToken, Auth.isAdmin, wrap(controller.all));
 router.get('/region', wrap(controller.getRegions));
 
 router.post('/register', validator.body(userRegister), wrap(controller.create));

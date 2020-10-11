@@ -21,6 +21,11 @@ class UserController extends Controller {
     this.getRegions = this.getRegions.bind(this);
   }
 
+  async all(_, res) {
+    const data = await this.model.getDashboardData();
+    res.status(200).json(data);
+  }
+
   async create(req, res) {
     const { username, password, email } = req.body;
 

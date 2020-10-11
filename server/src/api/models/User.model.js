@@ -6,6 +6,30 @@ class UserModel extends Model {
     super(props);
   }
 
+  async getDashboardData() {
+    const resource = await this.db.findMany({
+      select: {
+        username: true,
+        summoner: {
+          select: {
+            name: true,
+            level: true,
+            region: true,
+          },
+        },
+        email: true,
+        createdAt: true,
+        matchups: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+
+    return resource;
+  }
+
   async create({ username, hashedPassword, email }) {
     await this.db.create({
       data: {
