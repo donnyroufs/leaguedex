@@ -24,7 +24,8 @@ class UserController extends Controller {
 
   async all(_, res) {
     const data = await this.model.getDashboardData();
-    res.status(200).json(data);
+    const formattedData = this.formatters.all(data);
+    res.status(200).json(formattedData);
   }
 
   async create(req, res) {
