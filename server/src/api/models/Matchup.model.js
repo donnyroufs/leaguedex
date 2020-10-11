@@ -138,6 +138,29 @@ class MatchupModel extends Model {
 
     return resource;
   }
+
+  async getMatchups(userId, { champion, championB, lane }) {
+    const resources = await this.db.findMany({
+      where: {
+        championA: {
+          name: champion,
+        },
+        championB: {
+          name: {
+            startsWith: championB,
+          },
+        },
+        lane: lane ? lane.toLowerCase().trim() : undefined,
+        user_id: userId,
+      },
+      include: {
+        championA: true,
+        championB: true,
+      },
+    });
+
+    return resources;
+  }
 }
 
 module.exports = new MatchupModel(db.matchup);

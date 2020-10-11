@@ -130,32 +130,11 @@ class MatchupController extends Controller {
   }
 
   async getMatchups(req, res, next) {
-    try {
-      const { champion, championB, lane } = req.query;
-      const matchups = await db.matchup.findMany({
-        where: {
-          championA: {
-            name: champion,
-          },
-          championB: {
-            name: {
-              startsWith: championB,
-            },
-          },
-          lane: lane ? lane.toLowerCase().trim() : undefined,
-          user_id: Number(req.user.id),
-        },
-        include: {
-          championA: true,
-          championB: true,
-        },
-      });
+    const { id: userId } = req.user;
+    const matchups = await this.model.getMatchups(userId, req.query);
 
-      const formattedJson = this.formatters.getPlayedMatchups(matchups);
-      res.status(200).json(formattedJson);
-    } catch (err) {
-      next(err);
-    }
+    const formattedJson = this.formatters.getPlayedMatchups(matchups);
+    res.status(200).json(formattedJson);
   }
 
   async syncAll(req, res, next) {
