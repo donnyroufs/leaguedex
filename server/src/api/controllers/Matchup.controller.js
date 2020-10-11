@@ -129,7 +129,7 @@ class MatchupController extends Controller {
     }
   }
 
-  async getMatchups(req, res, next) {
+  async getMatchups(req, res) {
     const { id: userId } = req.user;
     const matchups = await this.model.getMatchups(userId, req.query);
 
@@ -137,22 +137,12 @@ class MatchupController extends Controller {
     res.status(200).json(formattedJson);
   }
 
-  async syncAll(req, res, next) {
-    try {
-      const { id, summoner } = req.user;
-      const [data] = await db.$queryRaw(`
-      SELECT "Matchup"."game_id"
-      FROM "Matchup" 
-      WHERE 
-        "Matchup"."games_lost" + "Matchup"."games_won" < "Matchup"."games_played"
-        AND "Matchup"."user_id" = ${id}`);
+  async syncAll(req, res) {
+    const { id, summoner } = req.user;
 
-      const syncedData = await sync(id, summoner.accountId, summoner.region);
+    const syncedData = await sync(id, summoner.accountId, summoner.region);
 
-      res.status(200).json(syncedData);
-    } catch (err) {
-      next(err);
-    }
+    res.status(200).json(syncedData);
   }
 
   async updatePrivate(req, res, next) {
