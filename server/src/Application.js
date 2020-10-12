@@ -1,11 +1,4 @@
 class Application {
-  static userApi = {
-    windowMs: 15 * 60 * 1000,
-    max: 10,
-  };
-
-  static inProduction = process.env.NODE_ENV === 'production';
-
   constructor({ server, database, middleware, routes, helpers = {} } = {}) {
     this.express = server;
     this.app = this.express();
@@ -13,9 +6,16 @@ class Application {
     this.middleware = middleware;
     this.routes = routes;
     this.helpers = helpers;
+
+    this._setMiddleware = this._setMiddleware.bind(this);
   }
 
   async initialize(callback) {
+    this.inProduction = process.env.NODE_ENV === 'production';
+    this.userApi = {
+      windowMs: 15 * 60 * 1000,
+      max: 10,
+    };
     this._setMiddleware();
 
     await this.helpers.validateConnection();
@@ -34,7 +34,7 @@ class Application {
     const corsOptions = this.inProduction
       ? {
           origin: function (origin, callback) {
-            if (whitelist.indexOf(origin) !== -1) {
+            if (whitelist.indexOf(origin) !== -1 || !origin) {
               callback(null, true);
             } else {
               callback(new Error('Not allowed by CORS'));
