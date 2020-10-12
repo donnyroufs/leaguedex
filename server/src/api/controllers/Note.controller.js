@@ -30,12 +30,20 @@ class NotesController extends Controller {
   async findByMatchId(req, res) {
     const { id } = req.params;
     const { id: userId } = req.user;
-    const { championId } = req.query;
+    const { championA, championB } = req.query;
 
     const notes = await this.model.getScopedNotes(id, userId);
-    const globalNotes = await this.model.getGlobalNotes(userId, championId);
-
-    const uniqueNotes = this.formatters.mergeNotes(notes, globalNotes);
+    const championNotes = await this.model.getNotesByChampion(
+      userId,
+      championA,
+      championB
+    );
+    const globalNotes = await this.model.getGlobalNotes(userId);
+    const uniqueNotes = this.formatters.mergeNotes(
+      notes,
+      globalNotes,
+      championNotes
+    );
 
     res.status(200).json(uniqueNotes);
   }

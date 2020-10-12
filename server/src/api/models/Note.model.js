@@ -56,7 +56,7 @@ class NoteModel extends Model {
     return resources;
   }
 
-  async getGlobalNotes(userId, championId) {
+  async getGlobalNotes(userId) {
     const resources = await db.$queryRaw(`
           SELECT 
             "Note"."id",
@@ -67,10 +67,26 @@ class NoteModel extends Model {
             "Note"
           WHERE 
             "Note"."user_id" = ${userId}
-          AND
-            "Note"."champion_id" = ${Number(championId)}
           AND 
             "Note"."tags" ~ 'global'
+        `);
+
+    return resources;
+  }
+
+  async getNotesByChampion(userId, championA, championB) {
+    const resources = await db.$queryRaw(`
+          SELECT 
+            "Note"."id",
+            "Note"."tags",
+            "Note"."content",
+            "Note"."createdAt"
+          FROM 
+            "Note"
+          WHERE 
+            "Note"."user_id" = ${userId}
+          AND 
+            "Note"."tags" ~* '${championA}|${championB}'
         `);
 
     return resources;
