@@ -5,11 +5,11 @@ import useClipboard from "react-hook-clipboard";
 import { toast } from "react-toastify";
 import { FaLink } from "react-icons/fa";
 import { Title, Notes as Container } from "../../view/dex/Dex.styles";
-import { List, Item, Filter, Tag, Mark, Text } from "./Notes.styles";
+import { List, Item, Filter, Tag, Mark, Text, Heading } from "./Notes.styles";
 import { Form, Group, Input } from "../../components/styles/Form";
 import { filterByTags } from "../../helpers/arrayHelpers";
 import Highlight from "react-highlight-words";
-import Dropdown from "../dropdown/Dropdown";
+import Dropdown, { Menu } from "../dropdown/Dropdown";
 
 const Notes = ({
   privacy,
@@ -20,6 +20,8 @@ const Notes = ({
   id: dexId,
   createNote,
   deleteNote,
+  championA,
+  championB,
 }) => {
   const [query, setQuery] = useState([]);
   const [show, setShow] = useState(null);
@@ -27,6 +29,7 @@ const Notes = ({
   const [link, setLink] = useState(null);
   const [, copyToClipboard] = useClipboard();
   const [value, setValue] = useState("");
+  const [hidden, setHidden] = useState(true);
   const ref = useRef();
 
   const handleSetShow = (id) => {
@@ -111,15 +114,40 @@ const Notes = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes]);
 
+  // ugly code cus we can
+  function toggleGlobalTags(content) {
+    const champA = championA.name.toLowerCase();
+    const champB = championB.name.toLowerCase();
+
+    let replaced = content;
+
+    if (hidden) {
+      replaced = replaced.replace("global", "");
+      replaced = replaced.replace(champA, "");
+      replaced = replaced.replace(champB, "");
+    } else {
+      replaced = replaced.replace("global", "@global");
+      replaced = replaced.replace(champA, `@${champA}`);
+      replaced = replaced.replace(champB, `@${champA}`);
+    }
+    return replaced;
+  }
+
   return (
     <Container>
-      <Title>
-        {!privacy && !shared && (
-          <FaLink className="clipboard" onClick={handleCopy} />
-        )}
-        {shared ? "Notes" : "Your notes"}
-      </Title>
-
+      <Heading>
+        <Title>
+          {!privacy && !shared && (
+            <FaLink className="clipboard" onClick={handleCopy} />
+          )}
+          {shared ? "Notes" : "Your notes"}
+        </Title>
+        <Dropdown show={show} handleSetShow={handleSetShow} w={140}>
+          <Menu.Item small onClick={() => setHidden((curr) => !curr)}>
+            {hidden ? "show" : "hide"}
+          </Menu.Item>
+        </Dropdown>
+      </Heading>
       <Filter mt={tags.length <= 0 ? "2rem" : "1rem"}>
         {shared && notes.length <= 0 && "There are no notes for this matchup."}
         {tags.length <= 0 && !shared && (
@@ -139,7 +167,6 @@ const Notes = ({
             </Tag>
           ))}
       </Filter>
-
       {!shared && (
         <Form secondary champion notes onSubmit={handleSubmit}>
           <Group secondary notes onClick={handleClick}>
@@ -153,18 +180,17 @@ const Notes = ({
           </Group>
         </Form>
       )}
-
       <List shared={shared}>
         <PoseGroup>
           {notes.length > 0 &&
-            filteredNotes()
+            [...filteredNotes()]
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((note) => (
                 <Item key={note.id}>
                   <Highlight
                     searchWords={query}
                     highlightClassName="highlightNote"
-                    textToHighlight={note.content}
+                    textToHighlight={toggleGlobalTags(note.content)}
                   />
                   {!shared && (
                     <Dropdown

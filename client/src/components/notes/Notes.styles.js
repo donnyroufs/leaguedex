@@ -129,3 +129,8 @@ export const Text = styled.p`
   width: 100%;
   pointer-events: none;
 `;
+
+export const Heading = styled.header`
+  position: relative;
+  display: flex;
+`;
