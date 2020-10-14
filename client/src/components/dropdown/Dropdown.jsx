@@ -1,20 +1,27 @@
 import React from "react";
 import { FaEllipsisV, FaTrash } from "react-icons/fa";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Container = styled.div`
   position: absolute;
-  top: 50%;
+  top: ${(props) => (props.small ? "55%" : "50%")};
   right: 32px;
   transform: translateY(-50%);
   cursor: pointer;
   padding: 0.2rem;
   border-radius: 6px;
+
+  ${(props) =>
+    props.small &&
+    css`
+      left: ${(props) => props.w}px;
+      right: auto;
+    `}
 `;
 
-const Menu = styled.ul`
+export const Menu = styled.ul`
   position: absolute;
-  top: -72px;
+  top: ${(props) => (props.small ? "-62px" : "-72px")};
   margin: 0;
   list-style: none;
   padding: 0;
@@ -33,24 +40,30 @@ Menu.Item = styled.li`
   background: #18222f;
   transition: all 0.1s ease-in;
   &:hover {
-    background: #d64c3e;
+    background: ${(props) => (props.small ? "inerhit" : "#d64c3e")};
+    color: #fff;
   }
+
+  font-size: ${(props) => (props.small ? ".9rem" : "1rem")};
 `;
 
 const Button = styled(FaEllipsisV)``;
 
-const Dropdown = ({ show, handleSetShow, id, deleteNote }) => {
+const Dropdown = ({ children, show, handleSetShow, id, deleteNote, w }) => {
   return (
-    <Container onClick={() => handleSetShow(id)}>
+    <Container onClick={() => handleSetShow(id)} small={!!children} w={w}>
       <Button />
-      <Menu>
-        {show === id && (
-          <Menu.Item onClick={(e) => deleteNote(e, id)}>
-            <FaTrash style={{ marginRight: ".3rem" }} />
-            Delete
-          </Menu.Item>
-        )}
-      </Menu>
+      {show === id && (
+        <Menu small={!!children}>
+          {children}
+          {!children && (
+            <Menu.Item onClick={(e) => deleteNote(e, id)}>
+              <FaTrash style={{ marginRight: ".3rem" }} />
+              Delete
+            </Menu.Item>
+          )}
+        </Menu>
+      )}
     </Container>
   );
 };
