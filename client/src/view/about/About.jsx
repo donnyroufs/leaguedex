@@ -31,9 +31,9 @@ const About = (props) => {
       <Article>
         <Article.Title>What is Leaguedex?</Article.Title>
         <Article.Body>
-          Then Leaguedex is for you. Keep track of all your played matchups in a
-          digital environment where you can write down your own personalized
-          notes to never ever forget again!
+          Keep track of all your played matchups in a digital environment where
+          you can write down your own personalized notes to never ever forget
+          again!
           <BreakLine />
           Perhaps people frequently ask you about how to play a certain champion
           and you have been planning to write an in depth guide on how to play
