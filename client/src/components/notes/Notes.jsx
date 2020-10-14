@@ -116,6 +116,7 @@ const Notes = ({
 
   // ugly code cus we can
   function toggleGlobalTags(content) {
+    if (shared) return content;
     const champA = championA.name.toLowerCase();
     const champB = championB.name.toLowerCase();
 
@@ -142,11 +143,13 @@ const Notes = ({
           )}
           {shared ? "Notes" : "Your notes"}
         </Title>
-        <Dropdown show={show} handleSetShow={handleSetShow} w={140}>
-          <Menu.Item small onClick={() => setHidden((curr) => !curr)}>
-            {hidden ? "show" : "hide"}
-          </Menu.Item>
-        </Dropdown>
+        {!shared && (
+          <Dropdown show={show} handleSetShow={handleSetShow} w={140}>
+            <Menu.Item small onClick={() => setHidden((curr) => !curr)}>
+              {hidden ? "show" : "hide"}
+            </Menu.Item>
+          </Dropdown>
+        )}
       </Heading>
       <Filter mt={tags.length <= 0 ? "2rem" : "1rem"}>
         {shared && notes.length <= 0 && "There are no notes for this matchup."}
