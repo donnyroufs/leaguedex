@@ -1,13 +1,28 @@
 import styled from "styled-components";
+import ReactPlayer from "react-player";
 
 export const Container = styled.section`
   display: flex;
   flex-flow: column nowrap;
-  max-width: 1400px;
+  max-width: 900px;
   width: 80%;
+  margin: 0 auto;
 
   @media screen and (min-width: 968px) {
-    margin: 0 auto;
     width: 100%;
   }
+`;
+
+export const ImageWrapper = styled.div`
+  height: 300px;
+  width: 100%;
+
+  @media screen and (min-width: 968px) {
+    height: 500px !important;
+  }
+`;
+
+export const Video = styled(ReactPlayer)`
+  width: 100%;
+  height: 100%;
 `;
