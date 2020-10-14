@@ -14,7 +14,6 @@ const Container = styled.div`
   ${(props) =>
     props.small &&
     css`
-      /* left: ${(props) => props.w}px; */
       right: 0;
     `}
 `;
