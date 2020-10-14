@@ -29,7 +29,9 @@ const Dex = ({ dex, isLive, shared, notes, createNote, deleteNote }) => {
             </Text>
           </Header.Left>
           <Header.Right>
-            <Toggle {...dex} privacy={privacy} setPrivacy={setPrivacy} />
+            {!shared && (
+              <Toggle {...dex} privacy={privacy} setPrivacy={setPrivacy} />
+            )}
           </Header.Right>
         </Header>
         <Runes />
