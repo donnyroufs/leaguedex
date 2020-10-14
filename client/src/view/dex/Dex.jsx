@@ -60,6 +60,8 @@ const Dex = ({ dex, isLive, shared, notes, createNote, deleteNote }) => {
           createNote={createNote}
           shared={shared}
           deleteNote={deleteNote}
+          championA={dex.championA}
+          championb={dex.championA}
         />
       </Container.Right>
     </Container>
