@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import ReactPlayer from "react-player";
 
 export const Container = styled.section`
   display: flex;
@@ -20,9 +19,4 @@ export const ImageWrapper = styled.div`
   @media screen and (min-width: 968px) {
     height: 500px !important;
   }
-`;
-
-export const Video = styled(ReactPlayer)`
-  width: 100%;
-  height: 100%;
 `;
