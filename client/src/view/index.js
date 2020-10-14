@@ -3,7 +3,7 @@ import Champion from "./champion/ChampionContainer";
 import Match from "./match/MatchContainer";
 import Dex from "./dex/DexContainer";
 import SharedDex from "./dex/SharedDexContainer";
-import Profile from "./shared/SharedContainer";
+import Profile from "./profile/ProfileContainer";
 import Dashboard from "./dashboard/DashboardContainer";
 import About from "./about/AboutContainer";
 import NotFound from "./notFound/NotFound";
