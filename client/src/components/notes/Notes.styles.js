@@ -1,3 +1,4 @@
+import posed from "react-pose";
 import styled, { css } from "styled-components";
 
 export const List = styled.ul`
@@ -18,7 +19,23 @@ export const List = styled.ul`
     min-height: 400px;
   }
 `;
-export const Item = styled.li`
+const ListItem = posed.li({
+  enter: {
+    y: 0,
+    opacity: 1,
+    delay: 300,
+    transition: {
+      y: { type: "spring", stiffness: 1000, damping: 15 },
+      default: { duration: 150 },
+    },
+  },
+  exit: {
+    y: 50,
+    opacity: 0,
+    transition: { duration: 150 },
+  },
+});
+export const Item = styled(ListItem)`
   position: relative;
   margin: 0;
   width: 100%;

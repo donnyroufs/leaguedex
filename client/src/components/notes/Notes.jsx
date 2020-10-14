@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { PoseGroup } from "react-pose";
 import { parseTagsV2 } from "../../helpers/parseTags";
 import useClipboard from "react-hook-clipboard";
 import { toast } from "react-toastify";
@@ -6,7 +7,6 @@ import { FaLink } from "react-icons/fa";
 import { Title, Notes as Container } from "../../view/dex/Dex.styles";
 import { List, Item, Filter, Tag, Mark, Text } from "./Notes.styles";
 import { Form, Group, Input } from "../../components/styles/Form";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { filterByTags } from "../../helpers/arrayHelpers";
 import Highlight from "react-highlight-words";
 import Dropdown from "../dropdown/Dropdown";
@@ -155,35 +155,28 @@ const Notes = ({
       )}
 
       <List shared={shared}>
-        <TransitionGroup>
+        <PoseGroup>
           {notes.length > 0 &&
             filteredNotes()
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((note) => (
-                <CSSTransition
-                  timeout={300}
-                  unmountOnExit
-                  classNames="fade"
-                  key={note.id}
-                >
-                  <Item key={note.id}>
-                    <Highlight
-                      searchWords={query}
-                      highlightClassName="highlightNote"
-                      textToHighlight={note.content}
+                <Item key={note.id}>
+                  <Highlight
+                    searchWords={query}
+                    highlightClassName="highlightNote"
+                    textToHighlight={note.content}
+                  />
+                  {!shared && (
+                    <Dropdown
+                      show={show}
+                      handleSetShow={handleSetShow}
+                      id={note.id}
+                      deleteNote={deleteNote}
                     />
-                    {!shared && (
-                      <Dropdown
-                        show={show}
-                        handleSetShow={handleSetShow}
-                        id={note.id}
-                        deleteNote={deleteNote}
-                      />
-                    )}
-                  </Item>
-                </CSSTransition>
+                  )}
+                </Item>
               ))}
-        </TransitionGroup>
+        </PoseGroup>
       </List>
     </Container>
   );
