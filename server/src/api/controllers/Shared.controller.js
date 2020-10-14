@@ -2,8 +2,8 @@ const Controller = require('./Controller');
 const { NotFoundError } = require('../../helpers/error');
 
 class SharedController extends Controller {
-  constructor(props) {
-    super(props);
+  constructor(...props) {
+    super(...props);
 
     this.findByMatchupId = this.findByMatchupId.bind(this);
     this.findByUsernameAndId = this.findByUsernameAndId.bind(this);
@@ -32,7 +32,9 @@ class SharedController extends Controller {
       throw new NotFoundError();
     }
 
-    res.status(200).json(data.matchups);
+    const formattedData = this.formatters.getPlayedMatchups(data.matchups);
+
+    res.status(200).json(formattedData);
   }
 
   async findByMatchupId(req, res) {
