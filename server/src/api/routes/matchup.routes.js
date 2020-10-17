@@ -14,7 +14,6 @@ router.use(Auth.authenticateToken);
 
 router.put('/revert', wrap(controller.revertMatchup));
 router.put('/private', wrap(controller.updatePrivate));
-router.get('/sync', wrap(controller.syncAll)); //! not needed
 router.get('/all', wrap(controller.getMatchups));
 router.get('/info', wrap(controller.getInfoCard));
 router.get('/played', wrap(controller.getPlayedChampions));

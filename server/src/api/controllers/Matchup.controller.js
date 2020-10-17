@@ -9,7 +9,6 @@ class MatchupController extends Controller {
     super(...props);
 
     this.create = this.createOne.bind(this);
-    this.syncAll = this.syncAll.bind(this);
     this.getPlayedChampions = this.getPlayedChampions.bind(this);
     this.getInfoCard = this.getInfoCard.bind(this);
     this.findGame = this.findGame.bind(this);
@@ -135,14 +134,6 @@ class MatchupController extends Controller {
 
     const formattedJson = this.formatters.getPlayedMatchups(matchups);
     res.status(200).json(formattedJson);
-  }
-
-  async syncAll(req, res) {
-    const { id, summoner } = req.user;
-
-    const syncedData = await sync(id, summoner.accountId, summoner.region);
-
-    res.status(200).json(syncedData);
   }
 
   async updatePrivate(req, res) {
