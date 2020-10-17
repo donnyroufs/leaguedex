@@ -10,12 +10,6 @@ import routes from "./routes";
 import { useAuth } from "./hooks/useAuth";
 import { useModal } from "./hooks/useModal";
 import { useMatch } from "./hooks/useMatch";
-import makeRequest from "./helpers/makeRequest";
-
-async function syncData() {
-  const res = await makeRequest("/api/matchup/sync");
-  return res.json();
-}
 
 const App = () => {
   const {
@@ -41,7 +35,6 @@ const App = () => {
     }
 
     if (user && !hasMatch && initialLoad) {
-      syncData();
       findMatch();
       setInitialLoad(false);
     }
