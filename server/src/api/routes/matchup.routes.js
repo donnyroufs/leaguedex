@@ -14,13 +14,13 @@ router.use(Auth.authenticateToken);
 
 router.put('/revert', wrap(controller.revertMatchup));
 router.put('/private', wrap(controller.updatePrivate));
-router.get('/sync', wrap(controller.syncAll));
-router.post('/create', wrap(controller.createOne));
+router.get('/sync', wrap(controller.syncAll)); //! not needed
 router.get('/all', wrap(controller.getMatchups));
 router.get('/info', wrap(controller.getInfoCard));
 router.get('/played', wrap(controller.getPlayedChampions));
-router.get('/find', wrap(controller.findGame));
 router.get('/latest/:id', syncMatchup, wrap(controller.getLatest));
 router.get('/:id', wrap(controller.getDex));
+router.post('/', wrap(controller.createOne));
+router.get('/', wrap(controller.findGame));
 
 module.exports = router;

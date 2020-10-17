@@ -26,7 +26,7 @@ const useMatchProvider = () => {
   const findMatch = async () => {
     setLoading(true);
     try {
-      const res = await makeRequest(`/api/matchup/find`);
+      const res = await makeRequest(`/api/matchup`);
       const data = await res.json();
       if (data.hasOwnProperty("status")) {
         setMatch(null);
@@ -52,7 +52,7 @@ const useMatchProvider = () => {
         game_id: String(match.gameId),
       };
 
-      const res = await makeRequest(`/api/matchup/create`, {
+      const res = await makeRequest(`/api/matchup`, {
         method: "POST",
         body: JSON.stringify(payload),
       });
