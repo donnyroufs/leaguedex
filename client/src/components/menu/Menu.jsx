@@ -11,8 +11,8 @@ import makeRequest from "../../helpers/makeRequest";
 const AVERAGE_GAMELENGTH = 35;
 
 async function fetchLatest(id) {
-  const res = await makeRequest(`/api/matchup/latest/${id}`)
-  return res.json()
+  const res = await makeRequest(`/api/matchup/latest/${id}`);
+  return res.json();
 }
 
 async function finishMatch(match) {
@@ -35,7 +35,6 @@ const Menu = () => {
     match,
     setMatch,
     confirmed,
-    timer,
     minutes,
   } = useMatch();
 
@@ -129,11 +128,7 @@ const Menu = () => {
                         aboveAverage={minutes >= AVERAGE_GAMELENGTH}
                         onClick={handleNavigate}
                       >
-                        {timer.split(":")[1] !== "00" ? (
-                          timer
-                        ) : (
-                          <BeatLoader color="#B8D0EC" />
-                        )}
+                        ingame!
                       </Button>
                     )}
                   </>

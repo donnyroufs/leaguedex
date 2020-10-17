@@ -6,11 +6,11 @@ import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../hooks/useModal";
 import { useMatch } from "../../hooks/useMatch";
 import { toast } from "react-toastify";
-import makeRequest from '../../helpers/makeRequest';
+import makeRequest from "../../helpers/makeRequest";
 
 async function fetchLatest(id) {
   const res = await makeRequest(`/api/matchup/latest/${id}`);
-  return res.json()
+  return res.json();
 }
 
 async function finishMatch(match) {
@@ -31,7 +31,6 @@ const HeaderContainer = (props) => {
   const handleFindMatch = async (e) => {
     e.preventDefault();
     const _match = await findMatch();
-    console.log(_match)
     if (_match) {
       history.push(`/match/${_match.gameId}`);
     }
