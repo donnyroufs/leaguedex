@@ -1,5 +1,4 @@
 import React, { useEffect, createContext, useContext, useState } from "react";
-import * as Timer from "../helpers/gameTimer";
 import { build, loadAssets } from "../helpers/loadImages";
 import makeRequest from "../helpers/makeRequest";
 
@@ -20,7 +19,6 @@ export const useMatch = () => {
 
 const useMatchProvider = () => {
   const [match, setMatch] = useState(null);
-  const [timer, setTimer] = useState("0:00");
   const [loading, setLoading] = useState(false);
 
   const findMatch = async () => {
@@ -76,27 +74,6 @@ const useMatchProvider = () => {
     history.push(`/match/${match.matchId}`);
   };
 
-  useEffect(() => {
-    if (match && match.confirmed) {
-      const timer = setInterval(() => {
-        const miliseconds = Timer.calculateGameTime(match.startTime + 30000);
-        const { formatted } = Timer.formatTime(miliseconds);
-        setTimer(formatted);
-      }, 1000);
-
-      return () => {
-        clearInterval(timer);
-        setTimer("0:00");
-      };
-    }
-  }, [match]);
-
-  useEffect(() => {
-    return () => {
-      setMatch(null);
-    };
-  }, []);
-
   return {
     match,
     setMatch,
@@ -106,8 +83,6 @@ const useMatchProvider = () => {
     createMatchup,
     hasMatch: !!match,
     confirmed: match && match.confirmed,
-    timer,
-    minutes: timer.split(":")[0],
     revertMatch,
     isLive: (dex) => dex && match && Number(dex.game_id) === match.gameId,
   };
