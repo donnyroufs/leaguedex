@@ -16,7 +16,6 @@ const Header = ({
   handleLiveMatch,
   isAdmin,
   revertMatch,
-  dex
 }) => {
   return (
     <Container>
