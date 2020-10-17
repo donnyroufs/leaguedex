@@ -12,7 +12,7 @@ const StatusBar = ({
   handleRevertMatchup,
   status,
 }) => {
-  const { hasMatch, confirmed, loading, dex } = useMatch();
+  const { hasMatch, confirmed, loading, dex, btnText } = useMatch();
 
   return (
     <Container>
@@ -60,7 +60,8 @@ const StatusBar = ({
                       Revert Matchup
                     </Button>
                   )}
-                  <Button onClick={handleLiveMatch}>Go To Match</Button>
+
+                  <Button onClick={handleLiveMatch}>{btnText}</Button>
                 </>
               )}
             </>

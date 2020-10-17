@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Stats from "../../components/stats/Stats";
 import Toggle from "../../components/toggle/Toggle";
 import Runes from "../../components/runes/Runes";
 import Notes from "../../components/notes/Notes";
 import { useAuth } from "../../hooks/useAuth";
 import { Container, Header, Text, Highlight, Status } from "./Dex.styles";
+import { useMatch } from "../../hooks/useMatch";
 
 const isUpdated = (a, b, c) => a + b === c;
 const getPercentage = (a, b, c) => {
@@ -16,6 +17,15 @@ const getPercentage = (a, b, c) => {
 const Dex = ({ dex, isLive, shared, notes, createNote, deleteNote }) => {
   const [privacy, setPrivacy] = useState(dex.private);
   const { user } = useAuth();
+  const { setBtnText } = useMatch();
+
+  useEffect(() => {
+    setBtnText("Game Done?");
+
+    return () => {
+      setBtnText("Go To Match");
+    };
+  }, []);
 
   return (
     <Container>

@@ -28,6 +28,7 @@ async function fetchLatest(id) {
 
 const useMatchProvider = () => {
   const [match, setMatch] = useState(null);
+  const [btnText, setBtnText] = useState("Go To Match");
   const [dex, setDex] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -107,5 +108,7 @@ const useMatchProvider = () => {
     revertMatch,
     isLive: (dex) => dex && match && Number(dex.game_id) === match.gameId,
     finishMatch,
+    btnText,
+    setBtnText,
   };
 };
