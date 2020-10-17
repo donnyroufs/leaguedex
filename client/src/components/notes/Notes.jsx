@@ -11,6 +11,8 @@ import { filterByTags } from "../../helpers/arrayHelpers";
 import Highlight from "react-highlight-words";
 import Dropdown, { Menu } from "../dropdown/Dropdown";
 
+const LOCALSTORAGE_KEY = "ldex_showTags";
+
 const Notes = ({
   privacy,
   setPrivacy,
@@ -24,13 +26,30 @@ const Notes = ({
   championB,
 }) => {
   const [query, setQuery] = useState([]);
-  const [show, setShow] = useState(null);
+  const [show, setShow] = useState(true);
   const [tags, setTags] = useState([]);
   const [link, setLink] = useState(null);
   const [, copyToClipboard] = useClipboard();
   const [value, setValue] = useState("");
   const [hidden, setHidden] = useState(true);
   const ref = useRef();
+
+  useEffect(() => {
+    const item = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY));
+
+    if (typeof item === "boolean") {
+      setHidden(item);
+    } else {
+      localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(true));
+      setHidden(true);
+    }
+  }, []);
+
+  const handleSetHidden = () => {
+    const newValue = !hidden;
+    setHidden(newValue);
+    localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(newValue));
+  };
 
   const handleSetShow = (id) => {
     setShow((curr) => (curr === id ? null : id));
@@ -122,7 +141,7 @@ const Notes = ({
 
     let replaced = content;
 
-    if (hidden) {
+    if (hidden && query.length <= 0) {
       replaced = replaced.replace("global", "");
       replaced = replaced.replace(champA, "");
       replaced = replaced.replace(champB, "");
@@ -145,7 +164,7 @@ const Notes = ({
         </Title>
         {!shared && (
           <Dropdown show={show} handleSetShow={handleSetShow} w={140}>
-            <Menu.Item small onClick={() => setHidden((curr) => !curr)}>
+            <Menu.Item small onClick={handleSetHidden}>
               {hidden ? "show" : "hide"}
             </Menu.Item>
           </Dropdown>
