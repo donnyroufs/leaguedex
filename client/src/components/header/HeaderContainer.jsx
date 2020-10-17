@@ -6,32 +6,24 @@ import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../hooks/useModal";
 import { useMatch } from "../../hooks/useMatch";
 import { toast } from "react-toastify";
-import makeRequest from '../../helpers/makeRequest';
-
-async function fetchLatest(id) {
-  const res = await makeRequest(`/api/matchup/latest/${id}`);
-  return res.json()
-}
-
-async function finishMatch(match) {
-  try {
-    const data = await fetchLatest(match.gameId);
-    return data;
-  } catch (_) {
-    return null;
-  }
-}
 
 const HeaderContainer = (props) => {
   const history = useHistory();
   const { isAuthenticated, logout, hasSummoner, user, isAdmin } = useAuth();
   const { setModal } = useModal();
-  const { setMatch, findMatch, match, setLoading, revertMatch } = useMatch();
+  const {
+    setMatch,
+    findMatch,
+    match,
+    setLoading,
+    revertMatch,
+    finishMatch,
+  } = useMatch();
 
   const handleFindMatch = async (e) => {
     e.preventDefault();
     const _match = await findMatch();
-    console.log(_match)
+
     if (_match) {
       history.push(`/match/${_match.gameId}`);
     }
