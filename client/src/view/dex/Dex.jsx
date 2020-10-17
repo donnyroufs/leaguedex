@@ -25,6 +25,7 @@ const Dex = ({ dex, isLive, shared, notes, createNote, deleteNote }) => {
     return () => {
       setBtnText("Go To Match");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
