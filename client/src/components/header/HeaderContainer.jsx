@@ -46,7 +46,7 @@ const HeaderContainer = (props) => {
 
     if (confirmed && updated) {
       const _match = await findMatch();
-      toast.info("Match updated.");
+      toast.info("Match is done, updated stats.");
       if (_match) {
         history.push(`/match/${_match.gameId}`);
       } else {
