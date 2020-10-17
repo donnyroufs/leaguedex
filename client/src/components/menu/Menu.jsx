@@ -6,7 +6,6 @@ import { useModal } from "../../hooks/useModal";
 import { useMatch } from "../../hooks/useMatch";
 import { useHistory } from "react-router";
 import { BeatLoader } from "react-spinners";
-import makeRequest from "../../helpers/makeRequest";
 
 const AVERAGE_GAMELENGTH = 35;
 
