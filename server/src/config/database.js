@@ -1,8 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
 
-// const config = {
-//   log: ['query'],
-// };
+const config = {
+  log: ['query'],
+};
 
 const db = new PrismaClient();
 

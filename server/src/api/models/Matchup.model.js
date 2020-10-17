@@ -81,7 +81,7 @@ class MatchupModel extends Model {
         FROM "Matchup"
         RIGHT JOIN "Champion"
         ON "Champion"."id" = "Matchup"."champion_id"
-        AND "Matchup"."user_id" = ${userId}
+        AND "Matchup"."user_id" = ${Number(userId)}
         ORDER BY "has_matchups" DESC
       `;
 
@@ -163,10 +163,17 @@ class MatchupModel extends Model {
   }
 
   async updatePrivateBulk(userId, { private: _private, champion_id }) {
-    await db.$queryRaw(`
-        UPDATE "Matchup" SET "private" = ${_private === 'true'} 
-        WHERE "user_id" = ${userId} 
-        AND "champion_id" = ${champion_id}`);
+    const isPrivate = _private === 'true';
+
+    await db.$queryRaw`
+        UPDATE 
+          "Matchup" 
+        SET 
+          "private" = ${isPrivate}
+        WHERE 
+          "user_id" = ${userId} 
+        AND 
+          "champion_id" = ${Number(champion_id)}`;
   }
 
   async updatePrivate(

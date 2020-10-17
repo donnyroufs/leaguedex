@@ -7,8 +7,7 @@ class ChampionModel extends Model {
   }
 
   async getAllChampions() {
-    const champions = await db.$queryRaw(
-      `
+    const champions = await db.$queryRaw`
         SELECT DISTINCT
           "Champion"."id",
           "Champion"."name",
@@ -22,8 +21,7 @@ class ChampionModel extends Model {
         RIGHT JOIN "Champion"
         ON "Champion"."id" = "Matchup"."champion_id"
         AND "Matchup"."user_id" = 0
-      `
-    );
+      `;
     return champions;
   }
 }
