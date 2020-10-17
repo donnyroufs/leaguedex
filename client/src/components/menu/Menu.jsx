@@ -10,20 +10,6 @@ import makeRequest from "../../helpers/makeRequest";
 
 const AVERAGE_GAMELENGTH = 35;
 
-async function fetchLatest(id) {
-  const res = await makeRequest(`/api/matchup/latest/${id}`);
-  return res.json();
-}
-
-async function finishMatch(match) {
-  try {
-    const data = await fetchLatest(match.gameId);
-    return data;
-  } catch (err) {
-    return null;
-  }
-}
-
 const Menu = () => {
   const history = useHistory();
   const modal = useModal();
@@ -36,6 +22,7 @@ const Menu = () => {
     setMatch,
     confirmed,
     minutes,
+    finishMatch,
   } = useMatch();
 
   const handleLogout = (e) => {
