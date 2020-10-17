@@ -1,7 +1,6 @@
 import React from "react";
 import { Container, Button } from "./StatusBar.styles";
 import { useMatch } from "../../hooks/useMatch";
-import { useStatus } from "../../hooks/useStatus";
 
 const StatusBar = ({
   handleMatchupSelection,
@@ -13,8 +12,7 @@ const StatusBar = ({
   handleRevertMatchup,
   status,
 }) => {
-  const { hasMatch, confirmed, loading } = useMatch();
-  const { dex } = useStatus();
+  const { hasMatch, confirmed, loading, dex } = useMatch();
 
   return (
     <Container>

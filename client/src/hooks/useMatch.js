@@ -1,4 +1,4 @@
-import React, { useEffect, createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { build, loadAssets } from "../helpers/loadImages";
 import makeRequest from "../helpers/makeRequest";
 
@@ -17,15 +17,26 @@ export const useMatch = () => {
   return useContext(matchContext);
 };
 
+async function fetchFindMatch() {
+  return makeRequest(`/api/matchup/find`);
+}
+
+async function fetchLatest(id) {
+  const res = await makeRequest(`/api/matchup/latest/${id}`);
+  return res.json();
+}
+
 const useMatchProvider = () => {
   const [match, setMatch] = useState(null);
+  const [dex, setDex] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const findMatch = async () => {
     setLoading(true);
     try {
-      const res = await makeRequest(`/api/matchup/find`);
+      const res = await fetchFindMatch();
       const data = await res.json();
+
       if (data.hasOwnProperty("status")) {
         setMatch(null);
       } else {
@@ -65,6 +76,14 @@ const useMatchProvider = () => {
     }
   };
 
+  async function finishMatch(match) {
+    try {
+      const data = await fetchLatest(match.gameId);
+      return data;
+    } catch (_) {
+      return null;
+    }
+  }
   const revertMatch = (history) => {
     setMatch((currentValue) => ({
       ...currentValue,
@@ -77,6 +96,8 @@ const useMatchProvider = () => {
   return {
     match,
     setMatch,
+    dex,
+    setDex,
     setLoading,
     loading,
     findMatch,
@@ -85,5 +106,6 @@ const useMatchProvider = () => {
     confirmed: match && match.confirmed,
     revertMatch,
     isLive: (dex) => dex && match && Number(dex.game_id) === match.gameId,
+    finishMatch,
   };
 };

@@ -7,7 +7,6 @@ import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { build, loadAssets } from "../../helpers/loadImages";
 import { useMatch } from "../../hooks/useMatch";
-import { useStatus } from "../../hooks/useStatus";
 import Helmet from "react-helmet";
 import makeRequest from "../../helpers/makeRequest";
 import removeTagsFromNotes, {
@@ -48,8 +47,7 @@ const DexContainer = ({ history }) => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [notes, setNotes] = useState([]);
-  const { isLive } = useMatch();
-  const { setDex, dex } = useStatus();
+  const { isLive, setDex, dex } = useMatch();
 
   const createNote = async (value) => {
     const tags = parseTags(value);
