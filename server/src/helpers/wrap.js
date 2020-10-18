@@ -3,7 +3,6 @@ function wrap(controller) {
     try {
       await controller(req, res);
     } catch (err) {
-      console.log(err);
       next(err);
     }
   };
