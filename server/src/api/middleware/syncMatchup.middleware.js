@@ -1,6 +1,5 @@
 const Riot = require('../../lib/Riot');
 const { db } = require('../../config/database');
-const { ErrorHandler, NotFoundError } = require('../../helpers/error');
 
 exports.sync = async (userId, accountId, region) => {
   let updated = false;
