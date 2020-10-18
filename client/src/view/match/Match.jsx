@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container } from "./Match.styles";
 
 const Match = ({ match, selectChampion, selected, selectRole, setStatus }) => {
   const roles = ["top", "jungle", "mid", "adc", "support"];
+
+  useEffect(() => {
+    setStatus(!selected ? "Picking opponent" : "Picking opponents lane");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected]);
 
   if (!match) {
     return <p>Couldn't find information for given match.</p>;
   }
 
   if (!selected) {
-    setStatus("Picking opponent");
     return (
       <Container>
         <Container.Inner>
@@ -36,7 +40,6 @@ const Match = ({ match, selectChampion, selected, selectRole, setStatus }) => {
   }
 
   if (selected) {
-    setStatus("Picking opponents lane");
     return (
       <Container>
         <Container.Inner>

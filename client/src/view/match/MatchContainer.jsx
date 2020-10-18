@@ -28,7 +28,6 @@ const MatchContainer = ({ history }) => {
     return () => {
       setStatus("");
     };
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasMatch, confirmed]);
 
