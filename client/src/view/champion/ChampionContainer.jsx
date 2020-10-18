@@ -3,7 +3,7 @@ import Champion from "./Champion";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { loadImage } from "../../helpers/loadImages";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useDebounce } from "use-debounce";
 import makeRequest from "../../helpers/makeRequest";
 
@@ -11,7 +11,7 @@ const nameCapitalized = (name) => name.charAt(0).toUpperCase() + name.slice(1);
 
 const fetchMatchups = async (payload) => {
   const query = createQuery(payload);
-  const res = await makeRequest(`/api/matchup/all?${query}`)
+  const res = await makeRequest(`/api/matchup/all?${query}`);
   const data = await res.json();
   return { data, res };
 };

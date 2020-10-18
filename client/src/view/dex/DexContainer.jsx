@@ -7,7 +7,7 @@ import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { build, loadAssets } from "../../helpers/loadImages";
 import { useMatch } from "../../hooks/useMatch";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import makeRequest from "../../helpers/makeRequest";
 import removeTagsFromNotes, {
   removeChar,

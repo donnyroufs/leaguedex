@@ -2,12 +2,12 @@ import React from "react";
 import { useQuery } from "react-query";
 import Dashboard from "./Dashboard";
 import { Styles } from "./Dashboard.styles";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import makeRequest from "../../helpers/makeRequest";
 
 const fetchUsers = async () => {
-  const response = await makeRequest(`/api/user`)
-  return response.json()
+  const response = await makeRequest(`/api/user`);
+  return response.json();
 };
 
 const DashboardContainer = () => {

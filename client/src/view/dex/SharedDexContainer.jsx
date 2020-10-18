@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import Dex from "./Dex";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import makeRequest from "../../helpers/makeRequest";
 
 const fetchDex = async (id, username) => {

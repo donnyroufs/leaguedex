@@ -1,6 +1,6 @@
 import React from "react";
 import { Container } from "./NotFound.styles";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const NotFound = () => {
   return (

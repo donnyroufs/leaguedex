@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Profile from "./Profile";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import makeRequest from "../../helpers/makeRequest";
 
 const fetchPublicMatchups = async (username) => {

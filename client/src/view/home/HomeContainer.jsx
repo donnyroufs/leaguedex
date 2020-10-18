@@ -4,17 +4,17 @@ import { useAuth } from "../../hooks/useAuth";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { loadAssets, build } from "../../helpers/loadImages";
-import Helmet from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import makeRequest from "../../helpers/makeRequest";
 
 const fetchChampions = async (isAuthenticated) => {
   const endpoint = isAuthenticated ? "/api/matchup/played" : "/api/champion";
-  const response = await makeRequest(endpoint)
+  const response = await makeRequest(endpoint);
   return response.json();
 };
 
 const fetchInfoCard = async () => {
-  const response = await makeRequest(`/api/matchup/info`)
+  const response = await makeRequest(`/api/matchup/info`);
   return response.json();
 };
 

@@ -3,7 +3,7 @@ import Match from "./Match";
 import { useMatch } from "../../hooks/useMatch";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useStatus } from "../../hooks/useStatus";
 
 const MatchContainer = ({ history }) => {
