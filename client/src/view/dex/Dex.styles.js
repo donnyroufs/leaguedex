@@ -109,7 +109,7 @@ export const Text = styled.p`
   }
 
   @media screen and (min-width: 1400px) {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   ${(props) =>
