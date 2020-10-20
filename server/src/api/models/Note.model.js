@@ -1,5 +1,6 @@
 const Model = require('./Model');
 const { db } = require('../../config/database');
+const { normalize } = require('../../helpers/utils');
 
 class NoteModel extends Model {
   constructor(props) {
@@ -75,6 +76,9 @@ class NoteModel extends Model {
   }
 
   async getNotesByChampion(userId, championA, championB) {
+    const champA = normalize(championA);
+    const champB = normalize(championB);
+
     const resources = await db.$queryRaw`
           SELECT
             "Note"."id",
@@ -86,9 +90,9 @@ class NoteModel extends Model {
           WHERE
             "Note"."user_id" = ${Number(userId)}
           AND
-            "Note"."tags" LIKE ${championA} 
-          AND 
-            "Note"."tags" LIKE ${championB}
+            "Note"."tags" LIKE ${champA} 
+          OR 
+            "Note"."tags" LIKE ${champB}
         `;
 
     return resources;
