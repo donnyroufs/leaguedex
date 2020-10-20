@@ -10,6 +10,7 @@ import { Form, Group, Input } from "../../components/styles/Form";
 import { filterByTags } from "../../helpers/arrayHelpers";
 import Highlight from "react-highlight-words";
 import Dropdown, { Menu } from "../dropdown/Dropdown";
+import { normalize } from "../../helpers/utils";
 
 const LOCALSTORAGE_KEY = "ldex_showTags";
 
@@ -136,8 +137,8 @@ const Notes = ({
   // ugly code cus we can
   function toggleGlobalTags(content) {
     if (shared) return content;
-    const champA = championA.name.toLowerCase();
-    const champB = championB.name.toLowerCase();
+    const champA = normalize(championA.name);
+    const champB = normalize(championB.name);
 
     let replaced = content;
 
@@ -148,7 +149,7 @@ const Notes = ({
     } else {
       replaced = replaced.replace("global", "@global");
       replaced = replaced.replace(champA, `@${champA}`);
-      replaced = replaced.replace(champB, `@${champA}`);
+      replaced = replaced.replace(champB, `@${champB}`);
     }
     return replaced;
   }
