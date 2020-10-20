@@ -549,7 +549,7 @@ cors@^2.8.5:
     object-assign "^4"
     vary "^1"
 
-cron@1.8.2:
+cron@1.8.2, cron@^1.8.2:
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/cron/-/cron-1.8.2.tgz#4ac5e3c55ba8c163d84f3407bde94632da8370ce"
   integrity sha512-Gk2c4y6xKEO8FSAUTklqtfSr7oTq0CiPQeLBG5Fl0qoXpZyMcj1SG59YL+hqq04bu6/IuEA7lMkYDAplQNKkyg==
