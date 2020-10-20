@@ -25,7 +25,6 @@ const ListItem = posed.li({
     opacity: 1,
     delay: 300,
     transition: {
-      y: { type: "spring", stiffness: 1000, damping: 15 },
       default: { duration: 150 },
     },
   },
