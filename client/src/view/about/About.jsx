@@ -16,7 +16,7 @@ const BreakLine = () => (
   </>
 );
 
-const About = (props) => {
+const About = () => {
   return (
     <Container>
       <Background />

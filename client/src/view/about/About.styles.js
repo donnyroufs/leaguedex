@@ -43,16 +43,23 @@ Article.Footer = styled.footer`
   justify-content: space-between;
   align-items: center;
   margin-top: 3rem;
+  margin-bottom: 3rem;
 `;
 
 export const Background = styled.div`
   background-color: #18222f;
   position: absolute;
   left: 0;
+  bottom: 0;
   z-index: -1;
-  top: 30vh;
-  height: 90vh;
+  /* height: 120vh; */
+  height: 900px;
   width: 100%;
+  overflow: hidden;
+  @media screen and (min-width: 968px) {
+    min-height: 900px;
+    height: 90vh;
+  }
 `;
 
 export const GithubLink = styled.a`
