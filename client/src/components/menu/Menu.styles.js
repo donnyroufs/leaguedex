@@ -6,7 +6,7 @@ export const Container = styled.div`
   bottom: 0;
   width: 100%;
   height: 100px;
-  justify-content: spac-between;
+  justify-content: space-between;
   align-items: center;
   background: ${(props) => props.theme.header};
   z-index: 100;
