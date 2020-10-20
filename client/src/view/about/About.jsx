@@ -22,7 +22,7 @@ const About = () => {
       <Background />
       <ImageWrapper>
         <ReactPlayer
-          url="https://www.youtube.com/watch?v=XoYu7K6Ywkg"
+          url="https://www.youtube.com/watch?v=FVLPfcsni8s"
           controls={true}
           width="100%"
           height="100%"
