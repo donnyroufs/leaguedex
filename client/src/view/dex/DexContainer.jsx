@@ -51,6 +51,7 @@ const DexContainer = ({ history }) => {
 
   const createNote = async (value) => {
     const tags = parseTags(value);
+
     try {
       const data = await fetchCreateNote({
         content: value,
@@ -103,7 +104,7 @@ const DexContainer = ({ history }) => {
   const deleteNote = async (e, noteId) => {
     e.preventDefault();
     fetchDeleteNote(noteId)
-      .then((data) => {
+      .then((_) => {
         const newNotes = notes.filter((note) => note.id !== noteId);
         setNotes(newNotes);
       })
