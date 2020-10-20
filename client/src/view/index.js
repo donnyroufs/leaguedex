@@ -3,8 +3,19 @@ import Champion from "./champion/ChampionContainer";
 import Match from "./match/MatchContainer";
 import Dex from "./dex/DexContainer";
 import SharedDex from "./dex/SharedDexContainer";
-import Shared from "./shared/SharedContainer";
+import Profile from "./profile/ProfileContainer";
 import Dashboard from "./dashboard/DashboardContainer";
+import About from "./about/AboutContainer";
 import NotFound from "./notFound/NotFound";
 
-export { Home, Champion, Match, Dex, Dashboard, Shared, SharedDex, NotFound };
+export {
+  Home,
+  Champion,
+  Match,
+  Dex,
+  Dashboard,
+  Profile,
+  SharedDex,
+  About,
+  NotFound,
+};

@@ -1,13 +1,14 @@
 const { ACCESS_TOKEN, REFRESH_TOKEN } = require('../helpers/constants');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { handleError, ErrorHandler } = require('../helpers/error');
+const { ErrorHandler, NotAuthorized } = require('../helpers/error');
 const { db } = require('../config/database');
+const app = require('../Application');
 
 class Auth {
   static options = {
     [ACCESS_TOKEN]: {
-      expiresIn: '1m',
+      expiresIn: '3m',
     },
     [REFRESH_TOKEN]: {
       expiresIn: '7d',
@@ -16,11 +17,19 @@ class Auth {
 
   static HASH_ROUNDS = 10;
 
+  static isAdmin(req, _, next) {
+    if (req.user.permissions >= 10) {
+      return next();
+    } else {
+      throw new NotAuthorized();
+    }
+  }
+
   static authenticateToken(req, _, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
-    if (token == null) throw new ErrorHandler(401, 'Not allowed.');
+    if (token == null) throw new ErrorHandler(403, 'Not allowed.');
 
     const valid = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
@@ -106,10 +115,11 @@ class Auth {
   static async setRefreshCookie(res, refreshToken, exp = 10080) {
     const expiration = this.setExpirationDate(exp);
     const options = {
-      httpOnly: true,
+      httpOnly: app.inProduction,
       expires: expiration,
       promo_shown: 1,
       sameSite: true,
+      secure: app.inProduction,
     };
 
     res.cookie('x-refresh-token', refreshToken, options);

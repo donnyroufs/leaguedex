@@ -107,7 +107,7 @@ const LoginModal = () => {
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
-        <Group>
+        <Group auth>
           <Label>username</Label>
           <Input
             type="text"
@@ -118,7 +118,7 @@ const LoginModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Group>
+        <Group auth>
           <Label>password</Label>
           <Input
             type="password"

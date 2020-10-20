@@ -4,28 +4,23 @@ const { db } = require('../../config/database');
 const Auth = require('../../lib/Auth');
 const formatters = require('../formatters/matchup.formatters');
 const { syncMatchup } = require('../middleware/syncMatchup.middleware');
-const e = require('express');
+const model = require('../models/Matchup.model');
+const wrap = require('../../helpers/wrap');
 
 const router = express.Router();
-const controller = new Controller({
-  model: db.matchup,
-  formatters,
-});
+const controller = new Controller(model, formatters);
 
-router.put('/revert', Auth.authenticateToken, controller.revertMatchup);
-router.put('/private', Auth.authenticateToken, controller.updatePrivate);
-router.get('/sync', Auth.authenticateToken, controller.syncAll);
-router.post('/create', Auth.authenticateToken, controller.createOne);
-router.get('/all', Auth.authenticateToken, controller.getMatchups);
-router.get('/info', Auth.authenticateToken, controller.getInfoCard);
-router.get('/played', Auth.authenticateToken, controller.getPlayedChampions);
-router.get('/find', Auth.authenticateToken, controller.findGame);
-router.get(
-  '/latest/:id',
-  Auth.authenticateToken,
-  syncMatchup,
-  controller.getLatest
-);
-router.get('/:id', Auth.authenticateToken, controller.getDex);
+router.use(Auth.authenticateToken);
+
+router.put('/revert', wrap(controller.revertMatchup));
+router.put('/private', wrap(controller.updatePrivate));
+router.get('/sync', wrap(controller.syncAll));
+router.post('/create', wrap(controller.createOne));
+router.get('/all', wrap(controller.getMatchups));
+router.get('/info', wrap(controller.getInfoCard));
+router.get('/played', wrap(controller.getPlayedChampions));
+router.get('/find', wrap(controller.findGame));
+router.get('/latest/:id', syncMatchup, wrap(controller.getLatest));
+router.get('/:id', wrap(controller.getDex));
 
 module.exports = router;

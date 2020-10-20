@@ -1,20 +1,19 @@
 const Controller = require('./Controller');
-const { ErrorHandler } = require('../../helpers/error');
+const { ErrorHandler, NotFoundError } = require('../../helpers/error');
 const { db } = require('../../config/database');
 const Riot = require('../../lib/Riot');
 const { sync } = require('../middleware/syncMatchup.middleware');
 
 class MatchupController extends Controller {
-  constructor({ model, formatters }) {
-    super(model, formatters);
-
-    this.formatters = formatters;
+  constructor(...props) {
+    super(...props);
 
     this.create = this.createOne.bind(this);
     this.syncAll = this.syncAll.bind(this);
     this.getPlayedChampions = this.getPlayedChampions.bind(this);
     this.getInfoCard = this.getInfoCard.bind(this);
     this.findGame = this.findGame.bind(this);
+    this.getMatchups = this.getMatchups.bind(this);
     this.getDex = this.getDex.bind(this);
     this.getLatest = this.getLatest.bind(this);
     this.getAllMatchupsByChampion = this.getMatchups.bind(this);
@@ -22,209 +21,99 @@ class MatchupController extends Controller {
     this.revertMatchup = this.revertMatchup.bind(this);
   }
 
-  async createOne(req, res, next) {
-    try {
-      const { id } = req.user;
-      const { lane, champion_id, opponent_id, game_id } = req.body;
+  async createOne(req, res) {
+    const { id: userId } = req.user;
 
-      const matchup = await this.model.findOne({
-        where: {
-          champion_id_opponent_id_lane_user_id: {
-            lane,
-            champion_id,
-            opponent_id,
-            user_id: id,
-          },
-        },
-        select: {
-          games_played: true,
-        },
-      });
+    const matchup = await this.model.findMatchup(userId, req.body);
+    const data = await this.model.createOrUpdate(userId, matchup, req.body);
 
-      const data = await this.model.upsert({
-        create: {
-          lane,
-          game_id,
-          games_played: 1,
-          championA: {
-            connect: {
-              id: champion_id,
-            },
-          },
-          championB: {
-            connect: {
-              id: opponent_id,
-            },
-          },
-          user: {
-            connect: {
-              id,
-            },
-          },
-        },
-        update: {
-          games_played: matchup ? matchup.games_played + 1 : 1,
-          game_id,
-        },
-        where: {
-          champion_id_opponent_id_lane_user_id: {
-            lane,
-            champion_id,
-            opponent_id,
-            user_id: id,
-          },
-        },
-      });
-
-      res.status(201).json({
-        id: data.id,
-        confirmed: true,
-      });
-    } catch (err) {
-      next(err);
-    }
+    res.status(201).json({
+      id: data.id,
+      confirmed: true,
+    });
   }
 
-  async getPlayedChampions(req, res, next) {
-    try {
-      const { id } = req.user;
-      const champions = await db.$queryRaw`
-        SELECT DISTINCT
-          "Champion"."id",
-          "Champion"."name",
-          "Champion"."image",
-          case
-            when "Matchup"."opponent_id" IS NOT NULL
-              then true
-              else false
-          end as has_matchups
-        FROM "Matchup"
-        RIGHT JOIN "Champion"
-        ON "Champion"."id" = "Matchup"."champion_id"
-        AND "Matchup"."user_id" = ${id}
-        ORDER BY "has_matchups" DESC
-      `;
-      if (!champions) {
-        return ErrorHandler(404, "Couldn't find any champions.");
-      }
+  async getPlayedChampions(req, res) {
+    const { id } = req.user;
+    const champions = await this.model.getPlayedChampions(id);
 
-      res.status(200).json(champions);
-    } catch (err) {
-      next(err);
+    if (!champions) {
+      return NotFoundError();
     }
+
+    res.status(200).json(champions);
   }
 
-  // Count games_played, count records
-  async getInfoCard(req, res, next) {
-    try {
-      const { id } = req.user;
-      const count = await this.model.count({
-        where: {
-          user_id: id,
-        },
-      });
+  async getInfoCard(req, res) {
+    const { id } = req.user;
 
-      const data = await this.model.findMany({
-        where: {
-          user_id: id,
-        },
-        select: {
-          games_played: true,
-        },
-      });
+    const count = await this.model.getGamesPlayed(id);
+    const data = await this.model.getRecordedGames(id);
 
-      res.status(200).json(this.formatters.getInfoCard({ count, data }));
-    } catch (err) {
-      next(err);
-    }
+    res.status(200).json(this.formatters.getInfoCard({ count, data }));
   }
 
-  async findGame(req, res, next) {
-    try {
-      const { summoner } = req.user;
-      const data = await Riot.findMatch(summoner.accountId, summoner.region);
+  async findGame(req, res) {
+    const { summoner, id: userId } = req.user;
+    const data = await Riot.findMatch(summoner.accountId, summoner.region);
 
-      if (data.gameMode !== 'CLASSIC' || data.gameStartTime <= 0) {
-        next(err);
-      }
+    if (data.gameMode !== 'CLASSIC') {
+      throw new NotFoundError();
+    }
 
-      const champions = await db.champion.findMany();
-      const me = data.participants
-        .filter((player) => player.summonerId === req.user.summoner.accountId)
-        .map((player) => {
-          const champion = champions.find(
-            (champion) => champion.id === player.championId
-          );
-
-          return {
-            id: champion.id,
-            teamId: player.teamId,
-            name: champion.name,
-            image: champion.image,
-          };
-        });
-
-      const participants = data.participants.filter(
-        (player) => player.teamId !== me[0].teamId
-      );
-
-      const opponents = participants.map((player) => {
+    const champions = await db.champion.findMany();
+    const me = data.participants
+      .filter((player) => player.summonerId === req.user.summoner.accountId)
+      .map((player) => {
         const champion = champions.find(
           (champion) => champion.id === player.championId
         );
 
         return {
           id: champion.id,
+          teamId: player.teamId,
           name: champion.name,
           image: champion.image,
         };
       });
 
-      const [_data] = await db.matchup.findMany({
-        take: 1,
-        where: {
-          user_id: Number(req.user.id),
-        },
-        orderBy: {
-          updatedAt: 'desc',
-        },
-      });
+    const participants = data.participants.filter(
+      (player) => player.teamId !== me[0].teamId
+    );
 
-      res.status(200).json({
-        gameId: data.gameId,
-        me: me[0],
-        opponents,
-        startTime: data.gameStartTime,
-        confirmed: _data ? Number(_data.game_id) === data.gameId : false,
-      });
-    } catch (err) {
-      next(err);
-    }
+    const opponents = participants.map((player) => {
+      const champion = champions.find(
+        (champion) => champion.id === player.championId
+      );
+
+      return {
+        id: champion.id,
+        name: champion.name,
+        image: champion.image,
+      };
+    });
+
+    const [_data] = await this.model.getLatestMatchup(userId);
+
+    res.status(200).json({
+      gameId: data.gameId,
+      me: me[0],
+      opponents,
+      startTime: data.gameStartTime,
+      confirmed: _data ? Number(_data.game_id) === data.gameId : false,
+    });
   }
 
-  async getDex(req, res, next) {
-    try {
-      const { id } = req.params;
-      const shared = req.query.shared || false;
+  async getDex(req, res) {
+    const { id } = req.params;
 
-      const data = await this.model.findOne({
-        where: {
-          id: Number(id),
-        },
-        include: {
-          championA: true,
-          championB: true,
-        },
-      });
+    const data = await this.model.getDex(id);
 
-      if (data.user_id !== req.user.id) {
-        throw new ErrorHandler(404, 'No matchups found for the given user.');
-      }
-
-      res.status(200).json(data);
-    } catch (err) {
-      next(err);
+    if (data.user_id !== req.user.id) {
+      throw new NotFoundError('no matchups found for the given user');
     }
+
+    res.status(200).json(data);
   }
 
   async getLatest(req, res, next) {
@@ -240,113 +129,44 @@ class MatchupController extends Controller {
     }
   }
 
-  async getMatchups(req, res, next) {
-    try {
-      const { champion, championB, lane } = req.query;
-      const matchups = await db.matchup.findMany({
-        where: {
-          championA: {
-            name: champion,
-          },
-          championB: {
-            name: {
-              startsWith: championB,
-            },
-          },
-          lane: lane ? lane.toLowerCase().trim() : undefined,
-          user_id: Number(req.user.id),
-        },
-        include: {
-          championA: true,
-          championB: true,
-        },
-      });
+  async getMatchups(req, res) {
+    const { id: userId } = req.user;
+    const matchups = await this.model.getMatchups(userId, req.query);
 
-      res.json(matchups);
-    } catch (err) {
-      next(err);
-    }
+    const formattedJson = this.formatters.getPlayedMatchups(matchups);
+    res.status(200).json(formattedJson);
   }
 
-  async syncAll(req, res, next) {
-    try {
-      const { id, summoner } = req.user;
-      const [data] = await db.$queryRaw(`
-      SELECT "Matchup"."game_id"
-      FROM "Matchup" 
-      WHERE 
-        "Matchup"."games_lost" + "Matchup"."games_won" < "Matchup"."games_played"
-        AND "Matchup"."user_id" = ${id}`);
+  async syncAll(req, res) {
+    const { id, summoner } = req.user;
 
-      const syncedData = await sync(id, summoner.accountId, summoner.region);
+    const syncedData = await sync(id, summoner.accountId, summoner.region);
 
-      res.status(200).json(syncedData);
-    } catch (err) {
-      next(err);
-    }
+    res.status(200).json(syncedData);
   }
 
-  async updatePrivate(req, res, next) {
-    const { id } = req.user;
-    const { lane, champion_id, opponent_id, private: _private } = req.query;
-    try {
-      await db.matchup.update({
-        where: {
-          champion_id_opponent_id_lane_user_id: {
-            lane: lane.trim(),
-            champion_id: Number(champion_id),
-            opponent_id: Number(opponent_id),
-            user_id: Number(id),
-          },
-        },
-        data: {
-          private: _private === 'true',
-        },
-      });
+  async updatePrivate(req, res) {
+    const { id: userId } = req.user;
 
-      res.sendStatus(204);
-    } catch (err) {
-      next(err);
+    if (req.query.all === 'true') {
+      await this.model.updatePrivateBulk(userId, req.query);
+    } else {
+      await this.model.updatePrivate(userId, req.query);
     }
+
+    res.sendStatus(204);
   }
 
   async revertMatchup(req, res, next) {
-    try {
-      const { id } = req.user;
-      const { gamesPlayed, champion_id, opponent_id, lane } = req.query;
+    const { id: userId } = req.user;
 
-      if (gamesPlayed <= 1) {
-        await db.matchup.delete({
-          where: {
-            champion_id_opponent_id_lane_user_id: {
-              lane: lane.trim(),
-              champion_id: Number(champion_id),
-              opponent_id: Number(opponent_id),
-              user_id: Number(id),
-            },
-          },
-        });
-      } else {
-        await db.matchup.update({
-          where: {
-            champion_id_opponent_id_lane_user_id: {
-              lane: lane.trim(),
-              champion_id: Number(champion_id),
-              opponent_id: Number(opponent_id),
-              user_id: Number(id),
-            },
-          },
-          data: {
-            games_played: gamesPlayed - 1,
-            game_id: undefined,
-          },
-        });
-      }
-
-      res.sendStatus(204);
-    } catch (err) {
-      next(err);
+    if (req.query.gamesPlayed <= 1) {
+      await this.model.deleteMatchup(userId, req.query);
+    } else {
+      await this.model.revertMatchup(userId, req.query);
     }
+
+    res.sendStatus(204);
   }
 }
 

@@ -18,7 +18,7 @@ export const Form = styled.form`
     props.champion &&
     css`
       width: 100%;
-      max-width: 100%;
+      max-width: 968px;
     `}
 
   ${(props) =>
@@ -28,6 +28,14 @@ export const Form = styled.form`
       padding: 0 1.5rem;
     `}
 
+  ${(props) =>
+    props.notes &&
+    css`
+      padding: 0;
+      margin-top: 2rem;
+    `}
+    
+    
   @media screen and (min-width: 968px) {
     width: 100%;
 
@@ -35,7 +43,8 @@ export const Form = styled.form`
       props.champion &&
       css`
         display: flex;
-        max-width: 700px;
+        align-items: center;
+        width: auto;
       `}
 
     ${(props) =>
@@ -44,6 +53,7 @@ export const Form = styled.form`
         padding: 0;
         max-width: 100%;
       `}
+
 
     ${(props) =>
       props.tweak &&
@@ -60,6 +70,7 @@ export const Form = styled.form`
       `}
   }
 `;
+
 export const Group = styled.div`
   display: flex;
   flex-flow: column nowrap;
@@ -69,17 +80,24 @@ export const Group = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 1rem;
+  width: ${(props) => (props.home ? "100%" : "auto")};
 
   ${(props) =>
     props.champion &&
     css`
-      background: #2c3a4a;
+      margin-top: 0.3rem;
+      background: #23303f;
+      margin-top: 2rem;
+      width: 100%;
 
       @media screen and (min-width: 968px) {
         margin-bottom: 0;
-        margin-right: 1.5rem;
-        border: 1px solid #425469;
-        min-width: 250px;
+        margin-top: 0;
+        min-width: 350px;
+        border-radius: 6px;
+        height: 80px;
+        min-width: 320px;
+        max-width: 400px;
       }
     `}
 
@@ -102,11 +120,32 @@ export const Group = styled.div`
         opacity: 1;
       }
     `}
+
+    ${(props) =>
+    props.notes &&
+    css`
+      opacity: 1;
+      background: #18222f;
+      color: #617e9f;
+      border-radius: 6px;
+      margin-top: 0;
+      margin-bottom: 2rem;
+    `}
+
+    ${(props) =>
+    props.auth &&
+    css`
+      background: #142230;
+    `}
 `;
+
 export const Label = styled.label`
+  ${({ home }) => css`
+    margin-bottom: ${home ? 0.5 : 0.3}rem;
+  `}
+
   font-weight: bold;
   font-size: 14px;
-  margin-bottom: 0.3rem;
   margin-left: 0.1rem;
   cursor: text;
   padding: 0 1rem;
@@ -131,6 +170,13 @@ export const Input = styled.input`
     css`
       width: 100%;
     `}
+
+  ${(props) =>
+    props.champion &&
+    css`
+      margin-top: 0.3rem;
+    `}
+
   ::placeholder {
     text-transform: uppercase;
     color: ${(props) =>

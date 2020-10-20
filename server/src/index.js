@@ -1,7 +1,6 @@
 const { resolve } = require('path');
 require('dotenv').config({ path: resolve(__dirname, '../.env') });
 
-const path = require('path');
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const { db, validateConnection } = require('./config/database');
@@ -10,9 +9,13 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const { handleError } = require('./helpers/error');
+const csurf = require('csurf');
+const { CronJob } = require('cron');
 
 const Application = require('./Application');
 const Riot = require('./lib/Riot');
+
+const RiotAssetsJob = new CronJob('* * 2 * * *', () => Riot.syncStaticData());
 
 const app = new Application({
   server: express,
@@ -22,6 +25,7 @@ const app = new Application({
     cookieParser,
     cors,
     rateLimit,
+    csurf,
   },
   routes: {
     api: apiRoutes,
@@ -34,7 +38,10 @@ const app = new Application({
 
 (async () => {
   await app.initialize((app) => {
+    // On restart sync data
     Riot.syncStaticData();
+    // Then every other hour check if our data is still up to date.
+    RiotAssetsJob.start();
   });
 })();
 

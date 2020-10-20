@@ -1,27 +1,41 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
 
 export const Container = styled.header`
+  ${({ theme }) => css`
+    background: ${theme.header};
+  `}
+
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  flex-flow: column nowrap;
   height: 100px;
-  background: ${(props) => props.theme.header};
-  border-bottom: 1px solid ${(props) => props.theme.border};
-  padding: 0 2rem;
 
   @media screen and (min-width: 968px) {
     position: fixed;
     top: 0;
     z-index: 10000;
     left: 0;
+    height: 175px;
     width: 100%;
   }
 `;
 
+Container.Inner = styled.div`
+  width: 80%;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 100%;
+`;
+
+Container.Bottom = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+`;
+
 Container.Brand = styled(Link)`
-  margin: 0;
+  margin: 0 0 0 0.6rem;
 `;
 
 Container.Brand.Image = styled.img``;
@@ -33,14 +47,22 @@ Container.Buttons = styled.div`
   }
 `;
 
-Container.Account = styled.div`
-  border-bottom: 2px solid ${(props) => props.theme.primary};
+export const LinkIcon = styled(Link)`
+  ${({ theme }) => css`
+    color: ${theme.secondary};
+  `}
+
+  margin-right: 1rem;
+  transition: opacity 0.15s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
-Container.Name = styled(Link)`
-  display: block;
-  color: ${(props) => props.theme.secondary};
-  text-decoration: none;
-  margin: 0;
-  padding: 0 0 0.25rem 0;
+export const Links = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

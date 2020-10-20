@@ -3,31 +3,29 @@ const Controller = require('../controllers/User.controller');
 const Auth = require('../../lib/Auth');
 const { createValidator } = require('express-joi-validation');
 const { userLogin, userRegister } = require('../validators/User.validators');
-const { db } = require('../../config/database');
 const formatters = require('../formatters/user.formatters');
+const model = require('../models/User.model');
+const wrap = require('../../helpers/wrap');
 
 const validator = createValidator();
 
 const router = express.Router();
-const controller = new Controller({
-  model: db.user,
-  auth: Auth,
-  formatters,
-});
+const controller = new Controller(model, formatters, Auth);
 
-router.get('/', Auth.authenticateToken, controller.all);
-router.get('/region', controller.getRegions);
+router.get('/', Auth.authenticateToken, Auth.isAdmin, wrap(controller.all));
+router.get('/region', wrap(controller.getRegions));
 
-router.post('/register', validator.body(userRegister), controller.create);
-router.post('/login', validator.body(userLogin), controller.login);
+router.post('/register', validator.body(userRegister), wrap(controller.create));
+router.post('/login', validator.body(userLogin), wrap(controller.login));
 
-router.delete('/logout', Auth.validateRefreshToken, controller.destroy);
-router.get('/refresh', Auth.validateRefreshToken, controller.refresh);
+router.delete('/logout', Auth.validateRefreshToken, wrap(controller.destroy));
+router.get('/renew', Auth.validateRefreshToken, wrap(controller.renew));
+router.get('/refresh', Auth.validateRefreshToken, wrap(controller.refresh));
 
 router.post(
   '/summoner',
   Auth.authenticateToken,
-  controller.addSummmonerAccount
+  wrap(controller.addSummmonerAccount)
 );
 
 module.exports = router;

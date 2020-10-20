@@ -1,7 +1,6 @@
-import React, { useEffect, createContext, useContext, useState } from "react";
-import * as Timer from "../helpers/gameTimer";
-import { getToken } from "../helpers/getToken";
+import React, { createContext, useContext, useState } from "react";
 import { build, loadAssets } from "../helpers/loadImages";
+import makeRequest from "../helpers/makeRequest";
 
 const matchContext = createContext();
 
@@ -18,23 +17,27 @@ export const useMatch = () => {
   return useContext(matchContext);
 };
 
+async function fetchFindMatch() {
+  return makeRequest(`/api/matchup/find`);
+}
+
+async function fetchLatest(id) {
+  const res = await makeRequest(`/api/matchup/latest/${id}`);
+  return res.json();
+}
+
 const useMatchProvider = () => {
   const [match, setMatch] = useState(null);
-  const [timer, setTimer] = useState("0:00");
+  const [btnText, setBtnText] = useState("Go To Match");
+  const [dex, setDex] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const findMatch = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/matchup/find`, {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: getToken(),
-        },
-        credentials: "include",
-      });
+      const res = await fetchFindMatch();
       const data = await res.json();
+
       if (data.hasOwnProperty("status")) {
         setMatch(null);
       } else {
@@ -59,15 +62,9 @@ const useMatchProvider = () => {
         game_id: String(match.gameId),
       };
 
-      const res = await fetch(`/api/matchup/create`, {
+      const res = await makeRequest(`/api/matchup/create`, {
         method: "POST",
         body: JSON.stringify(payload),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: getToken(),
-        },
-        credentials: "include",
       });
       const { id, confirmed } = await res.json();
       setMatch((old) => ({
@@ -80,6 +77,14 @@ const useMatchProvider = () => {
     }
   };
 
+  async function finishMatch(match) {
+    try {
+      const data = await fetchLatest(match.gameId);
+      return data;
+    } catch (_) {
+      return null;
+    }
+  }
   const revertMatch = (history) => {
     setMatch((currentValue) => ({
       ...currentValue,
@@ -89,37 +94,21 @@ const useMatchProvider = () => {
     history.push(`/match/${match.matchId}`);
   };
 
-  useEffect(() => {
-    if (match && match.confirmed) {
-      const timer = setInterval(() => {
-        const miliseconds = Timer.calculateGameTime(match.startTime + 30000);
-        const { formatted } = Timer.formatTime(miliseconds);
-        setTimer(formatted);
-      }, 1000);
-
-      return () => {
-        clearInterval(timer);
-        setTimer("0:00");
-      };
-    }
-  }, [match]);
-
-  useEffect(() => {
-    return () => {
-      setMatch(null);
-    };
-  }, []);
-
   return {
     match,
     setMatch,
+    dex,
+    setDex,
+    setLoading,
     loading,
     findMatch,
     createMatchup,
     hasMatch: !!match,
     confirmed: match && match.confirmed,
-    timer,
-    minutes: timer.split(":")[0],
     revertMatch,
+    isLive: (dex) => dex && match && Number(dex.game_id) === match.gameId,
+    finishMatch,
+    btnText,
+    setBtnText,
   };
 };

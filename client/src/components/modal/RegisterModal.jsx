@@ -56,7 +56,6 @@ const RegisterModal = () => {
     const { errors, valid } = validateForm(values, REGISTER_FORM);
     if (valid) {
       const accountCreated = await register(values);
-      console.log(accountCreated);
       if (!accountCreated) {
         setErrorMessage("Account or email already exists.");
       }
@@ -101,7 +100,7 @@ const RegisterModal = () => {
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
-        <Group>
+        <Group auth>
           <Label>username</Label>
           <Input
             type="text"
@@ -112,7 +111,7 @@ const RegisterModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Group>
+        <Group auth>
           <Label>email address</Label>
           <Input
             type="text"
@@ -122,7 +121,7 @@ const RegisterModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Group>
+        <Group auth>
           <Label>password</Label>
           <Input
             type="password"
@@ -132,7 +131,7 @@ const RegisterModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Group>
+        <Group auth>
           <Label>retype password</Label>
           <Input
             type="password"

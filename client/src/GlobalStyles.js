@@ -41,7 +41,6 @@ export const scaleAnimationOut = keyframes`
     opacity: 0;
   }
 `;
-// fade-and-slide-in
 
 const GenericButton = css`
   outline: none;
@@ -86,6 +85,13 @@ const GenericButton = css`
     css`
       color: #83a2c5;
       background: #232f3e;
+      margin-left: 1rem;
+    `}
+
+  ${(props) =>
+    props.marginRight &&
+    css`
+      margin-right: ${(props) => props.marginRight};
     `}
     
   ${(props) =>
@@ -132,6 +138,15 @@ export const Button = styled.button`
       background: #d23f6f;
       color: #1b0009;
     `}
+
+    ${(props) =>
+    props["hide-xs"] &&
+    css`
+      display: none;
+      @media screen and (min-width: 968px) {
+        display: flex;
+      }
+    `}
 `;
 
 export default createGlobalStyle`
@@ -148,11 +163,6 @@ export default createGlobalStyle`
       background-color: ${(props) => props.theme.background};
       color: ${(props) => props.theme.third};
       font-family: 'Poppins', sans-serif;
-      padding-bottom: calc(100px + 3rem);
-
-      @media screen and (min-width: 1200px) {
-        padding-bottom: 0;
-      }
     }
 
     .searchbar-icon {
@@ -177,8 +187,8 @@ export default createGlobalStyle`
     select:-webkit-autofill:focus {
       border: none !important;
       -webkit-text-fill-color: #B8D0EC !important;
-      -webkit-box-shadow: 0 0 0px 1000px #27303a inset !important;
-      box-shadow: 0 0 0px 1000px #27303a inset !important;
+      -webkit-box-shadow: 0 0 0px 1000px #142230 inset !important;
+      box-shadow: 0 0 0px 1000px #142230 inset !important;
       transition: background-color 5000s ease-in-out 0s !important;
     }
    
@@ -213,17 +223,24 @@ export default createGlobalStyle`
       cursor: pointer;
       margin-right: .3rem;
       margin-bottom: .15rem;
+      color: #007aff;
 
       @media screen and (min-width: 1200px) {
         margin-right: .66rem;
       }
     }
+
+    .Toastify__toast--info {
+      background: #007aff;
+    }
+    
     .Toastify__toast-container {
+      text-align: center;
       z-index: 9999999999;
     }
 
     .highlightNote {
-       color: ${(props) => props.theme.primary};
+       color: #62adff;
        background: transparent;
     }
 `;

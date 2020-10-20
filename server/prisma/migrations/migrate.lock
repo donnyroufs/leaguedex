@@ -9,3 +9,5 @@
 20200820200838-add-assets-to-champion
 20200822210619-add_private_field_to_matchup
 20200911192543-make_game_id_nullable
+20201010183828-add-types-to-notes
+20201010195617-add-champion-id-to-note

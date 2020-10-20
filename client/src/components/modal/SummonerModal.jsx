@@ -17,16 +17,25 @@ import { useModal } from "../../hooks/useModal";
 import { useAuth } from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import decode from "jwt-decode";
+import makeRequest from "../../helpers/makeRequest";
 
 const initialValues = {
   summonerName: "",
   region: "euw1",
 };
 
-const fetchRegions = async () => {
-  const res = await fetch("/api/user/region");
+async function fetchRegions() {
+  const res = await makeRequest(`/api/user/region`);
   return res.json();
-};
+}
+
+async function fetchSummoner(data) {
+  const res = await makeRequest(`/api/user/summoner`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+  return res.json();
+}
 
 const SummonerModal = () => {
   const [loading, setLoading] = useState(false);
@@ -34,7 +43,7 @@ const SummonerModal = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [regions, setRegions] = useState([]);
 
-  const { isAuthenticated, getToken, user, setUser, refreshToken } = useAuth();
+  const { isAuthenticated, user, setUser, refreshToken } = useAuth();
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const innerRef = useRef();
 
@@ -59,17 +68,7 @@ const SummonerModal = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await fetch("/api/user/summoner", {
-        method: "POST",
-        body: JSON.stringify(values),
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          authorization: getToken(),
-        },
-      });
-      const { accessToken } = await response.json();
+      const { accessToken } = await fetchSummoner(values);
       const { data } = decode(accessToken);
 
       setUser({
@@ -126,7 +125,7 @@ const SummonerModal = () => {
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
-        <Group>
+        <Group auth>
           <Label>summoner name</Label>
           <Input
             type="text"
@@ -139,7 +138,7 @@ const SummonerModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Group>
+        <Group auth>
           <Label>Region</Label>
           <Select onChange={handleOnChange} name="region" value={values.region}>
             {Object.entries(regions).map(([region, value]) => (

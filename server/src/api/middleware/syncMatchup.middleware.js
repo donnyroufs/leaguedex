@@ -1,6 +1,5 @@
 const Riot = require('../../lib/Riot');
 const { db } = require('../../config/database');
-const { ErrorHandler } = require('../../helpers/error');
 
 exports.sync = async (userId, accountId, region) => {
   let updated = false;
@@ -16,7 +15,11 @@ exports.sync = async (userId, accountId, region) => {
   });
 
   if (!data) {
-    throw new ErrorHandler(404, 'Not found.');
+    return {
+      data: null,
+      inSync: true,
+      updated: true,
+    };
   }
 
   const total = data.games_won + data.games_lost;

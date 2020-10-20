@@ -5,31 +5,9 @@ import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../hooks/useModal";
 import { useMatch } from "../../hooks/useMatch";
 import { useHistory } from "react-router";
-import { getToken } from "../../helpers/getToken";
 import { BeatLoader } from "react-spinners";
 
 const AVERAGE_GAMELENGTH = 35;
-
-const fetchLatest = async (id) => {
-  const res = await fetch(`/api/matchup/latest/${id}`, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: getToken(),
-    },
-    credentials: "include",
-  });
-  return res.json();
-};
-
-const finishMatch = async (match) => {
-  try {
-    const data = await fetchLatest(match.gameId);
-    return data;
-  } catch (err) {
-    return null;
-  }
-};
 
 const Menu = () => {
   const history = useHistory();
@@ -42,8 +20,8 @@ const Menu = () => {
     match,
     setMatch,
     confirmed,
-    timer,
     minutes,
+    finishMatch,
   } = useMatch();
 
   const handleLogout = (e) => {
@@ -89,8 +67,8 @@ const Menu = () => {
               Register
             </Button>
             <Button
-              secondary
               menu
+              logout
               onClick={() => modal.setModal("login")}
               style={{ marginLeft: "1.25rem" }}
             >
@@ -136,11 +114,7 @@ const Menu = () => {
                         aboveAverage={minutes >= AVERAGE_GAMELENGTH}
                         onClick={handleNavigate}
                       >
-                        {timer.split(":")[1] !== "00" ? (
-                          timer
-                        ) : (
-                          <BeatLoader color="#B8D0EC" />
-                        )}
+                        in a match
                       </Button>
                     )}
                   </>

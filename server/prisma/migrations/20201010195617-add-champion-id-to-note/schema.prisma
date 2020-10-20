@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String    @unique
+  username    String    @unique
+  password    String
+  permissions Int       @default(1)
+  summoner    Summoner?
+  matchups    Matchup[]
+  Note        Note[]
+  token       Token?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Summoner {
+  id        Int      @id @default(autoincrement())
+  accountId String
+  name      String
+  level     Int
+  region    String   @default("euw")
+  user_id   Int?
+  user      User?    @relation(fields: [user_id], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Matchup {
+  id           Int      @unique @default(autoincrement())
+  games_played Int      @default(0)
+  games_won    Int?     @default(0)
+  games_lost   Int?     @default(0)
+  private      Boolean  @default(true)
+  game_id      String?
+  champion_id  Int
+  opponent_id  Int
+  lane         String
+  championA    Champion @relation("matchup_champion_id", fields: [champion_id], references: [id])
+  championB    Champion @relation("matchup_opponent_id", fields: [opponent_id], references: [id])
+  Note         Note[]
+  user         User     @relation(fields: [user_id], references: [id])
+  user_id      Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@id([champion_id, opponent_id, lane, user_id])
+}
+
+model Note {
+  id          Int      @id @default(autoincrement())
+  tags        String?
+  content     String
+  champion_id Int?
+  matchup_id  Int
+  matchup     Matchup  @relation(fields: [matchup_id], references: [id])
+  user_id     Int
+  user        User     @relation(fields: [user_id], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Champion {
+  id                  Int       @id
+  name                String    @unique
+  image               String
+  splash              String
+  icon                String
+  version             String
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  matchup_champion_id Matchup[] @relation("matchup_champion_id")
+  matchup_opponent_id Matchup[] @relation("matchup_opponent_id")
+}
+
+model Token {
+  id        Int      @id @default(autoincrement())
+  token     String
+  user_id   Int      @unique
+  user      User     @relation(fields: [user_id], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
