@@ -68,7 +68,9 @@ class Riot {
   static async getSummoner(summonerName, region = this.regions.EUW) {
     try {
       const { data } = await axios.get(
-        `https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summonerName}?api_key=${process.env.API_KEY}`
+        `https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURI(
+          summonerName
+        )}?api_key=${process.env.API_KEY}`
       );
       return data;
     } catch (err) {
