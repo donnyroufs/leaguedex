@@ -60,8 +60,8 @@ class Application {
       next();
     });
 
-    this.app.use('/api/user/login', this.middleware.rateLimit(this.userApi));
-    this.app.use('/api/user/register', this.middleware.rateLimit(this.userApi));
+    // this.app.use('/api/user/login', this.middleware.rateLimit(this.userApi));
+    // this.app.use('/api/user/register', this.middleware.rateLimit(this.userApi));
     this.app.use(this.express.json());
     this.app.use(this.middleware.morgan('tiny'));
     this.app.use(this.middleware.cors(corsOptions));
