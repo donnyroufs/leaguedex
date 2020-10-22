@@ -3,7 +3,12 @@ import StatusBar from "../statusbar/StatusBarContainer";
 
 import { Container, LinkIcon, Links } from "./Header.styles";
 import { Button } from "../../GlobalStyles";
-import { FaQuestionCircle, FaUser, FaTachometerAlt } from "react-icons/fa";
+import {
+  FaQuestionCircle,
+  FaUser,
+  FaTachometerAlt,
+  FaTwitter,
+} from "react-icons/fa";
 
 const Header = ({
   isAuthenticated,
@@ -42,6 +47,12 @@ const Header = ({
                   {/* <LinkIcon to="/settings">
                     <FaCog fontSize="1.5rem" />
                   </LinkIcon> */}
+                  <LinkIcon.External
+                    href="https://twitter.com/league_dex"
+                    target="_blank"
+                  >
+                    <FaTwitter fontSize="1.5rem" />
+                  </LinkIcon.External>
                   {isAdmin && (
                     <LinkIcon to={`/admin/dashboard`}>
                       <FaTachometerAlt fontSize="1.5rem" />

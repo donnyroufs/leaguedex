@@ -61,6 +61,20 @@ export const LinkIcon = styled(Link)`
   }
 `;
 
+LinkIcon.External = styled.a`
+  ${({ theme }) => css`
+    color: ${theme.secondary};
+  `}
+
+  margin-right: 1rem;
+  transition: opacity 0.15s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
 export const Links = styled.div`
   display: flex;
   justify-content: center;
