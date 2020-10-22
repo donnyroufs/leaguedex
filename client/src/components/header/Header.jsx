@@ -42,17 +42,17 @@ const Header = ({
               <LinkIcon to="/about">
                 <FaQuestionCircle fontSize="1.5rem" />
               </LinkIcon>
+              <LinkIcon.External
+                href="https://twitter.com/league_dex"
+                target="_blank"
+              >
+                <FaTwitter fontSize="1.5rem" />
+              </LinkIcon.External>
               {isAuthenticated && (
                 <>
                   {/* <LinkIcon to="/settings">
                     <FaCog fontSize="1.5rem" />
                   </LinkIcon> */}
-                  <LinkIcon.External
-                    href="https://twitter.com/league_dex"
-                    target="_blank"
-                  >
-                    <FaTwitter fontSize="1.5rem" />
-                  </LinkIcon.External>
                   {isAdmin && (
                     <LinkIcon to={`/admin/dashboard`}>
                       <FaTachometerAlt fontSize="1.5rem" />
