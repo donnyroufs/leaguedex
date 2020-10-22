@@ -59,7 +59,7 @@ const HomeContainer = () => {
   return (
     <>
       <Helmet>
-        <title>Leagudex</title>
+        <title>Leaguedex</title>
       </Helmet>
       <Home
         champions={champions}

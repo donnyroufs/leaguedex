@@ -6,7 +6,7 @@ const NotFound = () => {
   return (
     <Container>
       <Helmet>
-        <title>Leagudex - Not Found.</title>
+        <title>Leaguedex - Not Found.</title>
       </Helmet>
       <p>Sorry couldn't find the page you were looking for!</p>
     </Container>
