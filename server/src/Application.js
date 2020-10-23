@@ -14,7 +14,7 @@ class Application {
     this.inProduction = process.env.NODE_ENV === 'production';
     this.userApi = {
       windowMs: 15 * 60 * 1000,
-      max: 10,
+      max: 15,
     };
     this._setMiddleware();
 
@@ -60,8 +60,9 @@ class Application {
       next();
     });
 
-    // this.app.use('/api/user/login', this.middleware.rateLimit(this.userApi));
-    // this.app.use('/api/user/register', this.middleware.rateLimit(this.userApi));
+    this.app.set('trust proxy', 1);
+    this.app.use('/api/user/login', this.middleware.rateLimit(this.userApi));
+    this.app.use('/api/user/register', this.middleware.rateLimit(this.userApi));
     this.app.use(this.express.json());
     this.app.use(this.middleware.morgan('tiny'));
     this.app.use(this.middleware.cors(corsOptions));
