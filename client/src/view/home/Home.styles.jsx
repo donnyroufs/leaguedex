@@ -7,7 +7,6 @@ export const Container = styled.section`
   width: 80%;
   margin: 0 auto;
   max-width: 1400px;
-  margin-bottom: 1.5rem;
 
   ${(props) =>
     props.secondary &&
