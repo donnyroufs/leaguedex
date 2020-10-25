@@ -11,6 +11,7 @@ const cors = require('cors');
 const { handleError } = require('./helpers/error');
 const csurf = require('csurf');
 const { CronJob } = require('cron');
+const { sendMessage } = require('./lib/Mail');
 
 const Application = require('./Application');
 const Riot = require('./lib/Riot');
@@ -37,11 +38,12 @@ const app = new Application({
 });
 
 (async () => {
-  await app.initialize((app) => {
+  await app.initialize(async (app) => {
     // On restart sync data
     Riot.syncStaticData();
     // Then every other hour check if our data is still up to date.
     RiotAssetsJob.start();
+    sendMessage();
   });
 })();
 
