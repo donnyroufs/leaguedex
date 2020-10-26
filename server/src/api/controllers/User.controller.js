@@ -6,8 +6,10 @@ const {
 } = require('../../helpers/error');
 const { REFRESH_TOKEN } = require('../../helpers/constants');
 const Riot = require('../../lib/Riot');
-const { db } = require('../../config/database');
 const Auth = require('../../lib/Auth');
+const { sendEmail } = require('../../config/mail');
+const { emailConfirmation } = require('../../lib/mail.templates');
+const { v4 } = require('uuid');
 
 class UserController extends Controller {
   constructor(...props) {
@@ -20,6 +22,7 @@ class UserController extends Controller {
     this.refresh = this.refresh.bind(this);
     this.addSummmonerAccount = this.addSummmonerAccount.bind(this);
     this.getRegions = this.getRegions.bind(this);
+    this.verifyEmail = this.verifyEmail.bind(this);
   }
 
   async all(_, res) {
@@ -32,7 +35,20 @@ class UserController extends Controller {
     const { username, password, email } = req.body;
 
     const hashedPassword = await Auth.hashPassword(password);
-    await this.model.create({ username, hashedPassword, email });
+    const userId = await this.model.create({
+      username,
+      hashedPassword,
+      email,
+    });
+
+    const token = v4();
+    await this.model.createEmailToken(userId, token);
+
+    await sendEmail(
+      email,
+      'Confirm your email address',
+      emailConfirmation(`https://leaguedex.com/verify/email?token=${token}`)
+    );
 
     res.sendStatus(201);
   }
@@ -57,6 +73,7 @@ class UserController extends Controller {
         id: user.id,
         username: user.username,
         summoner: user.summoner,
+        active: user.active,
         permissions: user.permissions,
       },
     };
@@ -160,6 +177,19 @@ class UserController extends Controller {
   getRegions(_, res) {
     const data = Riot.getRegions();
     res.status(200).json(data);
+  }
+
+  async verifyEmail(req, res) {
+    const { token } = req.query;
+
+    const { user_id: userId } = await this.model.getUserByToken(token);
+
+    await this.model.removeVerificationToken(token);
+    await this.model.updateOne(userId, {
+      active: true,
+    });
+
+    res.sendStatus(204);
   }
 }
 
