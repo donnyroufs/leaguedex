@@ -58,6 +58,13 @@ const routes = [
     permissions: 1,
   },
   {
+    exact: true,
+    path: "/verify/email",
+    name: "verify",
+    component: view.Verify,
+    permissions: 1,
+  },
+  {
     exact: false,
     path: "*",
     name: "",

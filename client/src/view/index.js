@@ -6,6 +6,7 @@ import SharedDex from "./dex/SharedDexContainer";
 import Profile from "./profile/ProfileContainer";
 import Dashboard from "./dashboard/DashboardContainer";
 import About from "./about/AboutContainer";
+import Verify from "./verify/VerifyContainer";
 import NotFound from "./notFound/NotFound";
 
 export {
@@ -17,5 +18,6 @@ export {
   Profile,
   SharedDex,
   About,
+  Verify,
   NotFound,
 };
