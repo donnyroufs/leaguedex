@@ -11,3 +11,8 @@
 20200911192543-make_game_id_nullable
 20201010183828-add-types-to-notes
 20201010195617-add-champion-id-to-note
+20201025215229-add_email_verification_to_user
+20201026081929-add_token_to_verification
+20201026082932-make_user_optional
+20201026083108-fix_user
+20201026090823-add_email_verification_for_users
