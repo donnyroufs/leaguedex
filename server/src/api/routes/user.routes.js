@@ -15,6 +15,7 @@ const controller = new Controller(model, formatters, Auth);
 router.get('/', Auth.authenticateToken, Auth.isAdmin, wrap(controller.all));
 router.get('/region', wrap(controller.getRegions));
 
+router.patch('/verify/email', wrap(controller.verifyEmail));
 router.post('/register', validator.body(userRegister), wrap(controller.create));
 router.post('/login', validator.body(userLogin), wrap(controller.login));
 
