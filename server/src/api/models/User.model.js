@@ -60,6 +60,19 @@ class UserModel extends Model {
     return resource;
   }
 
+  async findByEmail(email) {
+    const resource = await this.db.findOne({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return resource;
+  }
+
   async createSummoner(userId, { id, name, summonerLevel, region }) {
     const newResource = await db.summoner.create({
       data: {
@@ -118,6 +131,17 @@ class UserModel extends Model {
     await db.user_verification.delete({
       where: {
         token,
+      },
+    });
+  }
+
+  async changePassword(userId, hashedPassword) {
+    await db.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: hashedPassword,
       },
     });
   }
