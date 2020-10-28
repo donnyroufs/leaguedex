@@ -14,6 +14,7 @@ const VerifyContainer = ({ history, location }) => {
   useEffect(() => {
     verifyEmail(urlParams.get("token"))
       .then((res) => {
+        console.log(res.status);
         if (res.status === 204) {
           toast.info("Email address successfully verified, you can now login!");
           history.push("/");
@@ -28,7 +29,8 @@ const VerifyContainer = ({ history, location }) => {
         toast.error("Token is not valid");
         history.push("/");
       });
-  }, [history, urlParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return <Verify />;
 };
