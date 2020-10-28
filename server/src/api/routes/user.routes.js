@@ -16,7 +16,7 @@ const validator = createValidator();
 const router = express.Router();
 const controller = new Controller(model, formatters, Auth);
 
-router.get('/', Auth.authenticateToken, Auth.isAdmin, wrap(controller.all));
+router.get('/renew', Auth.validateRefreshToken, wrap(controller.renew));
 router.get('/region', wrap(controller.getRegions));
 
 router.get('/:email', wrap(controller.sendResetPasswordEmail));
@@ -30,7 +30,6 @@ router.post('/register', validator.body(userRegister), wrap(controller.create));
 router.post('/login', validator.body(userLogin), wrap(controller.login));
 
 router.delete('/logout', Auth.validateRefreshToken, wrap(controller.destroy));
-router.get('/renew', Auth.validateRefreshToken, wrap(controller.renew));
 router.get('/refresh', Auth.validateRefreshToken, wrap(controller.refresh));
 
 router.post(
@@ -38,5 +37,7 @@ router.post(
   Auth.authenticateToken,
   wrap(controller.addSummmonerAccount)
 );
+
+router.get('/', Auth.authenticateToken, Auth.isAdmin, wrap(controller.all));
 
 module.exports = router;
