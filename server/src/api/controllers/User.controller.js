@@ -6,8 +6,14 @@ const {
 } = require('../../helpers/error');
 const { REFRESH_TOKEN } = require('../../helpers/constants');
 const Riot = require('../../lib/Riot');
-const { db } = require('../../config/database');
 const Auth = require('../../lib/Auth');
+const { sendEmail } = require('../../config/mail');
+const {
+  emailConfirmation,
+  resetPassword: resetPasswordTemplate,
+} = require('../../lib/mail.templates');
+const { v4 } = require('uuid');
+const { db } = require('../../config/database');
 
 class UserController extends Controller {
   constructor(...props) {
@@ -20,6 +26,9 @@ class UserController extends Controller {
     this.refresh = this.refresh.bind(this);
     this.addSummmonerAccount = this.addSummmonerAccount.bind(this);
     this.getRegions = this.getRegions.bind(this);
+    this.verifyEmail = this.verifyEmail.bind(this);
+    this.sendResetPasswordEmail = this.sendResetPasswordEmail.bind(this);
+    this.resetPassword = this.resetPassword.bind(this);
   }
 
   async all(_, res) {
@@ -28,11 +37,57 @@ class UserController extends Controller {
     res.status(200).json(formattedData);
   }
 
+  async sendResetPasswordEmail(req, res) {
+    const { email } = req.params;
+
+    const foundUser = await this.model.findByEmail(email);
+
+    if (!foundUser) {
+      throw new NotFoundError('No user found with the given email');
+    }
+
+    const token = v4();
+
+    await db.user_reset_password.create({
+      data: {
+        token: token,
+        user: {
+          connect: {
+            id: foundUser.id,
+          },
+        },
+      },
+    });
+
+    await sendEmail(
+      email,
+      'Reset your password',
+      resetPasswordTemplate(
+        `https://leaguedex.com?action=reset_password&token=${token}`
+      )
+    );
+
+    res.sendStatus(200);
+  }
+
   async create(req, res) {
     const { username, password, email } = req.body;
 
     const hashedPassword = await Auth.hashPassword(password);
-    await this.model.create({ username, hashedPassword, email });
+    const userId = await this.model.create({
+      username,
+      hashedPassword,
+      email,
+    });
+
+    const token = v4();
+    await this.model.createEmailToken(userId, token);
+
+    await sendEmail(
+      email,
+      'Confirm your email address',
+      emailConfirmation(`https://leaguedex.com/verify/email?token=${token}`)
+    );
 
     res.sendStatus(201);
   }
@@ -52,11 +107,16 @@ class UserController extends Controller {
       throw new NotAuthorized('username or password is not valid');
     }
 
+    if (!user.active) {
+      throw new NotAuthorized('Your e-mail is not verified');
+    }
+
     const payload = {
       data: {
         id: user.id,
         username: user.username,
         summoner: user.summoner,
+        active: user.active,
         permissions: user.permissions,
       },
     };
@@ -160,6 +220,46 @@ class UserController extends Controller {
   getRegions(_, res) {
     const data = Riot.getRegions();
     res.status(200).json(data);
+  }
+
+  async verifyEmail(req, res) {
+    const { token } = req.query;
+
+    const { user_id: userId } = await this.model.getUserByToken(token);
+
+    await this.model.removeVerificationToken(token);
+    await this.model.updateOne(userId, {
+      active: true,
+    });
+
+    res.sendStatus(204);
+  }
+
+  async resetPassword(req, res) {
+    const { token, password } = req.body;
+
+    const foundUser = await db.user_reset_password.findOne({
+      where: {
+        token,
+      },
+    });
+
+    if (!foundUser) {
+      throw new NotFoundError('User does not seem to have a valid token');
+    }
+
+    const hashedPassword = await Auth.hashPassword(password);
+    console.log({ password, hashedPassword });
+
+    await this.model.changePassword(foundUser.user_id, hashedPassword);
+
+    await db.user_reset_password.delete({
+      where: {
+        token,
+      },
+    });
+
+    res.sendStatus(201);
   }
 }
 

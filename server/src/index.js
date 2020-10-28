@@ -11,11 +11,15 @@ const cors = require('cors');
 const { handleError } = require('./helpers/error');
 const csurf = require('csurf');
 const { CronJob } = require('cron');
+const { cleanupVerifications } = require('./lib/EmailVerification');
 
 const Application = require('./Application');
 const Riot = require('./lib/Riot');
 
 const RiotAssetsJob = new CronJob('* * 2 * * *', () => Riot.syncStaticData());
+const EmailVerificationsJob = new CronJob('0 0 0 * * *', () =>
+  cleanupVerifications()
+);
 
 const app = new Application({
   server: express,
@@ -37,11 +41,15 @@ const app = new Application({
 });
 
 (async () => {
-  await app.initialize((app) => {
+  await app.initialize(async (app) => {
     // On restart sync data
     Riot.syncStaticData();
+
     // Then every other hour check if our data is still up to date.
     RiotAssetsJob.start();
+
+    // Run CRON job for user email verification 00:00
+    EmailVerificationsJob.start();
   });
 })();
 

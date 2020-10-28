@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Modal from "./Modal";
 import useOnclickOutside from "react-cool-onclickoutside";
-import validateForm from "../../helpers/validateForm";
 import {
   Form,
   Input,
@@ -10,118 +9,102 @@ import {
   Footer,
   FlashMessage,
 } from "../styles/Form";
+import { useLocation, useHistory } from "react-router-dom";
 import { Button } from "../../GlobalStyles";
-import { REGISTER_FORM } from "../../constants";
-import theme from "../../theme";
-
-import { useModal } from "../../hooks/useModal";
-import { useAuth } from "../../hooks/useAuth";
 import { BeatLoader } from "react-spinners";
+import theme from "../../theme";
+import { useModal } from "../../hooks/useModal";
+import { toast } from "react-toastify";
+import makeRequest from "../../helpers/makeRequest";
+import validateForm from "../../helpers/validateForm";
+import { CHANGE_PASSWORD_FORM } from "../../constants";
+
+async function fetchChangePassword(token, credentials) {
+  return makeRequest(`/api/user/reset_password`, {
+    method: "PATCH",
+    body: JSON.stringify({ token, ...credentials }),
+  });
+}
 
 const initialValues = {
-  username: "",
-  email: "",
   password: "",
   password_confirmation: "",
 };
 
-const RegisterModal = () => {
+const ResetPasswordModal = () => {
+  const location = useLocation();
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState(initialValues);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { register, isAuthenticated } = useAuth();
-  const { setModal, isOpen, modal, reverse, setReverse } = useModal();
+  const { setModal, isOpen, setReverse, reverse } = useModal();
   const innerRef = useRef();
 
   const ref = useOnclickOutside(() => {
-    if (isOpen("register")) {
+    if (isOpen("resetPassword")) {
       setReverse(true);
       setTimeout(() => {
-        setModal(null);
         setReverse(false);
+        setModal(null);
       }, 300);
     }
   });
 
-  const handleOnChange = (e) =>
+  const handleOnChange = (e) => {
     setValues({
       ...values,
       [e.target.name]: e.target.value,
     });
+  };
 
-  const handleRegister = async (e) => {
+  async function onSubmit(e) {
     e.preventDefault();
-    setLoading(true);
-    const { errors, valid } = validateForm(values, REGISTER_FORM);
+
+    const { errors, valid } = validateForm(values, CHANGE_PASSWORD_FORM);
+
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+
     if (valid) {
-      const accountCreated = await register(values);
-      if (!accountCreated) {
-        setErrorMessage("Account or email already exists.");
+      setLoading(true);
+
+      const { status } = await fetchChangePassword(token, values).catch((err) =>
+        toast.error("Something went wrong on our end...")
+      );
+
+      if (status !== 201) {
+        toast.error("Could not change the current password.");
+      } else {
+        toast.info("Successfully changed your password.");
       }
+
       setModal(null);
+      history.push("/");
     } else {
       const firstError = Object.values(errors)[0];
       setErrorMessage(firstError);
     }
+
     setLoading(false);
-  };
-
-  const switchModal = (e) => {
-    setModal("login");
-  };
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      setErrorMessage(null);
-      setValues(initialValues);
-      setModal(null);
-    }
-  }, [isAuthenticated, setModal]);
-
-  useEffect(() => {
-    setErrorMessage(null);
-    setValues(initialValues);
-  }, [modal]);
+  }
 
   useEffect(() => innerRef.current && innerRef.current.focus(), [isOpen]);
 
   return (
     <Modal
-      isOpen={isOpen("register")}
-      title="register"
+      isOpen={isOpen("resetPassword")}
+      title="Change Password"
       clickedOutside={ref}
       reverse={reverse}
     >
       <Form
-        onSubmit={handleRegister}
         autoComplete="off"
-        onKeyDown={(e) => e.keyCode === 13 && handleRegister(e)}
+        onKeyDown={(e) => e.keyCode === 13 && onSubmit(e)}
       >
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
-        <Group auth>
-          <Label>username</Label>
-          <Input
-            type="text"
-            name="username"
-            value={values.username}
-            placeholder="enter username"
-            ref={innerRef}
-            onChange={handleOnChange}
-          />
-        </Group>
-        <Group auth>
-          <Label>email address</Label>
-          <Input
-            type="text"
-            name="email"
-            value={values.email}
-            placeholder="enter email address"
-            onChange={handleOnChange}
-          />
-        </Group>
         <Group auth>
           <Label>password</Label>
           <Input
@@ -142,15 +125,12 @@ const RegisterModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Button form="true" onClick={handleRegister} disabled={loading}>
+        <Button onClick={onSubmit} type="submit" form="true" disabled={loading}>
           {loading && <BeatLoader color={theme.secondary} height="100%" />}
-          {!loading && "Register"}
+          {!loading && "Change Password"}
         </Button>
       </Form>
       <Footer>
-        <Footer.Button first onClick={switchModal}>
-          Already have an account?
-        </Footer.Button>
         <Footer.Close onClick={() => setModal(null)}>
           close &times;
         </Footer.Close>
@@ -159,4 +139,4 @@ const RegisterModal = () => {
   );
 };
 
-export default RegisterModal;
+export default ResetPasswordModal;

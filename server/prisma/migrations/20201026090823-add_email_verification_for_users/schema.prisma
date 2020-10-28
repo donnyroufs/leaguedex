@@ -3,12 +3,11 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["transactionApi"]
 }
 
 model User {
@@ -102,12 +101,3 @@ model User_verification {
   user      User     @relation(fields: [user_id], references: [id])
   createdAt DateTime @default(now())
 }
-
-model User_reset_password {
-  id        Int      @id @default(autoincrement())
-  token     String   @unique
-  user_id   Int      @unique
-  user      User     @relation(fields: [user_id], references: [id])
-  createdAt DateTime @default(now())
-}
-

@@ -29,7 +29,7 @@ const LoginModal = () => {
   const [values, setValues] = useState(initialValues);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, error } = useAuth();
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const { setMatch, hasMatch } = useMatch();
   const innerRef = useRef();
@@ -56,8 +56,9 @@ const LoginModal = () => {
     const { errors, valid } = validateForm(values, LOGIN_FORM);
     if (valid) {
       const successLogin = await login(values);
+
       if (!successLogin) {
-        setErrorMessage("Username or password are not correct.");
+        setErrorMessage(error ? error : "Username or password incorrect.");
       } else {
         setReverse(true);
         if (hasMatch) {
@@ -74,8 +75,8 @@ const LoginModal = () => {
     setLoading(false);
   };
 
-  const switchModal = (e) => {
-    setModal("register");
+  const switchModal = (type = "register") => {
+    setModal(type);
   };
 
   useEffect(() => {
@@ -139,10 +140,12 @@ const LoginModal = () => {
         </Button>
       </Form>
       <Footer>
-        <Footer.Button first onClick={switchModal}>
+        <Footer.Button first onClick={() => switchModal()}>
           Don't have an account?
         </Footer.Button>
-        {/* <Footer.Button>Forgot password?</Footer.Button> */}
+        <Footer.Button onClick={() => switchModal("forgotPassword")}>
+          Forgot password?
+        </Footer.Button>
         <Footer.Close onClick={() => setModal(null)}>
           close &times;
         </Footer.Close>

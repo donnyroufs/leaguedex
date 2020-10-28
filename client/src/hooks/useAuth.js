@@ -54,37 +54,43 @@ export const useAuth = () => {
 const useAuthProvider = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [initialLoad, setInitialLoad] = useState(true);
   const [exp, setExp] = useState(null);
 
-  const login = async (formData, register = false) => {
+  const login = async (formData) => {
     try {
-      const { accessToken } = await fetchLogin(formData);
-      const { data, exp } = decode(accessToken);
-      setTimeout(() => {
-        setExp(exp);
-        setToken(accessToken);
-        setUser(data);
-      }, 600);
-      if (register)
-        toast.info("Successfully created an account and logged in.");
-      else toast.info("You have successfully logged in.");
-      return true;
+      const res = await fetchLogin(formData);
+      if (!res.accessToken) {
+        setError(res.message);
+      } else {
+        const { data, exp } = decode(res.accessToken);
+        setTimeout(() => {
+          setExp(exp);
+          setToken(res.accessToken);
+          setUser(data);
+          setError(null);
+        }, 600);
+        toast.info("You have successfully logged in.");
+      }
+      return !!res.accessToken;
     } catch (err) {
       setUser(null);
+      setError(err);
     }
   };
 
   const register = async (formData) => {
     try {
       const success = await fetchRegister(formData);
+
       if (success) {
-        login(
-          { username: formData.username, password: formData.password },
-          true
+        toast.info(
+          "Successfully created an account please verifiy your email."
         );
-        return true;
       }
+
+      return success;
     } catch (err) {
       setExp(null);
       setUser(null);
@@ -172,6 +178,7 @@ const useAuthProvider = () => {
     renewAuth,
     refreshToken,
     loading,
+    error,
     user,
     setUser,
     isAuthenticated: Boolean(user),

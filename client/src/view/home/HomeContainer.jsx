@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Home from "./Home";
 import { useAuth } from "../../hooks/useAuth";
+import { useModal } from "../../hooks/useModal";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { loadAssets, build } from "../../helpers/loadImages";
@@ -18,7 +19,8 @@ const fetchInfoCard = async () => {
   return response.json();
 };
 
-const HomeContainer = () => {
+const HomeContainer = (props) => {
+  const { setModal } = useModal();
   const [champions, setChampions] = useState([]);
   const [info, setInfo] = useState({
     count: 0,
@@ -27,7 +29,7 @@ const HomeContainer = () => {
   const [loading, setLoading] = useState(true);
   const { isAuthenticated } = useAuth();
 
-  React.useEffect(() => {
+  useEffect(() => {
     (async () => {
       try {
         setLoading(true);
@@ -47,6 +49,15 @@ const HomeContainer = () => {
       setLoading(false);
     })();
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(props.location.search);
+    const action = params.get("action");
+
+    if (action === "reset_password") {
+      setModal("resetPassword");
+    }
+  }, [props.location.search, setModal]);
 
   if (loading) {
     return (

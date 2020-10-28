@@ -6,6 +6,8 @@ import Layout from "./components/layout/Layout";
 import LoginModal from "./components/modal/LoginModal";
 import RegisterModal from "./components/modal/RegisterModal";
 import SummonerModal from "./components/modal/SummonerModal";
+import ForgotPasswordModal from "./components/modal/ForgotPasswordModal";
+import ResetPasswordModal from "./components/modal/ResetPasswordModal";
 import routes from "./routes";
 import { useAuth } from "./hooks/useAuth";
 import { useModal } from "./hooks/useModal";
@@ -66,6 +68,8 @@ const App = () => {
         draggable
         pauseOnHover
       />
+      <ResetPasswordModal />
+      <ForgotPasswordModal />
       <LoginModal />
       <RegisterModal />
       <SummonerModal />

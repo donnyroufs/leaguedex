@@ -31,13 +31,15 @@ class UserModel extends Model {
   }
 
   async create({ username, hashedPassword, email }) {
-    await this.db.create({
+    const resource = await this.db.create({
       data: {
         username,
         password: hashedPassword,
         email,
       },
     });
+
+    return resource.id;
   }
 
   async findUser(username) {
@@ -51,6 +53,20 @@ class UserModel extends Model {
         password: true,
         summoner: true,
         permissions: true,
+        active: true,
+      },
+    });
+
+    return resource;
+  }
+
+  async findByEmail(email) {
+    const resource = await this.db.findOne({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
       },
     });
 
@@ -86,6 +102,48 @@ class UserModel extends Model {
     });
 
     return updatedResource;
+  }
+
+  async createEmailToken(userId, token) {
+    await db.user_verification.create({
+      data: {
+        token,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    });
+  }
+
+  async getUserByToken(token) {
+    const resource = await db.user_verification.findOne({
+      where: {
+        token,
+      },
+    });
+
+    return resource;
+  }
+
+  async removeVerificationToken(token) {
+    await db.user_verification.delete({
+      where: {
+        token,
+      },
+    });
+  }
+
+  async changePassword(userId, hashedPassword) {
+    await db.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    });
   }
 }
 
