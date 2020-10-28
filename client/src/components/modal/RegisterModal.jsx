@@ -59,6 +59,7 @@ const RegisterModal = () => {
       if (!accountCreated) {
         setErrorMessage("Account or email already exists.");
       }
+      setModal(null);
     } else {
       const firstError = Object.values(errors)[0];
       setErrorMessage(firstError);
