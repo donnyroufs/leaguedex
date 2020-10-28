@@ -59,7 +59,6 @@ const app = new Application({
 
     // Run CRON job for user password resets 00:00
     RemovePasswordResetsJob.start();
-    await cleanupPasswordResets();
   });
 })();
 
