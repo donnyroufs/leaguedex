@@ -16,3 +16,4 @@
 20201026082932-make_user_optional
 20201026083108-fix_user
 20201026090823-add_email_verification_for_users
+20201028110355-add_reset_password_table
