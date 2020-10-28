@@ -65,6 +65,7 @@ const ForgotPasswordModal = () => {
     else {
       toast.info("Email sent to reset your password. Please check your inbox!");
       setModal(null);
+      setValues(initialValues);
     }
   }
 
