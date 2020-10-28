@@ -75,8 +75,8 @@ const LoginModal = () => {
     setLoading(false);
   };
 
-  const switchModal = (e) => {
-    setModal("register");
+  const switchModal = (type = "register") => {
+    setModal(type);
   };
 
   useEffect(() => {
@@ -140,10 +140,12 @@ const LoginModal = () => {
         </Button>
       </Form>
       <Footer>
-        <Footer.Button first onClick={switchModal}>
+        <Footer.Button first onClick={() => switchModal()}>
           Don't have an account?
         </Footer.Button>
-        {/* <Footer.Button>Forgot password?</Footer.Button> */}
+        <Footer.Button onClick={() => switchModal("forgotPassword")}>
+          Forgot password?
+        </Footer.Button>
         <Footer.Close onClick={() => setModal(null)}>
           close &times;
         </Footer.Close>
