@@ -29,7 +29,7 @@ const LoginModal = () => {
   const [values, setValues] = useState(initialValues);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, error } = useAuth();
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const { setMatch, hasMatch } = useMatch();
   const innerRef = useRef();
@@ -56,8 +56,9 @@ const LoginModal = () => {
     const { errors, valid } = validateForm(values, LOGIN_FORM);
     if (valid) {
       const successLogin = await login(values);
+
       if (!successLogin) {
-        setErrorMessage("Username or password are not correct.");
+        setErrorMessage(error ? error : "Username or password incorrect.");
       } else {
         setReverse(true);
         if (hasMatch) {
