@@ -11,12 +11,18 @@ const cors = require('cors');
 const { handleError } = require('./helpers/error');
 const csurf = require('csurf');
 const { CronJob } = require('cron');
-const { cleanupVerifications } = require('./lib/EmailVerification');
+const {
+  cleanupVerifications,
+  cleanupPasswordResets,
+} = require('./lib/cleanups');
 
 const Application = require('./Application');
 const Riot = require('./lib/Riot');
 
 const RiotAssetsJob = new CronJob('* * 2 * * *', () => Riot.syncStaticData());
+const RemovePasswordResetsJob = new CronJob('0 0 0 * * *', () =>
+  cleanupPasswordResets()
+);
 const EmailVerificationsJob = new CronJob('0 0 0 * * *', () =>
   cleanupVerifications()
 );
@@ -50,6 +56,10 @@ const app = new Application({
 
     // Run CRON job for user email verification 00:00
     EmailVerificationsJob.start();
+
+    // Run CRON job for user password resets 00:00
+    RemovePasswordResetsJob.start();
+    await cleanupPasswordResets();
   });
 })();
 
