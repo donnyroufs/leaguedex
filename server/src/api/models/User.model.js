@@ -53,6 +53,7 @@ class UserModel extends Model {
         password: true,
         summoner: true,
         permissions: true,
+        active: true,
       },
     });
 
