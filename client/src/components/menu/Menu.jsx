@@ -53,13 +53,7 @@ const Menu = () => {
   };
 
   return (
-    <Container
-      isOpen={
-        modal.isOpen("register") ||
-        modal.isOpen("login") ||
-        modal.isOpen("summoner")
-      }
-    >
+    <Container isOpen={modal.modal}>
       <Container.Buttons>
         {!isAuthenticated && (
           <>
