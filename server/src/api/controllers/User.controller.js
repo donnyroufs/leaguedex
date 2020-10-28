@@ -68,6 +68,10 @@ class UserController extends Controller {
       throw new NotAuthorized('username or password is not valid');
     }
 
+    if (!user.active) {
+      throw new NotAuthorized('Your e-mail is not verified');
+    }
+
     const payload = {
       data: {
         id: user.id,
