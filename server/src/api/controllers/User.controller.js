@@ -108,7 +108,7 @@ class UserController extends Controller {
     }
 
     if (!user.active) {
-      throw new NotAuthorized('Your e-mail is not verified');
+      throw new NotAuthorized('Please verify your email.');
     }
 
     const payload = {
