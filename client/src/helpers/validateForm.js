@@ -1,4 +1,9 @@
-import { LOGIN_FORM, REGISTER_FORM, SUMMONER_FORM } from "../constants";
+import {
+  LOGIN_FORM,
+  REGISTER_FORM,
+  SUMMONER_FORM,
+  CHANGE_PASSWORD_FORM,
+} from "../constants";
 
 const validateForm = (values, type) => {
   const errors = {};
@@ -47,6 +52,29 @@ const validateForm = (values, type) => {
   }
 
   if (type === SUMMONER_FORM) {
+  }
+
+  if (type === CHANGE_PASSWORD_FORM) {
+    if (!values.password) {
+      errors.password = "Password is required.";
+    } else if (values.password.length < 6) {
+      errors.password = "Password must be atleast 6 characters long.";
+    } else if (values.password.length > 256) {
+      errors.password = "Password cannot be longer than 256 characters.";
+    }
+
+    if (!values.password_confirmation) {
+      errors.password_confirmation = "Please fill in all fields.";
+    }
+
+    if (
+      values.password &&
+      values.password_confirmation &&
+      values.password_confirmation !== values.password
+    ) {
+      errors.password = "Password did not match";
+      errors.password_confirmation = "Password did not match";
+    }
   }
 
   return {
