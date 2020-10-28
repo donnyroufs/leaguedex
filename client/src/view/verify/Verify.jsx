@@ -1,7 +1,7 @@
 import React from "react";
 
 const Verify = (props) => {
-  return "verified";
+  return <div>Verified</div>;
 };
 
 export default Verify;
