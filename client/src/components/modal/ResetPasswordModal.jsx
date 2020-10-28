@@ -80,6 +80,7 @@ const ResetPasswordModal = () => {
       }
 
       setModal(null);
+      setValues(initialValues);
       history.push("/");
     } else {
       const firstError = Object.values(errors)[0];

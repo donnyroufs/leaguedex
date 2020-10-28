@@ -33,4 +33,26 @@ async function cleanupVerifications() {
   await db.$transaction(userQueries);
 }
 
-module.exports = { cleanupVerifications };
+async function cleanupPasswordResets() {
+  const inactiveResets = await db.$queryRaw(`
+    SELECT
+      "User_reset_password"."user_id"
+    FROM
+      "User_reset_password"
+    WHERE
+      "User_reset_password"."createdAt" < NOW() - INTERVAL '1 days'
+  `);
+
+  if (!inactiveResets) return;
+
+  const queries = inactiveResets.map(({ user_id }) => {
+    return db.user_reset_password.delete({
+      where: {
+        user_id,
+      },
+    });
+  });
+
+  await db.$transaction(queries);
+}
+module.exports = { cleanupVerifications, cleanupPasswordResets };

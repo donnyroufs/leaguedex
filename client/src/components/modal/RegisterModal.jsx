@@ -55,11 +55,15 @@ const RegisterModal = () => {
     setLoading(true);
     const { errors, valid } = validateForm(values, REGISTER_FORM);
     if (valid) {
-      const accountCreated = await register(values);
-      if (!accountCreated) {
+      const accountCreated = await register(values).catch((_) =>
+        setErrorMessage("Something went wrong...")
+      );
+
+      if (accountCreated) {
+        setModal(null);
+      } else {
         setErrorMessage("Account or email already exists.");
       }
-      setModal(null);
     } else {
       const firstError = Object.values(errors)[0];
       setErrorMessage(firstError);
