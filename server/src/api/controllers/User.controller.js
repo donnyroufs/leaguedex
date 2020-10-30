@@ -38,7 +38,7 @@ class UserController extends Controller {
   }
 
   async sendResetPasswordEmail(req, res) {
-    const { email } = req.params;
+    const { email } = req.query;
 
     const foundUser = await this.model.findByEmail(email);
 
@@ -249,7 +249,6 @@ class UserController extends Controller {
     }
 
     const hashedPassword = await Auth.hashPassword(password);
-    console.log({ password, hashedPassword });
 
     await this.model.changePassword(foundUser.user_id, hashedPassword);
 

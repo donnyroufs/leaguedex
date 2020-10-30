@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import makeRequest from "../../helpers/makeRequest";
 
 async function fetchPasswordReset(email) {
-  return makeRequest(`/api/user/${email}`);
+  return makeRequest(`/api/user/reset_password/?email=${email}`);
 }
 
 const initialValues = {
