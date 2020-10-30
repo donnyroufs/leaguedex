@@ -20,7 +20,7 @@ router.get('/renew', Auth.validateRefreshToken, wrap(controller.renew));
 router.get('/refresh', Auth.validateRefreshToken, wrap(controller.refresh));
 router.get('/region', wrap(controller.getRegions));
 
-router.get('/:email', wrap(controller.sendResetPasswordEmail));
+router.get('/reset_password', wrap(controller.sendResetPasswordEmail));
 router.patch(
   '/reset_password',
   validator.body(resetPassword),
