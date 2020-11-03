@@ -1,11 +1,11 @@
 const { PrismaClient } = require('@prisma/client');
-const app = require('../Application');
+// const app = require('../Application');
 
-const config = {
-  log: !app.inProduction ? ['query'] : [],
-};
+// const config = {
+//   log: !app.inProduction ? ['query'] : [],
+// };
 
-const db = new PrismaClient(config);
+const db = new PrismaClient();
 
 const validateConnection = async () => {
   try {
