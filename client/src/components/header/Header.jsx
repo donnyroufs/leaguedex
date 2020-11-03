@@ -8,6 +8,7 @@ import {
   FaUser,
   FaTachometerAlt,
   FaTwitter,
+  FaCog,
 } from "react-icons/fa";
 
 const Header = ({
@@ -50,9 +51,9 @@ const Header = ({
               </LinkIcon.External>
               {isAuthenticated && (
                 <>
-                  {/* <LinkIcon to="/settings">
+                  <LinkIcon to="/settings">
                     <FaCog fontSize="1.5rem" />
-                  </LinkIcon> */}
+                  </LinkIcon>
                   {isAdmin && (
                     <LinkIcon to={`/admin/dashboard`}>
                       <FaTachometerAlt fontSize="1.5rem" />
