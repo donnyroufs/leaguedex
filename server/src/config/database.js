@@ -1,7 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
+// const app = require('../Application');
 
 // const config = {
-//   log: ['query'],
+//   log: !app.inProduction ? ['query'] : [],
 // };
 
 const db = new PrismaClient();

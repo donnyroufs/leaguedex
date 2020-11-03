@@ -150,6 +150,10 @@ class UserController extends Controller {
       data: req.user,
     };
 
+    if (!req.user) {
+      throw new NotAuthorized('You do not have a valid refresh token');
+    }
+
     const { token: refreshToken } = await Auth.createToken(
       payload,
       REFRESH_TOKEN

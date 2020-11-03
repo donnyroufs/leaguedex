@@ -55,6 +55,11 @@ class MatchupController extends Controller {
 
   async findGame(req, res) {
     const { summoner, id: userId } = req.user;
+
+    if (!summoner) {
+      return res.status(200).json({});
+    }
+
     const data = await Riot.findMatch(summoner.accountId, summoner.region);
 
     if (data.gameMode !== 'CLASSIC') {
@@ -139,6 +144,10 @@ class MatchupController extends Controller {
 
   async syncAll(req, res) {
     const { id, summoner } = req.user;
+
+    if (!summoner) {
+      return res.status(200).json({});
+    }
 
     const syncedData = await sync(id, summoner.accountId, summoner.region);
 
