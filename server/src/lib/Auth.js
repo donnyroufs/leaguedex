@@ -44,6 +44,8 @@ class Auth {
   static async validateRefreshToken(req, _, next) {
     const refreshToken = req.cookies['x-refresh-token'];
 
+    if (!refreshToken) return next();
+
     try {
       const valid = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
