@@ -1,5 +1,5 @@
 import React from "react";
-import { Runes as Container, Title, Text } from "../../view/dex/Dex.styles";
+import { Runes as Container, Title, Text } from "../../pages/dex/Dex.styles";
 
 const Runes = () => {
   return (

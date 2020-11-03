@@ -4,7 +4,7 @@ import { parseTagsV2 } from "../../helpers/parseTags";
 import useClipboard from "react-hook-clipboard";
 import { toast } from "react-toastify";
 import { FaLink } from "react-icons/fa";
-import { Title, Notes as Container } from "../../view/dex/Dex.styles";
+import { Title, Notes as Container } from "../../pages/dex/Dex.styles";
 import { List, Item, Filter, Tag, Mark, Text, Heading } from "./Notes.styles";
 import { Form, Group, Input } from "../../components/styles/Form";
 import { filterByTags } from "../../helpers/arrayHelpers";
