@@ -221,6 +221,7 @@ const Notes = ({
                       handleSetShow={handleSetShow}
                       id={note.id}
                       deleteNote={deleteNote}
+                      right="12px"
                     />
                   )}
                 </Item>
