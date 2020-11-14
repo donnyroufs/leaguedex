@@ -22,7 +22,6 @@ class NotFoundError extends Error {
     this.message = message;
   }
 }
-
 const handleError = (err, res) => {
   const { statusCode = 500, message = 'Something went wrong...' } = err;
   res.status(statusCode).json({

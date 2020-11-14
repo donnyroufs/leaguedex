@@ -86,7 +86,7 @@ class Application {
     this.app.use('/api', csrfProtection, this.routes);
 
     // Custom Error Handler
-    this.app.use((err, _, res) => {
+    this.app.use((err, req, res, next) => {
       this.handleError(err, res);
     });
   }
