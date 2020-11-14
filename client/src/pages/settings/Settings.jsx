@@ -1,7 +1,14 @@
 import React from "react";
+import * as SC from "./Settings.styles";
 
-const Settings = () => {
-  return <p>This is the settings page</p>;
+const Settings = ({ me }) => {
+  return (
+    <SC.Container>
+      <SC.Container.Inner>
+        <p>Settings page</p>
+      </SC.Container.Inner>
+    </SC.Container>
+  );
 };
 
 export default Settings;
