@@ -58,7 +58,7 @@ const LoginModal = () => {
       const successLogin = await login(values);
 
       if (!successLogin) {
-        setErrorMessage(error ? error : "Username or password incorrect.");
+        setErrorMessage("Username or password incorrect.");
       } else {
         setReverse(true);
         if (hasMatch) {
