@@ -39,7 +39,7 @@ class UserController extends Controller {
   }
 
   async me(req, res) {
-    const user = await this.model.findOneById(req.user.id);
+    const user = await this.model.me(req.user.id);
 
     if (!user) {
       throw new NotFoundError('User does not exist');
