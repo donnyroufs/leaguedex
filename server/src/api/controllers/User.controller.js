@@ -30,6 +30,7 @@ class UserController extends Controller {
     this.sendResetPasswordEmail = this.sendResetPasswordEmail.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
     this.me = this.me.bind(this);
+    this.changePassword = this.changePassword.bind(this);
   }
 
   async all(_, res) {
@@ -250,6 +251,15 @@ class UserController extends Controller {
     });
 
     res.sendStatus(204);
+  }
+
+  async changePassword(req, res) {
+    const { password } = req.body;
+
+    const hashedPassword = await Auth.hashPassword(password);
+    await this.model.changePassword(req.user.id, hashedPassword);
+
+    res.sendStatus(201);
   }
 
   async resetPassword(req, res) {
