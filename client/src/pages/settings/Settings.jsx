@@ -136,7 +136,7 @@ const Settings = ({ me }) => {
           </SC.Title>
           <SC.Field>
             <SC.TextWrapper>
-              [{removeNumbersFromString(me.summoner?.region)}]
+              [{removeNumbersFromString(me.summoner?.region).toUpperCase()}]
             </SC.TextWrapper>
             <SC.TextWrapper>{me.summoner?.name}</SC.TextWrapper>
             <Dropdown show={show} handleSetShow={handleSetShow} right="12px">
