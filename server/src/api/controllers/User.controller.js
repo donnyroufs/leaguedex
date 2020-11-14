@@ -47,7 +47,7 @@ class UserController extends Controller {
 
     const formattedUser = this.formatters.me(user);
 
-    res.status(200).json({ user: formattedUser });
+    res.status(200).json(formattedUser);
   }
 
   async sendResetPasswordEmail(req, res) {
