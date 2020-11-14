@@ -1,4 +1,12 @@
 module.exports = {
+  me: (data) => {
+    delete data.password;
+    delete data.createdAt;
+    delete data.updatedAt;
+    delete data.active;
+    delete data.permissions;
+    return data;
+  },
   all: (data) =>
     data.map((user) => ({
       username: user.username,

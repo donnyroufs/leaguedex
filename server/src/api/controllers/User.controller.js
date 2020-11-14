@@ -29,12 +29,25 @@ class UserController extends Controller {
     this.verifyEmail = this.verifyEmail.bind(this);
     this.sendResetPasswordEmail = this.sendResetPasswordEmail.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
+    this.me = this.me.bind(this);
   }
 
   async all(_, res) {
     const data = await this.model.getDashboardData();
     const formattedData = this.formatters.all(data);
     res.status(200).json(formattedData);
+  }
+
+  async me(req, res) {
+    const user = await this.model.findOneById(req.user.id);
+
+    if (!user) {
+      throw new NotFoundError('User does not exist');
+    }
+
+    const formattedUser = this.formatters.me(user);
+
+    res.status(200).json({ user: formattedUser });
   }
 
   async sendResetPasswordEmail(req, res) {

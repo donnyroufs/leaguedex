@@ -38,6 +38,7 @@ router.post(
   wrap(controller.addSummmonerAccount)
 );
 
+router.get('/me', Auth.authenticateToken, wrap(controller.me));
 router.get('/', Auth.authenticateToken, Auth.isAdmin, wrap(controller.all));
 
 module.exports = router;
