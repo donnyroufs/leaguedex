@@ -46,6 +46,12 @@ router.patch(
   validator.body(changePassword),
   wrap(controller.changePassword)
 );
+
+router.delete(
+  '/summoner',
+  Auth.authenticateToken,
+  wrap(controller.deleteSummoner)
+);
 router.get('/me', Auth.authenticateToken, wrap(controller.me));
 router.get('/', Auth.authenticateToken, Auth.isAdmin, wrap(controller.all));
 

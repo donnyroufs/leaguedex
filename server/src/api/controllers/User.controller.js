@@ -31,6 +31,7 @@ class UserController extends Controller {
     this.resetPassword = this.resetPassword.bind(this);
     this.me = this.me.bind(this);
     this.changePassword = this.changePassword.bind(this);
+    this.deleteSummoner = this.deleteSummoner.bind(this);
   }
 
   async all(_, res) {
@@ -284,6 +285,22 @@ class UserController extends Controller {
         token,
       },
     });
+
+    res.sendStatus(201);
+  }
+
+  async deleteSummoner(req, res) {
+    const { summonerId } = req.query;
+
+    console.log(req.query);
+
+    console.log(summonerId);
+
+    if (!summonerId) {
+      throw new NotFoundError('Missing summonerId');
+    }
+
+    await this.model.deleteSummoner(req.user.id, summonerId);
 
     res.sendStatus(201);
   }

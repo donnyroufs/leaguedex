@@ -164,6 +164,15 @@ class UserModel extends Model {
       },
     });
   }
+
+  async deleteSummoner(userId, summonerId) {
+    await db.summoner.deleteMany({
+      where: {
+        id: Number(summonerId),
+        user_id: Number(userId),
+      },
+    });
+  }
 }
 
 module.exports = new UserModel(db.user);

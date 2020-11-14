@@ -60,7 +60,7 @@ const Settings = ({ me }) => {
   };
 
   const handleDelete = (e) => {
-    console.log("delete summmoner");
+    API.deleteSummoner(me.summoner.id);
   };
 
   const removeNumbersFromString = (str) => str.replace(/[0-9]/g, "");
@@ -134,18 +134,21 @@ const Settings = ({ me }) => {
           <SC.Title className="summoner">
             Summoner {pluralize(1, "Account")}
           </SC.Title>
-          <SC.Field>
-            <SC.TextWrapper>
-              [{removeNumbersFromString(me.summoner?.region).toUpperCase()}]
-            </SC.TextWrapper>
-            <SC.TextWrapper>{me.summoner?.name}</SC.TextWrapper>
-            <Dropdown show={show} handleSetShow={handleSetShow} right="12px">
-              <Menu.Item small onClick={handleDelete} small={false}>
-                <FaTrash style={{ marginRight: ".3rem" }} />
-                delete
-              </Menu.Item>
-            </Dropdown>
-          </SC.Field>
+          {!me.summoner && <p>You have not added a summoner account yet!</p>}
+          {me.summoner && (
+            <SC.Field>
+              <SC.TextWrapper>
+                [{removeNumbersFromString(me.summoner.region).toUpperCase()}]
+              </SC.TextWrapper>
+              <SC.TextWrapper>{me.summoner.name}</SC.TextWrapper>
+              <Dropdown show={show} handleSetShow={handleSetShow} right="12px">
+                <Menu.Item small onClick={handleDelete} small={false}>
+                  <FaTrash style={{ marginRight: ".3rem" }} />
+                  delete
+                </Menu.Item>
+              </Dropdown>
+            </SC.Field>
+          )}
         </SC.Box>
       </SC.Container.Inner>
     </SC.Container>

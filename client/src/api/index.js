@@ -17,4 +17,13 @@ export class API {
       }),
     });
   }
+
+  static async deleteSummoner(summonerId) {
+    return makeRequest(
+      this.endpoint + `/user/summoner?summonerId=${summonerId}`,
+      {
+        method: "DELETE",
+      }
+    );
+  }
 }
