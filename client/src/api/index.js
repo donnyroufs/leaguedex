@@ -7,4 +7,14 @@ export class API {
   static async fetchMe() {
     return makeRequest(this.endpoint + "/user/me");
   }
+
+  static async changePassword(password, password_confirmation) {
+    return makeRequest(this.endpoint + "/user/change_password", {
+      method: "PATCH",
+      body: JSON.stringify({
+        password,
+        password_confirmation,
+      }),
+    });
+  }
 }
