@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const Container = styled.section`
   display: flex;
@@ -14,6 +14,14 @@ export const Container = styled.section`
 Container.Inner = styled.div`
   width: 80%;
   margin: 0 auto;
+
+  @media screen and (min-width: 1365px) {
+    width: 60%;
+  }
+
+  @media screen and (min-width: 1600px) {
+    width: 35%;
+  }
 `;
 
 export const Box = styled.div`
@@ -23,8 +31,7 @@ export const Box = styled.div`
 
   &.password {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-flow: column nowrap;
     padding: 3rem 0;
     border-top: 1px solid #263547;
     border-bottom: 1px solid #263547;
@@ -34,6 +41,13 @@ export const Box = styled.div`
     margin: 0;
     padding: 3rem 0;
     list-style: none;
+  }
+
+  &.buttonGroup {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
   }
 `;
 
@@ -45,7 +59,8 @@ export const Title = styled.h1`
     font-size: 0.95rem;
   }
 
-  &.summoner {
+  &.summoner,
+  &.password {
     margin-bottom: 3rem;
   }
 `;
@@ -67,6 +82,11 @@ export const Input = styled.input`
   border-radius: 0.3em;
   color: ${({ theme }) => theme.placeholderText};
   background: ${({ theme }) => theme.header};
+  ${(props) =>
+    props.active &&
+    css`
+      border: 1px solid ${props.theme.primary};
+    `}
 `;
 
 export const Field = styled.li`
