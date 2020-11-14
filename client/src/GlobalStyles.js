@@ -57,6 +57,11 @@ const GenericButton = css`
   font-size: 0.9rem;
   cursor: pointer;
 
+  &.maxContent {
+    margin-left: 1.5rem;
+    width: fit-content;
+  }
+
   ${(props) =>
     props.secondary &&
     css`
@@ -138,6 +143,14 @@ export const Button = styled.button`
       background: #d23f6f;
       color: #1b0009;
     `}
+
+    ${(props) =>
+    props.dangerv2 &&
+    css`
+      background: #d23f6f;
+      color: #fff;
+    `}
+
 
     ${(props) =>
     props["hide-xs"] &&
