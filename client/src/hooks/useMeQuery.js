@@ -18,5 +18,6 @@ export function useMeQuery() {
     me,
     error,
     loading,
+    setMe,
   };
 }
