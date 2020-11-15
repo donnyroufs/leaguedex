@@ -10,10 +10,12 @@ import { API } from "../../api";
 import validateForm from "../../helpers/validateForm";
 import { CHANGE_PASSWORD_FORM } from "../../constants";
 import { toast } from "react-toastify";
+import { useAuth } from "../../hooks/useAuth";
 
 const SettingsContainer = () => {
   const [lockPassword, setLockPassword] = useState(true);
   const { me, loading, setMe } = useMeQuery();
+  const { setUser } = useAuth();
   const { show, handleSetShow } = useDropdown();
   const [password, passwordProps, resetPassword] = useInput("");
   const [
@@ -57,6 +59,10 @@ const SettingsContainer = () => {
     API.deleteSummoner(me.summoner.id)
       .then(() => {
         setMe((curr) => ({
+          ...curr,
+          summoner: null,
+        }));
+        setUser((curr) => ({
           ...curr,
           summoner: null,
         }));
