@@ -103,7 +103,7 @@ const Settings = ({
               </SC.TextWrapper>
               <SC.TextWrapper>{me.summoner.name}</SC.TextWrapper>
               <Dropdown show={show} handleSetShow={handleSetShow} right="12px">
-                <Menu.Item small onClick={handleDelete} small={false}>
+                <Menu.Item onClick={handleDelete} small={false}>
                   <FaTrash style={{ marginRight: ".3rem" }} />
                   delete
                 </Menu.Item>

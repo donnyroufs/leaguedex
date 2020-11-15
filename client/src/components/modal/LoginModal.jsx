@@ -29,7 +29,7 @@ const LoginModal = () => {
   const [values, setValues] = useState(initialValues);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const { login, isAuthenticated, error } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const { setMatch, hasMatch } = useMatch();
   const innerRef = useRef();
