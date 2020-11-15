@@ -300,14 +300,28 @@ class UserController extends Controller {
     await this.model.deleteSummoner(userId, summonerId);
     const user = await this.model.findById(userId);
 
-    // if no summoner accounts left, update permissions.
-    if (!user.summoner) {
-      await this.model.updateAccountPermissions(userId, 1);
-    }
+    await this.model.updateAccountPermissions(userId, 1);
 
-    // Update refresh token? <refactor>
+    const payload = {
+      data: {
+        ...req.user,
+        summoner: null,
+        permissions: 1,
+      },
+    };
 
-    res.sendStatus(204);
+    const { token: refreshToken } = await Auth.createToken(
+      payload,
+      REFRESH_TOKEN
+    );
+
+    await Auth.createOrUpdateRefreshToken(req.user.id, refreshToken);
+
+    Auth.setRefreshCookie(res, refreshToken);
+
+    const { token: accessToken } = await Auth.createToken(payload);
+
+    res.status(201).json({ accessToken });
   }
 }
 
