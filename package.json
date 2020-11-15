@@ -9,6 +9,5 @@
   "main": "index.js",
   "repository": "https://github.com/donnyroufs/leaguedex-revamp.git",
   "author": "Donny Roufs <iamchets@yahoo.com>",
-  "license": "MIT",
-  "dependencies": {}
+  "license": "MIT"
 }

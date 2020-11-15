@@ -48,9 +48,22 @@ Menu.Item = styled.li`
 
 const Button = styled(FaEllipsisV)``;
 
-const Dropdown = ({ children, show, handleSetShow, id, deleteNote, w }) => {
+const Dropdown = ({
+  children,
+  show,
+  handleSetShow,
+  id,
+  deleteNote,
+  w,
+  right = 0,
+}) => {
   return (
-    <Container onClick={() => handleSetShow(id)} small={!!children} w={w}>
+    <Container
+      onClick={() => handleSetShow(id)}
+      small={!!children}
+      w={w}
+      style={{ right }}
+    >
       <Button />
       {show === id && (
         <Menu small={!!children}>

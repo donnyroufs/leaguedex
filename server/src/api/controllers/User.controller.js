@@ -29,12 +29,27 @@ class UserController extends Controller {
     this.verifyEmail = this.verifyEmail.bind(this);
     this.sendResetPasswordEmail = this.sendResetPasswordEmail.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
+    this.me = this.me.bind(this);
+    this.changePassword = this.changePassword.bind(this);
+    this.deleteSummoner = this.deleteSummoner.bind(this);
   }
 
   async all(_, res) {
     const data = await this.model.getDashboardData();
     const formattedData = this.formatters.all(data);
     res.status(200).json(formattedData);
+  }
+
+  async me(req, res) {
+    const user = await this.model.me(req.user.id);
+
+    if (!user) {
+      throw new NotFoundError('User does not exist');
+    }
+
+    const formattedUser = this.formatters.me(user);
+
+    res.status(200).json(formattedUser);
   }
 
   async sendResetPasswordEmail(req, res) {
@@ -239,6 +254,15 @@ class UserController extends Controller {
     res.sendStatus(204);
   }
 
+  async changePassword(req, res) {
+    const { password } = req.body;
+
+    const hashedPassword = await Auth.hashPassword(password);
+    await this.model.changePassword(req.user.id, hashedPassword);
+
+    res.sendStatus(201);
+  }
+
   async resetPassword(req, res) {
     const { token, password } = req.body;
 
@@ -263,6 +287,41 @@ class UserController extends Controller {
     });
 
     res.sendStatus(201);
+  }
+
+  async deleteSummoner(req, res) {
+    const { summonerId } = req.query;
+    const { id: userId } = req.user;
+
+    if (!summonerId) {
+      throw new NotFoundError('Missing summonerId');
+    }
+
+    await this.model.deleteSummoner(userId, summonerId);
+    const user = await this.model.findById(userId);
+
+    await this.model.updateAccountPermissions(userId, 1);
+
+    const payload = {
+      data: {
+        ...req.user,
+        summoner: null,
+        permissions: 1,
+      },
+    };
+
+    const { token: refreshToken } = await Auth.createToken(
+      payload,
+      REFRESH_TOKEN
+    );
+
+    await Auth.createOrUpdateRefreshToken(req.user.id, refreshToken);
+
+    Auth.setRefreshCookie(res, refreshToken);
+
+    const { token: accessToken } = await Auth.createToken(payload);
+
+    res.status(201).json({ accessToken });
   }
 }
 

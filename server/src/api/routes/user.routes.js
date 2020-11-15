@@ -6,6 +6,7 @@ const {
   userLogin,
   userRegister,
   resetPassword,
+  changePassword,
 } = require('../validators/User.validators');
 const formatters = require('../formatters/user.formatters');
 const model = require('../models/User.model');
@@ -26,6 +27,7 @@ router.patch(
   validator.body(resetPassword),
   wrap(controller.resetPassword)
 );
+
 router.patch('/verify/email', wrap(controller.verifyEmail));
 router.post('/register', validator.body(userRegister), wrap(controller.create));
 router.post('/login', validator.body(userLogin), wrap(controller.login));
@@ -38,6 +40,19 @@ router.post(
   wrap(controller.addSummmonerAccount)
 );
 
+router.patch(
+  '/change_password',
+  Auth.authenticateToken,
+  validator.body(changePassword),
+  wrap(controller.changePassword)
+);
+
+router.delete(
+  '/summoner',
+  Auth.authenticateToken,
+  wrap(controller.deleteSummoner)
+);
+router.get('/me', Auth.authenticateToken, wrap(controller.me));
 router.get('/', Auth.authenticateToken, Auth.isAdmin, wrap(controller.all));
 
 module.exports = router;
