@@ -64,11 +64,8 @@ const useAuthProvider = () => {
       if (!res.accessToken) {
         setError(res.message);
       } else {
-        const { data, exp } = decode(res.accessToken);
         setTimeout(() => {
-          setExp(exp);
-          setToken(res.accessToken);
-          setUser(data);
+          _setData(res.accessToken);
           setError(null);
         }, 600);
         toast.info("You have successfully logged in.");
@@ -114,11 +111,8 @@ const useAuthProvider = () => {
   const renewAuth = async () => {
     try {
       const { accessToken } = await renew();
-      const { data, exp } = decode(accessToken);
 
-      setExp(exp);
-      setToken(accessToken);
-      setUser(data);
+      _setData(accessToken);
       if (loading) {
         setLoading(false);
       }
@@ -128,14 +122,19 @@ const useAuthProvider = () => {
     }
   };
 
+  const _setData = (accessToken) => {
+    const { data, exp } = decode(accessToken);
+    setExp(exp);
+    setToken(accessToken);
+    setUser(data);
+  };
+
   const refreshToken = async () => {
     try {
       const { accessToken } = await refresh();
-      const { data, exp } = decode(accessToken);
 
-      setExp(exp);
-      setToken(accessToken);
-      setUser(data);
+      _setData(accessToken);
+
       if (loading) {
         setLoading(false);
       }
