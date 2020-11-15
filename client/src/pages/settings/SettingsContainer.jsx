@@ -62,7 +62,7 @@ const SettingsContainer = () => {
         }));
         toast.info("Account successfully deleted");
       })
-      .catch((err) => {
+      .catch(() => {
         toast.error("Could not delete summoner account");
       });
   };
