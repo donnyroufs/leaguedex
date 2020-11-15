@@ -1,13 +1,79 @@
-import React from "react";
+import React, { useState } from "react";
 import Settings from "./Settings";
 import { Helmet } from "react-helmet-async";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { useMeQuery } from "../../hooks/useMeQuery";
-
+import { useDropdown } from "../../hooks/useDropdown";
+import { useInput } from "../../hooks/useInput";
+import { API } from "../../api";
+import validateForm from "../../helpers/validateForm";
+import { CHANGE_PASSWORD_FORM } from "../../constants";
+import { toast } from "react-toastify";
 
 const SettingsContainer = () => {
   const { me, loading } = useMeQuery();
+
+  const { show, handleSetShow } = useDropdown();
+  const [password, passwordProps, resetPassword] = useInput("");
+  const [
+    passwordConfirmation,
+    passwordConfirmationProps,
+    resetPasswordConfirmation,
+  ] = useInput("");
+
+  const [lockPassword, setLockPassword] = useState(true);
+  const handleSavePassword = async () => {
+    const { errors } = validateForm(
+      { password, password_confirmation: passwordConfirmation },
+      CHANGE_PASSWORD_FORM
+    );
+
+    if (Object.values(errors).length > 0) {
+      return toast.error(Object.values(errors)[0]);
+    }
+
+    try {
+      const response = await API.changePassword(password, passwordConfirmation);
+
+      if (!response.ok) {
+        toast.error("Could not change your password");
+      }
+      toast.info("Successfully changed your password");
+    } catch (_) {
+      toast.error("Could not change your password");
+    }
+    onCancelPassword();
+  };
+
+  const handleChangePassword = () => setLockPassword((curr) => !curr);
+
+  const onCancelPassword = () => {
+    setLockPassword(true);
+    resetPassword();
+    resetPasswordConfirmation();
+  };
+
+  const handleDelete = (e) => {
+    API.deleteSummoner(me.summoner.id).then((res) => {
+      console.log(res);
+    });
+  };
+
+  const props = {
+    me,
+    loading,
+    lockPassword,
+    handleChangePassword,
+    onCancelPassword,
+    resetPasswordConfirmation,
+    handleDelete,
+    handleSavePassword,
+    show,
+    handleSetShow,
+    passwordProps,
+    passwordConfirmationProps,
+  };
 
   if (loading) {
     return (
@@ -22,7 +88,7 @@ const SettingsContainer = () => {
       <Helmet>
         <title>Leaguedex - settings</title>
       </Helmet>
-      <Settings me={me} />
+      <Settings {...props} />
     </>
   );
 };

@@ -2,66 +2,27 @@ import React, { useState, useRef, useLayoutEffect } from "react";
 import * as SC from "./Settings.styles";
 import { Button } from "../../GlobalStyles";
 import Dropdown, { Menu } from "../../components/dropdown/Dropdown";
-import { useDropdown } from "../../hooks/useDropdown";
-import { useInput } from "../../hooks/useInput";
 import { FaTrash } from "react-icons/fa";
-import { API } from "../../api";
-import validateForm from "../../helpers/validateForm";
-import { CHANGE_PASSWORD_FORM } from "../../constants";
-import { toast } from "react-toastify";
 
-const Settings = ({ me }) => {
+const Settings = ({
+  me,
+  lockPassword,
+  passwordProps,
+  passwordConfirmationProps,
+  handleChangePassword,
+  handleSavePassword,
+  handleDelete,
+  handleSetShow,
+  onCancelPassword,
+  show,
+}) => {
   const ref = useRef(null);
-  const { show, handleSetShow } = useDropdown();
-  const [password, passwordProps, resetPassword] = useInput("");
-  const [
-    passwordConfirmation,
-    passwordConfirmationProps,
-    resetPasswordConfirmation,
-  ] = useInput("");
-  const [lockPassword, setLockPassword] = useState(true);
 
   useLayoutEffect(() => {
     if (!lockPassword) {
       ref.current.focus();
     }
   }, [lockPassword]);
-
-  const handleSavePassword = async () => {
-    // validation
-    const { errors } = validateForm(
-      { password, password_confirmation: passwordConfirmation },
-      CHANGE_PASSWORD_FORM
-    );
-
-    if (Object.values(errors).length > 0) {
-      return toast.error(Object.values(errors)[0]);
-    }
-
-    try {
-      const response = await API.changePassword(password, passwordConfirmation);
-
-      if (!response.ok) {
-        toast.error("Could not change your password");
-      }
-      toast.info("Successfully changed your password");
-    } catch (_) {
-      toast.error("Could not change your password");
-    }
-    onCancelPassword();
-  };
-
-  const handleChangePassword = () => setLockPassword((curr) => !curr);
-
-  const onCancelPassword = () => {
-    setLockPassword(true);
-    resetPassword();
-    resetPasswordConfirmation();
-  };
-
-  const handleDelete = (e) => {
-    API.deleteSummoner(me.summoner.id);
-  };
 
   const removeNumbersFromString = (str) => str.replace(/[0-9]/g, "");
   const pluralize = (length = 1, str) => (length > 1 ? str + "s" : str);
