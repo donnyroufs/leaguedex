@@ -61,6 +61,25 @@ class UserModel extends Model {
     return resource;
   }
 
+  async findById(id) {
+    const resource = await this.db.findOne({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        username: false,
+        email: false,
+        password: false,
+        summoner: true,
+        permissions: true,
+        active: false,
+      },
+    });
+
+    return resource;
+  }
+
   async findUser(username) {
     const resource = await this.db.findOne({
       where: {
