@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 
 const SettingsContainer = () => {
   const [lockPassword, setLockPassword] = useState(true);
-  const { me, loading } = useMeQuery();
+  const { me, loading, setMe } = useMeQuery();
   const { show, handleSetShow } = useDropdown();
   const [password, passwordProps, resetPassword] = useInput("");
   const [
@@ -54,9 +54,17 @@ const SettingsContainer = () => {
   };
 
   const handleDelete = (e) => {
-    API.deleteSummoner(me.summoner.id).then((res) => {
-      console.log(res);
-    });
+    API.deleteSummoner(me.summoner.id)
+      .then(() => {
+        setMe((curr) => ({
+          ...curr,
+          summoner: null,
+        }));
+        toast.info("Account successfully deleted");
+      })
+      .catch((err) => {
+        toast.error("Could not delete summoner account");
+      });
   };
 
   const props = {
