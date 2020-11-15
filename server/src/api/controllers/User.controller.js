@@ -291,18 +291,23 @@ class UserController extends Controller {
 
   async deleteSummoner(req, res) {
     const { summonerId } = req.query;
-
-    console.log(req.query);
-
-    console.log(summonerId);
+    const { id: userId } = req.user;
 
     if (!summonerId) {
       throw new NotFoundError('Missing summonerId');
     }
 
-    await this.model.deleteSummoner(req.user.id, summonerId);
+    await this.model.deleteSummoner(userId, summonerId);
+    const user = await this.model.findById(userId);
 
-    res.sendStatus(201);
+    // if no summoner accounts left, update permissions.
+    if (!user.summoner) {
+      await this.model.updateAccountPermissions(userId, 1);
+    }
+
+    // Update refresh token? <refactor>
+
+    res.sendStatus(204);
   }
 }
 

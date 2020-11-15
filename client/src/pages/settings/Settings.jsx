@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import * as SC from "./Settings.styles";
 import { Button } from "../../GlobalStyles";
 import Dropdown, { Menu } from "../../components/dropdown/Dropdown";

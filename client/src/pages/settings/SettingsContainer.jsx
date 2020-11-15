@@ -12,8 +12,8 @@ import { CHANGE_PASSWORD_FORM } from "../../constants";
 import { toast } from "react-toastify";
 
 const SettingsContainer = () => {
+  const [lockPassword, setLockPassword] = useState(true);
   const { me, loading } = useMeQuery();
-
   const { show, handleSetShow } = useDropdown();
   const [password, passwordProps, resetPassword] = useInput("");
   const [
@@ -22,7 +22,6 @@ const SettingsContainer = () => {
     resetPasswordConfirmation,
   ] = useInput("");
 
-  const [lockPassword, setLockPassword] = useState(true);
   const handleSavePassword = async () => {
     const { errors } = validateForm(
       { password, password_confirmation: passwordConfirmation },
