@@ -48,6 +48,7 @@ const Settings = ({
           <SC.InputGroup>
             <SC.Label htmlFor="password">Password</SC.Label>
             <SC.Input
+              autoComplete="off"
               active={!lockPassword}
               ref={ref}
               type="password"
@@ -61,6 +62,7 @@ const Settings = ({
               Re-type password
             </SC.Label>
             <SC.Input
+              autoComplete="off"
               active={!lockPassword}
               type="password"
               name="password_confirmation"
