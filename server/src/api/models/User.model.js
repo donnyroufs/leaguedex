@@ -68,8 +68,8 @@ class UserModel extends Model {
       },
       select: {
         id: true,
-        username: false,
-        email: false,
+        username: true,
+        email: true,
         password: false,
         summoner: true,
         permissions: true,
