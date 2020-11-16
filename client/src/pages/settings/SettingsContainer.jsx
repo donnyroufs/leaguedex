@@ -10,8 +10,11 @@ import validateForm from "../../helpers/validateForm";
 import { CHANGE_PASSWORD_FORM } from "../../constants";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
+import { useEffect } from "react";
+import { Redirect, useHistory } from "react-router";
 
 const SettingsContainer = () => {
+  const history = useHistory();
   const [lockPassword, setLockPassword] = useState(true);
   const { setUser, user, loading } = useAuth();
   const { show, handleSetShow } = useDropdown();
@@ -93,7 +96,8 @@ const SettingsContainer = () => {
       <Helmet>
         <title>Leaguedex - settings</title>
       </Helmet>
-      <Settings {...props} />
+      {user && <Settings {...props} />}
+      {!user && <Redirect to="/" />}
     </>
   );
 };
