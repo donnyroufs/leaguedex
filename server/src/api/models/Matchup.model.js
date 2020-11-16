@@ -6,6 +6,20 @@ class MatchupModel extends Model {
     super(...props);
   }
 
+  async findOneByUserId(userId) {
+    const [resource] = await db.user.findMany({
+      take: 1,
+      where: {
+        id: Number(userId),
+      },
+      select: {
+        summoner: true,
+      },
+    });
+
+    return resource;
+  }
+
   async findMatchup(userId, { lane, champion_id, opponent_id }) {
     const resource = await this.db.findOne({
       where: {

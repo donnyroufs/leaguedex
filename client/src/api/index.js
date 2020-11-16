@@ -26,4 +26,41 @@ export class API {
       }
     );
   }
+
+  static async fetchLogin(formData) {
+    const response = await makeRequest(this.endpoint + `/user/login`, {
+      method: "POST",
+      body: JSON.stringify(formData),
+    });
+    return response.json();
+  }
+
+  static async fetchRegister(formData) {
+    const response = await makeRequest(this.endpoint + `/user/register`, {
+      method: "POST",
+      body: JSON.stringify(formData),
+    });
+    return response.status === 201;
+  }
+
+  static async fetchLogout() {
+    return makeRequest(this.endpoint + `/user/logout`, {
+      method: "DELETE",
+    });
+  }
+
+  static async renew() {
+    const response = await makeRequest(this.endpoint + "/user/renew");
+    return response.json();
+  }
+
+  static async refresh() {
+    const response = await makeRequest(this.endpoint + `/user/refresh`);
+    return response.json();
+  }
+
+  static async syncData() {
+    const res = await makeRequest(this.endpoint + "/matchup/sync");
+    return res.json();
+  }
 }

@@ -1,5 +1,6 @@
 const Riot = require('../../lib/Riot');
 const { db } = require('../../config/database');
+const userModel = require('../models/User.model');
 
 exports.sync = async (userId, accountId, region) => {
   let updated = false;
@@ -72,11 +73,14 @@ exports.sync = async (userId, accountId, region) => {
 exports.syncMatchup = async (req, _, next) => {
   try {
     const { id } = req.user;
+    const summoner = await userModel.findOneById(id);
+
     const { data, updated, inSync } = await this.sync(
       id,
-      req.user.summoner.accountId,
-      req.user.summoner.region
+      summoner.accountId,
+      summoner.region
     );
+
     req.match = data;
     req.match.updated = updated;
     req.match.inSync = !inSync ? updated : inSync;
