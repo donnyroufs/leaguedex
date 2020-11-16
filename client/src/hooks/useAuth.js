@@ -106,8 +106,7 @@ const useAuthProvider = () => {
   const refreshToken = async () => {
     try {
       const { accessToken } = await API.refresh();
-
-      _setData(accessToken);
+      setToken(accessToken);
 
       if (loading) {
         setLoading(false);
