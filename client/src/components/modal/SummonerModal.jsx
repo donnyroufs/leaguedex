@@ -68,15 +68,8 @@ const SummonerModal = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      const { accessToken } = await fetchSummoner(values);
-      const { data } = decode(accessToken);
-
-      setUser({
-        ...user,
-        ...data,
-      });
-
-      refreshToken();
+      const userData = await fetchSummoner(values);
+      setUser(userData);
       toast.info("Added account successfully.");
       setModal(null);
     } catch (err) {
