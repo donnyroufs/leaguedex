@@ -130,8 +130,6 @@ class UserController extends Controller {
       data: {
         id: user.id,
         username: user.username,
-        active: user.active,
-        permissions: user.permissions,
       },
     };
 
@@ -148,7 +146,7 @@ class UserController extends Controller {
 
     res.status(200).json({
       accessToken,
-      summoner: user.summoner,
+      ...user,
     });
   }
 
