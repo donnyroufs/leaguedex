@@ -132,6 +132,20 @@ class Auth {
     const current_date = new Date().getTime();
     return new Date(current_date + expires * (minute * 1));
   };
+
+  static async withUser(req, _, next) {
+    const { id } = req.user;
+
+    const user = await db.user.findOne({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    req.user = user;
+
+    next();
+  }
 }
 
 module.exports = Auth;
