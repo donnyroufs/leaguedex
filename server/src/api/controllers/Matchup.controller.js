@@ -54,7 +54,9 @@ class MatchupController extends Controller {
   }
 
   async findGame(req, res) {
-    const { summoner, id: userId } = req.user;
+    const { id: userId } = req.user;
+
+    const { summoner } = await this.model.findOneByUserId(userId);
 
     if (!summoner) {
       return res.status(200).json({});
