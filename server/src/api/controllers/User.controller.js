@@ -167,6 +167,8 @@ class UserController extends Controller {
       throw new NotAuthorized('You do not have a valid refresh token');
     }
 
+    const user = await this.model.findById(req.user.id);
+
     const { token: refreshToken } = await Auth.createToken(
       payload,
       REFRESH_TOKEN
@@ -178,7 +180,7 @@ class UserController extends Controller {
 
     const { token: accessToken } = await Auth.createToken(payload);
 
-    res.status(201).json({ accessToken });
+    res.status(201).json({ accessToken, ...user });
   }
 
   async refresh(req, res) {
