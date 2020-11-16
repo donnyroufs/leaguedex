@@ -5,7 +5,7 @@ import Dropdown, { Menu } from "../../components/dropdown/Dropdown";
 import { FaTrash } from "react-icons/fa";
 
 const Settings = ({
-  me,
+  user,
   lockPassword,
   passwordProps,
   passwordConfirmationProps,
@@ -35,11 +35,11 @@ const Settings = ({
           <SC.Box className="group">
             <SC.InputGroup>
               <SC.Label htmlFor="username">Username</SC.Label>
-              <SC.Input name="username" value={me.username} disabled />
+              <SC.Input name="username" value={user.username} disabled />
             </SC.InputGroup>
             <SC.InputGroup>
               <SC.Label htmlFor="email">Email Address</SC.Label>
-              <SC.Input name="email" value={me.email} disabled />
+              <SC.Input name="email" value={user.email} disabled />
             </SC.InputGroup>
           </SC.Box>
         </SC.Box>
@@ -95,13 +95,13 @@ const Settings = ({
           <SC.Title className="summoner">
             Summoner {pluralize(1, "Account")}
           </SC.Title>
-          {!me.summoner && <p>You have not added a summoner account yet!</p>}
-          {me.summoner && (
+          {!user.summoner && <p>You have not added a summoner account yet!</p>}
+          {user.summoner && (
             <SC.Field>
               <SC.TextWrapper>
-                [{removeNumbersFromString(me.summoner.region).toUpperCase()}]
+                [{removeNumbersFromString(user.summoner.region).toUpperCase()}]
               </SC.TextWrapper>
-              <SC.TextWrapper>{me.summoner.name}</SC.TextWrapper>
+              <SC.TextWrapper>{user.summoner.name}</SC.TextWrapper>
               <Dropdown show={show} handleSetShow={handleSetShow} right="12px">
                 <Menu.Item onClick={handleDelete} small={false}>
                   <FaTrash style={{ marginRight: ".3rem" }} />

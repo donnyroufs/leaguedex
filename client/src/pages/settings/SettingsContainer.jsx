@@ -3,7 +3,6 @@ import Settings from "./Settings";
 import { Helmet } from "react-helmet-async";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
-import { useMeQuery } from "../../hooks/useMeQuery";
 import { useDropdown } from "../../hooks/useDropdown";
 import { useInput } from "../../hooks/useInput";
 import { API } from "../../api";
@@ -14,8 +13,7 @@ import { useAuth } from "../../hooks/useAuth";
 
 const SettingsContainer = () => {
   const [lockPassword, setLockPassword] = useState(true);
-  const { me, loading, setMe } = useMeQuery();
-  const { setUser } = useAuth();
+  const { setUser, user, loading } = useAuth();
   const { show, handleSetShow } = useDropdown();
   const [password, passwordProps, resetPassword] = useInput("");
   const [
@@ -56,16 +54,10 @@ const SettingsContainer = () => {
   };
 
   const handleDelete = (e) => {
-    API.deleteSummoner(me.summoner.id)
-      .then(() => {
-        setMe((curr) => ({
-          ...curr,
-          summoner: null,
-        }));
-        setUser((curr) => ({
-          ...curr,
-          summoner: null,
-        }));
+    API.deleteSummoner(user.summoner.id)
+      .then((res) => res.json())
+      .then((data) => {
+        setUser(data);
         toast.info("Account successfully deleted");
       })
       .catch(() => {
@@ -74,7 +66,7 @@ const SettingsContainer = () => {
   };
 
   const props = {
-    me,
+    user,
     loading,
     lockPassword,
     handleChangePassword,
