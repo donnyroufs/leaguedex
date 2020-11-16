@@ -29,17 +29,20 @@ const useAuthProvider = () => {
 
   const login = async (formData) => {
     try {
-      const res = await API.fetchLogin(formData);
-      if (!res.accessToken) {
-        setError(res.message);
-      } else {
-        setTimeout(() => {
-          _setData(res.accessToken);
-          setError(null);
-        }, 600);
-        toast.info("You have successfully logged in.");
+      const { accessToken, ...data } = await API.fetchLogin(formData);
+
+      if (!accessToken) {
+        setError(data.message);
+        return;
       }
-      return !!res.accessToken;
+
+      setTimeout(() => {
+        _setData(accessToken, data);
+        setError(null);
+      }, 600);
+
+      toast.info("You have successfully logged in.");
+      return !!accessToken;
     } catch (err) {
       setUser(null);
       setError(err);
