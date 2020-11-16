@@ -201,7 +201,7 @@ class UserController extends Controller {
 
     if (!data) throw NotFoundError('could not find the summoner account.');
 
-    const addedSummoner = await this.model.createSummoner(userId, {
+    await this.model.createSummoner(userId, {
       ...req.body,
       ...data,
     });
@@ -214,26 +214,9 @@ class UserController extends Controller {
       throw ErrorHandler(500, 'Could not update permissions.');
     }
 
-    const payload = {
-      data: {
-        ...req.user,
-        summoner: addedSummoner,
-        permissions: 2,
-      },
-    };
+    const updatedUser = await this.model.findById(userId);
 
-    const { token: refreshToken } = await Auth.createToken(
-      payload,
-      REFRESH_TOKEN
-    );
-
-    await Auth.createOrUpdateRefreshToken(req.user.id, refreshToken);
-
-    Auth.setRefreshCookie(res, refreshToken);
-
-    const { token: accessToken } = await Auth.createToken(payload);
-
-    res.status(201).json({ accessToken });
+    res.status(201).json(updatedUser);
   }
 
   getRegions(_, res) {
@@ -298,30 +281,11 @@ class UserController extends Controller {
     }
 
     await this.model.deleteSummoner(userId, summonerId);
-    const user = await this.model.findById(userId);
-
     await this.model.updateAccountPermissions(userId, 1);
 
-    const payload = {
-      data: {
-        ...req.user,
-        summoner: null,
-        permissions: 1,
-      },
-    };
+    const updatedUser = await this.model.findById(userId);
 
-    const { token: refreshToken } = await Auth.createToken(
-      payload,
-      REFRESH_TOKEN
-    );
-
-    await Auth.createOrUpdateRefreshToken(req.user.id, refreshToken);
-
-    Auth.setRefreshCookie(res, refreshToken);
-
-    const { token: accessToken } = await Auth.createToken(payload);
-
-    res.status(201).json({ accessToken });
+    res.status(201).json(updatedUser);
   }
 }
 
