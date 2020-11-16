@@ -89,6 +89,7 @@ class UserModel extends Model {
         id: true,
         username: true,
         password: true,
+        email: true,
         summoner: true,
         permissions: true,
         active: true,
