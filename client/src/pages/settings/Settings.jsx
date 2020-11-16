@@ -47,13 +47,12 @@ const Settings = ({
           <SC.Title className="password">Change Your Password</SC.Title>
           <SC.InputGroup>
             <SC.Label htmlFor="password">Password</SC.Label>
-            <SC.Input type="hidden" name="password" />
             <SC.Input
               autoComplete="off"
               active={!lockPassword}
               ref={ref}
               type="password"
-              name="password"
+              name="_password"
               {...passwordProps}
               disabled={lockPassword}
             />
