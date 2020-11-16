@@ -130,7 +130,6 @@ class UserController extends Controller {
       data: {
         id: user.id,
         username: user.username,
-        summoner: user.summoner,
         active: user.active,
         permissions: user.permissions,
       },
