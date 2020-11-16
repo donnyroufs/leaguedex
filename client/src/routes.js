@@ -69,7 +69,7 @@ const routes = [
     path: "/settings",
     name: "verify",
     component: pages.Settings,
-    permissions: 2,
+    permissions: 1,
   },
   {
     exact: false,
