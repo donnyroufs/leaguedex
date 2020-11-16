@@ -1,5 +1,5 @@
 const Controller = require('./Controller');
-const { ErrorHandler, NotFoundError } = require('../../helpers/error');
+const { NotFoundError } = require('../../helpers/error');
 const { db } = require('../../config/database');
 const Riot = require('../../lib/Riot');
 const { sync } = require('../middleware/syncMatchup.middleware');
@@ -70,7 +70,7 @@ class MatchupController extends Controller {
 
     const champions = await db.champion.findMany();
     const me = data.participants
-      .filter((player) => player.summonerId === req.user.summoner.accountId)
+      .filter((player) => player.summonerId === summoner.accountId)
       .map((player) => {
         const champion = champions.find(
           (champion) => champion.id === player.championId
@@ -145,7 +145,8 @@ class MatchupController extends Controller {
   }
 
   async syncAll(req, res) {
-    const { id, summoner } = req.user;
+    const { id } = req.user;
+    const { summoner } = await this.model.findOneByUserId(userId);
 
     if (!summoner) {
       return res.status(200).json({});
