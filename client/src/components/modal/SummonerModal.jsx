@@ -16,7 +16,6 @@ import theme from "../../theme";
 import { useModal } from "../../hooks/useModal";
 import { useAuth } from "../../hooks/useAuth";
 import { toast } from "react-toastify";
-import decode from "jwt-decode";
 import makeRequest from "../../helpers/makeRequest";
 
 const initialValues = {
@@ -43,7 +42,7 @@ const SummonerModal = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [regions, setRegions] = useState([]);
 
-  const { isAuthenticated, user, setUser, refreshToken } = useAuth();
+  const { isAuthenticated, user, setUser } = useAuth();
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const innerRef = useRef();
 
