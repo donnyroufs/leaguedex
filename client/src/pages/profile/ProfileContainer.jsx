@@ -79,7 +79,6 @@ const ProfileContainer = ({ history, ...props }) => {
         handleNavigate={handleNavigate}
         username={props.match.params.username}
       />
-      ;
     </>
   );
 };
