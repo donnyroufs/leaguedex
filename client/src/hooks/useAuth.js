@@ -80,8 +80,10 @@ const useAuthProvider = () => {
   const renewAuth = async () => {
     try {
       const { accessToken } = await API.renew();
+      const response = await API.fetchMe();
+      const meData = await response.json();
 
-      _setData(accessToken);
+      _setData(accessToken, meData);
       if (loading) {
         setLoading(false);
       }
@@ -91,11 +93,11 @@ const useAuthProvider = () => {
     }
   };
 
-  const _setData = (accessToken) => {
+  const _setData = (accessToken, me) => {
     const { data, exp } = decode(accessToken);
     setExp(exp);
     setToken(accessToken);
-    setUser(data);
+    setUser({ ...data, ...me });
   };
 
   const refreshToken = async () => {
