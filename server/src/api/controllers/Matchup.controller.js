@@ -146,7 +146,7 @@ class MatchupController extends Controller {
 
   async syncAll(req, res) {
     const { id } = req.user;
-    const { summoner } = await this.model.findOneByUserId(userId);
+    const { summoner } = await this.model.findOneByUserId(id);
 
     if (!summoner) {
       return res.status(200).json({});
