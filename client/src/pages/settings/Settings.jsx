@@ -51,7 +51,6 @@ const Settings = ({
               autoComplete="off"
               active={!lockPassword}
               ref={ref}
-              placeholder="password"
               type="password"
               name="password"
               {...passwordProps}
@@ -66,7 +65,6 @@ const Settings = ({
               autoComplete="off"
               active={!lockPassword}
               type="password"
-              placeholder="password"
               name="password_confirmation"
               {...passwordConfirmationProps}
               disabled={lockPassword}
