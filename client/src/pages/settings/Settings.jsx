@@ -21,6 +21,7 @@ const Settings = ({
   useLayoutEffect(() => {
     if (!lockPassword) {
       ref.current.focus();
+      ref.current.value = "";
     }
   }, [lockPassword]);
 
@@ -55,9 +56,6 @@ const Settings = ({
               name="password"
               {...passwordProps}
               disabled={lockPassword}
-              onFocus={(event) => {
-                event.target.setAttribute("autocomplete", "off");
-              }}
             />
           </SC.InputGroup>
           <SC.InputGroup>
