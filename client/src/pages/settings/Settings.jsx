@@ -48,11 +48,11 @@ const Settings = ({
           <SC.InputGroup>
             <SC.Label htmlFor="password">Password</SC.Label>
             <SC.Input
-              autoComplete="off"
+              autocomplete="new-password"
               active={!lockPassword}
               ref={ref}
               type="password"
-              name="_password"
+              name="password"
               {...passwordProps}
               disabled={lockPassword}
             />
