@@ -56,9 +56,7 @@ const Settings = ({
               {...passwordProps}
               disabled={lockPassword}
               onFocus={(event) => {
-                if (event.target.autocomplete) {
-                  event.target.autocomplete = "workaround";
-                }
+                event.target.setAttribute("autocomplete", "off");
               }}
             />
           </SC.InputGroup>
