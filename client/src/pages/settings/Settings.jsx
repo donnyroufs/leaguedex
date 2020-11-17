@@ -55,6 +55,7 @@ const Settings = ({
               name="password"
               {...passwordProps}
               disabled={lockPassword}
+              readonly={lockPassword}
             />
           </SC.InputGroup>
           <SC.InputGroup>
