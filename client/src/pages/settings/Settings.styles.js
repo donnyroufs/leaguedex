@@ -87,6 +87,24 @@ export const Input = styled.input`
     css`
       border: 1px solid ${props.theme.primary};
     `}
+
+  ::-webkit-input-placeholder {
+    color: transparent;
+  }
+
+  :-moz-placeholder {
+    /* Firefox 18- */
+    color: transparent;
+  }
+
+  ::-moz-placeholder {
+    /* Firefox 19+ */
+    color: transparent;
+  }
+
+  :-ms-input-placeholder {
+    color: transparent;
+  }
 `;
 
 export const Field = styled.li`
