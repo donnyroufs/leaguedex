@@ -21,7 +21,9 @@ const Settings = ({
   useLayoutEffect(() => {
     if (!lockPassword) {
       ref.current.focus();
-      ref.current.value = "";
+      setTimeout(() => {
+        ref.current.value = "";
+      }, 200);
     }
   }, [lockPassword]);
 
