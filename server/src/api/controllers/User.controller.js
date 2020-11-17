@@ -144,9 +144,11 @@ class UserController extends Controller {
 
     Auth.setRefreshCookie(res, refreshToken);
 
+    const { password: _, ...userData } = user;
+
     res.status(200).json({
       accessToken,
-      ...user,
+      ...userData,
     });
   }
 
