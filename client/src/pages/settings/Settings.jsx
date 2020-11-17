@@ -20,7 +20,7 @@ const Settings = ({
 
   useLayoutEffect(() => {
     if (!lockPassword) {
-      // ref.current.focus();
+      ref.current.focus();
     }
   }, [lockPassword]);
 
@@ -48,7 +48,7 @@ const Settings = ({
           <SC.InputGroup>
             <SC.Label htmlFor="password">Password</SC.Label>
             <SC.Input
-              autoComplete="off"
+              autoComplete="new-password"
               active={!lockPassword}
               ref={ref}
               type="password"
