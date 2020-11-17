@@ -48,7 +48,7 @@ const Settings = ({
           <SC.InputGroup>
             <SC.Label htmlFor="password">Password</SC.Label>
             <SC.Input
-              autoComplete="chrome-off"
+              autoComplete="off"
               active={!lockPassword}
               ref={ref}
               type="password"
