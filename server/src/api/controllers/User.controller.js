@@ -3,6 +3,7 @@ const {
   ErrorHandler,
   NotFoundError,
   NotAuthorized,
+  BadRequest,
 } = require('../../helpers/error');
 const { REFRESH_TOKEN } = require('../../helpers/constants');
 const Riot = require('../../lib/Riot');
@@ -14,6 +15,7 @@ const {
 } = require('../../lib/mail.templates');
 const { v4 } = require('uuid');
 const { db } = require('../../config/database');
+const { blackListEmail } = require('../../helpers/utils');
 
 class UserController extends Controller {
   constructor(...props) {
@@ -72,6 +74,10 @@ class UserController extends Controller {
 
   async create(req, res) {
     const { username, password, email } = req.body;
+
+    if (blackListEmail(email)) {
+      throw new BadRequest('Current email domain is not supported');
+    }
 
     const hashedPassword = await Auth.hashPassword(password);
     const userId = await this.model.create({
