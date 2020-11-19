@@ -22,6 +22,15 @@ class NotFoundError extends Error {
     this.message = message;
   }
 }
+
+class BadRequest extends Error {
+  constructor(message = 'Bad Request') {
+    super();
+    this.statusCode = 400;
+    this.message = message;
+  }
+}
+
 const handleError = (err, res) => {
   const { statusCode = 500, message = 'Something went wrong...' } = err;
   res.status(statusCode).json({
