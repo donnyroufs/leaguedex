@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 function normalize(championName) {
   return championName
     .replace(/[^a-zA-Z]/g, '')
