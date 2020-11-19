@@ -5,4 +5,9 @@ function normalize(championName) {
     .trim();
 }
 
-export { normalize };
+function blackListEmail(email) {
+  const regex = /[a-zA-Z0-9_\.+]+@(live|hotmail|outlook)/;
+  return !!email.match(regex);
+}
+
+export { normalize, blackListEmail };

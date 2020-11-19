@@ -36,4 +36,5 @@ module.exports = {
   handleError,
   NotFoundError,
   NotAuthorized,
+  BadRequest,
 };
