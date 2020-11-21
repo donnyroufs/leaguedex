@@ -3,7 +3,6 @@ import Settings from "./Settings";
 import { Helmet } from "react-helmet-async";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
-import { useDropdown } from "../../hooks/useDropdown";
 import { useInput } from "../../hooks/useInput";
 import { API } from "../../api";
 import validateForm from "../../helpers/validateForm";
@@ -15,7 +14,6 @@ import { Redirect } from "react-router";
 const SettingsContainer = () => {
   const [lockPassword, setLockPassword] = useState(true);
   const { setUser, user, loading } = useAuth();
-  const { show, handleSetShow } = useDropdown();
   const [password, passwordProps, resetPassword] = useInput("");
   const [
     passwordConfirmation,
@@ -75,8 +73,6 @@ const SettingsContainer = () => {
     resetPasswordConfirmation,
     handleDelete,
     handleSavePassword,
-    show,
-    handleSetShow,
     passwordProps,
     passwordConfirmationProps,
   };
