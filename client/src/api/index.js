@@ -70,8 +70,10 @@ export class API {
     return makeRequest(`/api/matchup/find?summonerId=${activeSummonerId}`);
   }
 
-  static async fetchLatest(id) {
-    const res = await makeRequest(`/api/matchup/latest/${id}`);
+  static async fetchLatest(id, summonerId) {
+    const res = await makeRequest(
+      `/api/matchup/latest/${id}?summonerId=${summonerId}`
+    );
     return res.json();
   }
 }

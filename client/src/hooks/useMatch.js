@@ -75,7 +75,7 @@ const useMatchProvider = () => {
 
   async function finishMatch(match) {
     try {
-      const data = await API.fetchLatest(match.gameId);
+      const data = await API.fetchLatest(match.gameId, activeSummonerId);
       return data;
     } catch (_) {
       return null;
