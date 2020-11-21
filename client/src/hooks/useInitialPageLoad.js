@@ -27,7 +27,7 @@ export function useInitialPageLoad() {
       setInitialLoad(false);
     }
 
-    if (user && !hasMatch && initialLoad) {
+    if (user && !hasMatch) {
       API.syncData();
 
       if (!activeSummonerId && user.summoner.length > 0) {
