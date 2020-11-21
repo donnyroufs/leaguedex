@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState } from "react";
 import { build, loadAssets } from "../helpers/loadImages";
 import makeRequest from "../helpers/makeRequest";
+import { API } from "../api/";
+import useLocalStorage from "react-use-localstorage";
 
 const matchContext = createContext();
 
@@ -17,16 +19,10 @@ export const useMatch = () => {
   return useContext(matchContext);
 };
 
-async function fetchFindMatch() {
-  return makeRequest(`/api/matchup/find`);
-}
-
-async function fetchLatest(id) {
-  const res = await makeRequest(`/api/matchup/latest/${id}`);
-  return res.json();
-}
-
 const useMatchProvider = () => {
+  const [activeSummonerId, setActiveSummonerId] = useLocalStorage(
+    "LEAGUEDEX_ACTIVE_SUMMONER"
+  );
   const [match, setMatch] = useState(null);
   const [btnText, setBtnText] = useState("Go To Match");
   const [dex, setDex] = useState(null);
@@ -35,7 +31,7 @@ const useMatchProvider = () => {
   const findMatch = async () => {
     setLoading(true);
     try {
-      const res = await fetchFindMatch();
+      const res = await API.fetchFindMatch(activeSummonerId);
       const data = await res.json();
 
       if (data.hasOwnProperty("status")) {
@@ -79,7 +75,7 @@ const useMatchProvider = () => {
 
   async function finishMatch(match) {
     try {
-      const data = await fetchLatest(match.gameId);
+      const data = await API.fetchLatest(match.gameId);
       return data;
     } catch (_) {
       return null;
@@ -110,5 +106,7 @@ const useMatchProvider = () => {
     finishMatch,
     btnText,
     setBtnText,
+    activeSummonerId,
+    setActiveSummonerId,
   };
 };
