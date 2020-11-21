@@ -1,6 +1,7 @@
 import React, { useRef, useLayoutEffect } from "react";
 import * as SC from "./Settings.styles";
 import Summoner from "../../components/summoner/Summoner";
+import { useModal } from "../../hooks/useModal";
 import { Button } from "../../GlobalStyles";
 
 const Settings = ({
@@ -11,11 +12,10 @@ const Settings = ({
   handleChangePassword,
   handleSavePassword,
   handleDelete,
-  handleSetShow,
   onCancelPassword,
-  show,
 }) => {
   const ref = useRef(null);
+  const { setModal } = useModal();
 
   useLayoutEffect(() => {
     if (!lockPassword) {
@@ -100,6 +100,14 @@ const Settings = ({
             user.summoner.map((acc) => (
               <Summoner {...acc} handleDelete={handleDelete} key={acc.id} />
             ))}
+          <SC.Box className="buttonGroup">
+            <Button
+              className="maxContent mt-1"
+              onClick={() => setModal("summoner")}
+            >
+              Add Summoner
+            </Button>
+          </SC.Box>
         </SC.Box>
       </SC.Container.Inner>
     </SC.Container>
