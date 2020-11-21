@@ -9,12 +9,10 @@ import SummonerModal from "./components/modal/SummonerModal";
 import ForgotPasswordModal from "./components/modal/ForgotPasswordModal";
 import ResetPasswordModal from "./components/modal/ResetPasswordModal";
 import routes from "./routes";
-import { useAuth } from "./hooks/useAuth";
 import { useInitialPageLoad } from "./hooks/useInitialPageLoad";
 
 const App = () => {
-  const { loading, isAllowed } = useAuth();
-  useInitialPageLoad();
+  const { loading, isAllowed } = useInitialPageLoad();
 
   if (loading) {
     return null;

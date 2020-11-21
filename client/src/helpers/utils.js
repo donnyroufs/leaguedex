@@ -12,4 +12,6 @@ function blackListEmail(email) {
   return !!email.match(regex);
 }
 
-export { normalize, blackListEmail };
+const removeNumbersFromString = (str) => str.replace(/[0-9]/g, "");
+
+export { normalize, blackListEmail, removeNumbersFromString };

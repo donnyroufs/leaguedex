@@ -30,6 +30,7 @@
     "react-table": "^7.5.0",
     "react-toastify": "^6.0.8",
     "react-tooltip": "^4.2.9",
+    "react-use-localstorage": "^3.5.3",
     "styled-components": "^5.1.1",
     "styled-normalize": "^8.0.7",
     "use-debounce": "^5.0.1"

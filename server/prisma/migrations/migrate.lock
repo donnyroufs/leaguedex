@@ -17,3 +17,4 @@
 20201026083108-fix_user
 20201026090823-add_email_verification_for_users
 20201028110355-add_reset_password_table
+20201119195852-user-can-have-many-summoners

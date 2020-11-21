@@ -129,6 +129,10 @@ export const Link = styled(ReactLink)`
 export const Button = styled.button`
   ${GenericButton}
 
+  &.mt-1 {
+    margin-top: 1rem;
+  }
+
   ${(props) =>
     props.header &&
     css`
@@ -137,7 +141,7 @@ export const Button = styled.button`
       max-height: 43px;
     `}
 
-    ${(props) =>
+  ${(props) =>
     props.danger &&
     css`
       background: #d23f6f;

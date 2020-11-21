@@ -5,9 +5,16 @@ import { useMatch } from "./useMatch";
 import { API } from "../api";
 
 export function useInitialPageLoad() {
-  const { renewAuth, user, initialLoad, setInitialLoad } = useAuth();
+  const {
+    renewAuth,
+    user,
+    initialLoad,
+    setInitialLoad,
+    loading,
+    isAllowed,
+  } = useAuth();
   const { setModal } = useModal();
-  const { findMatch, hasMatch } = useMatch();
+  const { hasMatch, setActiveSummonerId, activeSummonerId } = useMatch();
 
   useEffect(() => {
     renewAuth();
@@ -20,12 +27,23 @@ export function useInitialPageLoad() {
       setInitialLoad(false);
     }
 
-    if (user && !hasMatch && initialLoad) {
-      API.syncData();
-      findMatch();
+    if (user && !hasMatch) {
+      const summonerId =
+        !activeSummonerId && user.summoner.length > 0
+          ? user.summoner[0].accountId
+          : activeSummonerId;
+
+      API.syncData(summonerId);
+      setActiveSummonerId(summonerId);
+
       setInitialLoad(false);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, activeSummonerId]);
+
+  return {
+    loading,
+    isAllowed,
+  };
 }

@@ -3,6 +3,7 @@ import StatusBar from "../statusbar/StatusBarContainer";
 
 import { Container, LinkIcon, Links } from "./Header.styles";
 import { Button } from "../../GlobalStyles";
+import SummonerDropdown from "../summonerDropdown/SummonerDropdown";
 import {
   FaQuestionCircle,
   FaUser,
@@ -36,7 +37,7 @@ const Header = ({
       <Container.Inner>
         <Container.Bottom>
           <Container.Brand to="/">
-            <Container.Brand.Image src="/logo.svg" alt="leaguedex logo" />
+            <Container.Brand.Image src="new_logo.svg" alt="leaguedex logo" />
           </Container.Brand>
           <Container.Buttons authenticated={isAuthenticated}>
             <Links>
@@ -80,6 +81,8 @@ const Header = ({
                     Add Summoner Account
                   </Button>
                 )}
+
+                {hasSummoner && <SummonerDropdown summoners={user.summoner} />}
 
                 <Button hide-xs logout onClick={handleLogout}>
                   Log out

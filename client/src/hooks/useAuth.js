@@ -104,6 +104,9 @@ const useAuthProvider = () => {
   const refreshToken = async () => {
     try {
       const { accessToken } = await API.refresh();
+      const { exp } = decode(accessToken);
+
+      setExp(exp);
       setToken(accessToken);
 
       if (loading) {
