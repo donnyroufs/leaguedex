@@ -7,7 +7,12 @@ import { API } from "../api";
 export function useInitialPageLoad() {
   const { renewAuth, user, initialLoad, setInitialLoad } = useAuth();
   const { setModal } = useModal();
-  const { findMatch, hasMatch } = useMatch();
+  const {
+    findMatch,
+    hasMatch,
+    setActiveSummonerId,
+    activeSummonerId,
+  } = useMatch();
 
   useEffect(() => {
     renewAuth();
@@ -22,10 +27,18 @@ export function useInitialPageLoad() {
 
     if (user && !hasMatch && initialLoad) {
       API.syncData();
-      findMatch();
+
+      if (!activeSummonerId && user.summoner.length > 0) {
+        setActiveSummonerId(user.summoner[0].accountId);
+      }
+
+      if (activeSummonerId) {
+        findMatch();
+      }
+
       setInitialLoad(false);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, activeSummonerId]);
 }
