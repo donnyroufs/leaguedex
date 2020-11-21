@@ -54,8 +54,8 @@ const SettingsContainer = () => {
     resetPasswordConfirmation();
   };
 
-  const handleDelete = (e) => {
-    API.deleteSummoner(user.summoner.id)
+  const handleDelete = (id) => {
+    API.deleteSummoner(id)
       .then((res) => res.json())
       .then((data) => {
         setUser(data);
