@@ -8,7 +8,7 @@ export const Select = styled.select`
   color: #83a2c5;
   height: 100%;
   width: 100%;
-  padding: 0 1rem;
+  padding: 0 3rem 0 1rem;
   border-radius: 4px;
   cursor: pointer;
 `;
