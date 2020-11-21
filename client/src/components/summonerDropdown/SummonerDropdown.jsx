@@ -1,14 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import Select from "../select/Select";
-import useLocalStorage from "react-use-localstorage";
+import { useMatch } from "../../hooks/useMatch";
 import { useCallback } from "react";
 
 const SummonerDropdown = ({ summoners }) => {
   const initialLoad = useRef(true);
-  const [activeSummonerId, setActiveSummonerId] = useLocalStorage(
-    "LEAGUEDEX_ACTIVE_SUMMONER",
-    null
-  );
+  const { activeSummonerId, setActiveSummonerId } = useMatch();
 
   useEffect(() => {
     if (initialLoad.current) {

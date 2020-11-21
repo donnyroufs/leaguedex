@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { build, loadAssets } from "../helpers/loadImages";
 import makeRequest from "../helpers/makeRequest";
 import { API } from "../api/";
@@ -89,6 +89,12 @@ const useMatchProvider = () => {
 
     history.push(`/match/${match.matchId}`);
   };
+
+  useEffect(() => {
+    if (activeSummonerId) {
+      findMatch();
+    }
+  }, [activeSummonerId]);
 
   return {
     match,
