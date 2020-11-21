@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { build, loadAssets } from "../helpers/loadImages";
 import makeRequest from "../helpers/makeRequest";
 import { API } from "../api/";
@@ -28,7 +34,7 @@ const useMatchProvider = () => {
   const [dex, setDex] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const findMatch = async () => {
+  const findMatch = useCallback(async () => {
     setLoading(true);
     try {
       const res = await API.fetchFindMatch(activeSummonerId);
@@ -47,7 +53,7 @@ const useMatchProvider = () => {
     } catch (err) {
       setLoading(false);
     }
-  };
+  }, [activeSummonerId]);
 
   const createMatchup = async (opponent_id, lane) => {
     try {
@@ -94,7 +100,7 @@ const useMatchProvider = () => {
     if (activeSummonerId) {
       findMatch();
     }
-  }, [activeSummonerId]);
+  }, [activeSummonerId, findMatch]);
 
   return {
     match,
