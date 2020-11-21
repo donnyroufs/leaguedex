@@ -65,7 +65,7 @@ export class API {
   }
 
   static async fetchFindMatch(activeSummonerId) {
-    return makeRequest(`/api/matchup/find?summoner=${activeSummonerId}`);
+    return makeRequest(`/api/matchup/find?summonerId=${activeSummonerId}`);
   }
 
   static async fetchLatest(id) {
