@@ -1,8 +1,7 @@
 import React, { useRef, useLayoutEffect } from "react";
 import * as SC from "./Settings.styles";
+import Summoner from "../../components/summoner/Summoner";
 import { Button } from "../../GlobalStyles";
-import Dropdown, { Menu } from "../../components/dropdown/Dropdown";
-import { FaTrash } from "react-icons/fa";
 
 const Settings = ({
   user,
@@ -24,7 +23,6 @@ const Settings = ({
     }
   }, [lockPassword]);
 
-  const removeNumbersFromString = (str) => str.replace(/[0-9]/g, "");
   const pluralize = (length = 1, str) => (length > 1 ? str + "s" : str);
 
   return (
@@ -98,20 +96,10 @@ const Settings = ({
             Summoner {pluralize(1, "Account")}
           </SC.Title>
           {!user.summoner && <p>You have not added a summoner account yet!</p>}
-          {user.summoner && (
-            <SC.Field>
-              <SC.TextWrapper>
-                [{removeNumbersFromString(user.summoner.region).toUpperCase()}]
-              </SC.TextWrapper>
-              <SC.TextWrapper>{user.summoner.name}</SC.TextWrapper>
-              <Dropdown show={show} handleSetShow={handleSetShow} right="12px">
-                <Menu.Item onClick={handleDelete} small={false}>
-                  <FaTrash style={{ marginRight: ".3rem" }} />
-                  delete
-                </Menu.Item>
-              </Dropdown>
-            </SC.Field>
-          )}
+          {user.summoner &&
+            user.summoner.map((acc) => (
+              <Summoner {...acc} handleDelete={handleDelete} key={acc.id} />
+            ))}
         </SC.Box>
       </SC.Container.Inner>
     </SC.Container>
