@@ -28,11 +28,13 @@ export function useInitialPageLoad() {
     }
 
     if (user && !hasMatch) {
-      API.syncData();
+      const summonerId =
+        !activeSummonerId && user.summoner.length > 0
+          ? user.summoner[0].accountId
+          : activeSummonerId;
 
-      if (!activeSummonerId && user.summoner.length > 0) {
-        setActiveSummonerId(user.summoner[0].accountId);
-      }
+      API.syncData(summonerId);
+      setActiveSummonerId(summonerId);
 
       setInitialLoad(false);
     }

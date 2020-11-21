@@ -59,8 +59,10 @@ export class API {
     return response.json();
   }
 
-  static async syncData() {
-    const res = await makeRequest(this.endpoint + "/matchup/sync");
+  static async syncData(summonerId) {
+    const res = await makeRequest(
+      this.endpoint + `/matchup/sync?summonerId=${summonerId}`
+    );
     return res.json();
   }
 
