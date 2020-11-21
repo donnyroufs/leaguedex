@@ -80,3 +80,11 @@ export const Links = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const Hamburger = styled.div`
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 1.25rem;
+`;

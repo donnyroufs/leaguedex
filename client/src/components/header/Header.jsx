@@ -1,7 +1,7 @@
 import React from "react";
 import StatusBar from "../statusbar/StatusBarContainer";
 
-import { Container, LinkIcon, Links } from "./Header.styles";
+import { Container, LinkIcon, Links, Hamburger } from "./Header.styles";
 import { Button } from "../../GlobalStyles";
 import SummonerDropdown from "../summonerDropdown/SummonerDropdown";
 import {
@@ -10,6 +10,7 @@ import {
   FaTachometerAlt,
   FaTwitter,
   FaCog,
+  FaBars,
 } from "react-icons/fa";
 
 const Header = ({
@@ -40,7 +41,7 @@ const Header = ({
             <Container.Brand.Image src="new_logo.svg" alt="leaguedex logo" />
           </Container.Brand>
           <Container.Buttons authenticated={isAuthenticated}>
-            <Links>
+            {/* <Links>
               <LinkIcon to="/about">
                 <FaQuestionCircle fontSize="1.5rem" />
               </LinkIcon>
@@ -65,7 +66,7 @@ const Header = ({
                   </LinkIcon>
                 </>
               )}
-            </Links>
+            </Links> */}
             {!isAuthenticated && (
               <>
                 <Button onClick={() => setModal("register")}>Register</Button>
@@ -89,6 +90,9 @@ const Header = ({
                 </Button>
               </>
             )}
+            <Hamburger>
+              <FaBars />
+            </Hamburger>
           </Container.Buttons>
         </Container.Bottom>
       </Container.Inner>
