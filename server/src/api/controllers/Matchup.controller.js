@@ -156,10 +156,21 @@ class MatchupController extends Controller {
 
   async syncAll(req, res) {
     const { id } = req.user;
-    const { summoner } = await this.model.findOneByUserId(id);
+    const { summonerId } = req.query;
 
+    const { summoner: foundSummoner } = await this.model.findOneByUserId(id);
+
+    if (!foundSummoner || foundSummoner.length <= 0) {
+      throw new NotFoundError('You do not have any linked summoner accounts');
+    }
+
+    const summoner = foundSummoner.find((s) => s.accountId === summonerId);
+
+    // if no summoner found
     if (!summoner) {
-      return res.status(200).json({});
+      throw new NotAuthorized(
+        'You are not the owner of the given summoner account'
+      );
     }
 
     const syncedData = await sync(id, summoner.accountId, summoner.region);
