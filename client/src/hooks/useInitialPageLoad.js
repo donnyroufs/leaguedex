@@ -5,7 +5,14 @@ import { useMatch } from "./useMatch";
 import { API } from "../api";
 
 export function useInitialPageLoad() {
-  const { renewAuth, user, initialLoad, setInitialLoad } = useAuth();
+  const {
+    renewAuth,
+    user,
+    initialLoad,
+    setInitialLoad,
+    loading,
+    isAllowed,
+  } = useAuth();
   const { setModal } = useModal();
   const { hasMatch, setActiveSummonerId, activeSummonerId } = useMatch();
 
@@ -32,4 +39,9 @@ export function useInitialPageLoad() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, activeSummonerId]);
+
+  return {
+    loading,
+    isAllowed,
+  };
 }
