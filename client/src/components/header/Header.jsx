@@ -32,7 +32,7 @@ const Header = ({
       <Container.Inner>
         <Container.Bottom>
           <Container.Brand to="/">
-            <Container.Brand.Image src="new_logo.svg" alt="leaguedex logo" />
+            <Container.Brand.Image src="/new_logo.svg" alt="leaguedex logo" />
           </Container.Brand>
           <Box>
             <Container.Buttons authenticated={isAuthenticated}>
