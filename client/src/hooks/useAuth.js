@@ -159,7 +159,7 @@ const useAuthProvider = () => {
     initialLoad,
     setInitialLoad,
     isAllowed,
-    hasSummoner: user ? Boolean(user.summoner) : false,
+    hasSummoner: user && user.summoner.length > 0,
     isAdmin: user ? user.permissions >= 10 : false,
   };
 };
