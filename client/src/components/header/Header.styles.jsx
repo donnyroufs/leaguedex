@@ -104,9 +104,17 @@ export const Hamburger = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+  margin-bottom: 0.3rem;
 `;
 
 export const Box = styled.div`
   display: flex;
+
+  ${(props) =>
+    props.flex &&
+    css`
+      flex-flow: row;
+      align-items: center;
+    `}
 `;
