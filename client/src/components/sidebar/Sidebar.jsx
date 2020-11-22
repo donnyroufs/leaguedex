@@ -27,7 +27,7 @@ const Sidebar = () => {
                 settings
               </SC.Link>
               {isAdmin && (
-                <SC.Link to="/dashboard" activeClassName="active-route">
+                <SC.Link to="/admin/dashboard" activeClassName="active-route">
                   Dashboard
                 </SC.Link>
               )}
