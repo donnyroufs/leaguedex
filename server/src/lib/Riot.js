@@ -1,10 +1,6 @@
 const axios = require('axios');
 const { db } = require('../config/database');
 const { NotFoundError } = require('../helpers/error');
-const { resolve } = require('path');
-const dotenv = require('dotenv');
-
-dotenv.config({ path: resolve(__dirname, '../.env') });
 
 class Riot {
   static endpoints = {

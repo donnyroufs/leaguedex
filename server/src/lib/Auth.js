@@ -1,4 +1,3 @@
-require('dotenv/config');
 const { ACCESS_TOKEN, REFRESH_TOKEN } = require('../helpers/constants');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
