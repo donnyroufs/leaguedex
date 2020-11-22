@@ -66,9 +66,11 @@ export const Link = styled(ReactLink)`
   text-transform: uppercase;
   color: ${(props) => props.theme.secondary};
   margin-bottom: 2rem;
+  transition: opacity 0.1s ease-in-out;
 
   opacity: 0.4;
 
+  &:hover,
   &.active-route {
     opacity: 1;
   }
