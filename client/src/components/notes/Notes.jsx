@@ -5,7 +5,17 @@ import useClipboard from "react-hook-clipboard";
 import { toast } from "react-toastify";
 import { FaLink } from "react-icons/fa";
 import { Title, Notes as Container } from "../../pages/dex/Dex.styles";
-import { List, Item, Filter, Tag, Mark, Text, Heading } from "./Notes.styles";
+import {
+  List,
+  Item,
+  Filter,
+  Tag,
+  Mark,
+  Text,
+  Heading,
+  Small,
+  InfoBox,
+} from "./Notes.styles";
 import { Form, Group, Input } from "../../components/styles/Form";
 import { filterByTags } from "../../helpers/arrayHelpers";
 import Highlight from "react-highlight-words";
@@ -163,6 +173,28 @@ const Notes = ({
           )}
           {shared ? "Notes" : "Your notes"}
         </Title>
+        <Small>
+          how to?
+          <InfoBox as="ol">
+            <li>
+              Create tags specifically for champions by adding their name after
+              @. These are always shown when the matchup includes the given
+              champion.
+            </li>
+            <li>
+              You can create global tags, which will be shown in every matchup.
+            </li>
+            <li>
+              You can create inline tags, these will not show the "@" character
+              and are only for the current matchup.
+            </li>
+            <li>
+              It's recommend to put specific champion and global tags at the end
+              of a note.
+            </li>
+            <li>You can filter tags in any combination you wish!</li>
+          </InfoBox>
+        </Small>
         {!shared && (
           <Dropdown show={show} handleSetShow={handleSetShow} w={140}>
             <Menu.Item small onClick={handleSetHidden}>
