@@ -57,7 +57,7 @@ const LoginModal = () => {
     if (valid) {
       const response = await login(values);
 
-      if (response.error) {
+      if (response.hasOwnProperty("error")) {
         setErrorMessage(response.error);
       } else {
         setReverse(true);

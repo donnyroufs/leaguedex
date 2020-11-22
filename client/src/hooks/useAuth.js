@@ -48,6 +48,9 @@ const useAuthProvider = () => {
     } catch (err) {
       setUser(null);
       setError(err);
+      return {
+        error: "Wrong username or password.",
+      };
     }
   };
 
