@@ -53,7 +53,7 @@ Container.Bottom = styled.div`
 `;
 
 Container.Brand = styled(Link)`
-  margin: 0 0 0 0.6rem;
+  margin: 0;
 `;
 
 Container.Brand.Image = styled.img``;
