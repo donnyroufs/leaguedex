@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ProtectedRoute from "./ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import { Route, Switch } from "react-router";
@@ -9,47 +9,11 @@ import SummonerModal from "./components/modal/SummonerModal";
 import ForgotPasswordModal from "./components/modal/ForgotPasswordModal";
 import ResetPasswordModal from "./components/modal/ResetPasswordModal";
 import routes from "./routes";
-import { useAuth } from "./hooks/useAuth";
-import { useModal } from "./hooks/useModal";
-import { useMatch } from "./hooks/useMatch";
-import makeRequest from "./helpers/makeRequest";
-
-async function syncData() {
-  const res = await makeRequest("/api/matchup/sync");
-  return res.json();
-}
+import { useInitialPageLoad } from "./hooks/useInitialPageLoad";
+import Sidebar from "./components/sidebar/Sidebar";
 
 const App = () => {
-  const {
-    renewAuth,
-    user,
-    loading,
-    initialLoad,
-    setInitialLoad,
-    isAllowed,
-  } = useAuth();
-  const { setModal } = useModal();
-  const { findMatch, hasMatch } = useMatch();
-
-  useEffect(() => {
-    renewAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (user && !user.summoner && initialLoad) {
-      setModal("summoner");
-      setInitialLoad(false);
-    }
-
-    if (user && !hasMatch && initialLoad) {
-      syncData();
-      findMatch();
-      setInitialLoad(false);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  const { loading, isAllowed } = useInitialPageLoad();
 
   if (loading) {
     return null;
@@ -73,6 +37,7 @@ const App = () => {
       <LoginModal />
       <RegisterModal />
       <SummonerModal />
+      <Sidebar />
       {!loading && (
         <Switch>
           {routes.map((route) =>

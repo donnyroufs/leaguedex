@@ -10,4 +10,11 @@ module.exports = {
       opponent: props.championB.name,
       private: props.private ? 'private' : 'public',
     })),
+  findGame: (data, _data, me, opponents) => ({
+    gameId: data.gameId,
+    me: me,
+    opponents,
+    startTime: data.gameStartTime,
+    confirmed: _data ? Number(_data.game_id) === data.gameId : false,
+  }),
 };

@@ -1,5 +1,5 @@
 const Controller = require('./Controller');
-const { ErrorHandler, NotFoundError } = require('../../helpers/error');
+const { NotFoundError, NotAuthorized } = require('../../helpers/error');
 const { db } = require('../../config/database');
 const Riot = require('../../lib/Riot');
 const { sync } = require('../middleware/syncMatchup.middleware');
@@ -54,7 +54,27 @@ class MatchupController extends Controller {
   }
 
   async findGame(req, res) {
-    const { summoner, id: userId } = req.user;
+    const { id: userId } = req.user;
+    const { summonerId } = req.query;
+
+    // Many summoners
+    const { summoner: foundSummoner } = await this.model.findOneByUserId(
+      userId
+    );
+
+    if (!foundSummoner || foundSummoner.length <= 0) {
+      throw new NotFoundError('You do not have any linked summoner accounts');
+    }
+
+    const summoner = foundSummoner.find((s) => s.accountId === summonerId);
+
+    // if no summoner found
+    if (!summoner) {
+      throw new NotAuthorized(
+        'You are not the owner of the given summoner account'
+      );
+    }
+
     const data = await Riot.findMatch(summoner.accountId, summoner.region);
 
     if (data.gameMode !== 'CLASSIC') {
@@ -63,7 +83,7 @@ class MatchupController extends Controller {
 
     const champions = await db.champion.findMany();
     const me = data.participants
-      .filter((player) => player.summonerId === req.user.summoner.accountId)
+      .filter((player) => player.summonerId === summoner.accountId)
       .map((player) => {
         const champion = champions.find(
           (champion) => champion.id === player.championId
@@ -95,13 +115,14 @@ class MatchupController extends Controller {
 
     const [_data] = await this.model.getLatestMatchup(userId);
 
-    res.status(200).json({
-      gameId: data.gameId,
-      me: me[0],
-      opponents,
-      startTime: data.gameStartTime,
-      confirmed: _data ? Number(_data.game_id) === data.gameId : false,
-    });
+    const formattedData = this.formatters.findGame(
+      data,
+      _data,
+      me[0],
+      opponents
+    );
+
+    res.status(200).json(formattedData);
   }
 
   async getDex(req, res) {
@@ -117,16 +138,12 @@ class MatchupController extends Controller {
   }
 
   async getLatest(req, res, next) {
-    try {
-      const { id: gameId } = req.params;
+    const { id: gameId } = req.params;
 
-      res.status(200).json({
-        ...req.match,
-        confirmed: gameId === req.match.game_id,
-      });
-    } catch (err) {
-      next(err);
-    }
+    res.status(200).json({
+      ...req.match,
+      confirmed: gameId === req.match.game_id,
+    });
   }
 
   async getMatchups(req, res) {
@@ -138,7 +155,23 @@ class MatchupController extends Controller {
   }
 
   async syncAll(req, res) {
-    const { id, summoner } = req.user;
+    const { id } = req.user;
+    const { summonerId } = req.query;
+
+    const { summoner: foundSummoner } = await this.model.findOneByUserId(id);
+
+    if (!foundSummoner || foundSummoner.length <= 0) {
+      throw new NotFoundError('You do not have any linked summoner accounts');
+    }
+
+    const summoner = foundSummoner.find((s) => s.accountId === summonerId);
+
+    // if no summoner found
+    if (!summoner) {
+      throw new NotAuthorized(
+        'You are not the owner of the given summoner account'
+      );
+    }
 
     const syncedData = await sync(id, summoner.accountId, summoner.region);
 

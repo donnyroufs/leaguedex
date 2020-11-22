@@ -57,6 +57,11 @@ const GenericButton = css`
   font-size: 0.9rem;
   cursor: pointer;
 
+  &.maxContent {
+    margin-left: 1.5rem;
+    width: fit-content;
+  }
+
   ${(props) =>
     props.secondary &&
     css`
@@ -89,16 +94,16 @@ const GenericButton = css`
     `}
 
   ${(props) =>
-    props.marginRight &&
-    css`
-      margin-right: ${(props) => props.marginRight};
-    `}
-    
-  ${(props) =>
     props.aboveAverage &&
     css`
       background-color: #e66e28;
       color: #52270e;
+    `}
+
+  ${(props) =>
+    props.margin &&
+    css`
+      margin-left: 1rem;
     `}
 `;
 
@@ -124,6 +129,10 @@ export const Link = styled(ReactLink)`
 export const Button = styled.button`
   ${GenericButton}
 
+  &.mt-1 {
+    margin-top: 1rem;
+  }
+
   ${(props) =>
     props.header &&
     css`
@@ -132,12 +141,20 @@ export const Button = styled.button`
       max-height: 43px;
     `}
 
-    ${(props) =>
+  ${(props) =>
     props.danger &&
     css`
       background: #d23f6f;
       color: #1b0009;
     `}
+
+    ${(props) =>
+    props.dangerv2 &&
+    css`
+      background: #d23f6f;
+      color: #fff;
+    `}
+
 
     ${(props) =>
     props["hide-xs"] &&

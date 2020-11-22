@@ -1,54 +1,12 @@
 const { resolve } = require('path');
-require('dotenv').config({ path: resolve(__dirname, '../.env') });
+const dotenv = require('dotenv');
+const app = require('./Application');
 
-const express = require('express');
-const rateLimit = require('express-rate-limit');
-const { db, validateConnection } = require('./config/database');
-const apiRoutes = require('./api/routes/index');
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const { handleError } = require('./helpers/error');
-const csurf = require('csurf');
-const { CronJob } = require('cron');
-const {
-  cleanupVerifications,
-  cleanupPasswordResets,
-} = require('./lib/cleanups');
+dotenv.config({ path: resolve(__dirname, '../.env') });
 
-const Application = require('./Application');
-const Riot = require('./lib/Riot');
-
-const RiotAssetsJob = new CronJob('* * 2 * * *', () => Riot.syncStaticData());
-const RemovePasswordResetsJob = new CronJob('0 0 0 * * *', () =>
-  cleanupPasswordResets()
-);
-const EmailVerificationsJob = new CronJob('0 0 0 * * *', () =>
-  cleanupVerifications()
-);
-
-const app = new Application({
-  server: express,
-  database: db,
-  middleware: {
-    morgan,
-    cookieParser,
-    cors,
-    rateLimit,
-    csurf,
-  },
-  routes: {
-    api: apiRoutes,
-  },
-  helpers: {
-    handleError,
-    validateConnection,
-  },
-});
-
-(async () => {
-  await app.initialize(async (app) => {
-    // On restart sync data
+app.initialize(
+  ({ Riot, RiotAssetsJob, EmailVerificationsJob, RemovePasswordResetsJob }) => {
+    // Sync riot assets
     Riot.syncStaticData();
 
     // Then every other hour check if our data is still up to date.
@@ -59,7 +17,5 @@ const app = new Application({
 
     // Run CRON job for user password resets 00:00
     RemovePasswordResetsJob.start();
-  });
-})();
-
-module.exports = app;
+  }
+);

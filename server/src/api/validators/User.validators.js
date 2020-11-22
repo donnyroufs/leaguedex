@@ -16,4 +16,8 @@ module.exports = {
     password: Joi.string().min(6).max(256).required(),
     password_confirmation: Joi.ref('password'),
   }),
+  changePassword: Joi.object({
+    password: Joi.string().min(6).max(256).required(),
+    password_confirmation: Joi.ref('password'),
+  }),
 };

@@ -42,6 +42,44 @@ class UserModel extends Model {
     return resource.id;
   }
 
+  async me(id) {
+    const resource = await this.db.findOne({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        password: false,
+        summoner: true,
+        permissions: true,
+        active: true,
+      },
+    });
+
+    return resource;
+  }
+
+  async findById(id) {
+    const resource = await this.db.findOne({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        password: false,
+        summoner: true,
+        permissions: true,
+        active: false,
+      },
+    });
+
+    return resource;
+  }
+
   async findUser(username) {
     const resource = await this.db.findOne({
       where: {
@@ -51,6 +89,7 @@ class UserModel extends Model {
         id: true,
         username: true,
         password: true,
+        email: true,
         summoner: true,
         permissions: true,
         active: true,
@@ -142,6 +181,15 @@ class UserModel extends Model {
       },
       data: {
         password: hashedPassword,
+      },
+    });
+  }
+
+  async deleteSummoner(userId, summonerId) {
+    await db.summoner.deleteMany({
+      where: {
+        id: Number(summonerId),
+        user_id: Number(userId),
       },
     });
   }

@@ -1,5 +1,8 @@
 const Riot = require('../../lib/Riot');
 const { db } = require('../../config/database');
+const { NotFoundError, NotAuthorized } = require('../../helpers/error');
+const userModel = require('../models/User.model');
+const matchupModel = require('../models/Matchup.model');
 
 exports.sync = async (userId, accountId, region) => {
   let updated = false;
@@ -72,11 +75,28 @@ exports.sync = async (userId, accountId, region) => {
 exports.syncMatchup = async (req, _, next) => {
   try {
     const { id } = req.user;
+    const { summonerId } = req.query;
+
+    const { summoner: foundSummoner } = await matchupModel.findOneByUserId(id);
+
+    if (!foundSummoner || foundSummoner.length <= 0) {
+      throw new NotFoundError('You do not have any linked summoner accounts');
+    }
+
+    const summoner = foundSummoner.find((s) => s.accountId === summonerId);
+
+    if (!summoner) {
+      throw new NotAuthorized(
+        'You are not the owner of the given summoner account'
+      );
+    }
+
     const { data, updated, inSync } = await this.sync(
       id,
-      req.user.summoner.accountId,
-      req.user.summoner.region
+      summoner.accountId,
+      summoner.region
     );
+
     req.match = data;
     req.match.updated = updated;
     req.match.inSync = !inSync ? updated : inSync;

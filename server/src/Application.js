@@ -1,53 +1,67 @@
-class Application {
-  constructor({ server, database, middleware, routes, helpers = {} } = {}) {
-    this.express = server;
-    this.app = this.express();
-    this.database = database;
-    this.middleware = middleware;
-    this.routes = routes;
-    this.helpers = helpers;
+const express = require('express');
+const rateLimit = require('express-rate-limit');
+const { db, validateConnection } = require('./config/database');
+const apiRoutes = require('./api/routes/index');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const { handleError } = require('./helpers/error');
+const csurf = require('csurf');
+const corsOptions = require('./config/corsOptions');
+const Riot = require('./lib/Riot');
+const { CronJob } = require('cron');
+const {
+  cleanupVerifications,
+  cleanupPasswordResets,
+} = require('./lib/cleanups');
 
-    this._setMiddleware = this._setMiddleware.bind(this);
+class Application {
+  constructor() {
+    this.PORT = process.env.PORT || 5000;
+    this.inProduction = process.env.NODE_ENV === 'production';
+    this.whitelist = ['https://staging.leaguedex.com', 'https://leaguedex.com'];
+    this.userApiOptions = {
+      windowMs: 15 * 60 * 1000,
+      max: 10,
+    };
+
+    this.app = express();
+    this.database = db;
+    this.morgan = morgan;
+    this.cookieParser = cookieParser;
+    this.cors = cors;
+    this.rateLimit = rateLimit;
+    this.csurf = csurf;
+    this.routes = apiRoutes;
+    this.handleError = handleError;
+    this.validateConnection = validateConnection;
+    this.corsOptions = corsOptions(this.inProduction, this.whitelist);
+    this.Riot = Riot;
+
+    this.createCRONJobs();
+
+    this.initialize = this.initialize.bind(this);
   }
 
   async initialize(callback) {
-    this.inProduction = process.env.NODE_ENV === 'production';
-    this.userApi = {
-      windowMs: 15 * 60 * 1000,
-      max: 15,
-    };
     this._setMiddleware();
 
-    await this.helpers.validateConnection();
+    await this.validateConnection();
 
-    this.app.listen(process.env.PORT, () =>
-      console.log(`Server is listening on http://localhost:${process.env.PORT}`)
+    this.app.listen(this.PORT, () =>
+      console.log(`Server is listening on http://localhost:${this.PORT}`)
     );
-    callback(this.app);
+
+    await callback(this);
   }
 
   _setMiddleware() {
-    const whitelist = [
-      'https://staging.leaguedex.com',
-      'https://leaguedex.com',
-    ];
-    const corsOptions = this.inProduction
-      ? {
-          origin: function (origin, callback) {
-            if (whitelist.indexOf(origin) !== -1 || !origin) {
-              callback(null, true);
-            } else {
-              callback(new Error('Not allowed by CORS'));
-            }
-          },
-          credentials: true,
-        }
-      : {
-          credentials: true,
-        };
+    this.app.use(this.morgan(this.inProduction ? 'common' : 'dev'));
+    this.app.use(this.cookieParser());
+    this.app.use(express.json());
 
-    this.app.use(this.middleware.cookieParser());
-    const csrfProtection = this.middleware.csurf({
+    // Csrf
+    const csrfProtection = this.csurf({
       cookie: {
         httpOnly: true,
         secure: this.inProduction,
@@ -60,17 +74,36 @@ class Application {
       next();
     });
 
+    // Cors
+    this.app.use(this.cors(this.corsOptions));
+
+    // Rate Limiting
     this.app.set('trust proxy', 1);
-    this.app.use('/api/user/login', this.middleware.rateLimit(this.userApi));
-    this.app.use('/api/user/register', this.middleware.rateLimit(this.userApi));
-    this.app.use(this.express.json());
-    this.app.use(this.middleware.morgan('tiny'));
-    this.app.use(this.middleware.cors(corsOptions));
-    this.app.use('/api', csrfProtection, this.routes.api);
+    this.app.use('/api/user/login', this.rateLimit(this.userApiOptions));
+    this.app.use('/api/user/register', this.rateLimit(this.userApiOptionsn));
+
+    // Api
+    this.app.use('/api', csrfProtection, this.routes);
+
+    // Custom Error Handler
     this.app.use((err, req, res, next) => {
-      this.helpers.handleError(err, res);
+      this.handleError(err, res);
     });
+  }
+
+  createCRONJobs() {
+    this.RiotAssetsJob = new CronJob('* * 2 * * *', () =>
+      Riot.syncStaticData()
+    );
+    this.RemovePasswordResetsJob = new CronJob('0 0 0 * * *', () =>
+      cleanupPasswordResets()
+    );
+    this.EmailVerificationsJob = new CronJob('0 0 0 * * *', () =>
+      cleanupVerifications()
+    );
   }
 }
 
-module.exports = Application;
+const app = new Application();
+
+module.exports = app;

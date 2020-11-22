@@ -1,14 +1,10 @@
 const { PrismaClient } = require('@prisma/client');
 
-// const config = {
-//   log: ['query'],
-// };
-
 const db = new PrismaClient();
 
 const validateConnection = async () => {
   try {
-    await db.user.findMany();
+    await db.user.findMany({ take: 1 });
     console.log('Database connected..');
   } catch (err) {
     throw err;

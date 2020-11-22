@@ -31,12 +31,27 @@ class UserController extends Controller {
     this.verifyEmail = this.verifyEmail.bind(this);
     this.sendResetPasswordEmail = this.sendResetPasswordEmail.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
+    this.me = this.me.bind(this);
+    this.changePassword = this.changePassword.bind(this);
+    this.deleteSummoner = this.deleteSummoner.bind(this);
   }
 
   async all(_, res) {
     const data = await this.model.getDashboardData();
     const formattedData = this.formatters.all(data);
     res.status(200).json(formattedData);
+  }
+
+  async me(req, res) {
+    const user = await this.model.me(req.user.id);
+
+    if (!user) {
+      throw new NotFoundError('User does not exist');
+    }
+
+    const formattedUser = this.formatters.me(user);
+
+    res.status(200).json(formattedUser);
   }
 
   async sendResetPasswordEmail(req, res) {
@@ -121,9 +136,6 @@ class UserController extends Controller {
       data: {
         id: user.id,
         username: user.username,
-        summoner: user.summoner,
-        active: user.active,
-        permissions: user.permissions,
       },
     };
 
@@ -138,8 +150,11 @@ class UserController extends Controller {
 
     Auth.setRefreshCookie(res, refreshToken);
 
+    const { password: _, ...userData } = user;
+
     res.status(200).json({
       accessToken,
+      ...userData,
     });
   }
 
@@ -156,6 +171,12 @@ class UserController extends Controller {
       data: req.user,
     };
 
+    if (!req.user) {
+      throw new NotAuthorized('You do not have a valid refresh token');
+    }
+
+    const user = await this.model.findById(req.user.id);
+
     const { token: refreshToken } = await Auth.createToken(
       payload,
       REFRESH_TOKEN
@@ -167,7 +188,7 @@ class UserController extends Controller {
 
     const { token: accessToken } = await Auth.createToken(payload);
 
-    res.status(201).json({ accessToken });
+    res.status(201).json({ accessToken, ...user });
   }
 
   async refresh(req, res) {
@@ -188,7 +209,7 @@ class UserController extends Controller {
 
     if (!data) throw NotFoundError('could not find the summoner account.');
 
-    const addedSummoner = await this.model.createSummoner(userId, {
+    await this.model.createSummoner(userId, {
       ...req.body,
       ...data,
     });
@@ -201,26 +222,9 @@ class UserController extends Controller {
       throw ErrorHandler(500, 'Could not update permissions.');
     }
 
-    const payload = {
-      data: {
-        ...req.user,
-        summoner: addedSummoner,
-        permissions: 2,
-      },
-    };
+    const updatedUser = await this.model.findById(userId);
 
-    const { token: refreshToken } = await Auth.createToken(
-      payload,
-      REFRESH_TOKEN
-    );
-
-    await Auth.createOrUpdateRefreshToken(req.user.id, refreshToken);
-
-    Auth.setRefreshCookie(res, refreshToken);
-
-    const { token: accessToken } = await Auth.createToken(payload);
-
-    res.status(201).json({ accessToken });
+    res.status(201).json(updatedUser);
   }
 
   getRegions(_, res) {
@@ -239,6 +243,15 @@ class UserController extends Controller {
     });
 
     res.sendStatus(204);
+  }
+
+  async changePassword(req, res) {
+    const { password } = req.body;
+
+    const hashedPassword = await Auth.hashPassword(password);
+    await this.model.changePassword(req.user.id, hashedPassword);
+
+    res.sendStatus(201);
   }
 
   async resetPassword(req, res) {
@@ -265,6 +278,22 @@ class UserController extends Controller {
     });
 
     res.sendStatus(201);
+  }
+
+  async deleteSummoner(req, res) {
+    const { summonerId } = req.query;
+    const { id: userId } = req.user;
+
+    if (!summonerId) {
+      throw new NotFoundError('Missing summonerId');
+    }
+
+    await this.model.deleteSummoner(userId, summonerId);
+    await this.model.updateAccountPermissions(userId, 1);
+
+    const updatedUser = await this.model.findById(userId);
+
+    res.status(201).json(updatedUser);
   }
 }
 

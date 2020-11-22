@@ -1,6 +1,14 @@
-import React, { createContext, useContext, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { build, loadAssets } from "../helpers/loadImages";
 import makeRequest from "../helpers/makeRequest";
+import { API } from "../api/";
+import useLocalStorage from "react-use-localstorage";
 
 const matchContext = createContext();
 
@@ -17,25 +25,19 @@ export const useMatch = () => {
   return useContext(matchContext);
 };
 
-async function fetchFindMatch() {
-  return makeRequest(`/api/matchup/find`);
-}
-
-async function fetchLatest(id) {
-  const res = await makeRequest(`/api/matchup/latest/${id}`);
-  return res.json();
-}
-
 const useMatchProvider = () => {
+  const [activeSummonerId, setActiveSummonerId] = useLocalStorage(
+    "ldex_activeSummonerId"
+  );
   const [match, setMatch] = useState(null);
   const [btnText, setBtnText] = useState("Go To Match");
   const [dex, setDex] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const findMatch = async () => {
+  const findMatch = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetchFindMatch();
+      const res = await API.fetchFindMatch(activeSummonerId);
       const data = await res.json();
 
       if (data.hasOwnProperty("status")) {
@@ -51,7 +53,7 @@ const useMatchProvider = () => {
     } catch (err) {
       setLoading(false);
     }
-  };
+  }, [activeSummonerId]);
 
   const createMatchup = async (opponent_id, lane) => {
     try {
@@ -79,7 +81,7 @@ const useMatchProvider = () => {
 
   async function finishMatch(match) {
     try {
-      const data = await fetchLatest(match.gameId);
+      const data = await API.fetchLatest(match.gameId, activeSummonerId);
       return data;
     } catch (_) {
       return null;
@@ -93,6 +95,12 @@ const useMatchProvider = () => {
 
     history.push(`/match/${match.matchId}`);
   };
+
+  useEffect(() => {
+    if (activeSummonerId) {
+      findMatch();
+    }
+  }, [activeSummonerId, findMatch]);
 
   return {
     match,
@@ -110,5 +118,7 @@ const useMatchProvider = () => {
     finishMatch,
     btnText,
     setBtnText,
+    activeSummonerId,
+    setActiveSummonerId,
   };
 };

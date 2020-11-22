@@ -62,7 +62,6 @@ const ProfileContainer = ({ history, ...props }) => {
   );
 
   const handleNavigate = (id) => {
-    history.push(`/dex/${id}`);
     history.push(`/profile/${props.match.params.username}/dex/${id}`);
   };
 
@@ -79,7 +78,6 @@ const ProfileContainer = ({ history, ...props }) => {
         handleNavigate={handleNavigate}
         username={props.match.params.username}
       />
-      ;
     </>
   );
 };

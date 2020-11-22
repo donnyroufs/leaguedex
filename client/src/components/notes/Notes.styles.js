@@ -132,4 +132,40 @@ export const Text = styled.p`
 export const Heading = styled.header`
   position: relative;
   display: flex;
+  align-items: center;
+`;
+
+export const InfoBox = styled.div`
+  display: none;
+  pointer-events: none;
+  padding: 2rem;
+  width: 300px;
+  height: 400px;
+  background: ${(props) => props.theme.header};
+  color: ${(props) => props.theme.secondary};
+  z-index: 15;
+  font-size: 0.85rem;
+  li {
+    margin-bottom: 1.5rem;
+  }
+`;
+
+export const Small = styled.small`
+  display: none;
+
+  @media screen and (min-width: 968px) {
+    display: block;
+    position: relative;
+    margin-left: 1rem;
+    margin-top: 0.2rem;
+    color: ${(props) => props.theme.primary};
+
+    &:hover ${InfoBox} {
+      position: absolute;
+      top: 32px;
+      left: 0;
+      display: flex;
+      flex-flow: column nowrap;
+    }
+  }
 `;
