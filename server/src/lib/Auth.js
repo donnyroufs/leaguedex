@@ -4,6 +4,10 @@ const bcrypt = require('bcryptjs');
 const { ErrorHandler, NotAuthorized } = require('../helpers/error');
 const { db } = require('../config/database');
 const app = require('../Application');
+const { resolve } = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config({ path: resolve(__dirname, '../.env') });
 
 class Auth {
   static options = {
