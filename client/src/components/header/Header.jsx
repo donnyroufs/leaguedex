@@ -36,8 +36,7 @@ const Header = ({
               <FaBars />
             </Hamburger>
             <Container.Brand to="/">
-              {/* <Container.Brand.Image src="/new_logo.svg" alt="leaguedex logo" /> */}
-              We are currently updating our server! Sorry for the downtime.
+              <Container.Brand.Image src="/new_logo.svg" alt="leaguedex logo" />
             </Container.Brand>
           </Box>
           <Box>

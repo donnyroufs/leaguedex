@@ -1,3 +1,5 @@
+const { resolve } = require('path');
+const dotenv = require('dotenv');
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const { db, validateConnection } = require('./config/database');
@@ -15,6 +17,7 @@ const {
   cleanupPasswordResets,
 } = require('./lib/cleanups');
 
+dotenv.config({ path: resolve(__dirname, '../.env') });
 class Application {
   constructor() {
     this.PORT = process.env.PORT || 5000;
