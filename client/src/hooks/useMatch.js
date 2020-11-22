@@ -9,11 +9,13 @@ import { build, loadAssets } from "../helpers/loadImages";
 import makeRequest from "../helpers/makeRequest";
 import { API } from "../api/";
 import useLocalStorage from "react-use-localstorage";
+import { useAuth } from "./useAuth";
 
 const matchContext = createContext();
 
 export const MatchProvider = ({ children }) => {
-  const match = useMatchProvider();
+  const { isAuthenticated } = useAuth();
+  const match = useMatchProvider({ isAuthenticated });
   return (
     <matchContext.Provider value={match} displayName="Match">
       {children}
@@ -25,7 +27,7 @@ export const useMatch = () => {
   return useContext(matchContext);
 };
 
-const useMatchProvider = () => {
+const useMatchProvider = ({ isAuthenticated }) => {
   const [activeSummonerId, setActiveSummonerId] = useLocalStorage(
     "ldex_activeSummonerId"
   );
@@ -97,10 +99,10 @@ const useMatchProvider = () => {
   };
 
   useEffect(() => {
-    if (activeSummonerId) {
+    if (activeSummonerId && isAuthenticated) {
       findMatch();
     }
-  }, [activeSummonerId, findMatch]);
+  }, [activeSummonerId, findMatch, isAuthenticated]);
 
   return {
     match,
