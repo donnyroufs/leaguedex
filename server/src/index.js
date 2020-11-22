@@ -1,8 +1,7 @@
-const { resolve } = require('path');
 const dotenv = require('dotenv');
 const app = require('./Application');
 
-dotenv.config({ path: resolve(__dirname, '../.env') });
+dotenv.config();
 
 app.initialize(
   ({ Riot, RiotAssetsJob, EmailVerificationsJob, RemovePasswordResetsJob }) => {

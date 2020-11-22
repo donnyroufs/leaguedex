@@ -1,10 +1,8 @@
-const { resolve } = require('path');
-const dotenv = require('dotenv');
-const { inProduction } = require('../Application');
+require('dotenv/config');
 const nodemailer = require('nodemailer');
 const sgMail = require('@sendgrid/mail');
 
-dotenv.config({ path: resolve(__dirname, '../.env') });
+const inProduction = process.env.NODE_ENV === 'production';
 
 if (inProduction) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY);

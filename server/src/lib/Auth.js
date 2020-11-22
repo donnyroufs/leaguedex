@@ -1,13 +1,11 @@
+require('dotenv/config');
 const { ACCESS_TOKEN, REFRESH_TOKEN } = require('../helpers/constants');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { ErrorHandler, NotAuthorized } = require('../helpers/error');
 const { db } = require('../config/database');
-const app = require('../Application');
-const { resolve } = require('path');
-const dotenv = require('dotenv');
 
-dotenv.config({ path: resolve(__dirname, '../.env') });
+const inProduction = process.env.NODE_ENV === 'production';
 
 class Auth {
   static options = {
@@ -121,11 +119,11 @@ class Auth {
   static async setRefreshCookie(res, refreshToken, exp = 10080) {
     const expiration = this.setExpirationDate(exp);
     const options = {
-      httpOnly: app.inProduction,
+      httpOnly: inProduction,
       expires: expiration,
       promo_shown: 1,
       sameSite: true,
-      secure: app.inProduction,
+      secure: inProduction,
     };
 
     res.cookie('x-refresh-token', refreshToken, options);
