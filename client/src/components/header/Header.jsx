@@ -31,9 +31,14 @@ const Header = ({
       />
       <Container.Inner>
         <Container.Bottom>
-          <Container.Brand to="/">
-            <Container.Brand.Image src="/new_logo.svg" alt="leaguedex logo" />
-          </Container.Brand>
+          <Box flex>
+            <Hamburger onClick={handleClick}>
+              <FaBars />
+            </Hamburger>
+            <Container.Brand to="/">
+              <Container.Brand.Image src="/new_logo.svg" alt="leaguedex logo" />
+            </Container.Brand>
+          </Box>
           <Box>
             <Container.Buttons authenticated={isAuthenticated}>
               {!isAuthenticated && (
@@ -62,9 +67,6 @@ const Header = ({
                 </>
               )}
             </Container.Buttons>
-            <Hamburger onClick={handleClick}>
-              <FaBars />
-            </Hamburger>
           </Box>
         </Container.Bottom>
       </Container.Inner>
