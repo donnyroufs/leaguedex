@@ -33,7 +33,9 @@ const useAuthProvider = () => {
 
       if (!accessToken) {
         setError(data.message);
-        return;
+        return {
+          error: data.message,
+        };
       }
 
       setTimeout(() => {

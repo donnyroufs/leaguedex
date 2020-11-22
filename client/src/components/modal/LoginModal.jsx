@@ -55,10 +55,10 @@ const LoginModal = () => {
     setLoading(true);
     const { errors, valid } = validateForm(values, LOGIN_FORM);
     if (valid) {
-      const successLogin = await login(values);
+      const response = await login(values);
 
-      if (!successLogin) {
-        setErrorMessage("Username or password incorrect.");
+      if (response.error) {
+        setErrorMessage(response.error);
       } else {
         setReverse(true);
         if (hasMatch) {
