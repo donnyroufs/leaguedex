@@ -27,7 +27,7 @@ export const useMatch = () => {
 
 const useMatchProvider = () => {
   const [activeSummonerId, setActiveSummonerId] = useLocalStorage(
-    "LEAGUEDEX_ACTIVE_SUMMONER"
+    "ldex_activeSummonerId"
   );
   const [match, setMatch] = useState(null);
   const [btnText, setBtnText] = useState("Go To Match");
