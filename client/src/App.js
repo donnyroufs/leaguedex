@@ -10,6 +10,7 @@ import ForgotPasswordModal from "./components/modal/ForgotPasswordModal";
 import ResetPasswordModal from "./components/modal/ResetPasswordModal";
 import routes from "./routes";
 import { useInitialPageLoad } from "./hooks/useInitialPageLoad";
+import Sidebar from "./components/sidebar/Sidebar";
 
 const App = () => {
   const { loading, isAllowed } = useInitialPageLoad();
@@ -36,6 +37,7 @@ const App = () => {
       <LoginModal />
       <RegisterModal />
       <SummonerModal />
+      <Sidebar />
       {!loading && (
         <Switch>
           {routes.map((route) =>
