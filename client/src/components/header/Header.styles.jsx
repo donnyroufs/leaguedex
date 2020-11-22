@@ -10,6 +10,24 @@ export const Container = styled.header`
   flex-flow: column nowrap;
   height: 100px;
 
+  ${(props) =>
+    !props.match &&
+    css`
+      border-bottom: 1px solid #263547;
+    `}
+
+  @media screen and (max-width: 968px) {
+    ${(props) =>
+      props.isOpen &&
+      css`
+        position: fixed;
+        top: 0;
+        z-index: 10000;
+        left: 0;
+        width: 100%;
+      `}
+  }
+
   @media screen and (min-width: 968px) {
     position: fixed;
     top: 0;
@@ -79,4 +97,16 @@ export const Links = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const Hamburger = styled.div`
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 1.25rem;
+`;
+
+export const Box = styled.div`
+  display: flex;
 `;

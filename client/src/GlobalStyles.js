@@ -94,16 +94,16 @@ const GenericButton = css`
     `}
 
   ${(props) =>
-    props.marginRight &&
-    css`
-      margin-right: ${(props) => props.marginRight};
-    `}
-    
-  ${(props) =>
     props.aboveAverage &&
     css`
       background-color: #e66e28;
       color: #52270e;
+    `}
+
+  ${(props) =>
+    props.margin &&
+    css`
+      margin-left: 1rem;
     `}
 `;
 
