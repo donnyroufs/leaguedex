@@ -48,6 +48,10 @@ Wrapper.Inner = styled.div`
     width: 66%;
     margin-top: 2.25rem;
   }
+
+  @media screen and (min-height: 768px) and (max-height: 968px) {
+    margin-top: 0.5rem;
+  }
 `;
 
 export const Box = styled.div`
