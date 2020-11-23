@@ -15,6 +15,9 @@ const Sidebar = () => {
           <SC.Link to="/" exact activeClassName="active-route">
             home
           </SC.Link>
+          <SC.Link to="/about" exact activeClassName="active-route">
+            about
+          </SC.Link>
           {isAuthenticated && (
             <>
               <SC.Link
