@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@prisma/cli": "2.4.1",
+    "faker": "^5.1.0",
     "pm2": "^4.4.0",
     "prettier": "2.0.5"
   }

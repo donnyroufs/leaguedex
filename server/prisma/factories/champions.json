@@ -1,0 +1,58 @@
+[
+  {
+    "id": 266,
+    "name": "Aatrox",
+    "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg",
+    "splash": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg",
+    "icon": "https://ddragon.leagueoflegends.com/cdn/10.24.1/img/champion/Aatrox.png",
+    "version": "1.0.0"
+  },
+  {
+    "id": 103,
+    "name": "Ahri",
+    "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Ahri_0.jpg",
+    "splash": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg",
+    "icon": "https://ddragon.leagueoflegends.com/cdn/10.24.1/img/champion/Ahri.png",
+    "version": "1.0.0"
+  },
+  {
+    "id": 84,
+    "name": "Akali",
+    "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Akali_0.jpg",
+    "splash": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Akali_0.jpg",
+    "icon": "https://ddragon.leagueoflegends.com/cdn/10.24.1/img/champion/Akali.png",
+    "version": "1.0.0"
+  },
+  {
+    "id": 12,
+    "name": "Alistar",
+    "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Alistar_0.jpg",
+    "splash": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Alistar_0.jpg",
+    "icon": "https://ddragon.leagueoflegends.com/cdn/10.24.1/img/champion/Alistar.png",
+    "version": "1.0.0"
+  },
+  {
+    "id": 32,
+    "name": "Amumu",
+    "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Amumu_0.jpg",
+    "splash": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Amumu_0.jpg",
+    "icon": "https://ddragon.leagueoflegends.com/cdn/10.24.1/img/champion/Amumu.png",
+    "version": "1.0.0"
+  },
+  {
+    "id": 34,
+    "name": "Anivia",
+    "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Anivia_0.jpg",
+    "splash": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Anivia_0.jpg",
+    "icon": "https://ddragon.leagueoflegends.com/cdn/10.24.1/img/champion/Anivia.png",
+    "version": "1.0.0"
+  },
+  {
+    "id": 1,
+    "name": "Annie",
+    "image": "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/Annie_0.jpg",
+    "splash": "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Annie_0.jpg",
+    "icon": "https://ddragon.leagueoflegends.com/cdn/10.24.1/img/champion/Annie.png",
+    "version": "1.0.0"
+  }
+]
