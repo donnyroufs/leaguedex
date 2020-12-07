@@ -10,9 +10,12 @@ module.exports = {
   all: (data) =>
     data.map((user) => ({
       username: user.username,
-      summonerName: user.summoner ? user.summoner.name : '-',
+      summonerName:
+        user.summoner.length > 0
+          ? `${user.summoner[0].name} [+${user.summoner.length - 1}]`
+          : '-',
       email: user.email,
-      region: user.summoner ? user.summoner.region : '-',
+      region: user.summoner.length > 0 ? user.summoner[0].region : '-',
       gamesPlayed: user.matchups.length,
       createdAt: new Date(user.createdAt).toISOString().substr(0, 10),
     })),
