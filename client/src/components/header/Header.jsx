@@ -5,6 +5,7 @@ import { Button } from "../../GlobalStyles";
 import SummonerDropdown from "../summonerDropdown/SummonerDropdown";
 import { FaBars } from "react-icons/fa";
 import { useSidebar } from "../../hooks/useSidebar";
+import Notification from '../notification/Notification';
 
 const Header = ({
   isAuthenticated,
@@ -64,6 +65,8 @@ const Header = ({
                   <Button hide-xs logout onClick={handleLogout}>
                     Log out
                   </Button>
+
+                  {hasSummoner && <Notification />}
                 </>
               )}
             </Container.Buttons>
