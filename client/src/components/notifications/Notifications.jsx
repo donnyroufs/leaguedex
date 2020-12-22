@@ -1,17 +1,24 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import useOnclickOutside from "react-cool-onclickoutside";
 import { Button } from "../../GlobalStyles";
 import * as SC from "./Notifications.styles";
 import Notification from "./components/notification/Notification";
+import { useNotifications } from "../../hooks/useNotifications";
 
 const Notifications = () => {
   const [show, setShow] = useState(true);
   const [choices, setChoices] = useState({});
-  const containerRef = useRef(null);
+  const { notifications } = useNotifications();
 
   const ref = useOnclickOutside(() => {
     setShow(false);
   });
+
+  useEffect(() => {
+    if (!show) {
+      setChoices({});
+    }
+  }, [show]);
 
   function handleChoice(id, confirmed) {
     setChoices((curr) => ({
@@ -31,15 +38,13 @@ const Notifications = () => {
       <SC.Wrapper show={show}>
         <SC.Heading>Unconfirmed matches</SC.Heading>
         <SC.Dropdown>
-          <Notification
-            handleChoice={handleChoice}
-            choices={choices}
-            id={1}
-            lane="top"
-            win={true}
-            championA="Akali"
-            championB="Renekton"
-          />
+          {notifications.map((notification) => (
+            <Notification
+              {...notification}
+              choices={choices}
+              handleChoice={handleChoice}
+            />
+          ))}
         </SC.Dropdown>
         <SC.Footer>
           <Button logout style={{ width: "100%", marginLeft: "0" }}>

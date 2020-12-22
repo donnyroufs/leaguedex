@@ -14,6 +14,7 @@ import { debugContextDevtool } from "react-context-devtool";
 
 import "react-toastify/dist/ReactToastify.css";
 import { SidebarProvider } from "./hooks/useSidebar";
+import { NotificationsProvider } from "./hooks/useNotifications";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -26,7 +27,9 @@ ReactDOM.render(
             <ModalProvider>
               <StatusProvider>
                 <SidebarProvider>
-                  <App />
+                  <NotificationsProvider>
+                    <App />
+                  </NotificationsProvider>
                 </SidebarProvider>
               </StatusProvider>
             </ModalProvider>
