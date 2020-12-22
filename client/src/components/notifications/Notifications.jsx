@@ -6,7 +6,7 @@ import Notification from "./components/notification/Notification";
 import { useNotifications } from "../../hooks/useNotifications";
 
 const Notifications = () => {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const [choices, setChoices] = useState({});
   const { notifications } = useNotifications();
 
