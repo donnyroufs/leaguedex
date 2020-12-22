@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Button } from "../../GlobalStyles";
-import * as SC from "./Notification.styles";
-import { ReactComponent as MarkConfirm } from "./yes-icon.svg";
-import { ReactComponent as MarkCancel } from "./no-icon.svg";
+import * as SC from "./Notifications.styles";
+import Notification from "./components/notification/Notification";
 
-const Notification = () => {
+const Notifications = () => {
   const [show, setShow] = useState(true);
 
   const count = 2;
@@ -18,17 +17,12 @@ const Notification = () => {
       <SC.Wrapper show={show}>
         <SC.Heading>Unconfirmed matches</SC.Heading>
         <SC.Dropdown>
-          <SC.Item>
-            <SC.Info>
-              <SC.Lane>T</SC.Lane>
-              <SC.Result win={true}>W</SC.Result>
-              <SC.Details>Akali vs Renekton</SC.Details>
-            </SC.Info>
-            <SC.ConfirmWrapper>
-              {/* <MarkConfirm />
-              <MarkCancel /> */}
-            </SC.ConfirmWrapper>
-          </SC.Item>
+          <Notification
+            lane="top"
+            win={true}
+            championA="Akali"
+            championB="Renekton"
+          />
         </SC.Dropdown>
         <SC.Footer>
           <Button logout style={{ width: "100%", marginLeft: "0" }}>
@@ -40,4 +34,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default Notifications;

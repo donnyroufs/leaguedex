@@ -5,7 +5,7 @@ import { Button } from "../../GlobalStyles";
 import SummonerDropdown from "../summonerDropdown/SummonerDropdown";
 import { FaBars } from "react-icons/fa";
 import { useSidebar } from "../../hooks/useSidebar";
-import Notification from '../notification/Notification';
+import Notifications from "../notifications/Notifications";
 
 const Header = ({
   isAuthenticated,
@@ -66,7 +66,7 @@ const Header = ({
                     Log out
                   </Button>
 
-                  {hasSummoner && <Notification />}
+                  {hasSummoner && <Notifications />}
                 </>
               )}
             </Container.Buttons>
