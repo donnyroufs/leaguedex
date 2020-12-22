@@ -1,10 +1,23 @@
 import React from "react";
+import types from "../../../../types";
 import * as SC from "./Notification.styles";
-import { ReactComponent as MarkConfirm } from "./yes-icon.svg";
-import { ReactComponent as MarkCancel } from "./no-icon.svg";
+import Mark from "../mark/Mark";
 
-const Notification = ({ lane, win, championA, championB }) => {
+const Notification = ({
+  id,
+  handleChoice,
+  choices,
+  lane,
+  win,
+  championA,
+  championB,
+}) => {
+  const hasChosen = choices[id];
   const wonStatus = win ? "W" : "L";
+
+  function onHandleChoice(type) {
+    handleChoice(id, type);
+  }
 
   return (
     <SC.Container>
@@ -16,8 +29,16 @@ const Notification = ({ lane, win, championA, championB }) => {
         </SC.Details>
       </SC.Info>
       <SC.ConfirmWrapper>
-        <MarkConfirm />
-        <MarkCancel />
+        <Mark
+          type={types.CONFIRM}
+          checked={hasChosen && choices[id] === types.CONFIRM}
+          handleChoice={onHandleChoice}
+        />
+        <Mark
+          type={types.CANCEL}
+          checked={hasChosen && choices[id] === types.CANCEL}
+          handleChoice={onHandleChoice}
+        />
       </SC.ConfirmWrapper>
     </SC.Container>
   );
