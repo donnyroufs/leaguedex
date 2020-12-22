@@ -9,7 +9,7 @@ const Notification = ({ lane, win, championA, championB }) => {
   return (
     <SC.Container>
       <SC.Info>
-        <SC.Lane>{lane}</SC.Lane>
+        <SC.Lane>{lane.charAt(0).toUpperCase()}</SC.Lane>
         <SC.Result win={win}>{wonStatus}</SC.Result>
         <SC.Details>
           {championA} vs {championB}
