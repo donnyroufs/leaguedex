@@ -1,37 +1,24 @@
-![Leaguedex Home](https://i.imgur.com/nS3L6Mb.png)
+![Leaguedex Home](https://i.imgur.com/2zWJ5et.png)
 
 # About
 
-Leaguedex is created for users that either are terrible in remembering how to play a given matchup,
-or want to write guides for other users to use with ease. It detects when you are in a game and
-allows you to write really specific notes for that given matchup.
+League is created for players who want to improve or share their knowledge of certain matchups. You create an account,
+link your summoner account (You dont login with your league account) and get into a game! When in a game Leaguedex will detect it,
+and give you the option to pick the matchup you are playing and then provide you with helpful tools :)
 
 ## Developer Notes
 
-**NOTICE**: There will be a docker env setup in the near future.
-
 ### Setup
 
+If you dont have `concurrently` installed globally then please do so:
+
+```
+> yarn global add concurrently
+```
+
 There are 2 required .env files within the server folder, look for the example.env files and save those as `.env`.
-When that's done, make sure to create a database and then run our migrations:
-
-```
-npx prisma migrate save --experimental
-npx prisma migrate up --experimental
-npx prisma generate
-```
-
-> Run both the server and client
-
-```
-yarn global add concurrently
-
-> leaguedex/
-yarn run:dev
-```
-
-Our development branch is our default branch which is also linked to our staging url. Everything that gets merged
-will be updated live. Incase you want to help us out, look thru the issues, and make a pull request.
+When that's done cd into `server` and run bootstrap.sh! The `development` branch has it's own staging env and everything
+will be merged here before it goes to prod.
 
 ### Links
 
