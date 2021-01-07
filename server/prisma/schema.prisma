@@ -7,24 +7,25 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["transactionApi"]
 }
 
 model User {
-  id                Int                @id @default(autoincrement())
-  email             String             @unique
-  username          String             @unique
-  password          String
-  permissions       Int                @default(1)
-  summoner          Summoner[]
-  matchups          Matchup[]
-  Note              Note[]
-  token             Token?
-  user_verification User_verification?
-  active            Boolean            @default(false)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  id                  Int                   @id @default(autoincrement())
+  email               String                @unique
+  username            String                @unique
+  password            String
+  permissions         Int                   @default(1)
+  summoner            Summoner[]
+  matchups            Matchup[]
+  Note                Note[]
+  token               Token?
+  user_verification   User_verification?
+  active              Boolean               @default(false)
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  User_reset_password User_reset_password[]
 }
 
 model Summoner {
@@ -37,6 +38,18 @@ model Summoner {
   user      User?    @relation(fields: [user_id], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Game {
+  user_id   Int
+  game_id   String
+  region    String?
+  lane      String?
+  timestamp Int?
+  finished  Boolean            @default(false)
+  status    NotificationStatus @default(pending)
+
+  @@id([user_id, game_id])
 }
 
 model Matchup {
@@ -111,3 +124,8 @@ model User_reset_password {
   createdAt DateTime @default(now())
 }
 
+enum NotificationStatus {
+  pending
+  accepted
+  declined
+}
