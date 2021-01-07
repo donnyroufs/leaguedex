@@ -1,4 +1,7 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { API } from "../api";
+import { useAuth } from "./useAuth";
+import { useMatch } from "./useMatch";
 
 const NotificationsContext = createContext();
 
@@ -19,6 +22,9 @@ export const useNotifications = () => {
 };
 
 const useNotificationsProvider = () => {
+  const { activeSummonerId } = useMatch();
+  const { user } = useAuth();
+
   const [notifications, setNotifications] = useState([
     {
       id: 1,
@@ -35,6 +41,17 @@ const useNotificationsProvider = () => {
       win: false,
     },
   ]);
+
+  // Get the last registered date
+  useEffect(() => {
+    if (!activeSummonerId || !user) return;
+
+    const currentSummoner = user.summoner.find(
+      (s) => s.accountId === activeSummonerId
+    );
+
+    API.playground(currentSummoner.id);
+  }, [activeSummonerId, user]);
 
   return {
     notifications,

@@ -4,6 +4,10 @@ import makeRequest from "../helpers/makeRequest";
 export class API {
   static endpoint = "/api";
 
+  static async playground(summonerId) {
+    return makeRequest(this.endpoint + `/game?summonerId=${summonerId}`);
+  }
+
   static async fetchMe() {
     return makeRequest(this.endpoint + "/user/me");
   }
