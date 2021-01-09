@@ -9,6 +9,6 @@ const controller = new Controller(model);
 
 router.use(Auth.authenticateToken);
 
-router.get('/', wrap(controller.getRecentGameDate));
+router.get('/', wrap(controller.getMatchHistory));
 
 module.exports = router;
