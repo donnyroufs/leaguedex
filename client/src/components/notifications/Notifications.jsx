@@ -43,6 +43,7 @@ const Notifications = () => {
               {...notification}
               choices={choices}
               handleChoice={handleChoice}
+              key={notification.id}
             />
           ))}
         </SC.Dropdown>
