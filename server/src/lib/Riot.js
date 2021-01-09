@@ -3,6 +3,8 @@ const { db } = require('../config/database');
 const { NotFoundError } = require('../helpers/error');
 
 class Riot {
+  static API_KEY = `?api_key=${process.env.API_KEY}`;
+
   static endpoints = {
     version: 'https://ddragon.leagueoflegends.com/api/versions.json',
     splash: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash',
@@ -71,7 +73,7 @@ class Riot {
       const { data } = await axios.get(
         `https://${region}.api.riotgames.com/lol/summoner/v4/summoners/by-name/${encodeURI(
           summonerName
-        )}?api_key=${process.env.API_KEY}`
+        )}${Riot.API_KEY}`
       );
       return data;
     } catch (err) {
@@ -82,7 +84,7 @@ class Riot {
   static async findMatch(summonerId, region = this.regions.EUW) {
     try {
       const { data } = await axios.get(
-        `https://${region}.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/${summonerId}?api_key=${process.env.API_KEY}`
+        `https://${region}.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/${summonerId}${Riot.API_KEY}`
       );
       return data;
     } catch (err) {
@@ -93,12 +95,23 @@ class Riot {
   static async getGameResults(matchId, region = this.regions.EUW) {
     try {
       const data = await axios.get(
-        `https://${region}.api.riotgames.com/lol/match/v4/matches/${matchId}?api_key=${process.env.API_KEY}`
+        `https://${region}.api.riotgames.com/lol/match/v4/matches/${matchId}${Riot.API_KEY}`
       );
       return data;
     } catch (_) {
       return null;
     }
+  }
+
+  //? summonerId (can't rename in prisma..)
+  //! 	There is a known issue that this field doesn't correctly return the total number of games that match the parameters of the request.
+  //    Please paginate using beginIndex until you reach the end of a player's matchlist.
+  static async getMatchHistory(lastRecordedMatchupInMs, region, accountId) {
+    const data = await axios.get(
+      `https://${region}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}${Riot.API_KEY}&beginTime=${lastRecordedMatchupInMs}`
+    );
+
+    return data;
   }
 
   static getRegions() {
