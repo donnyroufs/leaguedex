@@ -7,7 +7,9 @@
     "restart:staging": "pm2 restart staging_leaguedex",
     "migrate:staging": "prisma migrate up --experimental && prisma generate",
     "restart:prod": "pm2 restart production_leaguedex",
-    "migrate:prod": "prisma migrate up --experimental && prisma generate"
+    "migrate:prod": "prisma migrate up --experimental && prisma generate",
+    "migrate:save": "prisma migrate save --experimental",
+    "migrate:up": "prisma migrate up --experimental && prisma generate"
   },
   "main": "index.js",
   "license": "MIT",
