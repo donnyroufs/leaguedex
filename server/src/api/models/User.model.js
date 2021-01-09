@@ -112,10 +112,11 @@ class UserModel extends Model {
     return resource;
   }
 
-  async createSummoner(userId, { id, name, summonerLevel, region }) {
+  async createSummoner(userId, { id, name, summonerLevel, region, accountId }) {
     const newResource = await db.summoner.create({
       data: {
         accountId: id,
+        summonerId: accountId,
         name: name,
         level: summonerLevel,
         region: region,
