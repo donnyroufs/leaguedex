@@ -25,6 +25,16 @@ class MatchupController extends Controller {
     const { id: userId } = req.user;
 
     const matchup = await this.model.findMatchup(userId, req.body);
+
+    await db.game.create({
+      data: {
+        user_id: userId,
+        game_id: req.body.game_id,
+        status: 'accepted',
+        summoner_id: String(req.body.summoner_id),
+      },
+    });
+
     const data = await this.model.createOrUpdate(userId, matchup, req.body);
 
     res.status(201).json({
@@ -198,6 +208,8 @@ class MatchupController extends Controller {
     } else {
       await this.model.revertMatchup(userId, req.query);
     }
+
+    this.model.deleteGame(userId, req.query);
 
     res.sendStatus(204);
   }
