@@ -1,14 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["transactionApi"]
 }
 
 model User {
@@ -42,18 +38,19 @@ model Summoner {
 }
 
 model Game {
-  user_id   Int
-  game_id   String
-  region    String?
-  lane      String?
-  timestamp Int?
-  finished  Boolean            @default(false)
-  status    NotificationStatus @default(pending)
+  user_id     Int
+  summoner_id String
+  game_id     String
+  region      String?
+  lane        String?
+  timestamp   String?
+  type        GameType           @default(manual)
+  status      NotificationStatus @default(pending)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@id([user_id, game_id])
+  @@id([user_id, game_id, summoner_id])
 }
 
 model Matchup {
@@ -132,4 +129,9 @@ enum NotificationStatus {
   pending
   accepted
   declined
+}
+
+enum GameType {
+  notification
+  manual
 }

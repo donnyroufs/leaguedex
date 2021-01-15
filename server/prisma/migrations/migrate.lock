@@ -19,7 +19,7 @@
 20201028110355-add_reset_password_table
 20201119195852-user-can-have-many-summoners
 20201222210643-add-game-table
-20201222211700-add_game_table
-20210107121244-add-status-to-game-table
-20210107122038-add-dates-to-game-table
-20210109201132-add-account-id
+20210113203626-add-games-table
+20210115104300-introspect-for-types
+20210115104635-add-games-table
+20210115203642-add-games-table
