@@ -25,33 +25,35 @@ const useNotificationsProvider = () => {
   const { activeSummonerId } = useMatch();
   const { user } = useAuth();
 
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      championA: "Akali",
-      championB: "Renekton",
-      lane: "top",
-      win: true,
-    },
-    {
-      id: 2,
-      championA: "Jayce",
-      championB: "Anivia",
-      lane: "mid",
-      win: false,
-    },
-  ]);
+  const [notifications, setNotifications] = useState([]);
 
   // Get the last registered date
+  // TODO: Fix bug where it doesn't find the ID upon creating a new account.
+  // useEffect(() => {
+  //   if (!activeSummonerId || !user) return;
+  //   if (user.summoner.length <= 0) return;
+  //
+  //   const currentSummoner = user.summoner.find(
+  //     (s) => s.accountId === activeSummonerId
+  //   );
+
+  //   API.playground(currentSummoner.id);
+  // }, [activeSummonerId, user]);
+
   useEffect(() => {
-    if (!activeSummonerId || !user) return;
+    if (!user) return;
 
     const currentSummoner = user.summoner.find(
       (s) => s.accountId === activeSummonerId
     );
 
-    API.playground(currentSummoner.id);
-  }, [activeSummonerId, user]);
+    // summonerId need to rename in prisma
+    if (!currentSummoner) return;
+
+    API.getMatchNotifications(currentSummoner.id, currentSummoner.summonerId)
+      .then((res) => res.json())
+      .then((data) => setNotifications(data));
+  }, [user]);
 
   return {
     notifications,

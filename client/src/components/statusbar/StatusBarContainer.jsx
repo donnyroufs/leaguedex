@@ -23,12 +23,14 @@ async function fetchRevertMatchup({
   champion_id,
   games_played: gamesPlayed,
   opponent_id,
+  game_id,
 }) {
   const params = new URLSearchParams({
     lane,
     champion_id,
     gamesPlayed,
     opponent_id,
+    game_id,
   });
   const res = await makeRequest(`/api/matchup/revert?${params}`, {
     method: "PUT",

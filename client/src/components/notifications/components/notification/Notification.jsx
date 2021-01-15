@@ -3,17 +3,9 @@ import types from "../../../../types";
 import * as SC from "./Notification.styles";
 import Mark from "../mark/Mark";
 
-const Notification = ({
-  id,
-  handleChoice,
-  choices,
-  lane,
-  win,
-  championA,
-  championB,
-}) => {
+const Notification = ({ id, handleChoice, choices, me, opponent }) => {
   const hasChosen = choices[id];
-  const wonStatus = win ? "W" : "L";
+  const wonStatus = me.win ? "W" : "L";
 
   function onHandleChoice(type) {
     handleChoice(id, type);
@@ -22,10 +14,10 @@ const Notification = ({
   return (
     <SC.Container>
       <SC.Info>
-        <SC.Lane>{lane.charAt(0).toUpperCase()}</SC.Lane>
-        <SC.Result win={win}>{wonStatus}</SC.Result>
+        <SC.Lane>{me.lane.charAt(0).toUpperCase()}</SC.Lane>
+        <SC.Result win={me.win}>{wonStatus}</SC.Result>
         <SC.Details>
-          {championA} vs {championB}
+          {me.championA.name} vs {opponent.championB.name}
         </SC.Details>
       </SC.Info>
       <SC.ConfirmWrapper>

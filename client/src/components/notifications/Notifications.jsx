@@ -27,7 +27,7 @@ const Notifications = () => {
     }));
   }
 
-  const count = 2;
+  const count = notifications.length;
 
   return (
     <SC.Container ref={ref}>
@@ -38,17 +38,23 @@ const Notifications = () => {
       <SC.Wrapper show={show}>
         <SC.Heading>Unconfirmed matches</SC.Heading>
         <SC.Dropdown>
-          {notifications.map((notification) => (
-            <Notification
-              {...notification}
-              choices={choices}
-              handleChoice={handleChoice}
-              key={notification.id}
-            />
-          ))}
+          {count > 0 &&
+            notifications.map((notification) => (
+              <Notification
+                {...notification}
+                choices={choices}
+                handleChoice={handleChoice}
+                key={notification.id}
+              />
+            ))}
+          {count <= 0 && <p>There are no matches to confirm!</p>}
         </SC.Dropdown>
         <SC.Footer>
-          <Button logout style={{ width: "100%", marginLeft: "0" }}>
+          <Button
+            disabled={count <= 0}
+            logout
+            style={{ width: "100%", marginLeft: "0" }}
+          >
             Confirm
           </Button>
         </SC.Footer>

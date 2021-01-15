@@ -60,9 +60,29 @@ export const Icon = styled(FaBell)`
 `;
 
 export const Dropdown = styled.ul`
+  overflow: auto;
+  max-height: 250px;
   list-style: none;
   margin: 0;
   padding: 0;
+  padding-right: 1rem;
+
+  ::-webkit-scrollbar {
+    width: 11px;
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: ${({ theme }) => theme.dark};
+
+  ::-webkit-scrollbar-track {
+    background: ${({ theme }) => theme.dark};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.primary};
+    border-radius: 6px;
+    border: none;
+  }
 `;
 
 export const Heading = styled.h1`
