@@ -238,6 +238,17 @@ class MatchupModel extends Model {
       },
     });
   }
+
+  async deleteGame(userId, { game_id }) {
+    await db.game.delete({
+      where: {
+        user_id_game_id: {
+          game_id: game_id,
+          user_id: userId,
+        },
+      },
+    });
+  }
 }
 
 module.exports = new MatchupModel(db.matchup);
