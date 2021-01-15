@@ -1,9 +1,22 @@
 const axios = require('axios');
 const { db } = require('../config/database');
 const { NotFoundError } = require('../helpers/error');
+const SupportChampions = require('../data/SupportChampions');
+const Logger = require('../helpers/Logger');
 
 class Riot {
   static API_KEY = `?api_key=${process.env.API_KEY}`;
+
+  static LANES = {
+    NONE: 'NONE',
+    BOTTOM: 'BOTTOM',
+    BOT: 'BOT',
+    MID: 'MID',
+    TOP: 'TOP',
+    JUNGLE: 'JUNGLE',
+    ADC: 'ADC',
+    SUPPORT: 'SUPPORT',
+  };
 
   static endpoints = {
     version: 'https://ddragon.leagueoflegends.com/api/versions.json',
@@ -107,15 +120,132 @@ class Riot {
   //! 	There is a known issue that this field doesn't correctly return the total number of games that match the parameters of the request.
   //    Please paginate using beginIndex until you reach the end of a player's matchlist.
   static async getMatchHistory(lastRecordedMatchupInMs, region, accountId) {
-    const data = await axios.get(
-      `https://${region}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}${Riot.API_KEY}&beginTime=${lastRecordedMatchupInMs}`
-    );
+    const { data } = await axios
+      .get(
+        `https://${region}.api.riotgames.com/lol/match/v4/matchlists/by-account/${accountId}${Riot.API_KEY}&beginTime=${lastRecordedMatchupInMs}`
+      )
+      .catch((_) => []);
 
     return data;
   }
 
+  static async getGameResultAndMatchupInfo(gameId, accountId, region, lane) {
+    const matches = await Riot.getGameResults(gameId, region);
+
+    if ((matches && !matches.hasOwnProperty('data')) || matches == null)
+      return null;
+
+    // TODO: Filter data based on gameMode
+    // const gameData = matches.data.filter((m) => m.gameMode === 'CLASSIC');
+    const gameData = matches.data;
+
+    const { teamId: wonTeam } = gameData.teams.find(
+      (team) => team.win === 'Win'
+    );
+
+    const result = gameData.participantIdentities.find(
+      ({ player }) => player.accountId === accountId
+    );
+
+    if (!result) return null;
+
+    const { participantId } = result;
+
+    const me = gameData.participants.find(
+      (player) => player.participantId === participantId
+    );
+
+    const opponents = gameData.participants.filter(
+      (player) => player.participantId !== me.participantId
+    );
+
+    const opponent = Riot.getGuessedOpponent(opponents, me);
+
+    if (!me || !opponent) return null;
+
+    const championA = await Riot._getChampionById(Number(me.championId));
+    const championB = await Riot._getChampionById(Number(opponent.championId));
+
+    return {
+      id: gameId,
+      win: me.teamId === wonTeam,
+      me: {
+        ...me,
+        timeline: {
+          ...me.timeline,
+          lane,
+        },
+      },
+      opponent: {
+        ...opponent,
+        timeline: {
+          ...opponent.timeline,
+          lane,
+        },
+      },
+      championA,
+      championB,
+    };
+  }
+
   static getRegions() {
     return this.regions;
+  }
+
+  static async _getChampionById(id) {
+    return db.champion.findOne({
+      where: {
+        id,
+      },
+    });
+  }
+
+  static serializeMatchHistory(data) {
+    return data && data.matches
+      ? data.matches
+          .filter(({ lane }) => lane !== Riot.LANES.NONE)
+          .map((m) => {
+            if (Riot._isSupport(m.lane, m.champion)) {
+              return {
+                ...m,
+                lane: Riot.LANES.SUPPORT,
+              };
+            } else if (Riot._isAdc(m.lane, m.champion)) {
+              return {
+                ...m,
+                lane: Riot.LANES.ADC,
+              };
+            } else {
+              return m;
+            }
+          })
+      : [];
+  }
+
+  static _isAdc(lane, champion) {
+    return lane === Riot.LANES.BOTTOM && !SupportChampions.includes(champion);
+  }
+  static _isSupport(lane, champion) {
+    return lane === Riot.LANES.BOTTOM && SupportChampions.includes(champion);
+  }
+
+  static getGuessedOpponent(opponents, me) {
+    if (me.timeline.lane !== Riot.LANES.BOTTOM)
+      return opponents.find((o) => o.timeline.lane === me.timeline.lane);
+
+    const _newOpponents = opponents.filter(
+      (o) => o.timeline.lane === Riot.LANES.BOTTOM
+    );
+
+    const isAdc = Riot._isAdc(me.timeline.lane, me.championId);
+
+    if (isAdc) {
+      return _newOpponents.find(
+        (o) => !SupportChampions.includes(o.championId)
+      );
+    } else {
+      return _newOpponents.find((o) => SupportChampions.includes(o.championId));
+    }
   }
 }
 
