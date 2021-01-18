@@ -23,7 +23,7 @@ class GameController extends Controller {
     );
 
     if (data.length > 0 || summonerData) {
-      const timeInMs = this._getCreatedAt(summonerData, data);
+      const timeInMs = this._getCreatedAtInMs(summonerData, data);
 
       const matchHistoryData = await Riot.getMatchHistory(
         timeInMs,
@@ -65,20 +65,23 @@ class GameController extends Controller {
     }
   }
 
-  _getCreatedAt(summonerData, data) {
+  _getCreatedAtInMs(summonerData, data) {
     if (data.length > 0) {
       console.log('data.length timestamp');
-      return Number(data[0].timestamp);
+      return data[0].timestamp.getTime();
     } else if (
-      summonerData.createdAt.getTime() >=
-      GameController.RELEASED_MATCHHISTORY_FEATURE_IN_TIME
+      // summonerData.createdAt.getTime() >=
+      // GameController.RELEASED_MATCHHISTORY_FEATURE_IN_TIME
+      false
     ) {
       console.log('elseif');
       return summonerData.createdAt.getTime();
     } else {
       console.log('else');
+      const date = new Date();
+      date.setDate(date.getDate() - 1);
       // released_matchistory_feature_in_time
-      return 1610451097698;
+      return date.getTime();
       //     1610452265383
     }
   }
