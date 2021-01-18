@@ -61,7 +61,7 @@
       "tag": "CreateField",
       "model": "Game",
       "field": "timestamp",
-      "type": "String",
+      "type": "DateTime",
       "arity": "Optional"
     },
     {

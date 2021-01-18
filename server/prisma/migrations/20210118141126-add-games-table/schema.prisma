@@ -43,7 +43,7 @@ model Game {
   game_id     String
   region      String?
   lane        String?
-  timestamp   String?
+  timestamp   DateTime?
   type        GameType           @default(manual)
   status      NotificationStatus @default(pending)
 
