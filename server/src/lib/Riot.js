@@ -168,6 +168,7 @@ class Riot {
 
     return {
       id: gameId,
+      timestamp: new Date(gameData.gameCreation),
       win: me.teamId === wonTeam,
       me: {
         ...me,
@@ -216,7 +217,9 @@ class Riot {
                 lane: Riot.LANES.ADC,
               };
             } else {
-              return m;
+              return {
+                ...m,
+              };
             }
           })
       : [];
