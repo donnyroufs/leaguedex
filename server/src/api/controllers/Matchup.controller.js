@@ -31,6 +31,7 @@ class MatchupController extends Controller {
         user_id: userId,
         game_id: req.body.game_id,
         status: 'accepted',
+        timestamp: new Date(),
         summoner_id: String(req.body.summoner_id),
       },
     });
