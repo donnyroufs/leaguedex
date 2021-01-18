@@ -19,8 +19,8 @@ class GameModel extends Model {
 
     if (!resources) return [];
 
-    const [lastPlayedGameFirst] = resources.sort(
-      (a, b) => Number(b.timestamp) - Number(a.timestamp)
+    const lastPlayedGameFirst = resources.sort(
+      (a, b) => b.timestamp - a.timestamp
     );
 
     return lastPlayedGameFirst;
@@ -77,7 +77,7 @@ class GameModel extends Model {
           region: match.platformId,
           status: 'pending',
           type: 'notification',
-          timestamp: String(match.timestamp),
+          timestamp: new Date(match.timestamp),
           lane: match.lane,
           summoner_id: String(summonerId),
         },
