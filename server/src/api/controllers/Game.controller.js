@@ -3,7 +3,7 @@ const { NotFoundError } = require('../../helpers/error');
 const Riot = require('../../lib/Riot');
 
 class GameController extends Controller {
-  static RELEASED_MATCHHISTORY_FEATURE_IN_TIME = 1610537869020;
+  static RELEASED_MATCHHISTORY_FEATURE_IN_TIME = new Date(1610895229910);
 
   constructor(...props) {
     super(...props);
@@ -50,13 +50,7 @@ class GameController extends Controller {
 
       const gamesData = await Promise.all(matches);
 
-      console.log('length of games: ', gamesData.length);
-
       const removedNullValues = gamesData.filter((x) => x);
-      console.log(
-        'length of games after null values format: ',
-        removedNullValues.length
-      );
       const formattedData = this.formatters.initialNotifications(
         removedNullValues
       );
@@ -67,22 +61,14 @@ class GameController extends Controller {
 
   _getCreatedAtInMs(summonerData, data) {
     if (data.length > 0) {
-      console.log('data.length timestamp');
       return data[0].timestamp.getTime();
     } else if (
-      // summonerData.createdAt.getTime() >=
-      // GameController.RELEASED_MATCHHISTORY_FEATURE_IN_TIME
-      false
+      summonerData.createdAt.getTime() >=
+      GameController.RELEASED_MATCHHISTORY_FEATURE_IN_TIME
     ) {
-      console.log('elseif');
       return summonerData.createdAt.getTime();
     } else {
-      console.log('else');
-      const date = new Date();
-      date.setDate(date.getDate() - 1);
-      // released_matchistory_feature_in_time
-      return date.getTime();
-      //     1610452265383
+      return GameController.RELEASED_MATCHHISTORY_FEATURE_IN_TIME;
     }
   }
 }
