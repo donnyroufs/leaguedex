@@ -171,6 +171,9 @@ class Riot {
     //   console.log(me.timeline.lane);
     //   console.log(opponents.map((o) => o.timeline.lane));
     // }
+    if (!opponent) {
+      return null;
+    }
 
     const championA = await Riot._getChampionById(Number(me.championId));
     const championB = await Riot._getChampionById(Number(opponent.championId));
