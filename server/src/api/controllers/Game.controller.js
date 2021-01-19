@@ -3,7 +3,7 @@ const { NotFoundError } = require('../../helpers/error');
 const Riot = require('../../lib/Riot');
 
 class GameController extends Controller {
-  static RELEASED_MATCHHISTORY_FEATURE_IN_TIME = new Date(1610895229910);
+  static RELEASED_MATCHHISTORY_FEATURE_IN_TIME = 1610895229910;
 
   constructor(...props) {
     super(...props);
@@ -15,7 +15,7 @@ class GameController extends Controller {
     const { accountId, id: summonerId } = req.query;
     const { id } = req.user;
 
-    const data = await this.model.getRecentGameDate(id);
+    const data = await this.model.getRecentGameDate(id, summonerId);
 
     const summonerData = await this.model.getSummonerInfo(
       +summonerId,
