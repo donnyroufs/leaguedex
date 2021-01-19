@@ -4,6 +4,13 @@ import makeRequest from "../helpers/makeRequest";
 export class API {
   static endpoint = "/api";
 
+  static async updateMatchNotifications(payload, summonerId) {
+    return makeRequest(this.endpoint + `/game?summonerId=${summonerId}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+  }
+
   static async getMatchNotifications(id, accountId) {
     return makeRequest(this.endpoint + `/game?accountId=${accountId}&id=${id}`);
   }
