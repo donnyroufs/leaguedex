@@ -10,7 +10,7 @@ class Riot {
     NONE: 'NONE',
     BOTTOM: 'BOTTOM',
     BOT: 'BOT',
-    MID: 'MID',
+    MID: 'MIDDLE',
     TOP: 'TOP',
     JUNGLE: 'JUNGLE',
     ADC: 'ADC',
@@ -131,8 +131,9 @@ class Riot {
   static async getGameResultAndMatchupInfo(gameId, accountId, region, lane) {
     const matches = await Riot.getGameResults(gameId, region);
 
-    if ((matches && !matches.hasOwnProperty('data')) || matches == null)
+    if ((matches && !matches.hasOwnProperty('data')) || matches == null) {
       return null;
+    }
 
     const gameData = matches.data;
 
@@ -148,7 +149,9 @@ class Riot {
       ({ player }) => player.accountId === accountId
     );
 
-    if (!result) return null;
+    if (!result) {
+      return null;
+    }
 
     const { participantId } = result;
 
@@ -157,12 +160,17 @@ class Riot {
     );
 
     const opponents = gameData.participants.filter(
-      (player) => player.participantId !== me.participantId
+      (player) =>
+        player.participantId !== me.participantId && player.teamId !== me.teamId
     );
 
     const opponent = Riot.getGuessedOpponent(opponents, me);
 
-    if (!me || !opponent) return null;
+    // !BUG: Riot api doesn't give me the correct lanes so some games might be missing because it cant find an opponent
+    // if (!opponent) {
+    //   console.log(me.timeline.lane);
+    //   console.log(opponents.map((o) => o.timeline.lane));
+    // }
 
     const championA = await Riot._getChampionById(Number(me.championId));
     const championB = await Riot._getChampionById(Number(opponent.championId));
@@ -233,6 +241,7 @@ class Riot {
     return lane === Riot.LANES.BOTTOM && SupportChampions.includes(champion);
   }
 
+  // Seems like there can be multiple of the same lanes? (riot api related)
   static getGuessedOpponent(opponents, me) {
     if (me.timeline.lane !== Riot.LANES.BOTTOM)
       return opponents.find((o) => o.timeline.lane === me.timeline.lane);
