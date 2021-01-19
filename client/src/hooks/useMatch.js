@@ -64,7 +64,7 @@ const useMatchProvider = ({ isAuthenticated }) => {
         opponent_id: Number(opponent_id),
         champion_id: match.me.id,
         game_id: String(match.gameId),
-        summoner_id: activeSummonerId
+        summoner_id: activeSummonerId,
       };
 
       const res = await makeRequest(`/api/matchup/create`, {
@@ -99,6 +99,12 @@ const useMatchProvider = ({ isAuthenticated }) => {
     history.push(`/match/${match.matchId}`);
   };
 
+  // After updating notifications we need to update our matchups.
+  async function afterUpdateNotifications(data) {
+    // set current dex state with updated matchups.
+    console.log(data);
+  }
+
   useEffect(() => {
     if (activeSummonerId && isAuthenticated) {
       findMatch();
@@ -123,5 +129,6 @@ const useMatchProvider = ({ isAuthenticated }) => {
     setBtnText,
     activeSummonerId,
     setActiveSummonerId,
+    afterUpdateNotifications,
   };
 };
