@@ -97,6 +97,27 @@ class GameModel extends Model {
       },
     });
   }
+
+  async updateNotifications(payload, userId, summonerId) {
+    const queries = Object.entries(payload).map(([gameId, state]) =>
+      db.game.update({
+        where: {
+          user_id_game_id_summoner_id: {
+            user_id: Number(userId),
+            game_id: String(gameId),
+            summoner_id: String(summonerId),
+          },
+        },
+        data: {
+          status: state,
+        },
+      })
+    );
+
+    await Promise.all(queries);
+
+    return true;
+  }
 }
 
 module.exports = new GameModel(db.game);
