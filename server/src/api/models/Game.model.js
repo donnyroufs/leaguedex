@@ -7,10 +7,11 @@ class GameModel extends Model {
     super(...props);
   }
 
-  async getRecentGameDate(userId) {
+  async getRecentGameDate(userId, summonerId) {
     const resources = await db.game.findMany({
       where: {
         user_id: userId,
+        summoner_id: summonerId,
       },
       select: {
         timestamp: true,
