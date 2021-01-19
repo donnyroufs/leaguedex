@@ -10,6 +10,7 @@ const controller = new Controller(model, formatter);
 
 router.use(Auth.authenticateToken);
 
+router.put('/', wrap(controller.updateNotificationsAndCreateMatchups));
 router.get('/', wrap(controller.getMatchHistory));
 
 module.exports = router;
