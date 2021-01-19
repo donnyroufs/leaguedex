@@ -2,7 +2,6 @@ const axios = require('axios');
 const { db } = require('../config/database');
 const { NotFoundError } = require('../helpers/error');
 const SupportChampions = require('../data/SupportChampions');
-const Logger = require('../helpers/Logger');
 
 class Riot {
   static API_KEY = `?api_key=${process.env.API_KEY}`;
@@ -135,9 +134,11 @@ class Riot {
     if ((matches && !matches.hasOwnProperty('data')) || matches == null)
       return null;
 
-    // TODO: Filter data based on gameMode
-    // const gameData = matches.data.filter((m) => m.gameMode === 'CLASSIC');
     const gameData = matches.data;
+
+    if (gameData.gameMode !== 'CLASSIC') {
+      return null;
+    }
 
     const { teamId: wonTeam } = gameData.teams.find(
       (team) => team.win === 'Win'
