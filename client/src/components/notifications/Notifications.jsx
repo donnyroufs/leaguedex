@@ -4,11 +4,13 @@ import { Button } from "../../GlobalStyles";
 import * as SC from "./Notifications.styles";
 import Notification from "./components/notification/Notification";
 import { useNotifications } from "../../hooks/useNotifications";
+import { BeatLoader } from "react-spinners";
+import theme from "../../theme";
 
 const Notifications = () => {
   const [show, setShow] = useState(false);
   const [choices, setChoices] = useState({});
-  const { notifications } = useNotifications();
+  const { notifications, updateNotifications, loading } = useNotifications();
 
   const ref = useOnclickOutside(() => {
     setShow(false);
@@ -25,6 +27,15 @@ const Notifications = () => {
       ...curr,
       [id]: confirmed,
     }));
+  }
+
+  async function handleOnConfirm(e) {
+    e.preventDefault();
+    if (Object.values(choices).length <= 0) return;
+
+    await updateNotifications(choices);
+
+    setChoices({});
   }
 
   const count = notifications.length;
@@ -54,8 +65,10 @@ const Notifications = () => {
             disabled={count <= 0}
             logout
             style={{ width: "100%", marginLeft: "0" }}
+            onClick={handleOnConfirm}
           >
-            Confirm
+            {loading && <BeatLoader color={theme.secondary} height="100%" />}
+            {!loading && "Confirm"}
           </Button>
         </SC.Footer>
       </SC.Wrapper>
