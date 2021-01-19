@@ -167,10 +167,6 @@ class Riot {
     const opponent = Riot.getGuessedOpponent(opponents, me);
 
     // !BUG: Riot api doesn't give me the correct lanes so some games might be missing because it cant find an opponent
-    // if (!opponent) {
-    //   console.log(me.timeline.lane);
-    //   console.log(opponents.map((o) => o.timeline.lane));
-    // }
     if (!opponent) {
       return null;
     }
