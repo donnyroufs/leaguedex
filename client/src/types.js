@@ -1,6 +1,6 @@
 const types = {
-  CONFIRM: "CONFIRM",
-  CANCEL: "CANCEL",
+  CONFIRM: "accepted",
+  CANCEL: "declined",
 };
 
 export default types;
