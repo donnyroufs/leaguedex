@@ -128,6 +128,52 @@ class Riot {
     return data;
   }
 
+  static async getChampionsFromMatch(gameId, region, accountId, lane) {
+    const match = await Riot.getGameResults(gameId, region);
+
+    if ((match && !match.hasOwnProperty('data')) || match == null) {
+      return null;
+    }
+
+    const gameData = match.data;
+
+    if (gameData.gameMode !== 'CLASSIC') {
+      return null;
+    }
+
+    const result = gameData.participantIdentities.find(
+      ({ player }) => player.accountId === accountId
+    );
+
+    if (!result) {
+      return null;
+    }
+
+    const { participantId } = result;
+
+    const me = gameData.participants.find(
+      (player) => player.participantId === participantId
+    );
+
+    const opponents = gameData.participants.filter(
+      (player) =>
+        player.participantId !== me.participantId && player.teamId !== me.teamId
+    );
+
+    const opponent = Riot.getGuessedOpponent(opponents, me);
+
+    if (!opponent) {
+      return null;
+    }
+
+    return {
+      ...gameData,
+      lane,
+      champion_id: me.championId,
+      opponent_id: opponent.championId,
+    };
+  }
+
   static async getGameResultAndMatchupInfo(gameId, accountId, region, lane) {
     const matches = await Riot.getGameResults(gameId, region);
 
@@ -209,28 +255,40 @@ class Riot {
     });
   }
 
-  static serializeMatchHistory(data) {
-    return data && data.matches
-      ? data.matches
-          .filter(({ lane }) => lane !== Riot.LANES.NONE)
-          .map((m) => {
-            if (Riot._isSupport(m.lane, m.champion)) {
-              return {
-                ...m,
-                lane: Riot.LANES.SUPPORT,
-              };
-            } else if (Riot._isAdc(m.lane, m.champion)) {
-              return {
-                ...m,
-                lane: Riot.LANES.ADC,
-              };
-            } else {
-              return {
-                ...m,
-              };
-            }
-          })
-      : [];
+  static async serializeMatchHistory(data, accountId) {
+    const calculatedLanes =
+      data && data.matches
+        ? data.matches
+            .filter(({ lane }) => lane !== Riot.LANES.NONE)
+            .map((m) => {
+              if (Riot._isSupport(m.lane, m.champion)) {
+                return {
+                  ...m,
+                  lane: Riot.LANES.SUPPORT,
+                };
+              } else if (Riot._isAdc(m.lane, m.champion)) {
+                return {
+                  ...m,
+                  lane: Riot.LANES.ADC,
+                };
+              } else {
+                return {
+                  ...m,
+                };
+              }
+            })
+        : [];
+
+    const queries = calculatedLanes.map((match) => {
+      return Riot.getChampionsFromMatch(
+        match.gameId,
+        match.region,
+        accountId,
+        match.lane
+      );
+    });
+
+    return Promise.all(queries);
   }
 
   static _isAdc(lane, champion) {
