@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { API } from "../api";
 import { useAuth } from "./useAuth";
+import { useChampions } from "./useChampions";
 import { useMatch } from "./useMatch";
 
 const NotificationsContext = createContext();
@@ -23,7 +24,8 @@ export const useNotifications = () => {
 
 const useNotificationsProvider = () => {
   const [loading, setLoading] = useState(false);
-  const { activeSummonerId, afterUpdateNotifications } = useMatch();
+  const { activeSummonerId } = useMatch();
+  const { afterUpdateNotifications } = useChampions();
   const { user } = useAuth();
 
   const [notifications, setNotifications] = useState([]);
@@ -57,25 +59,25 @@ const useNotificationsProvider = () => {
 
     setLoading(true);
 
-    const response = await API.updateMatchNotifications(
-      payload,
-      currentSummoner.summonerId
-    ).catch((err) => console.log(err));
+    const response = await API.updateMatchNotifications({
+      gameData: payload,
+      summonerId: currentSummoner.summonerId,
+    }).catch((err) => console.log(err));
 
     const isSuccess = response.status === 201;
 
     if (isSuccess) {
+      const gameIds = payload.map((game) => game.gameId);
       const updatedNotifications = notifications.filter(
-        (n) => !Object.keys(payload).includes(n.id)
+        (n) => !gameIds.includes(n.id)
       );
+
       setNotifications(updatedNotifications);
 
+      const data = await response.json();
+
       // Get json data of current matchups and pass to afterUpdate
-      // await afterUpdateNotifications(data).catch(
-      //   (err) => {
-      //     console.log(err);
-      //   }
-      // );
+      afterUpdateNotifications(data);
     }
 
     setLoading(false);
