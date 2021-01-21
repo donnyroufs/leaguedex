@@ -1,9 +1,9 @@
 const Controller = require('./Controller');
-const { NotFoundError, BadRequest } = require('../../helpers/error');
+const { BadRequest } = require('../../helpers/error');
 const Riot = require('../../lib/Riot');
 
 class GameController extends Controller {
-  static RELEASED_MATCHHISTORY_FEATURE_IN_TIME = 1610895229910;
+  static RELEASED_MATCHHISTORY_FEATURE_IN_TIME = 1611253467362;
   static MATCH_HISTORY_LIMIT = 10;
 
   constructor(...props) {
@@ -16,8 +16,15 @@ class GameController extends Controller {
   }
 
   async getMatchHistory(req, res) {
-    const { accountId, id: summonerId } = req.query;
+    let { accountId, id: summonerId, region, accountId2 } = req.query;
     const { id } = req.user;
+
+    if (!accountId) {
+      const { data } = await Riot.getSummonerById(accountId2, region);
+      await this.model.addAccountId(data.accountId, summonerId);
+
+      accountId = data.accountId;
+    }
 
     const data = await this.model.getRecentGameDate(id, summonerId);
 

@@ -11,8 +11,11 @@ export class API {
     });
   }
 
-  static async getMatchNotifications(id, accountId) {
-    return makeRequest(this.endpoint + `/game?accountId=${accountId}&id=${id}`);
+  static async getMatchNotifications(id, accountId, region, summonerId) {
+    return makeRequest(
+      this.endpoint +
+        `/game?accountId=${accountId}&id=${id}&region=${region}&accountId2=${summonerId}`
+    );
   }
 
   static async fetchMe() {

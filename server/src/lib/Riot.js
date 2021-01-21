@@ -317,6 +317,14 @@ class Riot {
       return _newOpponents.find((o) => SupportChampions.includes(o.championId));
     }
   }
+
+  static async getSummonerById(summonerId, region) {
+    const data = await axios.get(
+      `https://${region}.api.riotgames.com/lol/summoner/v4/summoners/${summonerId}${Riot.API_KEY}`
+    );
+
+    return data;
+  }
 }
 
 module.exports = Riot;

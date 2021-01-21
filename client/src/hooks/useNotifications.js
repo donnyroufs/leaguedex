@@ -40,7 +40,12 @@ const useNotificationsProvider = () => {
 
     if (!currentSummoner) return;
 
-    API.getMatchNotifications(currentSummoner.id, currentSummoner.summonerId)
+    API.getMatchNotifications(
+      currentSummoner.id,
+      currentSummoner.summonerId,
+      currentSummoner.region,
+      currentSummoner.accountId
+    )
       .then((res) => res.json())
       .then((data) => setNotifications(data));
   }, [user, activeSummonerId]);

@@ -209,6 +209,17 @@ class GameModel extends Model {
 
     return resource;
   }
+
+  async addAccountId(summonerId, id) {
+    await db.summoner.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        summonerId: String(summonerId),
+      },
+    });
+  }
 }
 
 module.exports = new GameModel(db.game);
