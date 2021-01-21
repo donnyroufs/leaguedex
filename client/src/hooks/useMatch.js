@@ -99,12 +99,6 @@ const useMatchProvider = ({ isAuthenticated }) => {
     history.push(`/match/${match.matchId}`);
   };
 
-  // After updating notifications we need to update our matchups.
-  async function afterUpdateNotifications(data) {
-    // set current dex state with updated matchups.
-    console.log(data);
-  }
-
   useEffect(() => {
     if (activeSummonerId && isAuthenticated) {
       findMatch();
@@ -129,6 +123,5 @@ const useMatchProvider = ({ isAuthenticated }) => {
     setBtnText,
     activeSummonerId,
     setActiveSummonerId,
-    afterUpdateNotifications,
   };
 };
