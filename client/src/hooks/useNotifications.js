@@ -42,7 +42,7 @@ const useNotificationsProvider = () => {
     API.getMatchNotifications(currentSummoner.id, currentSummoner.summonerId)
       .then((res) => res.json())
       .then((data) => setNotifications(data));
-  }, [user]);
+  }, [user, activeSummonerId]);
 
   async function updateNotifications(payload) {
     if (!activeSummonerId) {
