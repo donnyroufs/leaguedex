@@ -18,3 +18,11 @@
 20201026090823-add_email_verification_for_users
 20201028110355-add_reset_password_table
 20201119195852-user-can-have-many-summoners
+20201222210643-add-game-table
+20210113203626-add-games-table
+20210115104300-introspect-for-types
+20210115104635-add-games-table
+20210115203642-add-games-table
+20210118141126-add-games-table
+20210119154452-add-champion-info-to-game-table
+20210121101557-add-relations-to-champions-game-table

@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model User {
@@ -41,6 +41,8 @@ model Game {
   user_id     Int
   summoner_id String
   game_id     String
+  champion_id Int
+  opponent_id Int
   region      String?
   lane        String?
   timestamp   DateTime?
@@ -49,12 +51,6 @@ model Game {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  champion_id Int?
-  championA   Champion? @relation("game_champion_id", fields: [champion_id], references: [id])
-
-  opponent_id Int?
-  championB   Champion? @relation("game_opponent_id", fields: [opponent_id], references: [id])
 
   @@id([user_id, game_id, summoner_id])
 }
@@ -104,8 +100,6 @@ model Champion {
   updatedAt           DateTime  @updatedAt
   matchup_champion_id Matchup[] @relation("matchup_champion_id")
   matchup_opponent_id Matchup[] @relation("matchup_opponent_id")
-  game_champion_id    Game[]    @relation("game_champion_id")
-  game_opponent_id    Game[]    @relation("game_opponent_id")
 }
 
 model Token {

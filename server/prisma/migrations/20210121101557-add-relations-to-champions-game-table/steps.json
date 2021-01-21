@@ -1,0 +1,201 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Champion",
+      "field": "game_champion_id",
+      "type": "Game",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Champion",
+          "field": "game_champion_id"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Champion",
+          "field": "game_champion_id"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"game_champion_id\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "Champion",
+      "field": "game_opponent_id",
+      "type": "Game",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Champion",
+          "field": "game_opponent_id"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Champion",
+          "field": "game_opponent_id"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"game_opponent_id\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "Game",
+      "field": "championA",
+      "type": "Champion",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Game",
+          "field": "championA"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Game",
+          "field": "championA"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"game_champion_id\""
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Game",
+          "field": "championA"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[champion_id]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Game",
+          "field": "championA"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Game",
+      "field": "championB",
+      "type": "Champion",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Game",
+          "field": "championB"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Game",
+          "field": "championB"
+        },
+        "directive": "relation"
+      },
+      "argument": "",
+      "value": "\"game_opponent_id\""
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Game",
+          "field": "championB"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[opponent_id]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Game",
+          "field": "championB"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Game",
+      "field": "champion_id",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Game",
+      "field": "opponent_id",
+      "arity": "Optional"
+    }
+  ]
+}
