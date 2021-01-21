@@ -10,6 +10,7 @@ import { AuthProvider } from "./hooks/useAuth";
 import { ModalProvider } from "./hooks/useModal";
 import { MatchProvider } from "./hooks/useMatch";
 import { StatusProvider } from "./hooks/useStatus";
+import { ChampionsProvider } from "./hooks/useChampions";
 import { debugContextDevtool } from "react-context-devtool";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -27,9 +28,11 @@ ReactDOM.render(
             <ModalProvider>
               <StatusProvider>
                 <SidebarProvider>
-                  <NotificationsProvider>
-                    <App />
-                  </NotificationsProvider>
+                  <ChampionsProvider>
+                    <NotificationsProvider>
+                      <App />
+                    </NotificationsProvider>
+                  </ChampionsProvider>
                 </SidebarProvider>
               </StatusProvider>
             </ModalProvider>
