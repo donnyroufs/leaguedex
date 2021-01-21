@@ -64,6 +64,7 @@ const useMatchProvider = ({ isAuthenticated }) => {
         opponent_id: Number(opponent_id),
         champion_id: match.me.id,
         game_id: String(match.gameId),
+        summoner_id: activeSummonerId,
       };
 
       const res = await makeRequest(`/api/matchup/create`, {

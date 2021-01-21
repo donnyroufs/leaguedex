@@ -7,7 +7,9 @@
     "restart:staging": "pm2 restart staging_leaguedex",
     "migrate:staging": "prisma migrate up --experimental && prisma generate",
     "restart:prod": "pm2 restart production_leaguedex",
-    "migrate:prod": "prisma migrate up --experimental && prisma generate"
+    "migrate:prod": "prisma migrate up --experimental && prisma generate",
+    "migrate:save": "prisma migrate save --experimental",
+    "migrate:up": "prisma migrate up --experimental && prisma generate"
   },
   "main": "index.js",
   "license": "MIT",
@@ -27,6 +29,7 @@
     "express-joi-validation": "^4.0.3",
     "express-rate-limit": "^5.1.3",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.20",
     "mjml": "^4.7.1",
     "morgan": "^1.10.0",
     "nodemailer": "^6.4.14",
@@ -35,6 +38,7 @@
   },
   "devDependencies": {
     "@prisma/cli": "2.4.1",
+    "faker": "^5.1.0",
     "pm2": "^4.4.0",
     "prettier": "2.0.5"
   }

@@ -32,6 +32,7 @@ const Home = ({ champions, info, isAuthenticated }) => {
         {champions.length > 0 &&
           champions
             .filter((champ) => champ.name.toLowerCase().includes(value))
+            .sort((championA) => (championA.has_matchups ? -1 : 1))
             .map((champion) => (
               <Card key={champion.name} champion={champion} />
             ))}

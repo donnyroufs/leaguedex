@@ -25,6 +25,30 @@ class MatchupController extends Controller {
     const { id: userId } = req.user;
 
     const matchup = await this.model.findMatchup(userId, req.body);
+
+    const { champion_id, opponent_id, lane } = req.body;
+
+    await db.game.create({
+      data: {
+        user_id: userId,
+        game_id: req.body.game_id,
+        lane,
+        status: 'accepted',
+        timestamp: new Date(),
+        summoner_id: String(req.body.summoner_id),
+        championA: {
+          connect: {
+            id: Number(champion_id),
+          },
+        },
+        championB: {
+          connect: {
+            id: Number(opponent_id),
+          },
+        },
+      },
+    });
+
     const data = await this.model.createOrUpdate(userId, matchup, req.body);
 
     res.status(201).json({
@@ -198,6 +222,8 @@ class MatchupController extends Controller {
     } else {
       await this.model.revertMatchup(userId, req.query);
     }
+
+    this.model.deleteGame(userId, req.query);
 
     res.sendStatus(204);
   }

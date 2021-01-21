@@ -7,6 +7,7 @@ import { MoonLoader } from "react-spinners";
 import { loadAssets, build } from "../../helpers/loadImages";
 import { Helmet } from "react-helmet-async";
 import makeRequest from "../../helpers/makeRequest";
+import { useChampions } from "../../hooks/useChampions";
 
 const fetchChampions = async (isAuthenticated) => {
   const endpoint = isAuthenticated ? "/api/matchup/played" : "/api/champion";
@@ -21,7 +22,7 @@ const fetchInfoCard = async () => {
 
 const HomeContainer = (props) => {
   const { setModal } = useModal();
-  const [champions, setChampions] = useState([]);
+  const { champions, setChampions } = useChampions();
   const [info, setInfo] = useState({
     count: 0,
     gamesPlayed: 0,
@@ -48,7 +49,7 @@ const HomeContainer = (props) => {
       }
       setLoading(false);
     })();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, setChampions]);
 
   useEffect(() => {
     const params = new URLSearchParams(props.location.search);
