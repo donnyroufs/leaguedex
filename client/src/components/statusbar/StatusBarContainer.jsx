@@ -24,6 +24,7 @@ async function fetchRevertMatchup({
   games_played: gamesPlayed,
   opponent_id,
   game_id,
+  summoner_id,
 }) {
   const params = new URLSearchParams({
     lane,
@@ -31,6 +32,7 @@ async function fetchRevertMatchup({
     gamesPlayed,
     opponent_id,
     game_id,
+    summoner_id,
   });
   const res = await makeRequest(`/api/matchup/revert?${params}`, {
     method: "PUT",
@@ -42,10 +44,14 @@ const StatusBarContainer = ({ revertMatch, ...props }) => {
   const history = useHistory();
   const { dex } = useMatch();
   const { status } = useStatus();
+  const { activeSummonerId } = useMatch();
 
   const handleRevertMatchup = async () => {
     try {
-      const response = await fetchRevertMatchup(dex);
+      const response = await fetchRevertMatchup({
+        ...dex,
+        summoner_id: activeSummonerId,
+      });
       if (!response) {
         return toast.error(
           "Couldn't revert matchup, perhaps you need to remove your current notes."
