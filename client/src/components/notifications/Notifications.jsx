@@ -33,7 +33,21 @@ const Notifications = () => {
     e.preventDefault();
     if (Object.values(choices).length <= 0) return;
 
-    await updateNotifications(choices);
+    // Get all the match data for the choices
+    const gamesData = Object.entries(choices).map(([gameId, state]) => {
+      const data = notifications.find((g) => g.id === gameId);
+
+      return {
+        gameId,
+        champion_id: data.me.championA.id,
+        opponent_id: data.opponent.championB.id,
+        state,
+        lane: data.me.lane,
+        win: data.me.win,
+      };
+    });
+
+    await updateNotifications(gamesData);
 
     setChoices({});
   }
