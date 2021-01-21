@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { API } from "../api";
 import { useAuth } from "./useAuth";
 import { useChampions } from "./useChampions";
+import { toast } from "react-toastify";
 import { useMatch } from "./useMatch";
 
 const NotificationsContext = createContext();
@@ -76,6 +77,7 @@ const useNotificationsProvider = () => {
 
       const data = await response.json();
 
+      toast.info("Matchup choices have been saved.");
       // Get json data of current matchups and pass to afterUpdate
       afterUpdateNotifications(data);
     }
