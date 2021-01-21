@@ -1,5 +1,5 @@
 const Controller = require('./Controller');
-const { NotFoundError } = require('../../helpers/error');
+const { NotFoundError, BadRequest } = require('../../helpers/error');
 const Riot = require('../../lib/Riot');
 
 class GameController extends Controller {
@@ -9,6 +9,9 @@ class GameController extends Controller {
     super(...props);
 
     this.getMatchHistory = this.getMatchHistory.bind(this);
+    this.updateNotificationsAndCreateMatchups = this.updateNotificationsAndCreateMatchups.bind(
+      this
+    );
   }
 
   async getMatchHistory(req, res) {
@@ -31,7 +34,10 @@ class GameController extends Controller {
         summonerData.summonerId
       );
 
-      const serializedData = Riot.serializeMatchHistory(matchHistoryData);
+      const serializedData = await Riot.serializeMatchHistory(
+        matchHistoryData,
+        String(accountId)
+      );
 
       const matchHistory = await this.model.saveAndGetNotifications(
         serializedData,
@@ -57,6 +63,32 @@ class GameController extends Controller {
 
       res.status(200).json(formattedData);
     }
+  }
+
+  async updateNotificationsAndCreateMatchups(req, res) {
+    const { id } = req.user;
+    const { gameData, summonerId } = req.body;
+
+    if (!gameData || !summonerId) {
+      throw new BadRequest('Missing gameData or active summoner id');
+    }
+
+    // TODO: Refactor with a db transaction
+    await this.model.updateNotifications(gameData, id, summonerId);
+
+    // Should probably also check whether it already exists so that you can't update a given matchup with the same game
+    const matchupsToCreateOrUpdate = gameData
+      .filter((game) => game.state === 'accepted')
+      .map((game) => this.model.createOrUpdateMatchup(id, game));
+
+    const data = await Promise.all(matchupsToCreateOrUpdate);
+
+    // TODO: Create formatter
+    const formattedData = data.map(
+      (updatedMatchup) => updatedMatchup.champion_id
+    );
+
+    res.status(201).json(formattedData);
   }
 
   _getCreatedAtInMs(summonerData, data) {

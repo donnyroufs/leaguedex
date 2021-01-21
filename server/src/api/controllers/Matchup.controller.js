@@ -26,13 +26,26 @@ class MatchupController extends Controller {
 
     const matchup = await this.model.findMatchup(userId, req.body);
 
+    const { champion_id, opponent_id, lane } = req.body;
+
     await db.game.create({
       data: {
         user_id: userId,
         game_id: req.body.game_id,
+        lane,
         status: 'accepted',
         timestamp: new Date(),
         summoner_id: String(req.body.summoner_id),
+        championA: {
+          connect: {
+            id: Number(champion_id),
+          },
+        },
+        championB: {
+          connect: {
+            id: Number(opponent_id),
+          },
+        },
       },
     });
 

@@ -1,6 +1,6 @@
 const { db } = require('../../config/database');
 const Model = require('./Model');
-const lodash = require('lodash');
+const Riot = require('../../lib/Riot');
 
 class GameModel extends Model {
   constructor(...props) {
@@ -64,7 +64,7 @@ class GameModel extends Model {
     });
 
     const queries = uniqueMatchHistory.map((match) => {
-      return this.db.upsert({
+      return db.game.upsert({
         where: {
           user_id_game_id_summoner_id: {
             game_id: String(match.gameId),
@@ -78,9 +78,19 @@ class GameModel extends Model {
           region: match.platformId,
           status: 'pending',
           type: 'notification',
-          timestamp: new Date(match.timestamp),
+          timestamp: new Date(match.gameCreation),
           lane: match.lane,
           summoner_id: String(summonerId),
+          championA: {
+            connect: {
+              id: match.champion_id,
+            },
+          },
+          championB: {
+            connect: {
+              id: match.opponent_id,
+            },
+          },
         },
         update: {},
       });
@@ -99,24 +109,105 @@ class GameModel extends Model {
   }
 
   async updateNotifications(payload, userId, summonerId) {
-    const queries = Object.entries(payload).map(([gameId, state]) =>
-      db.game.update({
+    const queries = payload.map((game) => {
+      return db.game.update({
         where: {
           user_id_game_id_summoner_id: {
             user_id: Number(userId),
-            game_id: String(gameId),
+            game_id: String(game.gameId),
             summoner_id: String(summonerId),
           },
         },
         data: {
-          status: state,
+          status: game.state,
         },
-      })
-    );
+      });
+    });
 
     await Promise.all(queries);
 
     return true;
+  }
+
+  async createOrUpdateMatchup(
+    userId,
+    { lane, champion_id, opponent_id, gameId, win }
+  ) {
+    let matchup = await this.findMatchup(userId, {
+      lane,
+      champion_id,
+      opponent_id,
+    });
+
+    if (matchup == null) {
+      matchup = {
+        games_played: 0,
+        games_won: 0,
+        games_lost: 0,
+      };
+    }
+
+    const resource = db.matchup.upsert({
+      create: {
+        lane,
+        game_id: String(gameId),
+        games_played: 1,
+        championA: {
+          connect: {
+            id: champion_id,
+          },
+        },
+        championB: {
+          connect: {
+            id: opponent_id,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        games_played: 1,
+        games_won: win ? 1 : 0,
+        games_lost: !win ? 1 : 0,
+      },
+      update: {
+        games_played: matchup.games_played + 1,
+        game_id: String(gameId),
+        games_won: win ? matchup.games_won + 1 : matchup.games_won,
+        games_lost: !win ? matchup.games_lost + 1 : matchup.games_lost,
+      },
+      where: {
+        champion_id_opponent_id_lane_user_id: {
+          lane,
+          champion_id,
+          opponent_id,
+          user_id: userId,
+        },
+      },
+    });
+
+    return resource;
+  }
+
+  async findMatchup(userId, { lane, champion_id, opponent_id }) {
+    const resource = await db.matchup.findOne({
+      where: {
+        champion_id_opponent_id_lane_user_id: {
+          lane,
+          champion_id,
+          opponent_id,
+          user_id: userId,
+        },
+      },
+      select: {
+        games_played: true,
+        games_won: true,
+        games_lost: true,
+      },
+    });
+
+    return resource;
   }
 }
 
