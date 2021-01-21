@@ -49,7 +49,7 @@ const HomeContainer = (props) => {
       }
       setLoading(false);
     })();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, setChampions]);
 
   useEffect(() => {
     const params = new URLSearchParams(props.location.search);
