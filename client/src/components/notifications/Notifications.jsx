@@ -72,19 +72,27 @@ const Notifications = () => {
                 key={notification.id}
               />
             ))}
-          {count <= 0 && <p>There are no matches to confirm!</p>}
+          {count <= 0 && (
+            <p style={{ lineHeight: 1.8, opacity: 0.7 }}>
+              You do not seem to have any old matches since your last recorded
+              matchup.
+            </p>
+          )}
         </SC.Dropdown>
-        <SC.Footer>
-          <Button
-            disabled={count <= 0}
-            logout
-            style={{ width: "100%", marginLeft: "0" }}
-            onClick={handleOnConfirm}
-          >
-            {loading && <BeatLoader color={theme.secondary} height="100%" />}
-            {!loading && "Confirm"}
-          </Button>
-        </SC.Footer>
+
+        {count > 0 && (
+          <SC.Footer>
+            <Button
+              disabled={count <= 0}
+              logout
+              style={{ width: "100%", marginLeft: "0" }}
+              onClick={handleOnConfirm}
+            >
+              {loading && <BeatLoader color={theme.secondary} height="100%" />}
+              {!loading && "Confirm"}
+            </Button>
+          </SC.Footer>
+        )}
       </SC.Wrapper>
     </SC.Container>
   );
