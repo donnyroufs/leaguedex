@@ -189,8 +189,8 @@ const Notes = ({
               and are only for the current matchup.
             </li>
             <li>
-              It's recommend to put specific champion and global tags at the end
-              of a note.
+              It's recommended to put specific champion and global tags at the
+              end of a note.
             </li>
             <li>You can filter tags in any combination you wish!</li>
           </InfoBox>
