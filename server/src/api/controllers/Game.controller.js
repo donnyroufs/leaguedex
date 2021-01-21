@@ -4,6 +4,7 @@ const Riot = require('../../lib/Riot');
 
 class GameController extends Controller {
   static RELEASED_MATCHHISTORY_FEATURE_IN_TIME = 1610895229910;
+  static MATCH_HISTORY_LIMIT = 10;
 
   constructor(...props) {
     super(...props);
@@ -34,10 +35,17 @@ class GameController extends Controller {
         summonerData.summonerId
       );
 
-      const serializedData = await Riot.serializeMatchHistory(
+      let serializedData = await Riot.serializeMatchHistory(
         matchHistoryData,
         String(accountId)
       );
+
+      // Limit the amount of games a user can retrieve
+      if (serializedData.length > GameController.MATCH_HISTORY_LIMIT) {
+        serializedData = serializedData
+          .sort((a, b) => b.gameCreation - a.gameCreation)
+          .splice(0, 10);
+      }
 
       const matchHistory = await this.model.saveAndGetNotifications(
         serializedData,
