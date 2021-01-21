@@ -98,7 +98,7 @@ class GameController extends Controller {
       summonerData.createdAt.getTime() >=
       GameController.RELEASED_MATCHHISTORY_FEATURE_IN_TIME
     ) {
-      return summonerData.createdAt.getTime();
+      return summonerData.createdAt.getTime() - 100000;
     } else {
       return GameController.RELEASED_MATCHHISTORY_FEATURE_IN_TIME;
     }
