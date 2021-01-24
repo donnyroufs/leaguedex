@@ -58,9 +58,9 @@ class GameModel extends Model {
       },
     });
 
-    console.log(matchHistory);
+    const filterNullValues = matchHistory.filter(m => m);
 
-    const uniqueMatchHistory = matchHistory.filter((m) => {
+    const uniqueMatchHistory = filterNullValues.filter((m) => {
       const mapped = currentMatchHistory.map((match) => match.game_id);
       return !mapped.includes(String(m.gameId));
     });
