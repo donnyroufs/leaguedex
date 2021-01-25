@@ -13,7 +13,11 @@ const Stats = ({ label, info, page, type }) => {
 
         {label === "win ratio" && (
           <>
-            <CountUp end={Number(info)} duration={3} />%
+            <CountUp
+              end={isNaN(Number(info)) ? 0 : Number(info)}
+              duration={3}
+            />
+            %
           </>
         )}
 

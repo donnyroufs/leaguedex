@@ -3,7 +3,14 @@ import Toggle from "../../components/toggle/Toggle";
 import { FaSortUp, FaSortDown, FaSort } from "react-icons/fa";
 import { Form, Group, Input, Label } from "../../components/styles/Form";
 import { useTable, useSortBy } from "react-table";
-import { Container, Image, ToggleContainer, Title } from "./Champion.styles";
+import {
+  Container,
+  Image,
+  ToggleContainer,
+  Title,
+  CreateMatchupBtn,
+} from "./Champion.styles";
+import { useModal } from "../../hooks/useModal";
 
 const statusMatchupsPrivacy = (matchups) =>
   matchups.every(({ private: privacy }) => privacy === "private");
@@ -20,6 +27,7 @@ const Champion = ({
   setPrivacy,
 }) => {
   const tableInstance = useTable({ columns, data }, useSortBy);
+  const { setModal } = useModal();
 
   const {
     getTableProps,
@@ -34,8 +42,15 @@ const Champion = ({
     setPrivacy(currentStatus);
   }, [me, data, setPrivacy]);
 
+  function handleAddBtn(event) {
+    event.preventDefault();
+
+    setModal("create-matchup");
+  }
+
   return (
     <Container>
+      <CreateMatchupBtn onClick={handleAddBtn}>+</CreateMatchupBtn>
       <Container.Header>
         <Container.Header.Left>
           <Image src={me.icon} alt="champion image of yourself." />

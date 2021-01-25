@@ -8,6 +8,7 @@ import RegisterModal from "./components/modal/RegisterModal";
 import SummonerModal from "./components/modal/SummonerModal";
 import ForgotPasswordModal from "./components/modal/ForgotPasswordModal";
 import ResetPasswordModal from "./components/modal/ResetPasswordModal";
+import CreateMatchupModal from "./components/modal/CreateMatchupModal";
 import routes from "./routes";
 import { useInitialPageLoad } from "./hooks/useInitialPageLoad";
 import Sidebar from "./components/sidebar/Sidebar";
@@ -32,6 +33,7 @@ const App = () => {
         draggable
         pauseOnHover
       />
+      <CreateMatchupModal />
       <ResetPasswordModal />
       <ForgotPasswordModal />
       <LoginModal />

@@ -90,4 +90,31 @@ export class API {
     );
     return res.json();
   }
+
+  static async getAvailableLanes(championId, opponentId) {
+    const res = await makeRequest(
+      `/api/matchup/lanes?championId=${championId}&opponentId=${opponentId}`
+    );
+    return res.json();
+  }
+
+  static async getOpponents(championId) {
+    const res = await makeRequest(
+      `/api/champion/opponents?championId=${championId}`
+    );
+    return res.json();
+  }
+
+  static async createManualMatchup(championId, opponentId, lane) {
+    const res = await makeRequest(`/api/matchup/create/manual`, {
+      method: "POST",
+      body: JSON.stringify({
+        championId,
+        opponentId,
+        lane,
+      }),
+    });
+
+    return res.json();
+  }
 }

@@ -17,6 +17,7 @@ export const useChampions = () => {
 
 const useChampionProvider = () => {
   const [champions, setChampions] = useState([]);
+  const [championA, setChampionA] = useState(null);
 
   // After updating notifications we need to update our current champions
   async function afterUpdateNotifications(data) {
@@ -37,5 +38,7 @@ const useChampionProvider = () => {
     champions,
     setChampions,
     afterUpdateNotifications,
+    setChampionA,
+    championA,
   };
 };

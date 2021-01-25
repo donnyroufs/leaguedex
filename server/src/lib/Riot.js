@@ -17,6 +17,14 @@ class Riot {
     SUPPORT: 'SUPPORT',
   };
 
+  static LANES_FILTERED = {
+    TOP: 'top',
+    MID: 'mid',
+    JUNGLE: 'jungle',
+    ADC: 'adc',
+    SUPPORT: 'support',
+  };
+
   static endpoints = {
     version: 'https://ddragon.leagueoflegends.com/api/versions.json',
     splash: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash',
