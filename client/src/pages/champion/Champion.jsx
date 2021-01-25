@@ -48,8 +48,6 @@ const Champion = ({
     setModal("create-matchup");
   }
 
-  if (!me) return null;
-
   return (
     <Container>
       <CreateMatchupBtn onClick={handleAddBtn}>+</CreateMatchupBtn>
