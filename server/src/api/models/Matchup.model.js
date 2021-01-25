@@ -250,6 +250,38 @@ class MatchupModel extends Model {
       },
     });
   }
+
+  async getLanes(userId, championId, opponentId) {
+    return db.$queryRaw(
+      `select lane from "Matchup"
+       WHERE "Matchup"."champion_id" = ${championId}
+       AND "Matchup"."opponent_id" = ${opponentId}
+       AND "Matchup"."user_id" = ${userId};`
+    );
+  }
+
+  async manualCreate(userId, championId, opponentId, lane) {
+    return db.matchup.create({
+      data: {
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        championA: {
+          connect: {
+            id: championId,
+          },
+        },
+        championB: {
+          connect: {
+            id: opponentId,
+          },
+        },
+        lane,
+      },
+    });
+  }
 }
 
 module.exports = new MatchupModel(db.matchup);
