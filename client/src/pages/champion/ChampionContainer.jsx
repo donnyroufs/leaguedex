@@ -95,7 +95,7 @@ const ChampionContainer = ({
       try {
         const { data } = await fetchMatchups({ name });
         await loadImage(data[0].championA.splash);
-        setMatchups(data);
+        setMatchups(data[0].championB ? data : []);
         setChampionA(data[0].championA);
         setLoading(false);
       } catch (err) {

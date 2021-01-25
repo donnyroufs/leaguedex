@@ -7,6 +7,7 @@ const {
 const { db } = require('../../config/database');
 const Riot = require('../../lib/Riot');
 const { sync } = require('../middleware/syncMatchup.middleware');
+const championModel = require('../models/Champion.model');
 
 class MatchupController extends Controller {
   constructor(...props) {
@@ -179,6 +180,11 @@ class MatchupController extends Controller {
   async getMatchups(req, res) {
     const { id: userId } = req.user;
     const matchups = await this.model.getMatchups(userId, req.query);
+
+    if (!matchups || matchups.length <= 0) {
+      const championA = await championModel.findOneByName(req.query.champion);
+      return res.status(200).json([{ championA }]);
+    }
 
     const formattedJson = this.formatters.getPlayedMatchups(matchups);
     res.status(200).json(formattedJson);
