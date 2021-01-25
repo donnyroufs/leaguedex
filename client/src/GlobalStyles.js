@@ -164,6 +164,11 @@ export const Button = styled.button`
         display: flex;
       }
     `}
+
+    :disabled {
+    cursor: default;
+    opacity: 0.4;
+  }
 `;
 
 export default createGlobalStyle`

@@ -180,3 +180,28 @@ Details.Text = styled.p`
 // export const Title = styled.h2`
 //   margin: 0 0 2rem 0;
 // `;
+
+export const CreateMatchupBtn = styled.button`
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background: ${({ theme }) => theme.primary};
+  border-radius: 100%;
+  height: 48px;
+  width: 48px;
+  bottom: 64px;
+  right: 64px;
+
+  outline: none;
+  border: none;
+
+  font-size: 1.5rem;
+  transition: 0.3s ease-in-out opacity;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
+`;

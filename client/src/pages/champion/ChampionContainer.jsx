@@ -5,6 +5,7 @@ import { MoonLoader } from "react-spinners";
 import { loadImage } from "../../helpers/loadImages";
 import { Helmet } from "react-helmet-async";
 import { useDebounce } from "use-debounce";
+import { useChampions } from "../../hooks/useChampions";
 import makeRequest from "../../helpers/makeRequest";
 
 const nameCapitalized = (name) => name.charAt(0).toUpperCase() + name.slice(1);
@@ -37,7 +38,7 @@ const ChampionContainer = ({
   const [loading, setLoading] = useState(true);
   const [privacy, setPrivacy] = useState(false);
   const [matchups, setMatchups] = useState([]);
-  const [championA, setChampionA] = useState({});
+  const { championA, setChampionA } = useChampions();
   const [value, setValue] = useState("");
   const [debouncedValue] = useDebounce(value, 300);
   const initialLoad = useRef(true);
