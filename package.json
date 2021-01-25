@@ -1,6 +1,6 @@
 {
   "name": "leaguedex",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scripts": {
     "run:dev": "concurrently \"yarn:client\" \"yarn:server\"",
     "client": "cd ./client && yarn start --prefix client",
