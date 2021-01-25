@@ -13,7 +13,6 @@ import { Button } from "../../GlobalStyles";
 import { BeatLoader } from "react-spinners";
 import theme from "../../theme";
 import { useModal } from "../../hooks/useModal";
-import { useAuth } from "../../hooks/useAuth";
 import { API } from "../../api/index";
 import { useChampions } from "../../hooks/useChampions";
 import { useHistory } from "react-router";
@@ -30,7 +29,6 @@ const CreateMatchupModal = () => {
   const [lanes, setLanes] = useState([]);
   const [opponents, setOpponents] = useState([]);
 
-  const { isAuthenticated, user } = useAuth();
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const { championA } = useChampions();
   const innerRef = useRef();
@@ -69,6 +67,7 @@ const CreateMatchupModal = () => {
       return;
     }
 
+    setLoading(true);
     const dexId = await API.createManualMatchup(
       championA.id,
       values.opponent,
@@ -76,8 +75,9 @@ const CreateMatchupModal = () => {
     );
 
     history.push(`/dex/${dexId}`);
-    setModal(null);
 
+    setModal(null);
+    setLoading(false);
     setErrorMessage(null);
   }
 
@@ -105,8 +105,8 @@ const CreateMatchupModal = () => {
       clickedOutside={ref}
       reverse={reverse}
     >
-      {loading || (!championA && <BeatLoader />)}
-      {!loading && championA && (
+      {!championA && <BeatLoader />}
+      {championA && (
         <Form onSubmit={() => null} autoComplete="off">
           <FlashMessage>
             <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>

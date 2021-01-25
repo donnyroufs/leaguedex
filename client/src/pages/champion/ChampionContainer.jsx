@@ -103,6 +103,7 @@ const ChampionContainer = ({
       }
       initialLoad.current = false;
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, privacy]);
 
   if (loading) {
