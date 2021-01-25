@@ -1,5 +1,9 @@
 const Controller = require('./Controller');
-const { NotFoundError, NotAuthorized } = require('../../helpers/error');
+const {
+  NotFoundError,
+  NotAuthorized,
+  BadRequest,
+} = require('../../helpers/error');
 const { db } = require('../../config/database');
 const Riot = require('../../lib/Riot');
 const { sync } = require('../middleware/syncMatchup.middleware');
@@ -19,6 +23,8 @@ class MatchupController extends Controller {
     this.getAllMatchupsByChampion = this.getMatchups.bind(this);
     this.updatePrivate = this.updatePrivate.bind(this);
     this.revertMatchup = this.revertMatchup.bind(this);
+    this.getAvailableLanes = this.getAvailableLanes.bind(this);
+    this.manualCreate = this.manualCreate.bind(this);
   }
 
   async createOne(req, res) {
@@ -214,7 +220,7 @@ class MatchupController extends Controller {
     res.sendStatus(204);
   }
 
-  async revertMatchup(req, res, next) {
+  async revertMatchup(req, res) {
     const { id: userId } = req.user;
 
     if (req.query.gamesPlayed <= 1) {
@@ -226,6 +232,38 @@ class MatchupController extends Controller {
     this.model.deleteGame(userId, req.query);
 
     res.sendStatus(204);
+  }
+
+  async getAvailableLanes(req, res) {
+    const { id } = req.user;
+    const { championId, opponentId } = req.query;
+
+    const lanes = await this.model.getLanes(id, +championId, +opponentId);
+    const mapToArray = Object.values(lanes).map((l) => l.lane.toLowerCase());
+
+    const availableLanes = Object.values(Riot.LANES_FILTERED).filter(
+      (l) => !mapToArray.includes(l.toLowerCase())
+    );
+
+    res.status(200).json(availableLanes);
+  }
+
+  async manualCreate(req, res) {
+    const { championId, opponentId, lane } = req.body;
+    const { id } = req.user;
+
+    const result = await this.model.manualCreate(
+      id,
+      +championId,
+      +opponentId,
+      lane
+    );
+
+    if (!result) {
+      throw new BadRequest('Could not create manual matchup.');
+    }
+
+    res.status(201).json(result.id);
   }
 }
 
