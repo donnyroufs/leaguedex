@@ -54,7 +54,7 @@ export const Title = styled.h1`
 
 export const InfoBox = styled.div`
   overflow: auto;
-  padding: 2rem 4rem 1.5rem 4rem;
+  padding: 0rem 4rem 1.5rem 4rem;
 `;
 
 InfoBox.List = styled.ol`
