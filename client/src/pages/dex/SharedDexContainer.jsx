@@ -5,6 +5,7 @@ import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { Helmet } from "react-helmet-async";
 import makeRequest from "../../helpers/makeRequest";
+import { useAuth } from "../../hooks/useAuth";
 
 const fetchDex = async (id, username) => {
   const res = await makeRequest(`/api/shared/${username}/dex?id=${id}`);
@@ -22,6 +23,7 @@ const DexContainer = ({ history }) => {
   const [loading, setLoading] = useState(true);
   const [notes, setNotes] = useState([]);
   const [dex, setDex] = useState(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     (async () => {
@@ -47,7 +49,7 @@ const DexContainer = ({ history }) => {
       setNotes([]);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, user]);
 
   if (loading) {
     return (
@@ -63,6 +65,7 @@ const DexContainer = ({ history }) => {
         <title>Leaguedex - Shared Champion Dex</title>
       </Helmet>
       <Dex
+        setDex={setDex}
         shared={true}
         createNote={() => null}
         notes={notes}

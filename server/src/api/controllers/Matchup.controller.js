@@ -26,6 +26,7 @@ class MatchupController extends Controller {
     this.revertMatchup = this.revertMatchup.bind(this);
     this.getAvailableLanes = this.getAvailableLanes.bind(this);
     this.manualCreate = this.manualCreate.bind(this);
+    this.likeMatchup = this.likeMatchup.bind(this);
   }
 
   async createOne(req, res) {
@@ -159,13 +160,15 @@ class MatchupController extends Controller {
   async getDex(req, res) {
     const { id } = req.params;
 
-    const data = await this.model.getDex(id);
+    const [data, likes] = await this.model.getDex(id);
 
     if (data.user_id !== req.user.id) {
       throw new NotFoundError('no matchups found for the given user');
     }
 
-    res.status(200).json(data);
+    const likedByMe = likes.some((l) => l.user_id === req.user.id);
+
+    res.status(200).json({ ...data, likes: likes.length, likedByMe });
   }
 
   async getLatest(req, res, next) {
@@ -270,6 +273,19 @@ class MatchupController extends Controller {
     }
 
     res.status(201).json(result.id);
+  }
+
+  async likeMatchup(req, res) {
+    const { matchupId } = req.body;
+    const { id: userId } = req.user;
+
+    const hasLiked = await this.model.hasLiked(userId, matchupId);
+
+    hasLiked
+      ? await this.model.unlike(userId, matchupId)
+      : await this.model.like(userId, matchupId);
+
+    res.sendStatus(201);
   }
 }
 

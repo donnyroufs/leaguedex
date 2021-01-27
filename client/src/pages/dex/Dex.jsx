@@ -6,6 +6,9 @@ import Notes from "../../components/notes/Notes";
 import { useAuth } from "../../hooks/useAuth";
 import { Container, Header, Text, Highlight, Status } from "./Dex.styles";
 import { useMatch } from "../../hooks/useMatch";
+import { Like } from "../../components/like/Like";
+import { API } from "../../api/index";
+import { toast } from "react-toastify";
 
 const isUpdated = (a, b, c) => a + b === c;
 const getPercentage = (a, b, c) => {
@@ -14,7 +17,15 @@ const getPercentage = (a, b, c) => {
   return c === 1 && !updated ? 0 : ((a / d) * 100).toFixed(0);
 };
 
-const Dex = ({ dex, isLive, shared, notes, createNote, deleteNote }) => {
+const Dex = ({
+  dex,
+  setDex,
+  isLive,
+  shared,
+  notes,
+  createNote,
+  deleteNote,
+}) => {
   const [privacy, setPrivacy] = useState(dex.private);
   const { user } = useAuth();
   const { setBtnText } = useMatch();
@@ -28,12 +39,28 @@ const Dex = ({ dex, isLive, shared, notes, createNote, deleteNote }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleLike = async (e) => {
+    const res = await API.likeMatchup(dex.id);
+    if (res.status === 201) {
+      setDex((curr) => ({
+        ...curr,
+        likedByMe: !curr.likedByMe,
+        likes: curr.likedByMe ? curr.likes - 1 : curr.likes + 1,
+      }));
+
+      const message = dex.likedByMe
+        ? "You have downvoted this matchup."
+        : "You have upvoted this matchup.";
+    }
+  };
+
   return (
     <Container>
       <Container.Left>
         <Header>
           <Header.Left>
             {isLive(dex) && <Status>Live !</Status>}
+            <Like onClick={handleLike} likedByMe={dex.likedByMe} />
             <Text>
               {dex.championA.name} <Highlight>vs</Highlight>{" "}
               {dex.championB.name}

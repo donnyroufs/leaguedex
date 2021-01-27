@@ -1,0 +1,152 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateModel",
+      "model": "User_matchup_likes"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User_matchup_likes",
+      "field": "user",
+      "type": "User",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User_matchup_likes",
+          "field": "user"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User_matchup_likes",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[user_id]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User_matchup_likes",
+          "field": "user"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User_matchup_likes",
+      "field": "user_id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User_matchup_likes",
+      "field": "matchup",
+      "type": "Matchup",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User_matchup_likes",
+          "field": "matchup"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User_matchup_likes",
+          "field": "matchup"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[matchup_id]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User_matchup_likes",
+          "field": "matchup"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User_matchup_likes",
+      "field": "matchup_id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Model",
+          "model": "User_matchup_likes"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Model",
+          "model": "User_matchup_likes"
+        },
+        "directive": "id"
+      },
+      "argument": "",
+      "value": "[user_id, matchup_id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "User_matchup_likes",
+      "type": "User_matchup_likes",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Matchup",
+      "field": "User_matchup_likes",
+      "type": "User_matchup_likes",
+      "arity": "List"
+    }
+  ]
+}
