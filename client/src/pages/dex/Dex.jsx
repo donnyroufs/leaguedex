@@ -51,6 +51,8 @@ const Dex = ({
       const message = dex.likedByMe
         ? "You have downvoted this matchup."
         : "You have upvoted this matchup.";
+
+      toast.info(message);
     }
   };
 
