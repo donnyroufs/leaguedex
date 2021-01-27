@@ -51,3 +51,33 @@ export const Title = styled.h1`
   font-size: 2.7rem;
   text-transform: uppercase;
 `;
+
+export const InfoBox = styled.div`
+  overflow: auto;
+  padding: 2rem 4rem 1.5rem 4rem;
+`;
+
+InfoBox.List = styled.ol`
+  padding: 0 3rem;
+`;
+
+InfoBox.Item = styled.li`
+  margin: 0 0 2rem 0;
+`;
+
+InfoBox.Footer = styled.footer`
+  display: flex;
+  width: 100%;
+`;
+
+InfoBox.Close = styled.button`
+  outline: none;
+  border: none;
+  margin-left: auto;
+  background: none;
+  color: ${({ theme }) => theme.secondary};
+
+  &:hover {
+    cursor: pointer;
+  }
+`;

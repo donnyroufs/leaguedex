@@ -5,22 +5,13 @@ import useClipboard from "react-hook-clipboard";
 import { toast } from "react-toastify";
 import { FaLink } from "react-icons/fa";
 import { Title, Notes as Container } from "../../pages/dex/Dex.styles";
-import {
-  List,
-  Item,
-  Filter,
-  Tag,
-  Mark,
-  Text,
-  Heading,
-  Small,
-  InfoBox,
-} from "./Notes.styles";
+import { List, Item, Filter, Tag, Mark, Text, Heading } from "./Notes.styles";
 import { Form, Group, Input } from "../../components/styles/Form";
 import { filterByTags } from "../../helpers/arrayHelpers";
 import Highlight from "react-highlight-words";
 import Dropdown, { Menu } from "../dropdown/Dropdown";
 import { normalize } from "../../helpers/utils";
+import { Info } from "../info/Info";
 
 const LOCALSTORAGE_KEY = "ldex_showTags";
 
@@ -167,13 +158,14 @@ const Notes = ({
   return (
     <Container>
       <Heading>
+        <Info title="info" modalName="info-notes" />
         <Title>
           {!privacy && !shared && (
             <FaLink className="clipboard" onClick={handleCopy} />
           )}
           {shared ? "Notes" : "Your notes"}
         </Title>
-        <Small>
+        {/* <Small>
           how to?
           <InfoBox as="ol">
             <li>
@@ -194,7 +186,7 @@ const Notes = ({
             </li>
             <li>You can filter tags in any combination you wish!</li>
           </InfoBox>
-        </Small>
+        </Small> */}
         {!shared && (
           <Dropdown show={show} handleSetShow={handleSetShow} w={140}>
             <Menu.Item small onClick={handleSetHidden}>
