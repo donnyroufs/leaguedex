@@ -15,6 +15,7 @@ router.use(Auth.authenticateToken);
 router.put('/revert', wrap(controller.revertMatchup));
 router.put('/private', wrap(controller.updatePrivate));
 router.get('/sync', wrap(controller.syncAll));
+router.post('/like', wrap(controller.likeMatchup));
 router.post('/create/manual', wrap(controller.manualCreate));
 router.post('/create', wrap(controller.createOne));
 router.get('/lanes', wrap(controller.getAvailableLanes));

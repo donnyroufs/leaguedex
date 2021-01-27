@@ -12,6 +12,7 @@ import CreateMatchupModal from "./components/modal/CreateMatchupModal";
 import routes from "./routes";
 import { useInitialPageLoad } from "./hooks/useInitialPageLoad";
 import Sidebar from "./components/sidebar/Sidebar";
+import { NotesInfoModal } from "./components/modal/NotesInfoModal";
 
 const App = () => {
   const { loading, isAllowed } = useInitialPageLoad();
@@ -33,6 +34,7 @@ const App = () => {
         draggable
         pauseOnHover
       />
+      <NotesInfoModal />
       <CreateMatchupModal />
       <ResetPasswordModal />
       <ForgotPasswordModal />

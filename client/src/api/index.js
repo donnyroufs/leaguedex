@@ -117,4 +117,11 @@ export class API {
 
     return res.json();
   }
+
+  static async likeMatchup(matchupId) {
+    return makeRequest(`/api/matchup/like`, {
+      method: "POST",
+      body: JSON.stringify({ matchupId })
+    });
+  }
 }

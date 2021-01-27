@@ -150,7 +150,13 @@ class MatchupModel extends Model {
       },
     });
 
-    return resource;
+    const likes = await db.user_matchup_likes.findMany({
+      where: {
+        matchup_id: +matchId,
+      },
+    });
+
+    return [resource, likes];
   }
 
   async getMatchups(userId, { champion, championB, lane }) {
@@ -279,6 +285,45 @@ class MatchupModel extends Model {
           },
         },
         lane,
+      },
+    });
+  }
+
+  async hasLiked(userId, matchupId) {
+    return db.user_matchup_likes.findOne({
+      where: {
+        user_id_matchup_id: {
+          matchup_id: matchupId,
+          user_id: userId,
+        },
+      },
+    });
+  }
+
+  async like(userId, matchupId) {
+    return db.user_matchup_likes.create({
+      data: {
+        matchup: {
+          connect: {
+            id: matchupId,
+          },
+        },
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    });
+  }
+
+  async unlike(userId, matchupId) {
+    return db.user_matchup_likes.delete({
+      where: {
+        user_id_matchup_id: {
+          matchup_id: matchupId,
+          user_id: userId,
+        },
       },
     });
   }

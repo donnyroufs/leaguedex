@@ -14,13 +14,21 @@ class SharedController extends Controller {
     const { username } = req.params;
     const { id } = req.query;
 
-    const data = await this.model.findOne(id, username);
+    // if we have a user
+
+    const [data, likes] = await this.model.findOne(id, username);
 
     if (!data) {
       throw new NotFoundError();
     }
 
-    res.status(200).json(data.matchups[0]);
+    const likedByMe = req.user
+      ? likes.some((l) => l.user_id === req.user.id)
+      : false;
+
+    res
+      .status(200)
+      .json({ ...data.matchups[0], likes: likes.length, likedByMe });
   }
 
   async findManyByUsername(req, res) {

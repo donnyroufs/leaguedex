@@ -135,17 +135,27 @@ class Auth {
   };
 
   static async withUser(req, _, next) {
-    const { id } = req.user;
+    const authHeader = req.headers['authorization'];
 
-    const user = await db.user.findOne({
-      where: {
-        id: Number(id),
-      },
-    });
+    if (!authHeader) next();
 
-    req.user = user;
+    const token = authHeader && authHeader.split(' ')[1];
 
-    next();
+    if (token == null) next();
+
+    try {
+      const valid = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+      if (!valid) next();
+
+      const { data: decoded } = jwt.decode(token);
+
+      req.user = decoded;
+      next();
+    } catch (err) {
+      req.user = null;
+      next();
+    }
   }
 }
 

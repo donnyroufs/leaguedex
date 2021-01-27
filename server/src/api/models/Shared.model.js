@@ -6,7 +6,7 @@ class SharedModel extends Model {
     super(props);
   }
 
-  async findOne(id, username) {
+  async findOne(id, username, userId) {
     const resource = await this.db.user.findOne({
       where: {
         username,
@@ -35,7 +35,13 @@ class SharedModel extends Model {
       },
     });
 
-    return resource;
+    const likes = await db.user_matchup_likes.findMany({
+      where: {
+        matchup_id: +id,
+      },
+    });
+
+    return [resource, likes];
   }
 
   async findManyByUsername(username) {

@@ -126,6 +126,7 @@ const DexContainer = ({ history }) => {
       </Helmet>
 
       <Dex
+        setDex={setDex}
         createNote={createNote}
         notes={notes}
         history={history}
