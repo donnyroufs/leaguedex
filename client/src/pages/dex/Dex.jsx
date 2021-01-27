@@ -40,6 +40,10 @@ const Dex = ({
   }, []);
 
   const handleLike = async (e) => {
+    if (!user) {
+      toast.error("You need to be signed in.");
+    }
+
     const res = await API.likeMatchup(dex.id);
     if (res.status === 201) {
       setDex((curr) => ({

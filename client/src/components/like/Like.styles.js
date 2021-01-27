@@ -41,7 +41,7 @@ export const Container = styled.div`
   &:hover {
     cursor: pointer;
     ${Like}, ${LikeCount} {
-      opacity: 1;
+      opacity: ${(props) => props.user && 1};
     }
   }
 `;
