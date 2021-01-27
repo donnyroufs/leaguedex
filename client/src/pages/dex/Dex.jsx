@@ -62,7 +62,13 @@ const Dex = ({
         <Header>
           <Header.Left>
             {isLive(dex) && <Status>Live !</Status>}
-            <Like onClick={handleLike} likedByMe={dex.likedByMe} />
+            {!isLive(dex) && (
+              <Like
+                onClick={handleLike}
+                likedByMe={dex.likedByMe}
+                likes={dex.likes}
+              />
+            )}
             <Text>
               {dex.championA.name} <Highlight>vs</Highlight>{" "}
               {dex.championB.name}
