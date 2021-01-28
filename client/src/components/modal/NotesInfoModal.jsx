@@ -8,7 +8,9 @@ export function NotesInfoModal() {
   const { setModal, isOpen } = useModal();
 
   const ref = useOnclickOutside(() => {
-    setModal(null);
+    if (isOpen("info-notes")) {
+      setModal(null);
+    }
   });
 
   return (
