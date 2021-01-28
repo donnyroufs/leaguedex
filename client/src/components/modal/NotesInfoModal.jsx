@@ -3,7 +3,6 @@ import { useModal } from "../../hooks/useModal";
 import Modal from "./Modal";
 import { InfoBox } from "./Modal.styles";
 import useOnclickOutside from "react-cool-onclickoutside";
-import { Footer } from "../styles/Form";
 
 export function NotesInfoModal() {
   const { setModal, isOpen } = useModal();
