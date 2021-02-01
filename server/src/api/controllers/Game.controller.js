@@ -21,7 +21,11 @@ class GameController extends Controller {
 
     console.log(accountId);
 
-    if (accountId == null) {
+    if (
+      accountId == null ||
+      accountId === 'null' ||
+      accountId === 'undefined'
+    ) {
       console.log('no accountId');
       const { data } = await Riot.getSummonerById(accountId2, region);
       console.log('retrieved ', data.accountId);
@@ -30,6 +34,7 @@ class GameController extends Controller {
       accountId = data.accountId;
     }
 
+    console.log('after ', accountId);
     const data = await this.model.getRecentGameDate(id, summonerId);
 
     const summonerData = await this.model.getSummonerInfo(
