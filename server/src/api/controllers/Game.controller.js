@@ -19,6 +19,8 @@ class GameController extends Controller {
     let { accountId, id: summonerId, region, accountId2 } = req.query;
     const { id } = req.user;
 
+    console.log(accountId);
+
     if (accountId == null) {
       console.log('no accountId');
       const { data } = await Riot.getSummonerById(accountId2, region);
