@@ -1,79 +1,59 @@
 import React from "react";
-import { FaSortUp, FaSortDown, FaSort } from "react-icons/fa";
-import { useTable, useSortBy } from "react-table";
-import { Container } from "./Profile.styles";
-import { Title } from "../champion/Champion.styles";
+import { useManyInputs } from "../../hooks/useInput";
+import CardsGrid from "../../components/cardsGrid/CardsGrid";
+import RowsLayout from "../../components/rowsLayout/RowsLayout";
+import ProfileHeader from "./ProfileHeader";
+import * as Loader from "../../components/styles/Loader";
+import { MoonLoader } from "react-spinners";
+import _ from "lodash";
 
-const Profile = ({
-  matchups: data,
-  loading,
-  columns,
-  username,
-  handleNavigate,
-}) => {
-  const tableInstance = useTable({ columns, data }, useSortBy);
+const Profile = ({ matchups: data, loading, username }) => {
+  const { value, handleChange } = useManyInputs({
+    search: "",
+  });
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = tableInstance;
-
-  // !todo
   if (loading) {
-    return "Loading...";
+    return (
+      <Loader.Container hide={!loading} secondary>
+        <MoonLoader color="#B8D0EC" />
+      </Loader.Container>
+    );
   }
 
   return (
-    <Container>
-      <Title>{username}'s profile</Title>
-      <Container.Body>
-        <table {...getTableProps()}>
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    {column.render("Header")}
-                    <span>
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
-                          <FaSortUp />
-                        ) : (
-                          <FaSortDown />
-                        )
-                      ) : (
-                        <FaSort style={{ paddingTop: ".2rem" }} />
-                      )}
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.length <= 0 && "No matchups found."}
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr
-                  {...row.getRowProps()}
-                  onClick={() => handleNavigate(row.original.id)}
-                >
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </Container.Body>
-    </Container>
+    <RowsLayout
+      body={
+        data && data.length > 0 ? (
+          <CardsGrid
+            data={data}
+            filterFn={(champ) =>
+              champ.name.toLowerCase().includes(value.search)
+            }
+            sortFn={(a, b) => b.matchups_count - a.matchups_count}
+            contentFn={(champion) =>
+              champion.matchups_count !== 1
+                ? `${champion.matchups_count} matchups`
+                : `${champion.matchups_count} matchup`
+            }
+            cardHrefFn={(championName) =>
+              `/profile/${username}/matchups/${championName}`
+            }
+          />
+        ) : (
+          <p style={{ marginTop: "2rem" }}>
+            {_.capitalize(username)} has no public matchups yet.
+          </p>
+        )
+      }
+      header={
+        <ProfileHeader
+          username={username}
+          publicDexCount={data.length}
+          value={value}
+          handleChange={handleChange}
+        />
+      }
+    />
   );
 };
 

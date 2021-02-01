@@ -3,7 +3,7 @@ import { Container, Lock, Overlay } from "./Card.styles";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useAuth } from "../../hooks/useAuth";
 
-const Card = ({ image, name }) => {
+const Card = ({ image, name, content, href }) => {
   const { user } = useAuth();
 
   if (!user) {
@@ -25,7 +25,7 @@ const Card = ({ image, name }) => {
   }
 
   return (
-    <Container to={`/champion/` + name}>
+    <Container to={href ? href : `/matchups/` + name}>
       <Container.Image
         src={image}
         alt={name}
@@ -34,6 +34,7 @@ const Card = ({ image, name }) => {
         width="100%"
         delayTime={100}
       />
+      <Container.Footer>{content}</Container.Footer>
     </Container>
   );
 };

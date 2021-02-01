@@ -1,5 +1,6 @@
 const Model = require('./Model');
 const { db } = require('../../config/database');
+const { NotFoundError } = require('../../helpers/error');
 
 class SharedModel extends Model {
   constructor(props) {
@@ -7,7 +8,7 @@ class SharedModel extends Model {
   }
 
   async findOne(id, username, userId) {
-    const resource = await this.db.user.findOne({
+    const resource = await db.user.findOne({
       where: {
         username,
       },
@@ -44,8 +45,42 @@ class SharedModel extends Model {
     return [resource, likes];
   }
 
-  async findManyByUsername(username) {
-    const resources = await this.db.user.findOne({
+  async getPublicMatchupsByUsername(username) {
+    const user = await db.user.findOne({
+      where: {
+        username,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundError(
+        'Cannot find user by username for public matchups.'
+      );
+    }
+
+    const resource = await db.$queryRaw`
+        SELECT DISTINCT
+            "Champion"."id",
+            "Champion"."name",
+            "Champion"."image",
+            COUNT("Matchup"."champion_id") as matchups_count
+            FROM "Matchup"
+            RIGHT JOIN "Champion"
+            ON "Champion"."id" = "Matchup"."champion_id"
+            AND "Matchup"."user_id" = ${user.id}
+            AND "Matchup"."private" = false
+            GROUP BY "Champion"."id"
+            HAVING COUNT("Matchup"."champion_id") > 0
+      `;
+
+    return resource;
+  }
+
+  async findManyByUsername(username, championName) {
+    const resources = await db.user.findOne({
       where: {
         username,
       },
@@ -54,6 +89,9 @@ class SharedModel extends Model {
         matchups: {
           where: {
             private: false,
+            championA: {
+              name: championName,
+            },
           },
           select: {
             championA: true,

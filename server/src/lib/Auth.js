@@ -150,7 +150,15 @@ class Auth {
 
       const { data: decoded } = jwt.decode(token);
 
-      req.user = decoded;
+      const user = await db.user.findOne({
+        where: { id: decoded.id },
+        select: {
+          username: true,
+          permissions: true,
+        },
+      });
+
+      req.user = user;
       next();
     } catch (err) {
       req.user = null;

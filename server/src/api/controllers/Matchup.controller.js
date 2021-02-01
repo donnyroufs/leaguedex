@@ -73,7 +73,12 @@ class MatchupController extends Controller {
       return NotFoundError();
     }
 
-    res.status(200).json(champions);
+    const formattedData = champions.map((champion) => ({
+      ...champion,
+      has_matchups: champion.matchups_count > 0,
+    }));
+
+    res.status(200).json(formattedData);
   }
 
   async getInfoCard(req, res) {

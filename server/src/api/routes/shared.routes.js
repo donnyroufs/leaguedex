@@ -12,6 +12,8 @@ router.use(Auth.withUser);
 
 router.get('/:userId/dex/note', wrap(controller.findByMatchupId));
 router.get('/:username/dex', wrap(controller.findByUsernameAndId));
-router.get('/', wrap(controller.findManyByUsername));
+router.get('/matchups', wrap(controller.findManyByUsername));
+router.get('/', wrap(controller.getMatchupsByUsername));
+// router.get('/', wrap(controller.findManyByUsername));
 
 module.exports = router;

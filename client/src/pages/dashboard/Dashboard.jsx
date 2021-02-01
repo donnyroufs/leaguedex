@@ -1,5 +1,5 @@
 import React from "react";
-import { useTable, useFilters } from "react-table";
+import { useTable, useFilters, useSortBy } from "react-table";
 
 const Dashboard = ({ status, data, isLoading }) => {
   const columns = React.useMemo(
@@ -27,6 +27,7 @@ const Dashboard = ({ status, data, isLoading }) => {
       {
         Header: "games played",
         accessor: "gamesPlayed",
+        sortType: "basic",
       },
       {
         Header: "member since",
@@ -71,7 +72,8 @@ const Dashboard = ({ status, data, isLoading }) => {
       data,
       defaultColumn,
     },
-    useFilters
+    useFilters,
+    useSortBy
   );
 
   return (
@@ -80,7 +82,7 @@ const Dashboard = ({ status, data, isLoading }) => {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>
+              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                 {column.render("Header")}
                 <div>{column.filterable ? column.render("Filter") : null}</div>
               </th>

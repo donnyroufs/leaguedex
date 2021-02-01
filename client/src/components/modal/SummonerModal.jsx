@@ -106,6 +106,10 @@ const SummonerModal = () => {
 
   useEffect(() => innerRef.current && innerRef.current.focus(), [isOpen]);
 
+  const handleInputClick = (e) => {
+    innerRef.current.focus();
+  };
+
   return (
     <Modal
       isOpen={isOpen("summoner")}
@@ -117,7 +121,7 @@ const SummonerModal = () => {
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
-        <Group auth>
+        <Group auth onClick={handleInputClick}>
           <Label>summoner name</Label>
           <Input
             type="text"

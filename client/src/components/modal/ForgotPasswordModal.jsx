@@ -82,7 +82,7 @@ const ForgotPasswordModal = () => {
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
-        <Group auth>
+        <Group auth onClick={() => innerRef.current.focus()}>
           <Label>Email Address</Label>
           <Input
             type="text"

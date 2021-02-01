@@ -8,6 +8,7 @@ class SharedController extends Controller {
     this.findByMatchupId = this.findByMatchupId.bind(this);
     this.findByUsernameAndId = this.findByUsernameAndId.bind(this);
     this.findManyByUsername = this.findManyByUsername.bind(this);
+    this.getMatchupsByUsername = this.getMatchupsByUsername.bind(this);
   }
 
   async findByUsernameAndId(req, res) {
@@ -32,9 +33,9 @@ class SharedController extends Controller {
   }
 
   async findManyByUsername(req, res) {
-    const { username } = req.query;
+    const { username, championName } = req.query;
 
-    const data = await this.model.findManyByUsername(username);
+    const data = await this.model.findManyByUsername(username, championName);
 
     if (!data) {
       throw new NotFoundError();
@@ -52,6 +53,14 @@ class SharedController extends Controller {
     const notes = await this.model.findByMatchupId(id, userId);
 
     res.status(200).json(notes);
+  }
+
+  async getMatchupsByUsername(req, res) {
+    const { username } = req.query;
+
+    const matchups = await this.model.getPublicMatchupsByUsername(username);
+
+    res.status(200).json(matchups);
   }
 }
 

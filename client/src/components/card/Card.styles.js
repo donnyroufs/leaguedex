@@ -48,3 +48,17 @@ Container.Image = styled(LazyLoadImage)`
   width: 100%;
   height: 100%;
 `;
+
+Container.Footer = styled.footer`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(24, 34, 47, 88%);
+  color: ${({ theme }) => theme.third};
+  font-weight: 500;
+  padding: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

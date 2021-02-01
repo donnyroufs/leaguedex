@@ -23,6 +23,7 @@ const initialValues = {
 };
 
 const CreateMatchupModal = () => {
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState(initialValues);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -32,7 +33,6 @@ const CreateMatchupModal = () => {
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const { championA } = useChampions();
   const innerRef = useRef();
-  const history = useHistory();
 
   const ref = useOnclickOutside(() => {
     if (isOpen("create-matchup")) {
