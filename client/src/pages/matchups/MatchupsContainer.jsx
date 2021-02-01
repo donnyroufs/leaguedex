@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
-import Champion from "./Champion";
+import Matchups from "./Matchups";
 import * as Loader from "../../components/styles/Loader";
 import { MoonLoader } from "react-spinners";
 import { loadImage } from "../../helpers/loadImages";
@@ -117,9 +117,9 @@ const ChampionContainer = ({
   return (
     <>
       <Helmet>
-        <title>Leaguedex - Champions</title>
+        <title>Leaguedex - played matchups</title>
       </Helmet>
-      <Champion
+      <Matchups
         columns={columns}
         matchups={matchups}
         name={name}

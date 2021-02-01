@@ -83,20 +83,16 @@ class MatchupModel extends Model {
 
   async getPlayedChampions(userId) {
     const resource = await db.$queryRaw`
-        SELECT DISTINCT
-          "Champion"."id",
-          "Champion"."name",
-          "Champion"."image",
-          case
-            when "Matchup"."opponent_id" IS NOT NULL
-              then true
-              else false
-          end as has_matchups
+       SELECT DISTINCT
+        "Champion"."id",
+        "Champion"."name",
+        "Champion"."image",
+        COUNT("Matchup"."champion_id") as matchups_count
         FROM "Matchup"
         RIGHT JOIN "Champion"
         ON "Champion"."id" = "Matchup"."champion_id"
         AND "Matchup"."user_id" = ${Number(userId)}
-        ORDER BY "has_matchups" DESC
+        GROUP BY "Champion"."id"  
       `;
 
     return resource;

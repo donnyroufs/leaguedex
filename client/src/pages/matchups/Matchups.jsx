@@ -9,7 +9,7 @@ import {
   ToggleContainer,
   Title,
   CreateMatchupBtn,
-} from "./Champion.styles";
+} from "./Matchups.styles";
 import { useModal } from "../../hooks/useModal";
 
 const statusMatchupsPrivacy = (matchups) =>

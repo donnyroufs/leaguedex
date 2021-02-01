@@ -10,9 +10,9 @@ const routes = [
   },
   {
     exact: true,
-    path: "/champion/:name",
-    name: "champion",
-    component: pages.Champion,
+    path: "/matchups/:name",
+    name: "matchups",
+    component: pages.Matchups,
     permissions: 2,
   },
   {
@@ -34,6 +34,13 @@ const routes = [
     path: "/profile/:username",
     name: "profile",
     component: pages.Profile,
+    permissions: 0,
+  },
+  {
+    exact: true,
+    path: "/profile/:username/matchups/:champion",
+    name: "profile matchups",
+    component: pages.ProfileMatchups,
     permissions: 0,
   },
   {

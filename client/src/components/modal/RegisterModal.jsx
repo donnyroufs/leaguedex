@@ -33,6 +33,9 @@ const RegisterModal = () => {
   const { register, isAuthenticated } = useAuth();
   const { setModal, isOpen, modal, reverse, setReverse } = useModal();
   const innerRef = useRef();
+  const secondRef = useRef();
+  const thirdRef = useRef();
+  const fourthRef = useRef();
 
   const ref = useOnclickOutside(() => {
     if (isOpen("register")) {
@@ -105,7 +108,7 @@ const RegisterModal = () => {
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
-        <Group auth>
+        <Group auth onClick={() => innerRef.current.focus()}>
           <Label>username</Label>
           <Input
             type="text"
@@ -116,7 +119,7 @@ const RegisterModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Group auth>
+        <Group auth onClick={() => secondRef.current.focus()}>
           <Label>email address</Label>
           <Input
             type="text"
@@ -124,9 +127,10 @@ const RegisterModal = () => {
             value={values.email}
             placeholder="enter email address"
             onChange={handleOnChange}
+            ref={secondRef}
           />
         </Group>
-        <Group auth>
+        <Group auth onClick={() => thirdRef.current.focus()}>
           <Label>password</Label>
           <Input
             type="password"
@@ -134,9 +138,10 @@ const RegisterModal = () => {
             value={values.password}
             placeholder="enter password"
             onChange={handleOnChange}
+            ref={thirdRef}
           />
         </Group>
-        <Group auth>
+        <Group auth onClick={() => fourthRef.current.focus()}>
           <Label>retype password</Label>
           <Input
             type="password"
@@ -144,6 +149,7 @@ const RegisterModal = () => {
             value={values.password_confirmation}
             placeholder="enter password"
             onChange={handleOnChange}
+            ref={fourthRef}
           />
         </Group>
         <Button form="true" onClick={handleRegister} disabled={loading}>

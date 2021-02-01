@@ -40,6 +40,7 @@ const ResetPasswordModal = () => {
 
   const { setModal, isOpen, setReverse, reverse } = useModal();
   const innerRef = useRef();
+  const retypeElRef = useRef();
 
   const ref = useOnclickOutside(() => {
     if (isOpen("resetPassword")) {
@@ -106,7 +107,7 @@ const ResetPasswordModal = () => {
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
-        <Group auth>
+        <Group auth onClick={() => innerRef.current.focus()}>
           <Label>password</Label>
           <Input
             type="password"
@@ -114,9 +115,10 @@ const ResetPasswordModal = () => {
             value={values.password}
             placeholder="enter password"
             onChange={handleOnChange}
+            ref={innerRef}
           />
         </Group>
-        <Group auth>
+        <Group auth onClick={() => retypeElRef.current.focus()}>
           <Label>retype password</Label>
           <Input
             type="password"
@@ -124,6 +126,7 @@ const ResetPasswordModal = () => {
             value={values.password_confirmation}
             placeholder="enter password"
             onChange={handleOnChange}
+            ref={retypeElRef}
           />
         </Group>
         <Button onClick={onSubmit} type="submit" form="true" disabled={loading}>

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Card from "../../components/card/CardContainer";
 import { Container, Widget } from "./Home.styles";
 import { Group, Input, Label } from "../../components/styles/Form";
 import Stats from "../../components/stats/Stats";
+import CardsGrid from "../../components/cardsGrid/CardsGrid";
 
 const Home = ({ champions, info, isAuthenticated }) => {
   const [value, setValue] = useState("");
@@ -28,15 +28,16 @@ const Home = ({ champions, info, isAuthenticated }) => {
           </Group>
         </Widget>
       </Container.Widgets>
-      <Container secondary>
-        {champions.length > 0 &&
-          champions
-            .filter((champ) => champ.name.toLowerCase().includes(value))
-            .sort((championA) => (championA.has_matchups ? -1 : 1))
-            .map((champion) => (
-              <Card key={champion.name} champion={champion} />
-            ))}
-      </Container>
+      <CardsGrid
+        data={champions}
+        filterFn={(champ) => champ.name.toLowerCase().includes(value)}
+        sortFn={(a, b) => b.matchups_count - a.matchups_count}
+        contentFn={(champion) =>
+          champion.matchups_count !== 1
+            ? `${champion.matchups_count} matchups`
+            : `${champion.matchups_count} matchup`
+        }
+      />
     </Container>
   );
 };

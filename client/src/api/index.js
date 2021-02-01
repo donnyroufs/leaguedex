@@ -4,6 +4,11 @@ import makeRequest from "../helpers/makeRequest";
 export class API {
   static endpoint = "/api";
 
+  static async getChampionByName(championName) {
+    const res = await makeRequest(this.endpoint + `/champion/${championName}`);
+    return res.json();
+  }
+
   static async updateMatchNotifications(payload) {
     return makeRequest(this.endpoint + `/game`, {
       method: "PUT",

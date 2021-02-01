@@ -33,6 +33,7 @@ const LoginModal = () => {
   const { setModal, isOpen, modal, setReverse, reverse } = useModal();
   const { setMatch, hasMatch } = useMatch();
   const innerRef = useRef();
+  const secondRef = useRef();
 
   const ref = useOnclickOutside(() => {
     if (isOpen("login")) {
@@ -108,7 +109,7 @@ const LoginModal = () => {
         <FlashMessage>
           <FlashMessage.Inner>{errorMessage}</FlashMessage.Inner>
         </FlashMessage>
-        <Group auth>
+        <Group auth onClick={() => innerRef.current.focus()}>
           <Label>username</Label>
           <Input
             type="text"
@@ -119,7 +120,7 @@ const LoginModal = () => {
             onChange={handleOnChange}
           />
         </Group>
-        <Group auth>
+        <Group auth onClick={() => secondRef.current.focus()}>
           <Label>password</Label>
           <Input
             type="password"
@@ -127,6 +128,7 @@ const LoginModal = () => {
             value={values.password}
             placeholder="enter password"
             onChange={handleOnChange}
+            ref={secondRef}
           />
         </Group>
         <Button
