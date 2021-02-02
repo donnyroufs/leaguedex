@@ -12,6 +12,8 @@ export const Wrapper = styled.aside`
   background: ${(props) => props.theme.header};
   transition: all 0.2s ease-in-out;
   justify-content: center;
+  overflow: auto;
+
   ${(props) =>
     props.isOpen &&
     css`
