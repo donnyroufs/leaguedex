@@ -104,8 +104,11 @@ export const Hamburger = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 1.25rem;
+  margin-right: 0.6rem;
   margin-bottom: 0.3rem;
+  background: #232f3e;
+  padding: 0.5rem;
+  border-radius: 3px;
 `;
 
 export const Box = styled.div`
