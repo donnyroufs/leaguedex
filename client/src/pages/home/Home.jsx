@@ -4,6 +4,8 @@ import { useSlides } from "../../hooks/useSlides";
 import { slides } from "./slidesData";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { useModal } from "../../hooks/useModal";
+import CardsGrid from "../../components/cardsGrid/CardsGrid";
+import { FaDiscord } from "react-icons/fa";
 
 const Home = () => {
   const { setModal } = useModal();
@@ -39,13 +41,18 @@ const Home = () => {
                   >
                     {currentSlide.body}
                   </SC.Paragraph>
-                  <SC.Button
-                    onClick={() => setModal("register")}
-                    onMouseOver={() => stop()}
-                    onMouseOut={() => start()}
-                  >
-                    Get Started
-                  </SC.Button>
+                  <SC.ButtonGroup>
+                    <SC.Button
+                      onClick={() => setModal("register")}
+                      onMouseOver={() => stop()}
+                      onMouseOut={() => start()}
+                    >
+                      Get Started
+                    </SC.Button>
+                    <a href="https://discord.gg/ppM7jvXUDK" target="_blank">
+                      <SC.Discord />
+                    </a>
+                  </SC.ButtonGroup>
                 </SC.HeroBody>
               </CSSTransition>
             </SwitchTransition>

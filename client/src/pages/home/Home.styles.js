@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Button as GlobalButton } from "../../GlobalStyles";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import { FaDiscord } from "react-icons/fa";
 
 export const Wrapper = styled.div`
   @media screen and (min-width: 968px) {
@@ -140,4 +141,34 @@ export const RightChevron = styled(BsChevronRight)`
   color: #bddbff;
   height: 20px;
   width: 20px;
+`;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+
+  @media screen and (min-width: 968px) {
+    justify-content: flex-start;
+  }
+`;
+
+export const Discord = styled(FaDiscord)`
+  font-size: 24px;
+  color: #495b6e;
+  cursor: pointer;
+  margin-top: 1.5rem;
+
+  transition: opacity 0.1s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  @media screen and (min-width: 968px) {
+    margin-top: 0.3rem;
+    margin-left: 1.5rem;
+  }
 `;
