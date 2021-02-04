@@ -22,14 +22,17 @@ const Header = ({
 
   return (
     <Container isOpen={isOpen}>
-      <StatusBar
-        isAuthenticated={isAuthenticated}
-        hasSummoner={hasSummoner}
-        handleFindMatch={handleFindMatch}
-        handleLiveMatch={handleLiveMatch}
-        handleMatchupSelection={handleMatchupSelection}
-        revertMatch={revertMatch}
-      />
+      {user && (
+        <StatusBar
+          isAuthenticated={isAuthenticated}
+          hasSummoner={hasSummoner}
+          handleFindMatch={handleFindMatch}
+          handleLiveMatch={handleLiveMatch}
+          handleMatchupSelection={handleMatchupSelection}
+          revertMatch={revertMatch}
+        />
+      )}
+
       <Container.Inner>
         <Container.Bottom>
           <Box flex>
