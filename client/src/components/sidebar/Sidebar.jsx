@@ -18,6 +18,9 @@ const Sidebar = () => {
           <SC.Link to="/about" exact activeClassName="active-route">
             about
           </SC.Link>
+          <SC.Link to="/collection" exact activeClassName="active-route">
+            collection
+          </SC.Link>
           {isAuthenticated && (
             <>
               <SC.Link
@@ -36,15 +39,6 @@ const Sidebar = () => {
               )}
             </>
           )}
-        </SC.Box>
-        <SC.Box>
-          <SC.Heading>Links</SC.Heading>
-          <SC.Link as="a" href="https://twitter.com/league_dex" target="_blank">
-            twitter
-          </SC.Link>
-          <SC.Link as="a" href="https://discord.gg/ppM7jvXUDK" target="_blank">
-            discord
-          </SC.Link>
         </SC.Box>
       </SC.Wrapper.Inner>
     </SC.Wrapper>

@@ -10,9 +10,10 @@ export const Wrapper = styled.aside`
   top: 100px;
   transform: translateX(-100vw);
   background: ${(props) => props.theme.header};
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease;
   justify-content: center;
   overflow: auto;
+  border-right: 1px solid #263547;
 
   ${(props) =>
     props.isOpen &&
