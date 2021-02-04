@@ -10,6 +10,13 @@ const routes = [
   },
   {
     exact: true,
+    path: "/collection",
+    name: "collection",
+    component: pages.Collection,
+    permissions: 2,
+  },
+  {
+    exact: true,
     path: "/matchups/:name",
     name: "matchups",
     component: pages.Matchups,
