@@ -6,7 +6,10 @@ export const Container = styled.section`
   justify-content: space-between;
   margin-bottom: 8rem;
 
+  margin-top: 75px;
+
   @media screen and (min-width: 968px) {
+    margin-top: 275px;
     height: calc(100vh - 175px);
   }
 `;
