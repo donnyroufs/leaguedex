@@ -18,11 +18,11 @@ const Sidebar = () => {
           <SC.Link to="/about" exact activeClassName="active-route">
             about
           </SC.Link>
-          <SC.Link to="/collection" exact activeClassName="active-route">
-            collection
-          </SC.Link>
           {isAuthenticated && (
             <>
+              <SC.Link to="/collection" exact activeClassName="active-route">
+                collection
+              </SC.Link>
               <SC.Link
                 to={`/profile/${user.username}`}
                 activeClassName="active-route"

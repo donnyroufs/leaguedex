@@ -62,6 +62,8 @@ export function useSlides(slides = [], { speed }) {
     return () => {
       clearInterval(timeId.current);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slides, slide, playing, SPEED]);
 
   return {

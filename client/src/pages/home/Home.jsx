@@ -4,8 +4,6 @@ import { useSlides } from "../../hooks/useSlides";
 import { slides } from "./slidesData";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { useModal } from "../../hooks/useModal";
-import CardsGrid from "../../components/cardsGrid/CardsGrid";
-import { FaDiscord } from "react-icons/fa";
 
 const Home = () => {
   const { setModal } = useModal();
@@ -49,7 +47,11 @@ const Home = () => {
                     >
                       Get Started
                     </SC.Button>
-                    <a href="https://discord.gg/ppM7jvXUDK" target="_blank">
+                    <a
+                      href="https://discord.gg/ppM7jvXUDK"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <SC.Discord />
                     </a>
                   </SC.ButtonGroup>

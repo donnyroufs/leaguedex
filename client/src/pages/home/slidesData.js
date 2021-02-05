@@ -48,4 +48,10 @@ export const slides = [
     body: "Matchups with the most likes will be displayed on the home page!",
     src: "/like.png",
   }),
+  new Slide({
+    title: "Use any account you want",
+    body:
+      "Do you have 20 smurfs? Then no worries! You can use them all. Do note we do not need any personal information to do so!",
+    src: "/accounts.png",
+  }),
 ];

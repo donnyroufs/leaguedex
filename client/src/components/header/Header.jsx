@@ -39,7 +39,7 @@ const Header = ({
             <Hamburger onClick={handleClick}>
               <FaBars />
             </Hamburger>
-            <Container.Brand to="/">
+            <Container.Brand to="/collection">
               <Container.Brand.Image src="/new_logo.svg" alt="leaguedex logo" />
             </Container.Brand>
           </Box>
