@@ -7,6 +7,12 @@ export const Styles = styled.div`
   margin: 4rem auto;
   max-width: 1400px;
 
+  margin-top: 75px;
+
+  @media screen and (min-width: 968px) {
+    margin-top: 275px;
+  }
+
   table {
     margin-top: 3rem;
     border-spacing: 0;

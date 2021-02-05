@@ -22,21 +22,24 @@ const Header = ({
 
   return (
     <Container isOpen={isOpen}>
-      <StatusBar
-        isAuthenticated={isAuthenticated}
-        hasSummoner={hasSummoner}
-        handleFindMatch={handleFindMatch}
-        handleLiveMatch={handleLiveMatch}
-        handleMatchupSelection={handleMatchupSelection}
-        revertMatch={revertMatch}
-      />
+      {user && (
+        <StatusBar
+          isAuthenticated={isAuthenticated}
+          hasSummoner={hasSummoner}
+          handleFindMatch={handleFindMatch}
+          handleLiveMatch={handleLiveMatch}
+          handleMatchupSelection={handleMatchupSelection}
+          revertMatch={revertMatch}
+        />
+      )}
+
       <Container.Inner>
         <Container.Bottom>
           <Box flex>
             <Hamburger onClick={handleClick}>
               <FaBars />
             </Hamburger>
-            <Container.Brand to="/">
+            <Container.Brand to="/collection">
               <Container.Brand.Image src="/new_logo.svg" alt="leaguedex logo" />
             </Container.Brand>
           </Box>

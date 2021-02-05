@@ -1,4 +1,5 @@
-import Home from "./home/HomeContainer";
+import Home from "./home/Home";
+import Collection from "./collection/CollectionContainer";
 import Matchups from "./matchups/MatchupsContainer";
 import Match from "./match/MatchContainer";
 import Dex from "./dex/DexContainer";
@@ -13,6 +14,7 @@ import NotFound from "./notFound/NotFound";
 
 export {
   Home,
+  Collection,
   Matchups,
   Match,
   Dex,

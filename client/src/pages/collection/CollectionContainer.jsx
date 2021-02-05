@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Home from "./Home";
+import Collection from "./Collection";
 import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../hooks/useModal";
 import * as Loader from "../../components/styles/Loader";
@@ -20,7 +20,7 @@ const fetchInfoCard = async () => {
   return response.json();
 };
 
-const HomeContainer = (props) => {
+const CollectionContainer = (props) => {
   const { setModal } = useModal();
   const { champions, setChampions } = useChampions();
   const [info, setInfo] = useState({
@@ -73,7 +73,7 @@ const HomeContainer = (props) => {
       <Helmet>
         <title>Leaguedex</title>
       </Helmet>
-      <Home
+      <Collection
         champions={champions}
         info={info}
         loading={loading}
@@ -83,4 +83,4 @@ const HomeContainer = (props) => {
   );
 };
 
-export default HomeContainer;
+export default CollectionContainer;

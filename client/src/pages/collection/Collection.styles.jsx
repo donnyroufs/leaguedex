@@ -8,6 +8,12 @@ export const Container = styled.section`
   margin: 0 auto;
   max-width: 1400px;
 
+  margin-top: 75px;
+
+  @media screen and (min-width: 968px) {
+    margin-top: 275px;
+  }
+
   ${(props) =>
     props.secondary &&
     css`

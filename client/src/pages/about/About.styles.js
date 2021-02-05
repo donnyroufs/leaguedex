@@ -7,8 +7,11 @@ export const Container = styled.section`
   width: 80%;
   margin: 0 auto;
 
+  margin-top: 75px;
+
   @media screen and (min-width: 968px) {
     width: 100%;
+    margin-top: 275px;
   }
 `;
 

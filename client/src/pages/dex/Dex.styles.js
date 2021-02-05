@@ -8,6 +8,12 @@ export const Container = styled.section`
   max-width: 1400px;
   height: calc(100vh - 170px);
 
+  margin-top: 75px;
+
+  @media screen and (min-width: 968px) {
+    margin-top: 275px;
+  }
+
   @media screen and (min-width: 1200px) {
     flex-flow: row nowrap;
   }

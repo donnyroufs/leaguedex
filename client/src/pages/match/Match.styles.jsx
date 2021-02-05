@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
+// TODO: Fix margins
 export const Container = styled.section`
   overflow: hidden;
   display: flex;
@@ -8,7 +9,7 @@ export const Container = styled.section`
   justify-content: space-between;
 
   @media screen and (min-width: 968px) {
-    margin-top: -100px;
+    margin-top: 175px;
     height: calc(100vh - 175px);
   }
 `;
