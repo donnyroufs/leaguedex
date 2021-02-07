@@ -2,13 +2,6 @@ import React from "react";
 import { Container, Article, GithubLink } from "./About.styles";
 import { FaGithub, FaCoffee } from "react-icons/fa";
 
-const BreakLine = () => (
-  <>
-    <br />
-    <br />
-  </>
-);
-
 const About = () => {
   return (
     <Container>
