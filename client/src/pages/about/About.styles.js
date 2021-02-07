@@ -4,16 +4,14 @@ export const Container = styled.section`
   display: flex;
   flex-flow: column nowrap;
   max-width: 900px;
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
 
-  margin-top: 75px;
   margin-bottom: 100px;
 
   @media screen and (min-width: 968px) {
     width: 100%;
     margin-top: 275px;
-    margin-bottom: 0;
   }
 `;
 
@@ -26,7 +24,10 @@ export const ImageWrapper = styled.div`
   }
 `;
 
-export const Article = styled.article``;
+export const Article = styled.article`
+  background: ${(props) => props.theme.header};
+  padding: 0rem 4rem 2rem 4rem;
+`;
 
 Article.Title = styled.h1`
   font-weight: 1000;

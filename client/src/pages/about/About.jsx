@@ -1,13 +1,6 @@
 import React from "react";
-import {
-  Container,
-  ImageWrapper,
-  Article,
-  Background,
-  GithubLink,
-} from "./About.styles";
-import ReactPlayer from "react-player";
-import { FaGithub } from "react-icons/fa";
+import { Container, Article, GithubLink } from "./About.styles";
+import { FaGithub, FaCoffee } from "react-icons/fa";
 
 const BreakLine = () => (
   <>
@@ -19,29 +12,27 @@ const BreakLine = () => (
 const About = () => {
   return (
     <Container>
-      <Background />
-      <ImageWrapper>
-        <ReactPlayer
-          url="https://www.youtube.com/watch?v=FVLPfcsni8s"
-          controls={true}
-          width="100%"
-          height="100%"
-        />
-      </ImageWrapper>
       <Article>
         <Article.Title>What is Leaguedex?</Article.Title>
         <Article.Body>
-          Keep track of all your played matchups in a digital environment where
-          you can write down your own personalized notes to never ever forget
-          again!
-          <BreakLine />
-          Perhaps people frequently ask you about how to play a certain champion
-          and you have been planning to write an in depth guide on how to play
-          but never really took the time to do so, since it costs a lot of free
-          time.. Well don’t worry!
-          <BreakLine />
-          Leaguedex has this covered for you. You can share your dex with others
-          or keep it to yourself. Whatever suits you.
+          Leaguedex is a web application created for League of Legends players
+          who like to write notes for a given matchup. A matchup could be Annie
+          versus Anivia in mid lane.
+        </Article.Body>
+        <Article.Body>
+          You can create matchups manually, create a matchup when ur just about
+          to join summoners rift or even better, Leaguedex keeps track of your
+          played matchups and will take an educated guess and let you know about
+          it!
+        </Article.Body>
+        <Article.Body>
+          Besides using this as your personal note taking app, you can also
+          decide to share your matchups with others.
+        </Article.Body>
+        <Article.Body>
+          Leaguedex is created by a single web developer who likes to create
+          free stuff for others to use. However I would appreciate donations to
+          pay the server costs each month. You can do so by buying me a coffee!
         </Article.Body>
         <Article.Footer>
           <GithubLink
@@ -50,6 +41,13 @@ const About = () => {
           >
             <FaGithub size="32" />
             Github
+          </GithubLink>
+          <GithubLink
+            href="https://www.buymeacoffee.com/iamchets"
+            target="_blank"
+          >
+            <FaCoffee size="64" style={{ marginRight: "1rem" }} />
+            Donate
           </GithubLink>
         </Article.Footer>
       </Article>
