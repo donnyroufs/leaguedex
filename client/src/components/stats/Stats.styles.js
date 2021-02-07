@@ -34,9 +34,13 @@ export const Container = styled.div`
     css`
       margin-top: 1rem;
       width: 100%;
+      background: #111c29;
+      flex-grow: 1;
+      width: 100%;
+      border: 1px solid #23303f;
 
-      @media screen and (min-width: 500px) {
-        width: 47%;
+      @media screen and (min-width: 968px) {
+        width: 100%;
       }
     `}
 `;

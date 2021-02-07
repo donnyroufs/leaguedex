@@ -41,13 +41,15 @@ export const Item = styled(ListItem)`
   padding: 1.25rem;
   padding-right: 3.5rem;
   line-height: 1.7;
-  background: #23303f;
+  /* background: #23303f; */
+  background: #0b1623;
   margin-bottom: 1rem;
   border-radius: 6px;
   display: flex;
   justify-content: space-between;
   text-align: left;
-  color: ${(props) => props.theme.secondary};
+  /* color: ${(props) => props.theme.secondary}; */
+  color: #5d7a9b;
 `;
 
 export const Filter = styled.div`

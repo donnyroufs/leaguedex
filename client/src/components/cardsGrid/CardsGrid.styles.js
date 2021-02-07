@@ -12,6 +12,10 @@ export const Container = styled.section`
   }
 
   @media screen and (min-width: 1200px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media screen and (min-width: 1400px) {
     grid-template-columns: repeat(6, 1fr);
   }
 `;

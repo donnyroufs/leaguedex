@@ -2,6 +2,8 @@ import styled, { css } from "styled-components";
 import { FcLike } from "react-icons/fc";
 
 export const Like = styled(FcLike)`
+  height: 43px;
+  max-height: 43px;
   position: relative;
   font-size: 1.5rem;
   margin: 0 0.5rem 0 0;
@@ -30,8 +32,8 @@ export const LikeCount = styled.span`
 
 export const Container = styled.div`
   background: ${({ theme }) => theme.header};
-  padding: 0.3rem 0.6rem;
-  border-radius: 3px;
+  padding: 0 1rem;
+  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;

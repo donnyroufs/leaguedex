@@ -124,6 +124,7 @@ export const Group = styled.div`
     ${(props) =>
     props.notes &&
     css`
+      height: 60px;
       opacity: 1;
       background: #18222f;
       color: #617e9f;

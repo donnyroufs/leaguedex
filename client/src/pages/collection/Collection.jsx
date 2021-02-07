@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Container, Widget } from "./Collection.styles";
 import { Group, Input, Label } from "../../components/styles/Form";
 import Stats from "../../components/stats/Stats";
@@ -6,6 +6,7 @@ import CardsGrid from "../../components/cardsGrid/CardsGrid";
 
 const Collection = ({ champions, info, isAuthenticated }) => {
   const [value, setValue] = useState("");
+  const ref = useRef(null);
 
   return (
     <Container>
@@ -17,9 +18,10 @@ const Collection = ({ champions, info, isAuthenticated }) => {
           </Widget>
         )}
         <Widget>
-          <Group home champion>
+          <Group home champion onClick={() => ref.current.focus()}>
             <Label home>Find Dex</Label>
             <Input
+              ref={ref}
               type="text"
               placeholder="Enter champion name"
               value={value}

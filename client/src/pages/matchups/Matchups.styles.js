@@ -9,6 +9,7 @@ export const Container = styled.section`
   max-width: 1400px;
 
   margin-top: 75px;
+  margin-bottom: 100px;
 
   @media screen and (min-width: 968px) {
     margin-top: 275px;
@@ -197,7 +198,7 @@ export const CreateMatchupBtn = styled.button`
   border-radius: 100%;
   height: 48px;
   width: 48px;
-  bottom: 64px;
+  bottom: 120px;
   right: 64px;
 
   outline: none;
@@ -209,5 +210,9 @@ export const CreateMatchupBtn = styled.button`
 
   &:hover {
     opacity: 0.7;
+  }
+
+  @media screen and (min-width: 968px) {
+    bottom: 64px;
   }
 `;

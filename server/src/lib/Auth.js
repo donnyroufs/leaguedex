@@ -153,6 +153,7 @@ class Auth {
       const user = await db.user.findOne({
         where: { id: decoded.id },
         select: {
+          id: true,
           username: true,
           permissions: true,
         },

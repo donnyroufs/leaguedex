@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { Button as GlobalButton } from "../../GlobalStyles";
 
 export const Container = styled.div`
   display: flex;
@@ -18,4 +19,9 @@ Container.Option = styled.div`
       background: ${(props) => props.theme.primary};
       color: #fff;
     `}
+`;
+
+export const Button = styled(GlobalButton)`
+  background: ${({ theme }) => theme.header};
+  color: #5d7a9b;
 `;

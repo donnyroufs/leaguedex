@@ -243,9 +243,9 @@ export default createGlobalStyle`
     .clipboard {
       font-size: 1rem;
       cursor: pointer;
-      margin-right: .3rem;
+      margin-right: .5rem;
       margin-bottom: .15rem;
-      color: #007aff;
+      color: #5d7a9b;
 
       @media screen and (min-width: 1200px) {
         margin-right: .66rem;

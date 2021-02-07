@@ -9,9 +9,6 @@ import { build, loadAssets } from "../../helpers/loadImages";
 import { useMatch } from "../../hooks/useMatch";
 import { Helmet } from "react-helmet-async";
 import makeRequest from "../../helpers/makeRequest";
-import removeTagsFromNotes, {
-  removeChar,
-} from "../../helpers/removeTagsFromNotes";
 
 const fetchDex = async (id) => {
   const res = await makeRequest(`/api/matchup/${id}`);
@@ -59,7 +56,7 @@ const DexContainer = ({ history }) => {
         championId: dex.champion_id,
         tags: tags.length > 0 ? tags.toString() : "",
       });
-      setNotes((current) => [...current, removeChar(data)]);
+      setNotes((current) => [...current, data]);
     } catch (err) {
       toast.error("Something went wrong...");
     }
@@ -85,7 +82,7 @@ const DexContainer = ({ history }) => {
           const assets = build([data.championA, data.championB], 2);
           await loadAssets(assets);
 
-          setNotes(removeTagsFromNotes(_data));
+          setNotes(_data);
 
           setDex(data);
           setLoading(false);

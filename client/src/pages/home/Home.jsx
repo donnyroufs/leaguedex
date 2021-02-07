@@ -4,8 +4,10 @@ import { useSlides } from "../../hooks/useSlides";
 import { slides } from "./slidesData";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { useModal } from "../../hooks/useModal";
+import { useAuth } from "../../hooks/useAuth";
 
-const Home = () => {
+const Home = ({ history }) => {
+  const { user } = useAuth();
   const { setModal } = useModal();
   const { currentSlide, handleNext, handlePrev, start, stop } = useSlides(
     slides,
@@ -40,13 +42,24 @@ const Home = () => {
                     {currentSlide.body}
                   </SC.Paragraph>
                   <SC.ButtonGroup>
-                    <SC.Button
-                      onClick={() => setModal("register")}
-                      onMouseOver={() => stop()}
-                      onMouseOut={() => start()}
-                    >
-                      Get Started
-                    </SC.Button>
+                    {!user && (
+                      <SC.Button
+                        onClick={() => setModal("register")}
+                        onMouseOver={() => stop()}
+                        onMouseOut={() => start()}
+                      >
+                        Get Started
+                      </SC.Button>
+                    )}
+                    {user && (
+                      <SC.Button
+                        onClick={() => history.push("/collection")}
+                        onMouseOver={() => stop()}
+                        onMouseOut={() => start()}
+                      >
+                        View Collection
+                      </SC.Button>
+                    )}
                     <a
                       href="https://discord.gg/ppM7jvXUDK"
                       target="_blank"
