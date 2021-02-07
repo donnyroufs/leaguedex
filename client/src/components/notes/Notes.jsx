@@ -137,11 +137,8 @@ const Notes = ({
       replaced = replaced.replace("global", "");
       replaced = replaced.replace(champA, "");
       replaced = replaced.replace(champB, "");
-    } else {
-      // replaced = replaced.replace("global", "@global");
-      replaced = replaced.replace(champA, `@${champA}`);
-      replaced = replaced.replace(champB, `@${champB}`);
     }
+
     return replaced;
   }
 
