@@ -12,8 +12,10 @@ export const Wrapper = styled.div`
 export const Container = styled.div`
   background: ${(props) => props.theme.header};
   min-height: 560px;
+  margin-bottom: 100px;
 
   @media screen and (min-width: 968px) {
+    margin-bottom: 0;
     min-height: auto;
   }
 `;

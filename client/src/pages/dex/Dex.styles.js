@@ -1,17 +1,23 @@
 import styled, { css } from "styled-components";
 
 export const Container = styled.section`
+  background: #111c29;
+`;
+
+Container.Inner = styled.div`
   display: flex;
   flex-flow: column nowrap;
   width: 80%;
   margin: 0 auto;
   max-width: 1400px;
-  height: calc(100vh - 170px);
-
-  margin-top: 75px;
+  /* height: calc(100vh - 170px); */
+  padding-top: 2rem;
+  min-height: 100vh;
+  /* padding-top: 75px; */
 
   @media screen and (min-width: 968px) {
-    margin-top: 275px;
+    margin-top: 175px;
+    padding-top: 50px;
   }
 
   @media screen and (min-width: 1200px) {
@@ -31,11 +37,7 @@ Container.Right = styled.div`
   flex: 8;
 
   @media screen and (min-width: 1200px) {
-    margin-left: 100px;
-  }
-
-  @media screen and (min-width: 1400px) {
-    margin-left: 200px;
+    margin-left: 50px;
   }
 `;
 
@@ -43,7 +45,7 @@ export const Header = styled.header`
   height: ${(props) => (props.stats ? "350px" : "100px")};
   width: 100%;
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
 
@@ -82,23 +84,16 @@ Header.Right = styled.div`
 `;
 
 export const Status = styled.div`
-  display: none;
-
-  @media screen and (min-width: 1200px) {
-    display: flex;
-    background: ${({ theme }) => theme.primary};
-    border-radius: 6px;
-    padding: 0.8rem 1.2rem;
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: bold;
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    margin-right: 1rem;
-  }
-
-  @media screen and (min-width: 1600px) {
-    margin-right: 2rem;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 43px;
+  background: #e91e63;
+  border-radius: 6px;
+  padding: 0.8rem 1.2rem;
+  color: white;
+  margin-right: 0rem;
+  cursor: default;
 `;
 
 export const Text = styled.p`
@@ -152,17 +147,93 @@ export const Runes = styled.section`
 export const Title = styled.h1`
   font-size: 1.5rem;
   font-weight: bold;
-  color: ${({ theme }) => theme.secondary};
+  text-transform: uppercase;
+  color: #3f8be4;
+  margin-left: 0.5rem;
 `;
 
 export const Notes = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  margin-top: 4rem;
+  margin-top: 2rem;
   margin-bottom: 6rem;
 
   @media screen and (min-width: 968px) {
     margin-bottom: 4rem;
-    margin-top: 6rem;
+    margin-top: 1.2rem;
   }
+`;
+
+export const Box = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+
+  @media screen and (min-width: 968px) {
+    border-radius: 6px;
+    background: #0b1623;
+  }
+`;
+
+Box.Inner = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 2rem;
+
+  @media screen and (min-width: 968px) {
+    padding: 2rem;
+  }
+`;
+
+export const Column = styled.div`
+  position: relative;
+  flex: ${(props) => props.flex};
+  justify-content: center;
+  align-items: center;
+`;
+
+Column.Inner = styled.div`
+  height: calc(100% - 90px);
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0.5rem;
+`;
+
+export const Image = styled.img`
+  display: block;
+`;
+
+export const SubTitle = styled.p`
+  padding: 0;
+  margin: 0;
+  font-weight: bold;
+  color: #8ba1ba;
+  text-transform: uppercase;
+  opacity: 0.4;
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+
+  @media screen and (min-width: 1750px) {
+    font-size: 0.95rem;
+  }
+`;
+
+export const SmallerTitle = styled.h2`
+  font-weight: bold;
+  font-size: 1.7rem;
+  padding: 0;
+  margin: 0;
+  color: ${(props) => (props.type === "vs" ? "#3F8BE4" : "#B8D0EC")};
+  @media screen and (min-width: 1750px) {
+    font-size: 2rem;
+  }
+`;
+
+export const StatsWrapper = styled.div`
+  text-align: center;
+  margin-bottom: 1.5rem;
 `;

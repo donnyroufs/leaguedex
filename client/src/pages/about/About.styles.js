@@ -8,10 +8,12 @@ export const Container = styled.section`
   margin: 0 auto;
 
   margin-top: 75px;
+  margin-bottom: 100px;
 
   @media screen and (min-width: 968px) {
     width: 100%;
     margin-top: 275px;
+    margin-bottom: 0;
   }
 `;
 

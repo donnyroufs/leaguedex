@@ -1,6 +1,7 @@
 import React from "react";
-import { Container } from "./Toggle.styles";
+import { Container, Button } from "./Toggle.styles";
 import { toast } from "react-toastify";
+import { FaLock, FaUnlock } from "react-icons/fa";
 import makeRequest from "../../helpers/makeRequest";
 
 const makeQuery = ({
@@ -25,7 +26,7 @@ const makeQuery = ({
 async function fetchUpdatePrivacy(payload) {
   const query = makeQuery(payload);
   return makeRequest(`/api/matchup/private?${query}`, {
-    method: "PUT"
+    method: "PUT",
   });
 }
 
@@ -56,18 +57,14 @@ const Toggle = ({
 
   return (
     <Container>
-      <Container.Option
-        selected={privacy === true}
-        onClick={() => handleClick(true)}
-      >
-        Private
-      </Container.Option>
-      <Container.Option
-        selected={privacy === false}
-        onClick={() => handleClick(false)}
-      >
-        Public
-      </Container.Option>
+      <Button onClick={() => handleClick(!privacy)}>
+        {privacy ? (
+          <FaLock style={{ marginRight: ".5rem" }} />
+        ) : (
+          <FaUnlock style={{ marginRight: ".5rem" }} />
+        )}
+        {privacy ? "Private" : "Public"}
+      </Button>
     </Container>
   );
 };

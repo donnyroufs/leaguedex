@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { PoseGroup } from "react-pose";
 import { parseTagsV2 } from "../../helpers/parseTags";
-import useClipboard from "react-hook-clipboard";
 import { toast } from "react-toastify";
-import { FaLink } from "react-icons/fa";
 import { Title, Notes as Container } from "../../pages/dex/Dex.styles";
 import { List, Item, Filter, Tag, Mark, Text, Heading } from "./Notes.styles";
 import { Form, Group, Input } from "../../components/styles/Form";
 import { filterByTags } from "../../helpers/arrayHelpers";
 import Highlight from "react-highlight-words";
-import Dropdown, { Menu } from "../dropdown/Dropdown";
+import Dropdown from "../dropdown/Dropdown";
 import { normalize } from "../../helpers/utils";
 import { Info } from "../info/Info";
+import { Button } from "../toggle/Toggle.styles";
+import { removeCharFromStr } from "../../helpers/removeTagsFromNotes";
 
 const LOCALSTORAGE_KEY = "ldex_showTags";
 
@@ -30,8 +30,6 @@ const Notes = ({
   const [query, setQuery] = useState([]);
   const [show, setShow] = useState(true);
   const [tags, setTags] = useState([]);
-  const [link, setLink] = useState(null);
-  const [, copyToClipboard] = useClipboard();
   const [value, setValue] = useState("");
   const [hidden, setHidden] = useState(true);
   const ref = useRef();
@@ -96,11 +94,6 @@ const Notes = ({
     setValue("");
   };
 
-  const handleCopy = () => {
-    copyToClipboard(link);
-    toast.info("copied link to clipboard");
-  };
-
   // !TODO refactor when my brain can handle it ;')
   const suggestion = (tagName) => {
     let str = "";
@@ -128,9 +121,6 @@ const Notes = ({
       const _tags = parseTagsV2(notes);
       setTags(_tags);
       setPrivacy(privacy);
-      if (!shared) {
-        setLink(`https://leaguedex.com/profile/${user.username}/dex/${dexId}`);
-      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes]);
@@ -148,7 +138,7 @@ const Notes = ({
       replaced = replaced.replace(champA, "");
       replaced = replaced.replace(champB, "");
     } else {
-      replaced = replaced.replace("global", "@global");
+      // replaced = replaced.replace("global", "@global");
       replaced = replaced.replace(champA, `@${champA}`);
       replaced = replaced.replace(champB, `@${champB}`);
     }
@@ -159,43 +149,14 @@ const Notes = ({
     <Container>
       <Heading>
         <Info title="info" modalName="info-notes" />
-        <Title>
-          {!privacy && !shared && (
-            <FaLink className="clipboard" onClick={handleCopy} />
-          )}
-          {shared ? "Notes" : "Your notes"}
-        </Title>
-        {/* <Small>
-          how to?
-          <InfoBox as="ol">
-            <li>
-              Create tags specifically for champions by adding their name after
-              @. These are always shown when the matchup includes the given
-              champion.
-            </li>
-            <li>
-              You can create global tags, which will be shown in every matchup.
-            </li>
-            <li>
-              You can create inline tags, these will not show the "@" character
-              and are only for the current matchup.
-            </li>
-            <li>
-              It's recommended to put specific champion and global tags at the
-              end of a note.
-            </li>
-            <li>You can filter tags in any combination you wish!</li>
-          </InfoBox>
-        </Small> */}
+        <Title>{shared ? "Notes" : "Your notes"}</Title>
         {!shared && (
-          <Dropdown show={show} handleSetShow={handleSetShow} w={140}>
-            <Menu.Item small onClick={handleSetHidden}>
-              {hidden ? "show" : "hide"}
-            </Menu.Item>
-          </Dropdown>
+          <Button style={{ marginLeft: "auto" }} onClick={handleSetHidden}>
+            {hidden ? "show tags" : "hide tags"}
+          </Button>
         )}
       </Heading>
-      <Filter mt={tags.length <= 0 ? "2rem" : "1rem"}>
+      <Filter mt={tags.length <= 0 ? "2rem" : "1.4rem"}>
         {shared && notes.length <= 0 && "There are no notes for this matchup."}
         {tags.length <= 0 && !shared && (
           <Text>
@@ -219,7 +180,7 @@ const Notes = ({
           <Group secondary notes onClick={handleClick}>
             <Input
               type="text"
-              placeholder="Start typing..."
+              placeholder="Write a note..."
               value={value}
               onChange={(e) => setValue(e.target.value)}
               ref={ref}
@@ -231,6 +192,16 @@ const Notes = ({
         <PoseGroup>
           {notes.length > 0 &&
             [...filteredNotes()]
+              .map((note) => {
+                if (hidden) {
+                  return {
+                    ...note,
+                    content: removeCharFromStr(note.content),
+                  };
+                }
+
+                return note;
+              })
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((note) => (
                 <Item key={note.id}>

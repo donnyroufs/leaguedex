@@ -5,11 +5,15 @@ function removeChar(note, char = "@") {
   };
 }
 
+function removeCharFromStr(content, char = "@") {
+  return content.replaceAll(char, "");
+}
+
 function removeTagsFromNotes(notes = [], char = "@") {
   const newNotes = notes.map((note) => removeChar(note, char));
   return newNotes;
 }
 
-export { removeChar };
+export { removeChar, removeCharFromStr };
 
 export default removeTagsFromNotes;

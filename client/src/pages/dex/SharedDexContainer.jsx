@@ -35,6 +35,11 @@ const DexContainer = ({ history }) => {
             history.push("/");
           }
           const _data = await fetchNotes(id, data.user_id);
+
+          if (_data.status && _data.status === "error") {
+            throw new Error();
+          }
+
           setNotes(_data);
 
           setDex(data);
