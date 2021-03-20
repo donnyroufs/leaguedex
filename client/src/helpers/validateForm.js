@@ -4,7 +4,7 @@ import {
   SUMMONER_FORM,
   CHANGE_PASSWORD_FORM,
 } from "../constants";
-import { blackListEmail } from "./utils";
+// import { blackListEmail } from "./utils";
 
 const validateForm = (values, type) => {
   const errors = {};
@@ -32,10 +32,12 @@ const validateForm = (values, type) => {
       errors.email = "Email address is required";
     } else if (!/\S+@\S+\.\S+/.test(values.email)) {
       errors.email = "Email address is invalid";
-    } else if (blackListEmail(values.email)) {
-      const split = values.email.split("@")[1];
-      errors.mail = `The domain ${split} is not supported`;
     }
+    // TODO: Fix service
+    // else if (blackListEmail(values.email)) {
+    //   const split = values.email.split("@")[1];
+    //   errors.mail = `The domain ${split} is not supported`;
+    // }
 
     if (!values.password) {
       errors.password = "Password is required.";

@@ -90,9 +90,10 @@ class UserController extends Controller {
   async create(req, res) {
     const { username, password, email } = req.body;
 
-    if (blackListEmail(email)) {
-      throw new BadRequest('Current email domain is not supported');
-    }
+    // TODO: fix email service
+    // if (blackListEmail(email)) {
+    //   throw new BadRequest('Current email domain is not supported');
+    // }
 
     const hashedPassword = await Auth.hashPassword(password);
 
