@@ -58,9 +58,10 @@ const useAuthProvider = () => {
     try {
       const success = await API.fetchRegister(formData);
 
+          // "Successfully created an account please verifiy your email."
       if (success) {
         toast.info(
-          "Successfully created an account please verifiy your email."
+          "Successfully created an account, you can now login!"
         );
       }
 

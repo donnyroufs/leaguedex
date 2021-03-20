@@ -98,9 +98,10 @@ class Application {
     this.RemovePasswordResetsJob = new CronJob('0 0 0 * * *', () =>
       cleanupPasswordResets()
     );
-    this.EmailVerificationsJob = new CronJob('0 0 0 * * *', () =>
-      cleanupVerifications()
-    );
+    // TODO: Fix email service
+    // this.EmailVerificationsJob = new CronJob('0 0 0 * * *', () =>
+    //   cleanupVerifications()
+    // );
   }
 }
 

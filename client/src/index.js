@@ -17,12 +17,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { SidebarProvider } from "./hooks/useSidebar";
 import { NotificationsProvider } from "./hooks/useNotifications";
 
-import * as Sentry from "@sentry/react";
+// import * as Sentry from "@sentry/react";
 
-Sentry.init({
-  dsn:
-    "https://59d43b51a7914740bd7c751a2089140b@o510434.ingest.sentry.io/5606640",
-});
+// Sentry.init({
+//   dsn:
+//     "https://59d43b51a7914740bd7c751a2089140b@o510434.ingest.sentry.io/5606640",
+// });
 
 ReactDOM.render(
   <React.StrictMode>
