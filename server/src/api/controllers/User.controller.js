@@ -95,20 +95,23 @@ class UserController extends Controller {
     }
 
     const hashedPassword = await Auth.hashPassword(password);
-    const userId = await this.model.create({
+
+    await this.model.create({
       username,
       hashedPassword,
       email,
+      active: true,
     });
 
-    const token = v4();
-    await this.model.createEmailToken(userId, token);
+    // TODO: Fix email service
+    // const token = v4();
+    // await this.model.createEmailToken(userId, token);
 
-    await sendEmail(
-      email,
-      'Confirm your email address',
-      emailConfirmation(`https://leaguedex.com/verify/email?token=${token}`)
-    );
+    // await sendEmail(
+    //   email,
+    //   'Confirm your email address',
+    //   emailConfirmation(`https://leaguedex.com/verify/email?token=${token}`)
+    // );
 
     res.sendStatus(201);
   }
@@ -128,9 +131,10 @@ class UserController extends Controller {
       throw new NotAuthorized('username or password is not valid');
     }
 
-    if (!user.active) {
-      throw new NotAuthorized('Please verify your email.');
-    }
+    // TODO: Fix email service
+    // if (!user.active) {
+    //   throw new NotAuthorized('Please verify your email.');
+    // }
 
     const payload = {
       data: {
